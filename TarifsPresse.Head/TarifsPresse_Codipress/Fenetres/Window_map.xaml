@@ -1,0 +1,71 @@
+﻿<Window x:Class="TarifsPresse_Codipress.Fenetres.Window_map"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:this="clr-namespace:TarifsPresse_Codipress.Fenetres"
+        Title="Association des éléments" Height="500.153" Width="720.87" MinHeight="230" MinWidth="290"
+        Loaded="Window_Loaded">
+    <Window.Resources>
+        <this:MappedConverter x:Key="MappedConverter" />
+    </Window.Resources>
+    <Grid>
+        <DockPanel>
+            <Grid DockPanel.Dock="top" Height="80">
+                <ToggleButton x:Name="ToggleButton_AZ"
+                              Content="A-Z" Margin="10,10,10,10"
+                              VerticalAlignment="Top"
+                              HorizontalAlignment="Right" Width="36"
+                              Checked="ToggleButton_AZ_State_Changed" Unchecked="ToggleButton_AZ_State_Changed"/>
+                <Label Content="Rouge : ignoré, Vert : associé, Blanc : non associé" Margin="10,10,131,0" VerticalAlignment="Top"/>
+            </Grid>
+            <Grid DockPanel.Dock="Bottom" Height="40">
+                <Button x:Name="Creer" Content="Créer nouveau" HorizontalAlignment="Left" Height="20" Margin="10,10,0,0" VerticalAlignment="Top" Width="100" Click="Creer_Click"/>
+                <ToggleButton x:Name="Ignore_button" Content="Ignorer" Margin="115,10,0,0" VerticalAlignment="Top"
+                              Checked="Ignore_button_State_Changed" Unchecked="Ignore_button_State_Changed" HorizontalAlignment="Left" Width="100" Height="20"/>
+                <Button x:Name="Valider" Content="Valider" Height="20" Margin="0,10,10,0" VerticalAlignment="Top" HorizontalAlignment="Right" Width="100" Click="Valider_Click" IsDefault="True"/>
+            </Grid>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="10"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Label  Grid.Column="0" Content="Codipress" HorizontalAlignment="Stretch" VerticalAlignment="Top" HorizontalContentAlignment="Center"/>
+                <ListBox x:Name="ListBox_ElemsToMap" Grid.Column="0" Grid.Row="0" Grid.RowSpan="2"
+                         ItemsSource="{Binding Path=ElementsToMap}"
+                         IsSynchronizedWithCurrentItem="True"
+                         SelectionMode="Single"
+                         SelectionChanged="ListBox_ElemsToMap_SelectionChanged" Margin="0,26,0,0">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Path=Name}"
+                                       Background="{Binding Path=Mapped, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource MappedConverter}}"
+                                       MouseRightButtonUp="TextBlock_MouseRightButtonUp"/>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+                <Label  Grid.Column="2" Content="MBS" HorizontalAlignment="Stretch" VerticalAlignment="Top" HorizontalContentAlignment="Center"/>
+                <ListBox x:Name="ListBox_Mapped" Grid.Column="2" Grid.Row="0"
+                         ItemsSource="{Binding Path=ElementsMapped}"
+                         IsSynchronizedWithCurrentItem="True"
+                         SelectionMode="Single" Margin="0,26,0,0">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Path=Name}"
+                                       Background="{Binding Path=Mapped, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource MappedConverter}}"
+                                       MouseLeftButtonUp="TextBlock_MouseLeftButtonUp"/>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+                <Label x:Name="Label_Supports"  Grid.Column="2"   Grid.Row="1" Content="Supports" HorizontalAlignment="Stretch" VerticalAlignment="Top" HorizontalContentAlignment="Center"/>
+                <ListBox x:Name="ListBox_Supports" Grid.Column="2"  Grid.Row="1"
+                         ItemsSource="{Binding Path=ElementsSupports}"
+                         IsSynchronizedWithCurrentItem="True"
+                         SelectionMode="Single" Margin="0,31,0,0"/>
+            </Grid>
+        </DockPanel>
+    </Grid>
+</Window>

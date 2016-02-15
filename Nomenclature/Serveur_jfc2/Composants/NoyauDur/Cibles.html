@@ -1,0 +1,120 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="vince">
+   <META NAME="Description" CONTENT="Chargement des cibles">
+   <META NAME="GENERATOR" CONTENT="Mozilla/4.04 [en] (Win95; I) [Netscape]">
+   <TITLE>Cibles</TITLE>
+<!-- *************************************************
+        EDITEUR WEBEXPERT
+        DATE DE CREATION: 08/10/98
+        DERNIERE MODIFICATION: 08/10/98
+************************************************** -->
+</HEAD>
+<BODY>
+<FONT SIZE=+3>CCibleUnivers&nbsp;&nbsp;&nbsp;&nbsp;</FONT>
+
+<P>La classe <B>CCibleUnivers</B> est utilis&eacute;e pour charger diff&eacute;rentes
+donn&eacute;es r&eacute;f&eacute;renc&eacute;es dans les fichiers cibles.
+
+<P><B><I><FONT SIZE=+1>Implantation</FONT></I></B>
+
+<P>Il faut inclure dans le projet :
+<UL>
+<LI>
+La classe CCibleUnivers : CibleUnivers.cpp et CibleUnivers.h</LI>
+
+<LI>
+La classe CTableCIBLE : TableCible.cpp et TableCible.h</LI>
+
+<LI>
+Le composant CFileUtils : FileUtils.cpp et FileUtils.h
+</LI>
+</UL>
+Il faut inclure dans le fichier d'en-t&ecirc;te appelant l'objet #include
+"cibleunivers.h".&nbsp;
+<HR ALIGN=LEFT SIZE=3 WIDTH="100%">
+
+<P><FONT SIZE=+2>Membres de la class CCibleUnivers</FONT>
+
+<P><B>Constructeur</B>
+<TABLE WIDTH="50%" >
+<TR VALIGN=TOP>
+<TD><A HREF="#CCibleUnivers::CCibleUnivers">CCibleUnivers</A></TD>
+<TD>Construit un objet cible.</TD>
+</TR>
+</TABLE>
+
+<P><B>Initialisation</B>
+<TABLE WIDTH="50%" >
+<TR VALIGN=TOP>
+<TD><A HREF="#CCibleUnivers::Initialisation">Initialisation</A></TD>
+<TD>Initialisation d'un objet cible.</TD>
+</TR>
+</TABLE>
+
+<P><B>Chargement des donn&eacute;es</B>
+<TABLE WIDTH="75%" >
+<TR>
+<TD><A HREF="#CCibleUnivers::DonneTableCibles">DonneTableCibles</A></TD>
+
+<TD>Chargement de la table des cibles d'un univers
+particulier.</TD>
+</TR>
+</TABLE>
+
+<HR ALIGN=LEFT SIZE=3 WIDTH="100%"><A NAME="CCibleUnivers::CCibleUnivers"></A><FONT SIZE=+2>CCibleUnivers::CCibleUnivers</FONT>
+<BR><B>CCibleUnivers</B>(<B>void</B>);
+<BR><B>CCibleUnivers</B>(<B>CString</B> <I>EtudIni</I>, <B>CString</B> <I>Marche</I>);
+<P><B>Param&egrave;tres</B>
+<TABLE BORDER=0 WIDTH="50%" >
+<TR VALIGN=TOP>
+<TD><I>EtudIni</I></TD><TD>Chemin du fichier Ataaetud.ini</TD>
+</TR>
+<TR VALIGN=TOP>
+<TD><I>Marche</I></TD><TD>Marché des cibles</TD>
+</TR>
+</TABLE>
+<P><B>Remarque</B><BR>
+Le premier constructeur déclare un objet CCibleUnivers.<BR>
+Le second déclare et initialise les paramètres pour les cibles.<BR>
+<BR><BLINK><FONT COLOR="#FF0000">ATTENTION!!!</FONT></BLINK>
+<BR><BLINK><FONT COLOR="#FF0000">La lib&eacute;ration de l'objet CCibleUnivers
+entrainera l'invalidit&eacute; du pointeur retourn&eacute;.</FONT></BLINK>
+
+<P><HR ALIGN=LEFT SIZE=3 WIDTH="100%"><A NAME="CCibleUnivers::Initialisation"></A><FONT SIZE=+2>CCibleUnivers::Initialisation</FONT><BR>
+<B>bool Initialisation</B>(<B>CString</B> <I>EtudIni</I>, <B>CString</B> <I>Marche</I>);
+<P><B>Valeur de retour</B><BR>
+TRUE si le fichier d'initialisation est valide; FALSE sinon.
+<P><B>Param&egrave;tres</B>
+<TABLE BORDER=0 WIDTH=50%>
+  <TR VALIGN=TOP>
+    <TD><I>EtudIni</I></TD><TD>Chemin du fichier Ataaetud.ini</TD>
+  </TR>
+  <TR VALIGN=TOP>
+    <TD><I>Marche</I></TD><TD>Marché à charger</TD>
+  </TR>
+</TABLE>
+<P><B>Remarque</B><BR>
+Initialise le marché du noyau dur, vérifie l'existence du fichier INI.<BR>
+Retourne FALSE si <I>EtudIni</I> est invalide.
+
+<P><HR ALIGN=LEFT SIZE=3 WIDTH="100%"><A NAME="CCibleUnivers::DonneTableCibles"></A><FONT SIZE=+2>CCibleUnivers::DonneTableCibles</FONT><BR>
+<B>CTableCibleArray  &DonneTableCibles</B>(<B>int</B> <I>Univers</I>);
+<P><B>Valeur de retour</B>
+<BR>L'adresse d'un tableau de type CArray contenant la liste des cibles.
+<P><B>Param&egrave;tres</B>
+<TABLE BORDER=0 WIDTH="75%" >
+<TR VALIGN=TOP>
+<TD><I>Univers</I></TD>
+<TD>Le numéro de l'univers &agrave; charger.</TD>
+</TR>
+</TABLE>
+<B>Remarque</B><BR>
+Le pointeur retourn&eacute; est valable TANT QUE l'objet CCibleUnivers
+d&eacute;clar&eacute; existe.
+
+<P>
+<HR ALIGN=LEFT SIZE=3 WIDTH="100%">
+</BODY>
+</HTML>

@@ -1,0 +1,38 @@
+// **********************
+// **********************
+// ****  EvalJob.txt ****
+// **********************
+// **********************
+
+24,descript TOM	// Nr,Nom de l'étude(pour info)
+4,Ménagères -50	// Nr de cible, Libellé(pour info)
+------- Ligne blanche
+101				// TypeSuppU= Option: (>100 EvalJob)
+9				// coeff. beta (-1 si not used)
+3				// Nb de sous plan (toujours 1 en marginal)
+1				// NbSource
+3,2,8,17		// nombre de ventilation(0 si rien),NrClasses,...
+------- Ligne blanche au debut de la source
+1,5,101								// Nr src.C%,vague,format source
+c:\artradio\source\sfr01			// CheminSource
+50000000		// population cible GRP
+3				// nb de région dans la source
+10,11,12 .... 	// NrUnique  de region
+------ Ligne blanche au debut des insertions
+1 ligne par support dans le format suivant:****
+NrStationunique,Horaire,Jour,NrUniqueRegion(+1000=Exclusif),Option,GRP(réel),Privé,NbInsertion(NbPlan)...,GRP ventilé (n classes)......
+..jour =31,32,64 en radio
+..jour =1,2,4,8,16,32,64 en télé (LMMJVSD)
+.
+.
+.
+pour les n support**********************
+------ Ligne blanche fin de support (debut de la source suivante)
+Prix1,prix2,...(Nb plans)
+EOJ
+
+Les fichiers suivant sont utilisés:
+Vagues:		vague.tbl
+Critères:	VVVV.lbx	(par vague)
+Cibles:		VVVV.cib	(par vague)
+

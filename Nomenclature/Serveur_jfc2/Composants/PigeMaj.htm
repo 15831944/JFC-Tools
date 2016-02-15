@@ -1,0 +1,71 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta name="Author" content="vince">
+   <meta name="GENERATOR" content="Mozilla/4.5 [fr] (Win98; I) [Netscape]">
+   <title>PigeMaj</title>
+</head>
+<body>
+
+<center>
+<hr WIDTH="100%"><font size=+2>Mise &agrave; jour du fichier spot</font></center>
+
+<p><a href="#Présentation de PigeMaj">Pr&eacute;sentation</a>
+<br><a href="#L'intégration">Int&eacute;gration</a>
+<br><a href="#Le compactage">Compactage</a>
+<br><a href="#L'intégration ET le compactage">L'int&eacute;gration ET le
+compactage</a>
+<br>
+<hr WIDTH="100%">
+<p><a NAME="Présentation de PigeMaj"></a><b><u><font size=+1>Pr&eacute;sentation
+de PigeMaj</font></u></b>
+<p>PigeMaj est un petit programme qui ne demande aucune action de l'utilisateur.
+Il se d&eacute;roule jusqu'&agrave; ce qu'il termine la t&acirc;che demand&eacute;.
+<br>Il lui suffit donc d'&ecirc;tre &eacute;xecuter soit depuis une ligne
+de commande, soit depuis un programme.
+<p>PigeMaj peut effectuer 2 t&acirc;ches, simultan&eacute;ment ou s&eacute;par&eacute;ment
+:
+<ul>
+<li>
+L'int&eacute;gration des nouveaux spots dans le fichier spot</li>
+
+<li>
+Le compactage du fichier spot</li>
+</ul>
+Trois arguments peuvent lui &ecirc;tre pass&eacute;, et au moins deux sont
+n&eacute;cessaires :
+<ul>
+<li>
+le m&eacute;dia est obligatoire : /T pour la t&eacute;l&eacute;vision ou
+/R pour la radio</li>
+
+<li>
+le compactage est optionnel : /X</li>
+
+<li>
+le chemin du fichier spot (PigeRad.mdb) et du fichier diff&eacute;rentiel
+de mise &agrave; jour (MajPigxxx) est n&eacute;cessaire (mais pas obligatoire
+si les fichiers sont dans le r&eacute;pertoire de travail du programme
+PigeMaj.exe)</li>
+</ul>
+<a NAME="L'intégration"></a><b><u><font size=+1>L'int&eacute;gration</font></u></b>
+<p>&nbsp;&nbsp;&nbsp; En t&eacute;l&eacute;vision : PigeMaj.exe /T /S=c:\artradio\PigeData\MajPigTv.mdb
+/D=c:\artradio\PigeData\PigeTv.mdb
+<br>&nbsp;&nbsp;&nbsp; En radio :&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; PigeMaj.exe
+/R /S=c:\artradio\PigeData\MajPigRad.mdb /D=c:\artradio\PigeData\PigeRad.mdb
+<p><a NAME="Le compactage"></a><b><u><font size=+1>Le compactage</font></u></b>
+<p>&nbsp;&nbsp;&nbsp; En t&eacute;l&eacute;vision : PigeMaj.exe /TX /D=c:\artradio\PigeData\PigeTv.mdb
+<br>&nbsp;&nbsp;&nbsp; En radio :&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; PigeMaj.exe
+/RX /D=c:\artradio\PigeData\PigeRad.mdb
+<p><a NAME="L'intégration ET le compactage"></a><b><u><font size=+1>L'int&eacute;gration
+ET le compactage</font></u></b>
+<p>&nbsp;&nbsp;&nbsp; En t&eacute;l&eacute;vision : PigeMaj.exe /T /X /D=c:\artradio\PigeData\PigeTv.mdb
+<br>&nbsp;&nbsp;&nbsp; En radio :&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; PigeMaj.exe
+/R /X /D=c:\artradio\PigeData\PigeRad.mdb
+<br>
+<hr WIDTH="100%"><font size=-1>Cr&eacute;ation&nbsp; : Mardi 8 juin 1999</font>
+<br><font size=-1>Derni&egrave;re modification : Mercredi 9 juin 1999</font>
+<br><font size=-1>VLF</font>
+</body>
+</html>

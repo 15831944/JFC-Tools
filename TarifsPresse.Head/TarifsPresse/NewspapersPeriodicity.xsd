@@ -1,0 +1,67 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="DataSet1" targetNamespace="http://tempuri.org/DataSet1.xsd" xmlns:mstns="http://tempuri.org/DataSet1.xsd" xmlns="http://tempuri.org/DataSet1.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" GeneratorFunctionsComponentClassName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" UserFunctionsComponentName="QueriesTableAdapter" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections>
+          <Connection AppSettingsObjectName="Settings" AppSettingsPropertyName="ConnectionString1" ConnectionStringObject="" IsAppSettingsProperty="true" Modifier="Assembly" Name="ConnectionString1 (Settings)" ParameterPrefix=":" PropertyReference="ApplicationSettings.TarifsPresse.Properties.Settings.GlobalReference.Default.ConnectionString1" Provider="Oracle.DataAccess.Client" />
+        </Connections>
+        <Tables>
+          <TableAdapter BaseClass="System.ComponentModel.Component" DataAccessorModifier="AutoLayout, AnsiClass, Class, Public" DataAccessorName="NewspapersPeriodicityTableAdapter" GeneratorDataComponentClassName="NewspapersPeriodicityTableAdapter" Name="NewspapersPeriodicity" UserDataComponentName="NewspapersPeriodicityTableAdapter">
+            <MainSource>
+              <DbSource ConnectionRef="ConnectionString1 (Settings)" DbObjectType="Unknown" GenerateMethods="Get" GenerateShortCommands="false" GeneratorGetMethodName="GetNewspapersPeriodicity" GetMethodModifier="Public" GetMethodName="GetNewspapersPeriodicity" QueryType="Rowset" ScalarCallRetval="System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" UseOptimisticConcurrency="false" UserGetMethodName="GetNewspapersPeriodicity" UserSourceName="GetNewspapersPeriodicity">
+                <SelectCommand>
+                  <DbCommand CommandType="Text" ModifiedByUser="true">
+                    <CommandText>SELECT        PITAFR01.PERIODICITY.ID_PERIODICITY, PITAFR01.NEWSPAPER.ID_NEWSPAPER, PITAFR01.PERIODICITY.PERIODICITY, 
+                         PITAFR01.NEWSPAPER.NEWSPAPER
+FROM            PITAFR01.NEWSPAPER INNER JOIN
+                         PITAFR01.PERIODICITY ON PITAFR01.NEWSPAPER.ID_PERIODICITY = PITAFR01.PERIODICITY.ID_PERIODICITY AND 
+                         PITAFR01.NEWSPAPER.ID_LANGUAGE_DATA_I = PITAFR01.PERIODICITY.ID_LANGUAGE_DATA
+ORDER BY PITAFR01.NEWSPAPER.NEWSPAPER</CommandText>
+                    <Parameters />
+                  </DbCommand>
+                </SelectCommand>
+              </DbSource>
+            </MainSource>
+            <Mappings>
+              <Mapping SourceColumn="ID_PERIODICITY" DataSetColumn="ID_PERIODICITY" />
+              <Mapping SourceColumn="ID_NEWSPAPER" DataSetColumn="ID_NEWSPAPER" />
+              <Mapping SourceColumn="PERIODICITY" DataSetColumn="PERIODICITY" />
+              <Mapping SourceColumn="NEWSPAPER" DataSetColumn="NEWSPAPER" />
+            </Mappings>
+            <Sources />
+          </TableAdapter>
+        </Tables>
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="DataSet1" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_DataSetName="DataSet1" msprop:Generator_UserDSName="DataSet1">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="NewspapersPeriodicity" msprop:Generator_TableClassName="NewspapersPeriodicityDataTable" msprop:Generator_TableVarName="tableNewspapersPeriodicity" msprop:Generator_TablePropName="NewspapersPeriodicity" msprop:Generator_RowDeletingName="NewspapersPeriodicityRowDeleting" msprop:Generator_RowChangingName="NewspapersPeriodicityRowChanging" msprop:Generator_RowEvHandlerName="NewspapersPeriodicityRowChangeEventHandler" msprop:Generator_RowDeletedName="NewspapersPeriodicityRowDeleted" msprop:Generator_UserTableName="NewspapersPeriodicity" msprop:Generator_RowChangedName="NewspapersPeriodicityRowChanged" msprop:Generator_RowEvArgName="NewspapersPeriodicityRowChangeEvent" msprop:Generator_RowClassName="NewspapersPeriodicityRow">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="ID_PERIODICITY" msdata:ReadOnly="true" msprop:Generator_ColumnVarNameInTable="columnID_PERIODICITY" msprop:Generator_ColumnPropNameInRow="ID_PERIODICITY" msprop:Generator_ColumnPropNameInTable="ID_PERIODICITYColumn" msprop:Generator_UserColumnName="ID_PERIODICITY" type="xs:long" minOccurs="0" />
+              <xs:element name="ID_NEWSPAPER" msdata:ReadOnly="true" msprop:Generator_ColumnVarNameInTable="columnID_NEWSPAPER" msprop:Generator_ColumnPropNameInRow="ID_NEWSPAPER" msprop:Generator_ColumnPropNameInTable="ID_NEWSPAPERColumn" msprop:Generator_UserColumnName="ID_NEWSPAPER" type="xs:long" minOccurs="0" />
+              <xs:element name="PERIODICITY" msdata:ReadOnly="true" msprop:Generator_ColumnVarNameInTable="columnPERIODICITY" msprop:Generator_ColumnPropNameInRow="PERIODICITY" msprop:Generator_ColumnPropNameInTable="PERIODICITYColumn" msprop:Generator_UserColumnName="PERIODICITY" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="50" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="NEWSPAPER" msdata:ReadOnly="true" msprop:Generator_ColumnVarNameInTable="columnNEWSPAPER" msprop:Generator_ColumnPropNameInRow="NEWSPAPER" msprop:Generator_ColumnPropNameInTable="NEWSPAPERColumn" msprop:Generator_UserColumnName="NEWSPAPER" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="50" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

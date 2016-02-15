@@ -1,0 +1,294 @@
+# Microsoft Developer Studio Project File - Name="tomeval" - Package Owner=<4>
+# Microsoft Developer Studio Generated Build File, Format Version 5.00
+# ** DO NOT EDIT **
+
+# TARGTYPE "Win32 (x86) Application" 0x0101
+
+CFG=tomeval - Win32 Debug
+!MESSAGE This is not a valid makefile. To build this project using NMAKE,
+!MESSAGE use the Export Makefile command and run
+!MESSAGE 
+!MESSAGE NMAKE /f "tomeval.mak".
+!MESSAGE 
+!MESSAGE You can specify a configuration when running NMAKE
+!MESSAGE by defining the macro CFG on the command line. For example:
+!MESSAGE 
+!MESSAGE NMAKE /f "tomeval.mak" CFG="tomeval - Win32 Debug"
+!MESSAGE 
+!MESSAGE Possible choices for configuration are:
+!MESSAGE 
+!MESSAGE "tomeval - Win32 Release" (based on "Win32 (x86) Application")
+!MESSAGE "tomeval - Win32 Debug" (based on "Win32 (x86) Application")
+!MESSAGE 
+
+# Begin Project
+# PROP Scc_ProjName ""
+# PROP Scc_LocalPath ""
+CPP=cl.exe
+MTL=midl.exe
+RSC=rc.exe
+
+!IF  "$(CFG)" == "tomeval - Win32 Release"
+
+# PROP BASE Use_MFC 6
+# PROP BASE Use_Debug_Libraries 0
+# PROP BASE Output_Dir "Release"
+# PROP BASE Intermediate_Dir "Release"
+# PROP BASE Target_Dir ""
+# PROP Use_MFC 5
+# PROP Use_Debug_Libraries 0
+# PROP Output_Dir "Release"
+# PROP Intermediate_Dir "Release"
+# PROP Ignore_Export_Lib 0
+# PROP Target_Dir ""
+# ADD BASE CPP /nologo /MD /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_AFXDLL" /Yu"stdafx.h" /FD /c
+# ADD CPP /nologo /Zp1 /MT /W3 /GX /O2 /I "..\common" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /FR /Yu"stdafx.h" /FD /c
+# ADD BASE MTL /nologo /D "NDEBUG" /mktyplib203 /o NUL /win32
+# ADD MTL /nologo /D "NDEBUG" /mktyplib203 /o NUL /win32
+# ADD BASE RSC /l 0x40c /d "NDEBUG" /d "_AFXDLL"
+# ADD RSC /l 0x40c /d "NDEBUG"
+BSC32=bscmake.exe
+# ADD BASE BSC32 /nologo
+# ADD BSC32 /nologo
+LINK32=link.exe
+# ADD BASE LINK32 /nologo /subsystem:windows /machine:I386
+# ADD LINK32 /nologo /subsystem:windows /machine:I386
+
+!ELSEIF  "$(CFG)" == "tomeval - Win32 Debug"
+
+# PROP BASE Use_MFC 6
+# PROP BASE Use_Debug_Libraries 1
+# PROP BASE Output_Dir "Debug"
+# PROP BASE Intermediate_Dir "Debug"
+# PROP BASE Target_Dir ""
+# PROP Use_MFC 5
+# PROP Use_Debug_Libraries 1
+# PROP Output_Dir "Debug"
+# PROP Intermediate_Dir "Debug"
+# PROP Ignore_Export_Lib 0
+# PROP Target_Dir ""
+# ADD BASE CPP /nologo /MDd /W3 /Gm /GX /Zi /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_AFXDLL" /Yu"stdafx.h" /FD /c
+# ADD CPP /nologo /Zp1 /MTd /W3 /Gm /GX /Zi /Od /I "..\common" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /FR /Yu"stdafx.h" /FD /c
+# ADD BASE MTL /nologo /D "_DEBUG" /mktyplib203 /o NUL /win32
+# ADD MTL /nologo /D "_DEBUG" /mktyplib203 /o NUL /win32
+# ADD BASE RSC /l 0x40c /d "_DEBUG" /d "_AFXDLL"
+# ADD RSC /l 0x40c /d "_DEBUG"
+BSC32=bscmake.exe
+# ADD BASE BSC32 /nologo
+# ADD BSC32 /nologo
+LINK32=link.exe
+# ADD BASE LINK32 /nologo /subsystem:windows /debug /machine:I386 /pdbtype:sept
+# ADD LINK32 /nologo /subsystem:windows /debug /machine:I386 /pdbtype:sept
+
+!ENDIF 
+
+# Begin Target
+
+# Name "tomeval - Win32 Release"
+# Name "tomeval - Win32 Debug"
+# Begin Group "Source Files"
+
+# PROP Default_Filter "cpp;c;cxx;rc;def;r;odl;idl;hpj;bat"
+# Begin Source File
+
+SOURCE=.\Eval.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\FicAUX.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\FicCIB.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\FicLBX.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\common\FicTbl.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\common\FicVague.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\Source.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\StdAfx.cpp
+# ADD CPP /Yc"stdafx.h"
+# End Source File
+# Begin Source File
+
+SOURCE=.\stdfonc.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\tomcalc.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\tomeval.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\tomeval.rc
+
+!IF  "$(CFG)" == "tomeval - Win32 Release"
+
+!ELSEIF  "$(CFG)" == "tomeval - Win32 Debug"
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
+SOURCE=.\tomevalDlg.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\tomfich.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\tomsourc.cpp
+# End Source File
+# End Group
+# Begin Group "Header Files"
+
+# PROP Default_Filter "h;hpp;hxx;hm;inl"
+# Begin Source File
+
+SOURCE=.\Eval.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\FicAUX.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\FicCIB.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\FicLBX.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\common\FicTbl.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\common\FicVague.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\Resource.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\Source.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\StdAfx.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\stdfonc.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\tom2cup.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\tom_msg.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\tomeval.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\tomevalDlg.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\tomprot.h
+# End Source File
+# End Group
+# Begin Group "Resource Files"
+
+# PROP Default_Filter "ico;cur;bmp;dlg;rc2;rct;bin;cnt;rtf;gif;jpg;jpeg;jpe"
+# Begin Source File
+
+SOURCE=.\res\tomeval.ico
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\tomeval.rc2
+# End Source File
+# End Group
+# Begin Group "textes"
+
+# PROP Default_Filter "*.txt"
+# Begin Source File
+
+SOURCE=.\afaire.txt
+# End Source File
+# Begin Source File
+
+SOURCE=.\EvalJob.txt
+# End Source File
+# Begin Source File
+
+SOURCE=.\ReadMe.txt
+# End Source File
+# Begin Source File
+
+SOURCE=.\Restom.txt
+# End Source File
+# Begin Source File
+
+SOURCE=.\tomjob.txt
+# End Source File
+# Begin Source File
+
+SOURCE=.\versions.txt
+# End Source File
+# End Group
+# End Target
+# End Project
+# Section tomeval : {00000000-0000-0000-0000-000000000000}
+# 	1:17:CG_IDS_DISK_SPACE:104
+# 	1:19:CG_IDS_PHYSICAL_MEM:103
+# 	1:25:CG_IDS_DISK_SPACE_UNAVAIL:105
+# 	2:14:PhysicalMemory:CG_IDS_PHYSICAL_MEM
+# 	2:9:DiskSpace:CG_IDS_DISK_SPACE
+# 	2:16:SpaceUnavailable:CG_IDS_DISK_SPACE_UNAVAIL
+# 	2:7:NewFunc:1
+# 	2:10:SysInfoKey:1234
+# End Section
+# Section tomeval : {8F8BCF21-A7A2-11D1-95EA-444553540000}
+# 	2:10:FicAUX.cpp:FicAUX.cpp
+# 	2:19:Application Include:tomeval.h
+# 	2:14:CLASS: CFicAUX:CFicAUX
+# 	2:8:FicAUX.h:FicAUX.h
+# End Section
+# Section tomeval : {8F8BCF27-A7A2-11D1-95EA-444553540000}
+# 	2:8:FicTbl.h:FicTbl2.h
+# 	2:14:CLASS: CFicTbl:CFicTbl
+# 	2:10:FicTbl.cpp:FicTbl2.cpp
+# 	2:19:Application Include:tomeval.h
+# End Section
+# Section tomeval : {8F8BCF22-A7A2-11D1-95EA-444553540000}
+# 	2:13:FicVagueCIB.h:FicVagueCIB.h
+# 	2:15:FicVagueCIB.cpp:FicVagueCIB.cpp
+# 	2:19:CLASS: CFicVagueCIB:CFicVagueCIB
+# 	2:19:Application Include:tomeval.h
+# End Section

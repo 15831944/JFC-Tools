@@ -1,0 +1,34 @@
+// Format spécifique pout la compile carat
+//
+//
+Population_de_référence;Nombre_de_cas_Panel
+@1 (Résultat de base)  
+Nombre_d'insertions;Nombre_de_millier_d'individus_touchés;
+					Couverture_en %;
+					Couverture_mémorisée;
+					Couverture_entre_X_et_Y;
+					Nombre_de_millier_de_contacts;
+					GRP;
+					Répétition;
+					GRP moyen par insertion (sur 1 ligne)
+Nombre_de_classes_touchées;Courbe_de_réponse_à_1;Courbe_de_réponse_à_n;
+@2 (Détail des contacts de 0 à n)
+Classe_0-n	;Nombre_de_milliers_d'individus_touchés;
+			Couverture_des_exactements_touchés;
+			Couverture_des_touchés_a_moins_n_fois (sur 1 ligne)
+@3 (PMG)
+Tercile;GRP;Indice_GRP;Répétition
+@4 (Apport par jour)
+Date;Apport_en_milliers;Apport%du plan;Apport Couverture
+@5 (Apport par semaine)
+Semaine(5/98);Apport_en_milliers;Apport%Plan;Apport Couverture
+@6 (Ventilation)
+Libelle_critère/classe;Effectif;Nombre_de_Cas;GRP;Couverture;Répétition
+@7 (fin)
+
+
+
+
+
+
+

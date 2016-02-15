@@ -1,0 +1,295 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<!-- *************************************************
+        EDITEUR WEBEXPERT
+        DATE DE CREATION: 07/10/98
+        DERNIERE MODIFICATION: 16/11/98
+************************************************** -->
+<HTML>
+<HEAD>
+<TITLE>Noyau Dur</TITLE>
+<META NAME="Author" CONTENT="vince">
+<META NAME="Description" CONTENT="Chargement du Noyau dur">
+<META NAME="Keywords" CONTENT="">
+</HEAD>
+<BODY>
+<FONT SIZE=+3>CNoyoDur&nbsp;&nbsp;&nbsp;&nbsp;</FONT>
+
+<P>La classe <B>CNoyoDur</B> est utilis&eacute;e pour charger diff&eacute;rentes donn&eacute;es r&eacute;f&eacute;renc&eacute;es dans les fichiers du noyau dur (<A HREF="manuel.doc">cf Doc technique Atelier Radio</A>).
+<P><B><I><FONT SIZE=+1>Implantation</FONT></I></B>
+
+<P>Il faut inclure dans le projet :
+<UL>
+<LI>
+La classe CNoyauDur : NoyauDur.cpp et NoyauDur.h</LI>
+<LI>
+Les classes suivantes qui composent les structures de donn&eacute;es du noyau dur : 
+<DL>
+  <DT><DD>- CArbreREGIONS : ArbreRegions.cpp et ArbreRegions.h
+  <DT><DD>- CSourceDEF : SourceDef.cpp et SourceDef.h
+  <DT><DD>- CTableFAMILLE : TableFamille.cpp et TableFamille.h
+  <DT><DD>- CTableMEDIA : TableMedia.cpp et TableMedia.h
+  <DT><DD>- CTableREGIE : TableRegie.cpp et TableRegie.h
+  <DT><DD>- CTableREGION : TableRegion.cpp et TableRegion.h
+  <DT><DD>- CTableSOURCE : TableSource.cpp et TableSource.h
+  <DT><DD>- CTableSTATION : TableStation.cpp et TableStation.h
+  <DT><DD>- CTableVAGUE : TableVague.cpp et TableVague.h
+  <DT><DD>- CTableUNIVERS : TableUnivers.cpp et TableUnivers.h
+</DL>
+<LI>
+Les composants :
+<DL>
+  <DT><DD>- CDictionary : Dictionary.cpp et Dictionary.h<BR>
+  <DT><DD>- CFicTbl : FicTbl.cpp et FicTbl.h
+  <DT><DD>- CFileUtils : FileUtils.cpp et FileUtils.h
+</DL>
+</LI>
+</UL>
+
+<P>
+Il faut inclure dans le fichier d'en-t&ecirc;te appelant l'objet #include "noyaudur.h".
+
+<HR ALIGN=LEFT SIZE=3 WIDTH="100%">
+
+<P><FONT SIZE=+2>Membres de la class CNoyauDur</FONT>
+<P><B>Constructeur</B>
+<BR>
+<TABLE WIDTH=50%>
+<TR  VALIGN=TOP>
+<TD><A HREF="#CNoyauDur::CNoyauDur">CNoyauDur</A></TD><TD>Construit un objet noyau dur.</TD>
+</TR>
+</TABLE>
+
+<P><B>Initialisation</B>
+<BR>
+<TABLE WIDTH=50%>
+<TR  VALIGN=TOP>
+<TD><A HREF="#CNoyauDur::Initialisation">Initialisation</A></TD><TD>Initialise le noyau dur.</TD>
+</TR>
+</TABLE>
+
+<P><B>Chargement des donn&eacute;es</B>
+<TABLE WIDTH="75%" >
+<!--
+<TR>
+<TD><A HREF="#CNoyauDur::DonneFamilles">DonneFamilles</A></TD>
+<TD>Chargement de la table des familles d'un march&eacute; ou d'un univers particulier.</TD>
+</TR>
+<TR>
+<TD><A HREF="#CNoyauDur::DonneRegies">DonneMedias</A></TD>
+<TD>Chargement de la table des m&eacute;dias d'un march&eacute; ou d'un univers particulier.</TD>
+</TR>
+<TR>
+<TD><A HREF="#CNoyauDur::DonneRegions">DonneRegions</A></TD>
+<TD>Chargement de la table des r&eacute;gions d'un march&eacute; ou d'un univers particulier.</TD>
+</TR>
+<TR>
+<TD><A HREF="#CNoyauDur::DonneStations">DonneStations</A></TD>
+<TD>Chargement des stations d'un march&eacute; ou d'un univers particulier.</TD>
+</TR>
+<TR>
+  -->
+<TD><A HREF="#CNoyauDur::DonneUnivers">DonneUnivers</A></TD>
+<TD>Chargement d'un univers particuliers.</TD>
+</TR>
+<TR>
+<TD><A HREF="#CNoyauDur::DonneMarche">DonneMarche</A></TD>
+<TD>Chargement d'un marché.</TD>
+</TR>
+<!--
+<TR>
+<TD><A HREF="#CNoyauDur::DonneSources">DonneSources</A></TD>
+<TD>Chargement des sources d'un march&eacute; ou d'un univers particulier.</TD>
+</TR>
+<TR>
+<TD><A HREF="#CNoyauDur::DonneVagues">DonneVagues</A></TD>
+<TD>Chargement des vagues d'un march&eacute; ou d'un univers particulier.</TD>
+</TR>
+  -->
+</TABLE>
+
+<P><B>Libération du marché</B>
+<TABLE WIDTH="75%" >
+<TR>
+<TD><A HREF="#CNoyauDur::LibererMarche">LibererMarche</A></TD>
+<TD>Libération du marché.</TD>
+</TR>
+</TABLE>
+
+<P><HR ALIGN=LEFT SIZE=3 WIDTH="100%">
+<A NAME="CNoyauDur::CNoyauDur"><FONT SIZE=+2>CNoyauDur::CNoyauDur</FONT><BR></A>
+<B>CNoyauDur</B>(<B>void<B>);<BR>
+<B>CNoyauDur</B>(<B>CString</B> <I>EtudIni</I>, <B>CString</B> <I>Marche</I>);<BR>
+<P><B>Param&egrave;tres</B>
+<TABLE BORDER=0 WIDTH=50%>
+  <TR VALIGN=TOP>
+    <TD><I>EtudIni</I></TD><TD>Chemin du fichier Ataaetud.ini</TD>
+  </TR>
+  <TR VALIGN=TOP>
+    <TD><I>Marche</I></TD><TD>Marché à charger</TD>
+  </TR>
+</TABLE>
+<P><B>Remarque</B><BR>
+Le premier constructeur déclare un objet CNoyauDur.<BR>
+Le second déclare et initialise le NoyauDur.<BR>
+<FONT COLOR="#FF0000"><BLINK>ATTENTION!!!<BR>
+La libération de l'objet CNoyauDur entrainera l'invalidité des pointeurs retourné.</BLINK></FONT>
+
+<P><HR ALIGN=LEFT SIZE=3 WIDTH="100%">
+<A NAME="CNoyauDur::Initialisation"><FONT SIZE=+2>CNoyauDur::Initialisation</FONT><BR></A>
+<B>bool Initialisation</B>(<B>CString</B> <I>EtudIni</I>, <B>CString</B> <I>Marche</I>);
+<P><B>Valeur de retour</B><BR>
+TRUE si le fichier d'initialisation est valide, et aucune erreur n'est survenues pendant le chargement des univers et des tables attachées; FALSE sinon.
+<P><B>Param&egrave;tres</B>
+<TABLE BORDER=0 WIDTH=50%>
+  <TR VALIGN=TOP>
+    <TD><I>EtudIni</I></TD><TD>Chemin du fichier Ataaetud.ini</TD>
+  </TR>
+  <TR VALIGN=TOP>
+    <TD><I>Marche</I></TD><TD>Marché à charger</TD>
+  </TR>
+</TABLE>
+<P><B>Remarque</B><BR>
+Initialise le marché du noyau dur, vérifie l'existence du fichier INI, et charge les tables univers, médias, familles, régions, régies, et stations du marché.<BR>
+Retourne FALSE si <I>EtudIni</I> est invalide, ou si le chargement des tables s'est mal déroulé.
+ <!--
+<P><HR ALIGN=LEFT SIZE=3 WIDTH="100%">
+<A NAME="CNoyauDur::DonneFamilles"><FONT SIZE=+2>CNoyauDur::DonneFamilles</FONT><BR></A>
+<B>CTableFAMILLE * DonneFamilles</B>(<B>CString</B> <I>Marche</I>);
+<P><B>Valeur de retour</B><BR>
+Un pointeur sur la structure CTableFAMILLE du marché concerné.
+<P><B>Param&egrave;tres</B>
+<TABLE BORDER=0 WIDTH=75%>
+  <TR VALIGN=TOP>
+    <TD><I>Marche</I></TD><TD>Une chaîne contenant le type du marché (FR, BL, SP), suivi du numéro d'univers à charger.</TD>
+  </TR>
+</TABLE>
+<P><B>Remarque</B><BR>
+Le pointeur retourné est valable TANT QUE l'objet CNoyauDur déclaré existe.<BR>
+Le paramètre peut contenir uniquement le type d'un marché (ex: FR). Sinon, un numéro d'univers doit être accroché (ex: FR01).
+
+<P><HR ALIGN=LEFT SIZE=3 WIDTH="100%">
+<A NAME="CNoyauDur::DonneRegies"><FONT SIZE=+2>CNoyauDur::DonneRegies</FONT><BR></A>
+<B>CTableREGIE * DonneRegies</B>(<B>CString</B> <I>Marche</I>);
+<P><B>Valeur de retour</B><BR>
+Un pointeur sur la structure CTableREGIE du marché concerné.
+<P><B>Param&egrave;tres</B>
+<TABLE BORDER=0 WIDTH=75%>
+  <TR VALIGN=TOP>
+    <TD><I>Marche</I></TD><TD>Une chaîne contenant le type du marché (FR, BL, SP), suivi du numéro d'univers à charger.</TD>
+  </TR>
+</TABLE>
+<P><B>Remarque</B><BR>
+Le pointeur retourné est valable TANT QUE l'objet CNoyauDur déclaré existe.<BR>
+Le paramètre peut contenir uniquement le type d'un marché (ex: FR). Sinon, un numéro d'univers doit être accroché (ex: FR01).
+
+<P><HR ALIGN=LEFT SIZE=3 WIDTH="100%">
+<A NAME="CNoyauDur::DonneMedias"><FONT SIZE=+2>CNoyauDur::DonneMedias</FONT><BR></A>
+<B>CTableMEDIA * DonneMedias</B>(<B>CString</B> <I>Marche</I>);
+<P><B>Valeur de retour</B><BR>
+Un pointeur sur la structure CTableMEDIA du marché concerné.
+<P><B>Param&egrave;tres</B>
+<TABLE BORDER=0 WIDTH=75%>
+  <TR VALIGN=TOP>
+    <TD><I>Marche</I></TD><TD>Une chaîne contenant le type du marché (FR, BL, SP), suivi du numéro d'univers à charger.</TD>
+  </TR>
+</TABLE>
+<P><B>Remarque</B><BR>
+Le pointeur retourné est valable TANT QUE l'objet CNoyauDur déclaré existe.<BR>
+Le paramètre peut contenir uniquement le type d'un marché (ex: FR). Sinon, un numéro d'univers doit être accroché (ex: FR01).
+
+<P><HR ALIGN=LEFT SIZE=3 WIDTH="100%">
+<A NAME="CNoyauDur::DonneRegions"><FONT SIZE=+2>CNoyauDur::DonneRegions</FONT><BR></A>
+<B>CTableREGION * DonneRegions</B>(<B>CString</B> <I>Marche</I>);
+<P><B>Valeur de retour</B><BR>
+Un pointeur sur la structure CTableREGION du marché concerné.
+<P><B>Param&egrave;tres</B>
+<TABLE BORDER=0 WIDTH=75%>
+  <TR VALIGN=TOP>
+    <TD><I>Marche</I></TD><TD>Une chaîne contenant le type du marché (FR, BL, SP), suivi du numéro d'univers à charger.</TD>
+  </TR>
+</TABLE>
+<P><B>Remarque</B><BR>
+Le pointeur retourné est valable TANT QUE l'objet CNoyauDur déclaré existe.<BR>
+Le paramètre peut contenir uniquement le type d'un marché (ex: FR). Sinon, un numéro d'univers doit être accroché (ex: FR01).
+
+<P><HR ALIGN=LEFT SIZE=3 WIDTH="100%">
+<A NAME="CNoyauDur::DonneStations"><FONT SIZE=+2>CNoyauDur::DonneStations</FONT><BR></A>
+<B>CTableSTATION *** DonneStations</B>(<B>CString</B> <I>Marche</I>);
+<P><B>Valeur de retour</B><BR>
+Un triple pointeur sur la structure CTableSTATION du marché concerné.
+<P><B>Param&egrave;tres</B>
+<TABLE BORDER=0 WIDTH=75%>
+  <TR VALIGN=TOP>
+    <TD><I>Marche</I></TD><TD>Une chaîne contenant le type du marché (FR, BL, SP), suivi du numéro d'univers à charger.</TD>
+  </TR>
+</TABLE>
+<P><B>Remarque</B><BR>
+Le pointeur retourné est valable TANT QUE l'objet CNoyauDur déclaré existe.<BR>
+Le paramètre peut contenir uniquement le type d'un marché (ex: FR). Sinon, un numéro d'univers doit être accroché (ex: FR01).<BR>
+Les dimensions du pointeur sont [nbUnivers][nbRegions][nbStation].
+-->
+
+<P><HR ALIGN=LEFT SIZE=3 WIDTH="100%">
+<A NAME="CNoyauDur::DonneUnivers"><FONT SIZE=+2>CNoyauDur::DonneUnivers</FONT><BR></A>
+<B>CTableUNIVERS * DonneUnivers</B>(<B>int</B> <I>Univers</I>);
+<P><B>Valeur de retour</B><BR>
+Un pointeur sur la structure CTableUNIVERS de l'univers choisi.
+<P><B>Param&egrave;tres</B>
+<TABLE BORDER=0 WIDTH=75%>
+  <TR VALIGN=TOP>
+    <TD><I>Univers</I></TD><TD>Le numéro de l'univers a charger.</TD>
+  </TR>
+</TABLE>
+<P><B>Remarque</B><BR>
+Le pointeur retourné est valable TANT QUE le marché sélectionné n'a pas été libéré.<BR>
+
+<P><HR ALIGN=LEFT SIZE=3 WIDTH="100%">
+<A NAME="CNoyauDur::DonneMarche"><FONT SIZE=+2>CNoyauDur::DonneMarche</FONT><BR></A>
+<B>CTableUniversArray &DonneMarche</B>(<B>void</B>);
+<P><B>Valeur de retour</B><BR>
+L'adresse sur un tableau de type CArray contenant tous les univers du marché.
+<P><B>Remarque</B><BR>
+Le pointeur retourné est valable TANT QUE le marché sélectionné n'a pas été libéré.<BR>
+
+<!--
+<P><HR ALIGN=LEFT SIZE=3 WIDTH="100%">
+<A NAME="CNoyauDur::DonneSources"><FONT SIZE=+2>CNoyauDur::DonneSources</FONT><BR></A>
+<B>CTableSOURCE ** DonneSources</B>(<B>CString</B> <I>Marche</I>);
+<P><B>Valeur de retour</B><BR>
+Un double pointeur sur la structure CTableSOURCE du marché concerné.
+<P><B>Param&egrave;tres</B>
+<TABLE BORDER=0 WIDTH=75%>
+  <TR VALIGN=TOP>
+    <TD><I>Marche</I></TD><TD>Une chaîne contenant le type du marché (FR, BL, SP), suivi du numéro d'univers à charger.</TD>
+  </TR>
+</TABLE>
+<P><B>Remarque</B><BR>
+Le pointeur retourné est valable TANT QUE l'objet CNoyauDur déclaré existe.<BR>
+Le paramètre peut contenir uniquement le type d'un marché (ex: FR). Sinon, un numéro d'univers doit être accroché (ex: FR01).<BR>
+Les dimensions du pointeur sont [nbUnivers][nbSources].
+
+<P><HR ALIGN=LEFT SIZE=3 WIDTH="100%">
+<A NAME="CNoyauDur::DonneVagues"><FONT SIZE=+2>CNoyauDur::DonneVagues</FONT><BR></A>
+<B>CTableVAGUE *** DonneVagues</B>(<B>CString</B> <I>Marche</I>);
+<P><B>Valeur de retour</B><BR>
+Un triple pointeur sur la structure CTableVAGUE du marché concerné.
+<P><B>Param&egrave;tres</B>
+<TABLE BORDER=0 WIDTH=75%>
+  <TR VALIGN=TOP>
+    <TD><I>Marche</I></TD><TD>Une chaîne contenant le type du marché (FR, BL, SP), suivi du numéro d'univers à charger.</TD>
+  </TR>
+</TABLE>
+<P><B>Remarque</B><BR>
+Le pointeur retourné est valable TANT QUE l'objet CNoyauDur déclaré existe.<BR>
+Le paramètre peut contenir uniquement le type d'un marché (ex: FR). Sinon, un numéro d'univers doit être accroché (ex: FR01).<BR>
+Les dimensions du pointeur sont [nbUnivers][nbSources][nbVagues].
+-->
+<P><HR ALIGN=LEFT SIZE=3 WIDTH="100%">
+<A NAME="CNoyauDur::LibererMarche"><FONT SIZE=+2>CNoyauDur::LibererMarche</FONT><BR></A>
+<B>void LibererMarche</B>(<B>void</B>);
+<P><B>Remarque</B><BR>
+Le marché est libéré, ainsi que toutes les tables qui lui sont rattachées.<BR>
+
+<P><HR ALIGN=LEFT SIZE=3 WIDTH="100%">
+</BODY>
+</HTML>

@@ -1,0 +1,242 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// French (France) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_FRA)
+#ifdef _WIN32
+LANGUAGE LANG_FRENCH, SUBLANG_FRENCH
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_FRA)\r\n"
+    "#ifdef _WIN32\r\n"
+    "LANGUAGE 12, 1\r\n"
+    "#pragma code_page(1252)\r\n"
+    "#endif\r\n"
+    "#include ""res\\tomeval.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""l.fra\\afxres.rc""          // Standard components\r\n"
+    "#endif\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON    DISCARDABLE     "res\\tomeval.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_ABOUTBOX DIALOG DISCARDABLE  0, 0, 217, 82
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "A propos de tomeval"
+FONT 8, "MS Sans Serif"
+BEGIN
+    ICON            IDR_MAINFRAME,IDC_STATIC,11,17,20,20
+    LTEXT           "tomeval version 2.5m CARAT",IDC_STATIC,40,10,139,8,
+                    SS_NOPREFIX
+    LTEXT           "Copyright (C) 1998",IDC_STATIC,40,25,119,8
+    DEFPUSHBUTTON   "OK",IDOK,184,7,26,14,WS_GROUP
+    EDITTEXT        IDC_DISK_SPACE,101,44,109,13,ES_AUTOHSCROLL
+    LTEXT           "Mémoire :",IDC_STATIC,12,64,31,9
+    EDITTEXT        IDC_PHYSICAL_MEM,101,62,109,13,ES_AUTOHSCROLL
+    LTEXT           "Espace disque :",IDC_STATIC,12,46,75,9
+END
+
+IDD_TOMEVAL_DIALOG DIALOGEX 0, 0, 203, 222
+STYLE DS_MODALFRAME | DS_SETFOREGROUND | WS_MINIMIZEBOX | WS_MAXIMIZEBOX | 
+    WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_CLIENTEDGE | WS_EX_STATICEDGE | WS_EX_APPWINDOW
+CAPTION "TOMEVAL"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    CTEXT           "TOMEVAL 32 pour Windows Copyright (c) JFC 1998 Toute reproduction interdite",
+                    IDC_STATIC,10,14,185,22,0,WS_EX_CLIENTEDGE | 
+                    WS_EX_STATICEDGE
+    GROUPBOX        "Messages Tomjob ",IDC_STATIC,9,40,186,49
+    PUSHBUTTON      "Lancer l'évaluation TOMJOB_READY",IDC_EVAL2,16,51,173,
+                    14,0,WS_EX_STATICEDGE
+    PUSHBUTTON      "MSGTOM_BREAK",IDC_BREAK,16,71,83,14,0,WS_EX_STATICEDGE
+    PUSHBUTTON      "MSGTOM_AUREVOIR",IDC_AUREVOIR,106,71,83,14,0,
+                    WS_EX_STATICEDGE
+    PUSHBUTTON      "TOMCDZ_READY",IDC_TOMCDZ,16,128,83,14,0,
+                    WS_EX_STATICEDGE
+    PUSHBUTTON      "TOMCDZ_END",IDC_TOMCDZEND,106,128,83,14,0,
+                    WS_EX_STATICEDGE
+    GROUPBOX        "Messages Tom CDZ (marginal)",IDC_STATIC,10,91,186,73
+    PUSHBUTTON      "ADDSPOT",IDC_ADDSPOT,16,145,83,14,0,WS_EX_STATICEDGE
+    PUSHBUTTON      "ADDZOOM",IDC_ADDZOOM,106,145,83,14,0,WS_EX_STATICEDGE
+    EDITTEXT        IDC_EDIT1,165,101,22,14,ES_AUTOHSCROLL | ES_NUMBER,
+                    WS_EX_CLIENTEDGE
+    PUSHBUTTON      "MSGTOM_GETLIEN",IDC_GETLIEN,16,107,83,14,0,
+                    WS_EX_STATICEDGE
+    LTEXT           "Nr du lien actif :",IDC_STATIC,110,104,49,10
+    CONTROL         "Progress1",IDC_PROGRESS1,"msctls_progress32",WS_BORDER,
+                    91,181,100,12
+    CONTROL         "Progress1",IDC_PROGRESS2,"msctls_progress32",WS_BORDER,
+                    91,196,100,12
+    GROUPBOX        "Progression des jobs",IDC_STATIC,10,166,186,49
+    LTEXT           "Fichier des probas :",IDC_STATIC,16,183,70,9
+    LTEXT           "Evaluation :",IDC_STATIC,15,198,70,9
+    CONTROL         "QuickJob(C%)",IDC_CHECK1,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,106,116,69,10
+END
+
+
+#ifndef _MAC
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 2,5,13,0
+ PRODUCTVERSION 2,5,13,0
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040c04b0"
+        BEGIN
+            VALUE "Comments", "Version 2.5m\0"
+            VALUE "CompanyName", "JFC\0"
+            VALUE "FileDescription", "Tomeval v2.5m\0"
+            VALUE "FileVersion", "2, 5, 13, 0\0"
+            VALUE "InternalName", "tomeval\0"
+            VALUE "LegalCopyright", "Copyright (C) JFC-2000\0"
+            VALUE "LegalTrademarks", "\0"
+            VALUE "OriginalFilename", "tomeval.EXE\0"
+            VALUE "PrivateBuild", "\0"
+            VALUE "ProductName", "Application tomeval\0"
+            VALUE "ProductVersion", "2, 5, 13, 0\0"
+            VALUE "SpecialBuild", "\0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x40c, 1200
+    END
+END
+
+#endif    // !_MAC
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_ABOUTBOX, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 210
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 75
+    END
+
+    IDD_TOMEVAL_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 196
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 215
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_ABOUTBOX            "&A propos de tomeval..."
+    CG_IDS_PHYSICAL_MEM     "%lu KB"
+    CG_IDS_DISK_SPACE       "%lu KB Free on %c:"
+    CG_IDS_DISK_SPACE_UNAVAIL "Unavailable"
+END
+
+#endif    // French (France) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_FRA)
+#ifdef _WIN32
+LANGUAGE 12, 1
+#pragma code_page(1252)
+#endif
+#include "res\tomeval.rc2"  // non-Microsoft Visual C++ edited resources
+#include "l.fra\afxres.rc"          // Standard components
+#endif
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

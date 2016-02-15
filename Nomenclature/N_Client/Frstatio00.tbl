@@ -1,0 +1,125 @@
+; Table des station de la région zFR00 (France)
+; * et # et ; réservés:
+; *Nombre de station *n
+; #Début de la table
+; M Media
+; T Type de lecture tarif
+;	E : Ecran télé France
+;	F : Ecran Radio Belge ou Radio France avec les ecrans stars (Il y a des écrans
+;		ponctuels dans un pavé de tarif)
+;	G : Radio en France par tranche Ty
+: 	P : 1 tarif dans un pavé
+;	K : Tarif Cabsat
+; Options : A Agrégat pas achat
+;	    C Couplages
+;	    B Pas frais de biem pendant la période
+;		 S Stock (EUR1:S=5,le repère EUR1 chez Europe Régie = 5)
+;Ty: 0, 15, 30...
+
+*98
+
+;Nr Nom5c M T Ty Libellé long 30c. ..........-< NrT RégTe Ord LOGO         Fam DateDU DateAU Coeff Nb Options ...
+;*3 ****5 * * ** ****************************30 **3 ****5 *** **********12 *** ****** ****** ***** *2 ******...
+#
+001 TF1   T E 00 TF1                            000 $$$$$ 000 NOLOGO.BMP   000 010180 311259 00000 00
+002 F2    T E 00 France 2                       000 $$$$$ 001 NOLOGO.BMP   000 010180 311259 00000 00
+003 F3    T E 15 France 3                       000 $$$$$ 002 NOLOGO.BMP   000 010180 311259 00000 00
+011 C+    T E 15 Canal Plus                     000 $$$$$ 003 NOLOGO.BMP   000 010180 311259 00000 00
+012 CINQ  T E 00 La Cinquième                   000 $$$$$ 004 NOLOGO.BMP   001 010180 311259 00000 00
+016 M6    T E 00 M6                             000 $$$$$ 005 NOLOGO.BMP   000 010180 311259 00000 00
+017 3ALS  T E 00 F3 Alsace                      000 $$$$$ 006 NOLOGO.BMP   000 010180 311259 00000 00
+018 3AQU  T E 00 F3 Aquitaine                   000 $$$$$ 007 NOLOGO.BMP   000 010180 311259 00000 00
+019 3BFC  T E 00 F3 B.F.C.                      000 $$$$$ 008 NOLOGO.BMP   000 010180 311259 00000 00
+020 3BPL  T E 00 F3 Ouest                       000 $$$$$ 009 NOLOGO.BMP   000 010180 311259 00000 00
+021 3LCA  T E 00 F3 L.C.A.                      000 $$$$$ 010 NOLOGO.BMP   000 010180 311259 00000 00
+022 3LPC  T E 00 F3 L.P.C.                      000 $$$$$ 011 NOLOGO.BMP   000 010180 311259 00000 00
+023 3MPL  T E 00 F3 Sud                         000 $$$$$ 012 NOLOGO.BMP   000 010180 311259 00000 00
+024 3NOR  T E 00 F3 Normandie                   000 $$$$$ 013 NOLOGO.BMP   000 010180 311259 00000 00
+025 3NPI  T E 00 F3 N.P.C.                      000 $$$$$ 014 NOLOGO.BMP   000 010180 311259 00000 00
+026 3PAC  T E 00 F3 Méditerranée                000 $$$$$ 015 NOLOGO.BMP   000 010180 311259 00000 00
+027 3PIC  T E 00 F3 P.I.C.                      000 $$$$$ 016 NOLOGO.BMP   000 010180 311259 00000 00
+028 3RAA  T E 00 F3 R.A.A.                      000 $$$$$ 017 NOLOGO.BMP   000 010180 311259 00000 00
+029 T.TV  T E 00 Total TV                       000 $$$$$ 094 NOLOGO.BMP   000 010180 311259 00000 01 A
+030 A.TV  T E 00 Autre TV                       000 $$$$$ 095 NOLOGO.BMP   000 010180 311259 00000 01 A
+123 BFM   R G 30 BFM                            000 $$$$$ 044 NOLOGO.BMP   000 010180 311259 00000 00
+112 CH.FM R F 30 Chérie FM                      000 $$$$$ 018 NOLOGO.BMP   001 010180 311259 35000 01 B=(0,311299) T=S(2015)CO
+124 CLASS R G 30 Radio classique                000 $$$$$ 045 NOLOGO.BMP   000 010180 311259 32000 00
+101 EUR.1 R G 30 Europe 1                       000 $$$$$ 019 NOLOGO.BMP   002 010180 311259 15000 01 S=5 T=S(2003)CO
+108 EUR.2 R G 30 Europe 2                       000 $$$$$ 020 NOLOGO.BMP   000 010180 311259 40000 02 D=1(60) S=1 T=S(2007)CO
+115 LAP.5 R G 30 LAP (5st)                      000 $$$$$ 036 NOLOGO.BMP   000 010180 311259 00000 01 C=[5(101,108,110,114,109)]
+118 E.SOL R G 30 Extension Soleil               000 $$$$$ 046 NOLOGO.BMP   003 010180 311295 00000 01 C=[2(103,106)]
+111 FUN   R G 30 Fun Radio                      000 $$$$$ 021 NOLOGO.BMP   001 010180 311259 27750 00 T=S(2014)CO
+105 F.INF R G 30 France Info                    000 $$$$$ 022 NOLOGO.BMP   000 010180 311259 32000 00 T=O
+100 F.INT R G 30 France Inter                   000 $$$$$ 023 NOLOGO.BMP   000 010180 311259 53250 00 T=O
+114 IND.1 R G 30 Les Indép.(avMFM)              000 $$$$$ 024 NOLOGO.BMP   000 010180 190401 40000 01 S=13 T=CO
+121 MFM   R G 30 MFM                            000 $$$$$ 026 NOLOGO.BMP   000 010180 311259 50000 00 T=CO
+106 NOSTA R F 30 Nostalgie                      000 $$$$$ 027 NOLOGO.BMP   001 010180 311259 50000 01 B=(0,311299)
+107 NRJ   R F 30 NRJ                            000 $$$$$ 028 NOLOGO.BMP   002 010180 311259 35000 01 B=(0,311299) T=S(2004)CO
+109 RFM   R G 30 RFM                            000 $$$$$ 029 NOLOGO.BMP   000 010180 311259 40000 01 S=9 T=S(2013)CO
+122 RI&CH R F 30 Rires & Chansons               000 $$$$$ 030 NOLOGO.BMP   003 010180 311259 35000 01 B=(0,311299) T=S(2025)CO
+103 RMC   R G 30 RMC                            000 $$$$$ 031 NOLOGO.BMP   003 010180 311259 50000 00 T=S(2001)CO
+102 RTL   R G 30 RTL                            000 $$$$$ 032 NOLOGO.BMP   001 010180 311259 27750 00 T=S(2002)CO
+113 RTL2  R G 30 RTL2                           000 $$$$$ 033 NOLOGO.BMP   000 010180 311259 27750 00 T=CO
+116 R.P4  R G 30 Radio Puissance 4              000 $$$$$ 042 NOLOGO.BMP   002 010180 311298 00000 01 C=[4(108,110,114,109)]
+110 SKY.R R G 30 Skyrock                        000 $$$$$ 034 NOLOGO.BMP   001 010180 311259 40000 01 S=3 T=S(2012)CO
+117 SUD+W R G 30 Sud + Wit                      000 $$$$$ 035 NOLOGO.BMP   002 010180 311259 27750 00 T=S(2006)CO
+119 TOP   R G 30 Topline                        000 $$$$$ 043 NOLOGO.BMP   000 010180 311298 00000 02 B=(0,311299) C=[3(107,112,122)]
+125 RFOPF R G 30 RFO - Pol. Fra.                000 $$$$$ 069 NOLOGO.BMP   001 010180 311259 53250 00
+126 RFONC R G 30 RFO - Nv.Caléd.                000 $$$$$ 068 NOLOGO.BMP   001 010180 311259 53250 00
+127 RFOGP R G 30 RFO - Guadeloupe               000 $$$$$ 065 NOLOGO.BMP   001 010180 311259 53250 00
+128 RFOGU R G 30 RFO - Guyane                   000 $$$$$ 066 NOLOGO.BMP   001 010180 311259 53250 00
+129 RFOMA R G 30 RFO - Martinique               000 $$$$$ 067 NOLOGO.BMP   001 010180 311259 53250 00
+130 RFORE R G 30 RFO - Réunion                  000 $$$$$ 070 NOLOGO.BMP   001 010180 311259 53250 00
+131 RCIGP R G 30 RCI - Guadeloupe               000 $$$$$ 052 NOLOGO.BMP   001 010180 311259 57500 00
+132 RCIGU R G 30 RCI - Guyane                   000 $$$$$ 053 NOLOGO.BMP   001 010180 311259 36250 00
+133 RCIMA R G 30 RCI - Martinique               000 $$$$$ 054 NOLOGO.BMP   001 010180 311259 57500 00
+135 RFI   R G 30 RFI                            000 $$$$$ 064 NOLOGO.BMP   001 010180 311259 00000 00
+137 PUI.J R G 30 Puissance J                    000 $$$$$ 039 NOLOGO.BMP   001 010197 311297 00000 01 C=[2(110,114)]
+180 T.RAD R G 30 Total radio                    000 $$$$$ 080 NOLOGO.BMP   001 010180 311259 00000 01 A
+181 T.RFR R G 30 T. Radio France                000 $$$$$ 085 NOLOGO.BMP   001 010180 311259 00000 01 A
+182 RLF   R G 30 Loc. Radio France              000 $$$$$ 041 NOLOGO.BMP   001 010180 300800 00000 00
+183 T.GEN R G 30 Pgms généralistes              000 $$$$$ 086 NOLOGO.BMP   001 010180 311259 00000 01 A
+184 T.PMN R G 30 Pgms musicaux                  000 $$$$$ 088 NOLOGO.BMP   001 010180 311259 00000 01 A
+185 T.PTN R G 30 Pgms thématiques               000 $$$$$ 089 NOLOGO.BMP   001 010180 311259 00000 01 A
+186 T.PLO R G 30 Total pgms locaux              000 $$$$$ 090 NOLOGO.BMP   001 010180 311259 00000 01 A
+187 T.GEP R G 30 T. Gén. privées                000 $$$$$ 087 NOLOGO.BMP   001 010997 311259 00000 01 A
+188 T.IP2 R G 30 IP Radio (ssMFM)               000 $$$$$ 083 NOLOGO.BMP   001 010180 190401 00000 01 A
+189 T.GEM R G 30 Total GEM                      000 $$$$$ 081 NOLOGO.BMP   001 010180 300698 00000 01 A
+190 T.RSP R G 30 T. Serv. public                000 $$$$$ 091 NOLOGO.BMP   001 010180 311259 00000 01 A
+191 T.RPC R G 30 T. Privées. com.               000 $$$$$ 092 NOLOGO.BMP   001 010180 311259 00000 01 A
+192 T.RPA R G 30 T. Privées. ass.               000 $$$$$ 093 NOLOGO.BMP   001 010180 311259 00000 01 A
+193 G.SUD R G 30 Grand Sud                      000 $$$$$ 037 NOLOGO.BMP   001 010199 311259 00000 01 C=[2(103,117)]
+194 T.NRJ R G 30 Total NRJ Régies               000 $$$$$ 084 NOLOGO.BMP   001 010998 311259 00000 02 A C=[4(112,106,107,122)]
+195 MUST  R G 30 Radio Must                     000 $$$$$ 038 NOLOGO.BMP   001 010199 311299 00000 01 C=[3(101,108,109)]
+196 FCULT R G 30 France Culture                 000 $$$$$ 047 NOLOGO.BMP   001 010199 311259 00000 01 A
+197 F.MUS R G 30 France Musique                 000 $$$$$ 048 NOLOGO.BMP   001 010199 311259 00000 01 A
+198 RBLEU R G 30 Radio Bleue                    000 $$$$$ 049 NOLOGO.BMP   001 010199 300800 00000 00
+199 T.EU1 R G 30 Eur.Rég. (avMFM)               000 $$$$$ 096 NOLOGO.BMP   001 010100 190401 00000 01 A
+200 P1534 R G 30 Puissance 15-34                000 $$$$$ 040 NOLOGO.BMP   001 010800 311259 00000 01 C=[3(108,110,114)]
+201 FBLEU R G 30 France Bleu                    000 $$$$$ 050 NOLOGO.BMP   001 010900 311259 00000 00
+202 TSF   R G 30 TSF                            000 $$$$$ 051 NOLOGO.BMP   000 011100 311259 00000 00
+138 SUNMA R G 30 SUNFM - Martiniq.              000 $$$$$ 055 NOLOGO.BMP   001 010101 311259 00000 00
+139 SUNGP R G 30 SUNFM - Guadel.                000 $$$$$ 056 NOLOGO.BMP   001 010101 311259 00000 00
+140 NOSGU R G 30 Nostal. - Guyane               000 $$$$$ 057 NOLOGO.BMP   001 010101 311259 00000 00
+141 NOSGP R G 30 Nosta. - Guadel.               000 $$$$$ 058 NOLOGO.BMP   001 010101 311259 00000 00
+142 NOSRE R G 30 Nosta. - Réunion               000 $$$$$ 059 NOLOGO.BMP   001 010101 311259 00000 00
+143 NRJMA R G 30 NRJ - Martinique               000 $$$$$ 060 NOLOGO.BMP   001 010101 311259 00000 00
+144 NRJGP R G 30 NRJ - Guadeloupe               000 $$$$$ 061 NOLOGO.BMP   001 010101 311259 00000 00
+145 NRJRE R G 30 NRJ - Réunion                  000 $$$$$ 062 NOLOGO.BMP   001 150400 311259 00000 00
+146 RF.RE R G 30 R.Freedom Réun.                000 $$$$$ 063 NOLOGO.BMP   001 150400 311259 00000 00
+147 LAP   R G 30 Lagardère Act Pub              000 $$$$$ 097 NOLOGO.BMP   000 010900 311259 00000 01 A
+148 T.IP1 R G 30 IP Radio (avMFM)               000 $$$$$ 082 NOLOGO.BMP   001 010900 311259 00000 01 A
+149 IND.2 R G 30 Les Indép.(ssMFM)              000 $$$$$ 025 NOLOGO.BMP   000 010900 311259 40000 01 S=13 T=CO
+150 AUTFM R G 30 Autoroute FM                   000 $$$$$ 071 NOLOGO.BMP   000 010101 311259 00000 00
+151 AUTIN R G 30 Autoroute Info                 000 $$$$$ 072 NOLOGO.BMP   001 010101 311259 00000 00
+152 107.7 R G 30 107.7 FM                       000 $$$$$ 073 NOLOGO.BMP   000 010101 311259 00000 00
+153 TRA.O R G 30 R. Trafic Ouest                000 $$$$$ 074 NOLOGO.BMP   001 010101 311259 00000 00
+154 TRAFM R G 30 Trafic FM                      000 $$$$$ 076 NOLOGO.BMP   000 010101 311259 00000 00
+155 TRA.C R G 30 R. Trafic Centre               000 $$$$$ 075 NOLOGO.BMP   001 010101 311259 00000 00
+156 T.G.S R G 30 Tarif Grand Sud                000 $$$$$ 077 NOLOGO.BMP   001 010101 311259 00000 00
+157 INFFM R G 30 LAP AUT INF FM                 000 $$$$$ 078 NOLOGO.BMP   000 010101 311259 00000 00
+158 AU107 R G 30 LAP AUT INF FM 107             000 $$$$$ 079 NOLOGO.BMP   001 010101 311259 00000 00
+
+
+
+

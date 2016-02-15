@@ -1,0 +1,9 @@
+; DllPanelLoader.def : Declares the module parameters for the DLL.
+
+LIBRARY      "DllPanelLoader"
+DESCRIPTION  'DllPanelLoader Windows Dynamic Link Library'
+
+EXPORTS
+    ; Explicit exports can go here
+SECTIONS
+.SharedData   READ WRITE SHARED

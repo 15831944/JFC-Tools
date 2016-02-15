@@ -1,0 +1,127 @@
+<html>
+<body>
+<pre>
+<h1>Build Log</h1>
+<h3>
+--------------------Configuration: tomeval - Win32 Release--------------------
+</h3>
+<h3>Command Lines</h3>
+Creating command line "rc.exe /l 0x40c /fo"Release/tomeval.res" /d "NDEBUG" "C:\devSylvain\tomeval\tomeval.rc"" 
+Creating temporary file "C:\DOCUME~1\vol\LOCALS~1\Temp\RSP4FC8.tmp" with contents
+[
+/nologo /Zp1 /MT /W3 /GX /O2 /I "..\common" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "OPTION_JFC" /FR"Release/" /Fp"Release/tomeval.pch" /Yu"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
+"C:\devSylvain\tomeval\Convert.cpp"
+"C:\devSylvain\tomeval\Eval.cpp"
+"C:\devSylvain\tomeval\FicAUX.cpp"
+"C:\devSylvain\tomeval\FicAUXitaly.cpp"
+"C:\devSylvain\tomeval\FicCIB.cpp"
+"C:\devSylvain\tomeval\FicCod.cpp"
+"C:\devSylvain\tomeval\FicIND.cpp"
+"C:\devSylvain\tomeval\FicLBX.cpp"
+"C:\devSylvain\common\FicTbl.cpp"
+"C:\devSylvain\common\FicVague.cpp"
+"C:\devSylvain\tomeval\Source.cpp"
+"C:\devSylvain\tomeval\stdfonc.cpp"
+"C:\devSylvain\tomeval\tomcalc.cpp"
+"C:\devSylvain\tomeval\tomeval.cpp"
+"C:\devSylvain\tomeval\tomevalDlg.cpp"
+"C:\devSylvain\tomeval\tomfich.cpp"
+"C:\devSylvain\tomeval\tomsourc.cpp"
+"C:\devSylvain\tomeval\TraceFile.cpp"
+]
+Creating command line "cl.exe @C:\DOCUME~1\vol\LOCALS~1\Temp\RSP4FC8.tmp" 
+Creating temporary file "C:\DOCUME~1\vol\LOCALS~1\Temp\RSP4FC9.tmp" with contents
+[
+/nologo /Zp1 /MT /W3 /GX /O2 /I "..\common" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "OPTION_JFC" /FR"Release/" /Fp"Release/tomeval.pch" /Yc"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
+"C:\devSylvain\tomeval\StdAfx.cpp"
+]
+Creating command line "cl.exe @C:\DOCUME~1\vol\LOCALS~1\Temp\RSP4FC9.tmp" 
+Creating temporary file "C:\DOCUME~1\vol\LOCALS~1\Temp\RSP4FCA.tmp" with contents
+[
+/nologo /subsystem:windows /incremental:no /pdb:"Release/tomeval.pdb" /map:"Release/tomeval.map" /machine:I386 /out:"Release/tomeval.exe" 
+.\Release\Convert.obj
+.\Release\Eval.obj
+.\Release\FicAUX.obj
+.\Release\FicAUXitaly.obj
+.\Release\FicCIB.obj
+.\Release\FicCod.obj
+.\Release\FicIND.obj
+.\Release\FicLBX.obj
+.\Release\FicTbl.obj
+.\Release\FicVague.obj
+.\Release\Source.obj
+.\Release\StdAfx.obj
+.\Release\stdfonc.obj
+.\Release\tomcalc.obj
+.\Release\tomeval.obj
+.\Release\tomevalDlg.obj
+.\Release\tomfich.obj
+.\Release\tomsourc.obj
+.\Release\TraceFile.obj
+.\Release\tomeval.res
+.\Mediaconsult_library\Random.lib
+.\Mediaconsult_library\Dfor.lib
+.\Mediaconsult_library\Dfport.lib
+.\Mediaconsult_library\Dfconsol.lib
+]
+Creating command line "link.exe @C:\DOCUME~1\vol\LOCALS~1\Temp\RSP4FCA.tmp"
+<h3>Output Window</h3>
+Compiling resources...
+Compiling...
+StdAfx.cpp
+Compiling...
+Convert.cpp
+Eval.cpp
+FicAUX.cpp
+FicAUXitaly.cpp
+FicCIB.cpp
+FicCod.cpp
+FicIND.cpp
+FicLBX.cpp
+FicTbl.cpp
+FicVague.cpp
+Source.cpp
+stdfonc.cpp
+tomcalc.cpp
+tomeval.cpp
+tomevalDlg.cpp
+tomfich.cpp
+tomsourc.cpp
+TraceFile.cpp
+Generating Code...
+Linking...
+LINK : warning LNK4089: all references to "SHELL32.dll" discarded by /OPT:REF
+LINK : warning LNK4089: all references to "ole32.dll" discarded by /OPT:REF
+Creating temporary file "C:\DOCUME~1\vol\LOCALS~1\Temp\RSP4FCC.tmp" with contents
+[
+/nologo /o"Release/tomeval.bsc" 
+.\Release\StdAfx.sbr
+.\Release\Convert.sbr
+.\Release\Eval.sbr
+.\Release\FicAUX.sbr
+.\Release\FicAUXitaly.sbr
+.\Release\FicCIB.sbr
+.\Release\FicCod.sbr
+.\Release\FicIND.sbr
+.\Release\FicLBX.sbr
+.\Release\FicTbl.sbr
+.\Release\FicVague.sbr
+.\Release\Source.sbr
+.\Release\stdfonc.sbr
+.\Release\tomcalc.sbr
+.\Release\tomeval.sbr
+.\Release\tomevalDlg.sbr
+.\Release\tomfich.sbr
+.\Release\tomsourc.sbr
+.\Release\TraceFile.sbr]
+Creating command line "bscmake.exe @C:\DOCUME~1\vol\LOCALS~1\Temp\RSP4FCC.tmp"
+Creating browse info file...
+<h3>Output Window</h3>
+
+
+
+<h3>Results</h3>
+tomeval.exe - 0 error(s), 2 warning(s)
+</pre>
+</body>
+</html>

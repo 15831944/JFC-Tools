@@ -1,0 +1,58 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta name="Author" content="jfc">
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+<title>carré des jours</title>
+</head>
+
+<body>
+<b><i><font size="+1">
+
+<p>Implantation</font></i></b> </p>
+
+<p><img SRC="Obj_Carr.JPG" HSPACE="10" height="147" width="146" align="LEFT">Il faut inclure
+dans le projet : 
+
+<ul>
+  <li>le fichier d'en-tête OBJ_CARR.H</li>
+  <li>le fichier source OBJ_CARR.CPP</li>
+  <li>#include &lt;OBJ_CARR.RCO&gt; dans la ressource principale</li>
+</ul>
+
+<p>Il faut inclure dans le fichier d'en-tête appellant l'objet : 
+
+<ul>
+  <li>#include &lt;OBJ_CARR.H&gt;</li>
+  <li>Une variable de type CObj_carr</li>
+</ul>
+
+<hr ALIGN="LEFT" SIZE="3" WIDTH="100%">
+
+<p><b><i><font size="+1">Appel :</font></i></b> </p>
+
+<p>void <b>Initialise</b>(short Style, CByteArray * Selections); </p>
+
+<p>short <b>DonneResult</b>(CByteArray * Selections); </p>
+
+<p>Dans les deux fonctions ci-dessus, &quot;Selections&quot; est un tableau d'octets
+représentant la sélection pour chaque ligne. <br>
+Le bit 0 représente le lundi, le bit 6 représente le dimanche. </p>
+
+<hr ALIGN="LEFT" SIZE="3" WIDTH="100%">
+
+<p><b><i><font size="+1">Styles</font></i></b> </p>
+
+<p>CARRS_STANDARD&nbsp; style par defaut <br>
+CARRS_DEMINEUR&nbsp; style démineur </p>
+
+<hr WIDTH="100%">
+<font size="-1">
+
+<p>Création&nbsp; : Jeudi 14 mai 1998</font> <br>
+<font size="-1">Dernière modification : Lundi 10 Juillet 2000</font> <br>
+<font size="-1">VLF</font> </p>
+</body>
+</html>

@@ -1,0 +1,607 @@
+<html xmlns:v="urn:schemas-microsoft-com:vml"
+xmlns:o="urn:schemas-microsoft-com:office:office"
+xmlns:w="urn:schemas-microsoft-com:office:word"
+xmlns="http://www.w3.org/TR/REC-html40">
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=iso-8859-1">
+<meta name=ProgId content=Word.Document>
+<meta name=Generator content="Microsoft Word 9">
+<meta name=Originator content="Microsoft Word 9">
+<link rel=File-List href="./obj_lbox_fichiers/filelist.xml">
+<link rel=Edit-Time-Data href="./obj_lbox_fichiers/editdata.mso">
+<!--[if !mso]>
+<style>
+v\:* {behavior:url(#default#VML);}
+o\:* {behavior:url(#default#VML);}
+w\:* {behavior:url(#default#VML);}
+.shape {behavior:url(#default#VML);}
+</style>
+<![endif]-->
+<title>Aide JFC Objet List Box</title>
+<!--[if gte mso 9]><xml>
+ <o:DocumentProperties>
+  <o:Author>Rémi Equoy</o:Author>
+  <o:LastAuthor>Rémi Equoy</o:LastAuthor>
+  <o:Revision>2</o:Revision>
+  <o:TotalTime>1</o:TotalTime>
+  <o:Created>2000-10-20T08:29:00Z</o:Created>
+  <o:LastSaved>2000-10-20T08:30:00Z</o:LastSaved>
+  <o:Pages>5</o:Pages>
+  <o:Words>758</o:Words>
+  <o:Characters>4324</o:Characters>
+  <o:Company>JFC</o:Company>
+  <o:Lines>36</o:Lines>
+  <o:Paragraphs>8</o:Paragraphs>
+  <o:CharactersWithSpaces>5310</o:CharactersWithSpaces>
+  <o:Version>9.2812</o:Version>
+ </o:DocumentProperties>
+</xml><![endif]--><!--[if gte mso 9]><xml>
+ <w:WordDocument>
+  <w:HyphenationZone>21</w:HyphenationZone>
+ </w:WordDocument>
+</xml><![endif]-->
+<style>
+<!--
+ /* Font Definitions */
+@font-face
+	{font-family:Wingdings;
+	panose-1:5 0 0 0 0 0 0 0 0 0;
+	mso-font-charset:2;
+	mso-generic-font-family:auto;
+	mso-font-pitch:variable;
+	mso-font-signature:0 268435456 0 0 -2147483648 0;}
+ /* Style Definitions */
+p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{mso-style-parent:"";
+	margin:0cm;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	font-size:12.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"Times New Roman";}
+p
+	{font-size:12.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"Times New Roman";}
+@page Section1
+	{size:595.3pt 841.9pt;
+	margin:70.85pt 70.85pt 70.85pt 70.85pt;
+	mso-header-margin:35.4pt;
+	mso-footer-margin:35.4pt;
+	mso-paper-source:0;}
+div.Section1
+	{page:Section1;}
+ /* List Definitions */
+@list l0
+	{mso-list-id:105276377;
+	mso-list-type:hybrid;
+	mso-list-template-ids:-2113113872 730217876 -663068478 -2117334134 -232456884 -542583074 2124289824 -2004419450 787628060 -1126134236;}
+@list l0:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:36.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;
+	mso-ansi-font-size:10.0pt;
+	font-family:Symbol;}
+@list l1
+	{mso-list-id:676424494;
+	mso-list-type:hybrid;
+	mso-list-template-ids:565765416 -1114496360 1748690918 78127722 -1554758916 559212860 1283477490 1431571794 1854301274 1375123286;}
+@list l1:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:36.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;
+	mso-ansi-font-size:10.0pt;
+	font-family:Symbol;}
+@list l2
+	{mso-list-id:947005652;
+	mso-list-type:hybrid;
+	mso-list-template-ids:615272708 2036771502 1103249174 2034536454 -1457330054 665374456 -1079891048 -1251952898 -1158674088 -725043632;}
+@list l2:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:36.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;
+	mso-ansi-font-size:10.0pt;
+	font-family:Symbol;}
+@list l3
+	{mso-list-id:1074620918;
+	mso-list-type:hybrid;
+	mso-list-template-ids:-1100701282 -955997890 1179554620 -549827582 2102697222 1458613310 1842356810 -204846684 2043948378 922777412;}
+@list l3:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:36.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;
+	mso-ansi-font-size:10.0pt;
+	font-family:Symbol;}
+@list l4
+	{mso-list-id:1285387764;
+	mso-list-type:hybrid;
+	mso-list-template-ids:-680247160 508724270 1548275928 -1582955192 330581820 851848372 2061288768 -483382120 703384898 485288092;}
+@list l4:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:36.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;
+	mso-ansi-font-size:10.0pt;
+	font-family:Symbol;}
+@list l5
+	{mso-list-id:2020346471;
+	mso-list-type:hybrid;
+	mso-list-template-ids:2024059516 -1420778830 449598006 1032856488 1797951936 440587396 1560055054 -250957148 -1373063032 -1413152842;}
+@list l5:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:36.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;
+	mso-ansi-font-size:10.0pt;
+	font-family:Symbol;}
+ol
+	{margin-bottom:0cm;}
+ul
+	{margin-bottom:0cm;}
+-->
+</style>
+<!--[if gte mso 9]><xml>
+ <o:shapedefaults v:ext="edit" spidmax="1028"/>
+</xml><![endif]--><!--[if gte mso 9]><xml>
+ <o:shapelayout v:ext="edit">
+  <o:idmap v:ext="edit" data="1"/>
+ </o:shapelayout></xml><![endif]-->
+<meta name=Author content=jfc>
+</head>
+
+<body lang=FR link=blue vlink=blue style='tab-interval:35.4pt'>
+
+<div class=Section1>
+
+<p><span style='font-size:24.0pt'>CObj_LBox</span><!--[if gte vml 1]><v:shapetype
+ id="_x0000_t75" coordsize="21600,21600" o:spt="75" o:preferrelative="t"
+ path="m@4@5l@4@11@9@11@9@5xe" filled="f" stroked="f">
+ <v:stroke joinstyle="miter"/>
+ <v:formulas>
+  <v:f eqn="if lineDrawn pixelLineWidth 0"/>
+  <v:f eqn="sum @0 1 0"/>
+  <v:f eqn="sum 0 0 @1"/>
+  <v:f eqn="prod @2 1 2"/>
+  <v:f eqn="prod @3 21600 pixelWidth"/>
+  <v:f eqn="prod @3 21600 pixelHeight"/>
+  <v:f eqn="sum @0 0 1"/>
+  <v:f eqn="prod @6 1 2"/>
+  <v:f eqn="prod @7 21600 pixelWidth"/>
+  <v:f eqn="sum @8 21600 0"/>
+  <v:f eqn="prod @7 21600 pixelHeight"/>
+  <v:f eqn="sum @10 21600 0"/>
+ </v:formulas>
+ <v:path o:extrusionok="f" gradientshapeok="t" o:connecttype="rect"/>
+ <o:lock v:ext="edit" aspectratio="t"/>
+</v:shapetype><v:shape id="_x0000_s1026" type="#_x0000_t75" alt="" style='position:absolute;
+ margin-left:8.75pt;margin-top:0;width:48.75pt;height:52.5pt;z-index:1;
+ mso-wrap-distance-left:0;mso-wrap-distance-top:0;mso-wrap-distance-right:0;
+ mso-wrap-distance-bottom:0;mso-position-horizontal:right;
+ mso-position-horizontal-relative:text;mso-position-vertical-relative:line'
+ o:allowoverlap="f">
+ <v:imagedata src="Obj_lBox.JPG"/>
+ <w:wrap type="square"/>
+</v:shape><![endif]--><![if !vml]><img width=65 height=70 src="Obj_lBox.JPG"
+align=right v:shapes="_x0000_s1026"><![endif]> </p>
+
+<p>La classe <b>CObj_LBox</b> dérive de la classe CListBox. Elle fonctionne
+comme un control listbox, avec la possibilité d'une deuxième sélection, ou
+d'une sursélection. </p>
+
+<p><b><i><span style='font-size:13.5pt'>Implantation</span></i></b> </p>
+
+<p>Il faut inclure dans le projet : </p>
+
+<ul type=disc>
+ <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     mso-list:l0 level1 lfo1;tab-stops:list 36.0pt'>le fichier d'en-tête
+     OBJ_LBOX.H</li>
+ <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     mso-list:l0 level1 lfo1;tab-stops:list 36.0pt'>le fichier source
+     OBJ_LBOX.CPP</li>
+</ul>
+
+<p>Il faut inclure dans le fichier d'en-tête appellant l'objet : </p>
+
+<ul type=disc>
+ <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     mso-list:l3 level1 lfo2;tab-stops:list 36.0pt'><span lang=EN-GB
+     style='mso-ansi-language:EN-GB'>#include &lt;OBJ_LBOX.H&gt;<o:p></o:p></span></li>
+ <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     mso-list:l3 level1 lfo2;tab-stops:list 36.0pt'>Modifier le type ListBox du
+     control en CObj_Lbox</li>
+</ul>
+
+<p class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:auto'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:auto'>!!!!!<span
+style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </span><span style='color:red'>SI
+ON UTILISE LE MESSAGE OnSelChange il faut obligatoirement dans une lb multi
+sélection traiter OnDblClk&nbsp;!!!<o:p></o:p></span></p>
+
+<p class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:auto'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+
+<div class=MsoNormal>
+
+<hr size=3 width="100%" align=left>
+
+</div>
+
+
+<p><span style='font-size:18.0pt'>Membres de la class CObj_LBox</span> </p>
+
+<p><b>Initialisation</b> &nbsp; </p>
+
+<table border=0 cellpadding=0 width="100%" style='width:100.0%;mso-cellspacing:
+ 1.5pt'>
+ <tr>
+  <td style='padding:.75pt .75pt .75pt .75pt'>
+  <p class=MsoNormal><a href="#CObj_LBox::Initialise">Initialise</a></p>
+  </td>
+  <td width="60%" style='width:60.0%;padding:.75pt .75pt .75pt .75pt'>
+  <p class=MsoNormal>Initialise les paramètres généraux de l'objet.</p>
+  </td>
+ </tr>
+</table>
+
+<p><b>Sélection</b></p>
+
+<table border=0 cellpadding=0 width="100%" style='width:100.0%;mso-cellspacing:
+ 1.5pt'>
+ <tr>
+  <td style='padding:.75pt .75pt .75pt .75pt'>
+  <p class=MsoNormal><a href="#CObj_LBox::GetSelCount">GetSelCount</a></p>
+  </td>
+  <td width="60%" style='width:60.0%;padding:.75pt .75pt .75pt .75pt'>
+  <p class=MsoNormal>Obtient le nombre d'éléments sélectionnés.</p>
+  </td>
+ </tr>
+ <tr>
+  <td style='padding:.75pt .75pt .75pt .75pt'>
+  <p class=MsoNormal><a href="#CObj_LBox::GetSelItems">GetSelItems</a></p>
+  </td>
+  <td style='padding:.75pt .75pt .75pt .75pt'>
+  <p class=MsoNormal>Obtient le nombre d'éléments de la liste.</p>
+  </td>
+ </tr>
+</table>
+
+<p><b>Fonctionnement</b></p>
+
+<table border=0 cellpadding=0 width="100%" style='width:100.0%;mso-cellspacing:
+ 1.5pt'>
+ <tr>
+  <td style='padding:.75pt .75pt .75pt .75pt'>
+  <p class=MsoNormal><a href="#CObj_LBox::ChangeMode">ChangeMode</a></p>
+  </td>
+  <td style='padding:.75pt .75pt .75pt .75pt'>
+  <p class=MsoNormal>Changement du mode de sélection de l'objet.</p>
+  </td>
+ </tr>
+ <tr>
+  <td style='padding:.75pt .75pt .75pt .75pt'>
+  <p class=MsoNormal><a href="#CObj_LBox::ChangeSelectRules">ChangeSelectRules</a></p>
+  </td>
+  <td width="60%" style='width:60.0%;padding:.75pt .75pt .75pt .75pt'>
+  <p class=MsoNormal>Changement des règles de sélection de l'objet.</p>
+  </td>
+ </tr>
+ <tr>
+  <td style='padding:.75pt .75pt .75pt .75pt'>
+  <p class=MsoNormal><a href="#CObj_LBox::ChangeColorSel1">ChangeColorSel1</a></p>
+  </td>
+  <td style='padding:.75pt .75pt .75pt .75pt'>
+  <p class=MsoNormal>Changement de la couleur de sélection primaire.</p>
+  </td>
+ </tr>
+ <tr>
+  <td style='padding:.75pt .75pt .75pt .75pt'>
+  <p class=MsoNormal><a href="#CObj_LBox::ChangeColorSel2">ChangeColorSel2</a></p>
+  </td>
+  <td style='padding:.75pt .75pt .75pt .75pt'>
+  <p class=MsoNormal>Changement de la couleur de sélection secondaire.</p>
+  </td>
+ </tr>
+</table>
+
+<p><b>Surdéfinition de fonction</b> &nbsp; </p>
+
+<table border=0 cellpadding=0 width="100%" style='width:100.0%;mso-cellspacing:
+ 1.5pt'>
+ <tr>
+  <td style='padding:.75pt .75pt .75pt .75pt'>
+  <p class=MsoNormal><a href="#CObj_LBox::OnItemState">OnItemState</a></p>
+  </td>
+  <td width="60%" style='width:60.0%;padding:.75pt .75pt .75pt .75pt'>
+  <p class=MsoNormal>Donne l'état de l'item sélectionné.</p>
+  </td>
+ </tr>
+</table>
+
+
+<div class=MsoNormal>
+
+<hr size=3 width="100%" align=left>
+
+</div>
+
+
+<p><a name="CObj_LBox::Initialise"></a><span style='font-size:18.0pt'>CObj_LBox::Initialise</span>
+<br>
+<b>void Initialise</b>(<b>short</b> <i>Style</i>, <b>short</b> <i>ModeSel1</i>=ETENDUE_JFC,
+<b>short</b><i> ModeSel2</i>=ETENDUE_JFC, <b>COLORREF</b><i> ColorSel1</i>=0, <b>COLORREF
+</b><i>ColorSel2</i>=0, <b>short</b> <i>SelectRules</i>=RIGHTINTOLEFT, <b>COLORREF</b><i>
+BkColor</i>=0, <b>CFont</b> *<i>TxtFont</i>=NULL, <b>COLORREF</b><i> ColorTxt</i>=0);
+</p>
+
+<p><b>Paramètres</b> </p>
+
+<p><i>Style</i>&nbsp;&nbsp;&nbsp; Spécifie l'un des styles suivant : </p>
+
+<ul type=disc>
+ <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     mso-list:l5 level1 lfo3;tab-stops:list 36.0pt'>UNISTATE : sélection d'un
+     item par click gauche seulement.</li>
+ <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     mso-list:l5 level1 lfo3;tab-stops:list 36.0pt'>DBLSTATE : sélection d'un
+     item par click gauche ou droit</li>
+ <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     mso-list:l5 level1 lfo3;tab-stops:list 36.0pt'>TRISTATE : sélection d'un
+     item par click gauche et/ou droit</li>
+</ul>
+
+<p><i>ModeSel1 </i>et<i> ModeSel2&nbsp;&nbsp;&nbsp; </i>Spécifie l'un des
+formats suivant; -1 si aucun. </p>
+
+<ul type=disc>
+ <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     mso-list:l2 level1 lfo4;tab-stops:list 36.0pt'>SIMPLE : Sélection d'un
+     champ</li>
+ <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     mso-list:l2 level1 lfo4;tab-stops:list 36.0pt'>MULTIPLE : Sélection de
+     plusieurs champs</li>
+ <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     mso-list:l2 level1 lfo4;tab-stops:list 36.0pt'>ETENDUE : Sélection d'une
+     vague</li>
+ <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     mso-list:l2 level1 lfo4;tab-stops:list 36.0pt'>ETENDUE_JFC : Sélection de
+     plusieurs vagues</li>
+</ul>
+
+<p><i>ColorSel1</i>&nbsp;&nbsp;&nbsp; Couleur RGB de la sélection normal (BLEU
+par défaut); Nulle si non utilisée. </p>
+
+<p><i>ColorSel2&nbsp;&nbsp;&nbsp; </i>Couleur RGB de la seconde sélection
+(ROUGE par défaut); Nulle si non utilisée. </p>
+
+<p><i>SelectRules&nbsp;&nbsp;&nbsp; </i>Règles des sélections : </p>
+
+<ul type=disc>
+ <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     mso-list:l4 level1 lfo5;tab-stops:list 36.0pt'>INDEPENDANTE : les deux
+     sélections sont indépendantes. Elles ne peuvent pas se superposées.</li>
+ <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     mso-list:l4 level1 lfo5;tab-stops:list 36.0pt'>CROISEE : les deux
+     sélections sont libres. Elles peuvent se superposées.</li>
+ <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     mso-list:l4 level1 lfo5;tab-stops:list 36.0pt'>LEFTINTORIGHT : la
+     sélection click gauche n'est possible qu'a l'intérieur de la sélection
+     click droite.</li>
+ <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     mso-list:l4 level1 lfo5;tab-stops:list 36.0pt'>RIGHTINTOLEFT : la
+     sélection click droite n'est possible qu'a l'intérieur de la sélection
+     click gauche.</li>
+ <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     mso-list:l4 level1 lfo5;tab-stops:list 36.0pt'>EXCLUSIVE : L'une, ou l'autre,
+     mais pas les deux.</li>
+</ul>
+
+<p><i>BkColor</i>&nbsp;&nbsp;&nbsp; Couleur RGB du fond (BLANC par défaut). </p>
+
+<p><i>TxtFont</i>&nbsp;&nbsp;&nbsp; Font du texte. </p>
+
+<p><i>ColorTxt</i>&nbsp;&nbsp;&nbsp; Couleur RGB du texte. </p>
+
+<p><b>Remarque</b> </p>
+
+<p>Initialise les paramètres généraux de l'objet. </p>
+
+
+<div class=MsoNormal>
+
+<hr size=3 width="100%" align=left>
+
+</div>
+
+
+<p><a name="CObj_LBox::OnItemState"></a><span lang=EN-GB style='font-size:18.0pt;
+mso-ansi-language:EN-GB'>CObj_LBox::OnItemState</span><span lang=EN-GB
+style='mso-ansi-language:EN-GB'> <br>
+<b>virtual void OnItemState</b>(<b>short</b> <i>nItem</i>, <b>short</b><i>State</i>);
+<o:p></o:p></span></p>
+
+<p><b>Paramètres</b> </p>
+
+<p><i>nItem</i>&nbsp;&nbsp;&nbsp; Numéro de l'item. </p>
+
+<p><i>State</i>&nbsp;&nbsp;&nbsp; Etat de l'item : </p>
+
+<ul type=disc>
+ <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     mso-list:l1 level1 lfo6;tab-stops:list 36.0pt'>0 : Item non sélectionné.</li>
+ <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     mso-list:l1 level1 lfo6;tab-stops:list 36.0pt'>1 : Item sélectionné click
+     Gauche</li>
+ <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     mso-list:l1 level1 lfo6;tab-stops:list 36.0pt'>2 : Item sélectionné click
+     Droit</li>
+ <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     mso-list:l1 level1 lfo6;tab-stops:list 36.0pt'>4 : Item sursélectionné</li>
+</ul>
+
+<p><b>Remarque</b> </p>
+
+<p>Appelé lorsqu'un item change d'état. </p>
+
+
+<div class=MsoNormal align=center style='text-align:center'>
+
+<hr size=2 width="100%" align=center>
+
+</div>
+
+
+<p><a name="CObj_LBox::GetSelCount"><span lang=EN-GB style='font-size:18.0pt;
+mso-ansi-language:EN-GB'>CObj_LBox::GetSelCount</span></a><span lang=EN-GB
+style='font-size:18.0pt;mso-ansi-language:EN-GB'><br>
+</span><strong><span lang=EN-GB style='mso-ansi-language:EN-GB'>int GetSelCount</span></strong><span
+lang=EN-GB style='mso-ansi-language:EN-GB'>();<o:p></o:p></span></p>
+
+<p><strong>Valeur de retour</strong></p>
+
+<p>Le nombre d'éléments sélectionnés; 0 si aucun.</p>
+
+
+<div class=MsoNormal align=center style='text-align:center'>
+
+<hr size=2 width="100%" align=center>
+
+</div>
+
+
+<p><a name="CObj_LBox::GetSelItems"><span lang=EN-GB style='font-size:18.0pt;
+mso-ansi-language:EN-GB'>CObj_LBox::GetSelItems</span></a><span lang=EN-GB
+style='font-size:18.0pt;mso-ansi-language:EN-GB'><br>
+</span><strong><span lang=EN-GB style='mso-ansi-language:EN-GB'>int GetSelItems</span></strong><span
+lang=EN-GB style='mso-ansi-language:EN-GB'>(<strong>int</strong> <em>nMaxItems</em>,
+<strong>LPINT</strong> <em>rgIndex</em> );<o:p></o:p></span></p>
+
+<p><strong>Valeur de retour</strong></p>
+
+<p>Le nombre d'éléments sélectionnés qui correspond à la taille du buffer <em>rgIndex.</em></p>
+
+<p><strong>Paramètres</strong></p>
+
+<p><em>nMaxItems</em> Nombre maximal d'items sélectionné que peut stockée le
+buffer rgIndex.</p>
+
+<p><em>rgIndex</em> Buffer pré-alloué où seront récupéré les indices des
+éléments sélectionnés.</p>
+
+<p><strong>Remarque</strong></p>
+
+<p>Récupère la liste des élements sélectionnés dans un buffer pré-alloué.</p>
+
+
+<div class=MsoNormal align=center style='text-align:center'>
+
+<hr size=2 width="100%" align=center>
+
+</div>
+
+
+<p><a name="CObj_LBox::ChangeMode"><span lang=EN-GB style='font-size:18.0pt;
+mso-ansi-language:EN-GB'>CObj_LBox::ChangeMode</span></a><span lang=EN-GB
+style='font-size:18.0pt;mso-ansi-language:EN-GB'><br>
+</span><strong><span lang=EN-GB style='mso-ansi-language:EN-GB'>void ChangeMode</span></strong><span
+lang=EN-GB style='mso-ansi-language:EN-GB'>(<strong>short</strong> <em>ModeSel1</em>,
+<strong>short</strong> <em>ModeSel2</em>, <strong>bool</strong> <em>flagRedraw</em>=true);<o:p></o:p></span></p>
+
+<p><strong>Paramètres</strong></p>
+
+<p><em>ModeSel1 </em>Nouveau mode de sélection correspondant à la sélection 1;
+Voir <a href="#CObj_LBox::Initialise">Initialisation(...)</a>.</p>
+
+<p><em>ModeSel2 </em>Nouveau mode de sélection correspondant à la sélection 2;
+Voir <a href="#CObj_LBox::Initialise">Initialisation(...)</a>.</p>
+
+<p><em>flagRedraw</em> Flag décidant de la prise en compte immédiate(true) des
+nouveaux mode, ou de leur ignorance(false).</p>
+
+<p><strong>Remarque</strong></p>
+
+<p>Changement du mode de sélection 1 et 2, avec rafrachissement ou non.</p>
+
+
+<div class=MsoNormal align=center style='text-align:center'>
+
+<hr size=2 width="100%" align=center>
+
+</div>
+
+
+<p><a name="CObj_LBox::ChangeSelectRules"><span lang=EN-GB style='font-size:
+18.0pt;mso-ansi-language:EN-GB'>CObj_LBox::ChangeSelectRules</span></a><span
+lang=EN-GB style='font-size:18.0pt;mso-ansi-language:EN-GB'><br>
+</span><strong><span lang=EN-GB style='mso-ansi-language:EN-GB'>void
+ChangeSelectRules</span></strong><span lang=EN-GB style='mso-ansi-language:
+EN-GB'>(<strong>short</strong> <em>newSelectRules</em>);<o:p></o:p></span></p>
+
+<p><strong>Paramètes</strong></p>
+
+<p><em>newSelectRules</em> Nouvelle règle de sélection de l'objet. Voir<a
+href="#CObj_LBox::Initialise"> Initialise(...)</a> pour les différentes
+valeurs.</p>
+
+<p><strong>Remarque</strong></p>
+
+<p>Change la règle de sélection des élements de l'objet.</p>
+
+
+<div class=MsoNormal align=center style='text-align:center'>
+
+<hr size=2 width="100%" align=center>
+
+</div>
+
+
+<p><a name="CObj_LBox::ChangeColorSel1"><span style='font-size:18.0pt'>CObj_LBox::ChangeColorSel1</span></a><span
+style='font-size:18.0pt'><br>
+</span><strong>void ChangeColorSel1</strong>(<strong>COLORREF</strong> <em>newcolor</em>,
+<strong>bool</strong> <em>flagRedraw</em>=true);<br>
+<a name="CObj_LBox::ChangeColorSel2"><span style='font-size:18.0pt'>CObj_LBox::ChangeColorSel2</span></a><span
+style='font-size:18.0pt'><br>
+</span><strong>void ChangeColorSel2</strong>(<strong>COLORREF</strong> <em>newcolor</em>,
+<strong>bool</strong> <em>flagRedraw</em>=true);</p>
+
+<p><strong>Paramètres</strong></p>
+
+<p><em>newcolor </em>Nouvelle couleur adapté à la sélection 1 ou 2.</p>
+
+<p><em>flagRedraw </em>Flag décidant de la prise en compte immédiate(true) des
+nouvelles couleurs de sélections, ou de leur ignorance(false).</p>
+
+<p><strong>Remarque</strong></p>
+
+<p>Modifie la couleur de la sélection 1 ou 2.</p>
+
+
+<div class=MsoNormal align=center style='text-align:center'>
+
+<hr size=2 width="100%" align=center>
+
+</div>
+
+
+<p><span style='font-size:10.0pt'>Création&nbsp; : Mardi 9 juin 1998</span> <br>
+<span style='font-size:10.0pt'>Dernière modification : Mercredi 24 novembre
+1999</span><br>
+<span style='font-size:10.0pt'>VLF</span> </p>
+
+</div>
+
+</body>
+
+</html>

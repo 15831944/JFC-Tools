@@ -1,0 +1,251 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type"
+content="text/html; charset=iso-8859-1">
+<meta name="Author" content="jfc">
+<meta name="GENERATOR" content="Microsoft FrontPage 4.0">
+<title>JFC help - Objet Bouton</title>
+</head>
+
+<body>
+
+<p><font size="6">CObj_Btn</font> <br>
+<img src="Obj_Btn.JPG" align="right" hspace="0" width="172"
+height="119"> <br>
+La classe <b>CObj_Btn</b> dérive de la classe CButton. L'objet <b>CObj_Btn</b>
+crée un bouton formé d'un icône et d'un intitulé. Le bouton
+possède différents états suivant le style qui lui est
+attribué (cf fonction Initialise). </p>
+
+<p>Cet objet peut chargé en mémoire environs une dizaine
+d'icônes. Pour éviter de charger à chaque nouveau bouton des
+icônes déja en mémoire, l'application et l'objet <b>CObj_Btn</b>
+doivent partager un tableau de handle d'icônes indiquant ceux
+déja chargé ou non. <br>
+La déclaration de ce tableau dans <b>Cobj_Btn</b> est <b>HICON </b>*<i>m_LoadIcons</i>;
+au niveau de l'application, un tableau de HICON devra être
+global, alloué de NBICONES, et passé à l'objet bouton. </p>
+
+<p><font size="4"><b>Implantation</b></font> </p>
+
+<p>Il faut inclure dans le projet : </p>
+
+<ul>
+    <li>le fichier d'en-tête OBJ_BTN.H</li>
+    <li>le fichier source OBJ_BTN.CPP</li>
+    <li>#include &lt;OBJ_BTN.RCO&gt; dans la ressource principale</li>
+</ul>
+
+<p>Il faut inclure dans le fichier d'en-tête appellant l'objet :
+</p>
+
+<ul>
+    <li>#include &lt;OBJ_BTN.H&gt;</li>
+    <li>Modifier le type CButton du control bouton en <b>CObj_Btn</b></li>
+</ul>
+
+<hr size="3" align="left">
+
+<p><font size="5">Membres de la class CObj_Btn</font> </p>
+
+<p><b>Initialisation</b> &nbsp; </p>
+
+<table border="0" width="100%">
+    <tr>
+        <td><a href="#CObj_Btn::Initialise">Initialise</a></td>
+        <td width="50%">Initialise les paramètres généraux de
+        l'objet.</td>
+    </tr>
+</table>
+
+<p><b>Etat</b> &nbsp; </p>
+
+<table border="0" width="100%">
+    <tr>
+        <td><a href="#CObj_Btn::SetBtnState">SetBtnState</a></td>
+        <td>Définit un nouvel état.</td>
+    </tr>
+    <tr>
+        <td><a href="#CObj_Btn::GetBtnState">GetBtnState</a></td>
+        <td>Retourne l'état du bouton.</td>
+    </tr>
+    <tr>
+        <td><a href="#CObj_Btn::EnableWindow">EnableWindow</a></td>
+        <td width="75%">Rend valide ou invalide le bouton.</td>
+    </tr>
+</table>
+
+<p><b>Icône</b></p>
+
+<table border="0" width="100%">
+    <tr>
+        <td><a href="#CObj_Btn::ChangeColorLampe">ChangeColorLampe</a></td>
+        <td width="60%">Modifie la couleur de la lampe. (style
+        LAMPE)</td>
+    </tr>
+</table>
+
+<hr size="3" align="left">
+
+<p><a name="CObj_Btn::Initialise"></a><font size="5">CObj_Btn::Initialise</font>
+<br>
+<b>void Initialise</b>(<b>short</b> <i>Style</i>, <b>short</b> <i>param</i>,
+<b>COLORREF </b><i>bkColor</i>=0, <b>CFont</b> * <i>Font</i>=NULL);
+</p>
+
+<p><b>Paramètres</b> <br>
+<i>Style&nbsp;&nbsp;&nbsp; </i>Spécifie le style générale de
+l'objet : </p>
+
+<ul>
+    <li>STYLE_LAMPE : Une petite led transparente apparait à
+        gauche de l'intitulé. Le bouton possède 2 états :
+        levé ou enfoncé. La lampe possède 2 états : éteinte
+        ou allumé. Ces états peuvent être combinés entre eux.</li>
+    <li>STYLE_PRINT : L'image d'une petite imprimante apparait à
+        gauche de l'intitulé. Le bouton est standard.</li>
+    <li>STYLE_STANDARD : Bouton standard JFC (avec ou sans texte,
+        avec ou sans couleur)</li>
+    <li>STYLE_ACINEMA : Bouton qui reste enfoncé et devient vert</li>
+    <li>STYLE_EXIT : Bouton mini sans texte avec icon croix noir
+        (6*5)</li>
+    <li>STYLE_LAMPELUMINEUX : LAMPE + le fond est coloré
+        lorsqu'il est enfoncé</li>
+    <li>STYLE_LUMINEUX : le fond est coloré
+        lorsqu'il est enfoncé</li>
+    <li>STYLE_EXPORT : Bouton standard avec petite image
+        représantant export</li>
+</ul>
+
+<p><i>param</i>&nbsp;&nbsp;&nbsp; Spécifie le ou les format(s)
+supplémentaire(s) apporté(s) au style STYLE_STANDARD: </p>
+
+<ul>
+    <li>FORMAT_STANDARD : Rien en plus...</li>
+    <li>FORMAT_2STATES : Bouton qui reste enfoncé</li>
+    <li>FORMAT_EXCLUSIF : Styles STYLE_LAMPE, ETAT_ENFONCE et
+        ETAT_ALLUME deviennent exclusifs.</li>
+    <li>FORMAT_LIBRE : Style STYLE_LAMPE, ETAT_ENFONCE et
+        ETAT_ALLUME sont libres.</li>
+</ul>
+
+<p><i>bkColor</i>&nbsp;&nbsp;&nbsp; Couleur de fond du bouton. </p>
+
+<p><i>Font</i>&nbsp;&nbsp;&nbsp; Font de l'intitulé du bouton. </p>
+
+<p><b>Remarque</b> </p>
+
+<p>Cette fonction initialise les paramètres généraux de
+l'objet. </p>
+
+<hr size="3" align="left">
+
+<p><a name="CObj_Btn::SetBtnState"></a><font size="5">CObj_Btn::SetBtnState</font>
+<br>
+<b>BOOL SetBtnState</b>(<b>short</b> <i>etat</i>); </p>
+
+<p><b>Valeur de retour</b> </p>
+
+<p>Retourne 0 si l'état passé en argument est invalide par
+rapport au style; Sinon 1. </p>
+
+<p><b>Paramètre</b> </p>
+
+<p><i>etat&nbsp;&nbsp;&nbsp; </i>Nouvel état du bouton : </p>
+
+<ul>
+    <li><u>Style LAMPE</u> <ul>
+            <li>Aucun : Le bouton se lève et la led s'éteind.</li>
+            <li>ETAT_ENFONCE : Le bouton s'enfonce.</li>
+            <li>ETAT_ALLUME : La led s'allume.</li>
+            <li>ETAT_DISABLE : Le bouton est invalide.</li>
+        </ul>
+    </li>
+</ul>
+
+<blockquote>
+    <p>Cette valeur peut être une combinaison des états
+    ci-dessus.</p>
+</blockquote>
+
+<p><b>Remarque</b> </p>
+
+<p>Définit un nouvel état. </p>
+
+<hr size="3" align="left">
+
+<p><a name="CObj_Btn::GetBtnState"></a><font size="5">CObj_Btn::GetBtnState</font>
+<br>
+<b>short GetBtnState</b>(); </p>
+
+<p><b>Valeur de retour</b> </p>
+
+<p>Retourne l'état du bouton : </p>
+
+<ul>
+    <li><u>Style LAMPE</u> <ul>
+            <li>Aucun : Le bouton est levé et la led est
+                éteinte.</li>
+            <li>ETAT_ENFONCE : La led est allumé.</li>
+            <li>ETAT_ALLUME : Le bouton est enfoncé.</li>
+            <li>ETAT_DISABLE : Le bouton est invalide.</li>
+            <li>ACTION_SHIFT : La touche SHIFT est enfoncé alors
+                qu'on agit sur le bouton ou la led.</li>
+            <li>ACTION_CONTROL : La touche CTRL est enfoncé
+                alors qu'on agit sur le bouton ou la led.</li>
+        </ul>
+    </li>
+</ul>
+
+<p>Cette valeur peut être une combinaison des états et des
+actions ci-dessus. </p>
+
+<hr>
+
+<p><a name="CObj_Btn::EnableWindow"><font size="5">CObj_Btn::EnableWindow</font></a><font
+size="5"><br>
+</font><strong>BOOL EnableWindow</strong>(<strong>BOOL</strong> <em>bEnable</em>)</p>
+
+<p><strong>Valeur de retour</strong></p>
+
+<p>Indique l'état avant l'appel de la fonction EnableWindow. 0
+si l'état précédent était valide, ou si une erreur survient.</p>
+
+<p><strong>Paramètre</strong></p>
+
+<p><em>bEnable</em> Valide(true) ou invalide(false) le bouton.</p>
+
+<p><strong>Remarque</strong></p>
+
+<p>Appeler cette fonction pour rendre le bouton valide ou
+invalide.</p>
+
+<hr size="3" align="left">
+
+<p><a name="CObj_Btn::ChangeColorLampe"></a><font size="5">CObj_Btn::ChangeColorLampe</font>
+<br>
+<b>short ChangeColorLampe</b>(<b>short</b> <i>NumLedColor</i>); </p>
+
+<p><b>Valeur de retour</b> </p>
+
+<p>Retourne 0 si le numéro de la led passé en argument est
+supérieur à 9 ou inférieur à 0; Sinon 1. </p>
+
+<p><b>Paramètre</b> </p>
+
+<p><i>NumLedColor</i>&nbsp;&nbsp;&nbsp; Numéro de la led coloré
+à afficher à la place de l'actuel : valeur de 0 à 9. </p>
+
+<p><b>Remarque</b> </p>
+
+<p>Modifie la led coloré du bouton. </p>
+
+<hr size="3" align="left">
+
+<p><font size="2">Création&nbsp; : Jeudi 18 juin 1998</font> <br>
+<font size="2">Dernière modification : Mercredi 24 novembre 1999</font>
+<br>
+<font size="2">VLF</font> </p>
+</body>
+</html>

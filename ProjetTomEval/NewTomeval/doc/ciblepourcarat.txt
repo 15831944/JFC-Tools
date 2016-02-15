@@ -1,0 +1,87 @@
+code de la cible	libelle
+1	Hommes -50 ans           
+2	Femmes 50-64 ans         
+3	Ensemble 15 ans +        
+4	Hommes                   
+5	Femmes                   
+6	Menageres                
+7	Menageres -50 ans        
+8	Ensemble 15-34 ans       
+9	Ensemble 15-49 ans       
+10	C S P  +                 
+11	+ 100 000 hab.           
+12	Actifs                   
+13	Men x Enf -15 ans        
+14	Hommes 25-35 ans         
+15	Enfants 11-14 ans        
+16	Ensemble 15-24 ans       
+17	Femmes 15-34 ans         
+18	Femmes Actives           
+19	Resp. Achat 35-59 ans    
+20	Urbains -50 ans          
+21	Foyer                    
+22	Individus CSP+           
+23	Hommes csp sup           
+24	Femmes 15-24 ans         
+25	Ensemble 35-59 ans       
+26	Resp. Achat -60 ans      
+27	Ensemble 4 ans +         
+28	Enfants 4-10 ans         
+29	Garcons 4-14 ans         
+30	Enfants 4-14 ans         
+31	Fem x Enf 0-6 ans        
+32	15-49 avec CD            
+33	15-34 avec CD            
+34	Ensemble 13-18 ans       
+35	I.15-59 Mais.Indiv 1 enf+
+36	Ensemble 20-29 ans       
+37	Ensemble 12-19 ans       
+38	15+ dans foyer avec PC   
+39	ind 15+ avec tel mobile  
+40	Ensemble 25-59 ans       
+41	Homme de 25 à 59 ans     
+42	Ménagères de 25 à 59 ans 
+43	Ménagères de 35 à 59 ans 
+44	Homme 15-34 console jeu  
+45	Menageres + 3 pers foyer 
+46	I15+ web tlj ou presque  
+47	I15+ conso+2h mobile/mois
+48	Men + enf dans foyer CSP+
+49	25-49 ans dans foyer CSP+
+50	35-59 ans dans foyer CSP+
+51	25+ maison ind + jardin  
+100	Ensemble 35-49 ans       
+101	Ensemble 35 ans +        
+102	Ensemble 50 ans +        
+104	Hommes 50 ans +          
+105	Femmes 35 ans +          
+106	Menageres 50 ans +       
+107	Ensemble 25-49 ans       
+108	Hommes 15-34 ans         
+109	Hommes 15-24 ans         
+110	Ensemble 25-34 ans       
+111	Femmes 25-34 ans         
+112	Femmes 15-49 ans         
+113	ICSP-  (non ICSP+)       
+114	Ensemble 11-24 ans       
+115	- 100 000 hab.           
+116	Ensemble 25 ans +        
+117	Menageres sans enfant    
+118	Filles 4-14 ans          
+119	Ensemble 11-34 ans       
+120	Hommes Actifs            
+122	Ensemble 60 ans +        
+123	Femmes 50 ans +          
+124	Femmes 25 ans +          
+125	Men + enf 4-10 ans       
+126	C.S.P. -                 
+127	Ensemble 15-59 ans       
+128	Femme ICSP+              
+129	Ensemble 12-29 ans       
+130	Femmes 25-59 ans         
+201	Femmes 25-49 ans         
+202	Hommes 35 ans +          
+203	Hommes 25-49 ans         
+204	Hommes 35-49 ans         
+205	Ensemble 50-59 ans       
+300	Femmes 35-49 ans         

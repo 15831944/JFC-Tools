@@ -1,0 +1,39 @@
+// Descriptif des régies (ici 2 régies > RMC ET Chérie FM)
+#REGIE
+#2
+DS
+392114831 00010
+107
+RMC
+30 boulevard Vladivostok
+xxx
+75001
+PARIS
+FRA
+01 30 30 30 30
+01 30 30 30 31
+#2
+Mr AIMARD
+Jean
+JeanAimardFlamand@Rmc.fr
+#0
+Mme MIRAIRIN
+Mylène
+MyleneMiraisin@Rmc.fr
+#0
+DS
+492111234 00002
+107
+Chérie FM
+1 rue anatole France
+Batiment C
+75018
+PARIS
+FRA
+01 45 15 15 00
+01 45 15 15 10
+#1
+Mr YALETELEFONQUISON
+Gaston
+GastonYaLeTel@Cheriefm.fr
+#0

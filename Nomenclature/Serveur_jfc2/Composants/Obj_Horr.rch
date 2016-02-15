@@ -1,0 +1,15 @@
+
+// on vérifie que le fichier n'a pas déjà été inclu
+#ifndef OBJ_HORR_RCH
+
+// on définit la macro pour éviter les inclusions multiples
+#define OBJ_HORR_RCH
+
+// Resource Ids
+#define IDI_HORR_ICO1 32020
+#define IDI_HORR_ICO2 32021
+#define IDI_HORR_ICO3 32022
+#define IDI_HORR_ICO4 32023
+
+// fin de l'inclusion conditionnelle
+#endif

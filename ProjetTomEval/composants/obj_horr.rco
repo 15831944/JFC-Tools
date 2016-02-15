@@ -1,0 +1,8 @@
+// Identificateurs des icônes
+#include "Obj_Horr.rch"
+
+// Définition des icônes
+IDI_HORR_ICO1 ICON "obj_horr.ico1"
+IDI_HORR_ICO2 ICON "obj_horr.ico2"
+IDI_HORR_ICO3 ICON "obj_horr.ico3"
+IDI_HORR_ICO4 ICON "obj_horr.ico4"

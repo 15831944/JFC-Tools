@@ -1,0 +1,44 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tomeval", "tomeval.vcxproj", "{DB093C1F-D8A1-B22C-4875-75AB87C6DC71}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug Carat|Win32 = Debug Carat|Win32
+		Debug Pologne|Win32 = Debug Pologne|Win32
+		Debug|Win32 = Debug|Win32
+		Mediaconsult Debug|Win32 = Mediaconsult Debug|Win32
+		Mediaconsult Release|Win32 = Mediaconsult Release|Win32
+		Release Carat|Win32 = Release Carat|Win32
+		Release HDE|Win32 = Release HDE|Win32
+		Release Mediatop|Win32 = Release Mediatop|Win32
+		Release Pologne|Win32 = Release Pologne|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DB093C1F-D8A1-B22C-4875-75AB87C6DC71}.Debug Carat|Win32.ActiveCfg = Debug Carat|Win32
+		{DB093C1F-D8A1-B22C-4875-75AB87C6DC71}.Debug Carat|Win32.Build.0 = Debug Carat|Win32
+		{DB093C1F-D8A1-B22C-4875-75AB87C6DC71}.Debug Pologne|Win32.ActiveCfg = Debug Pologne|Win32
+		{DB093C1F-D8A1-B22C-4875-75AB87C6DC71}.Debug Pologne|Win32.Build.0 = Debug Pologne|Win32
+		{DB093C1F-D8A1-B22C-4875-75AB87C6DC71}.Debug|Win32.ActiveCfg = Debug|Win32
+		{DB093C1F-D8A1-B22C-4875-75AB87C6DC71}.Debug|Win32.Build.0 = Debug|Win32
+		{DB093C1F-D8A1-B22C-4875-75AB87C6DC71}.Mediaconsult Debug|Win32.ActiveCfg = Mediaconsult Debug|Win32
+		{DB093C1F-D8A1-B22C-4875-75AB87C6DC71}.Mediaconsult Debug|Win32.Build.0 = Mediaconsult Debug|Win32
+		{DB093C1F-D8A1-B22C-4875-75AB87C6DC71}.Mediaconsult Release|Win32.ActiveCfg = Mediaconsult Release|Win32
+		{DB093C1F-D8A1-B22C-4875-75AB87C6DC71}.Mediaconsult Release|Win32.Build.0 = Mediaconsult Release|Win32
+		{DB093C1F-D8A1-B22C-4875-75AB87C6DC71}.Release Carat|Win32.ActiveCfg = Release Carat|Win32
+		{DB093C1F-D8A1-B22C-4875-75AB87C6DC71}.Release Carat|Win32.Build.0 = Release Carat|Win32
+		{DB093C1F-D8A1-B22C-4875-75AB87C6DC71}.Release HDE|Win32.ActiveCfg = Release HDE|Win32
+		{DB093C1F-D8A1-B22C-4875-75AB87C6DC71}.Release HDE|Win32.Build.0 = Release HDE|Win32
+		{DB093C1F-D8A1-B22C-4875-75AB87C6DC71}.Release Mediatop|Win32.ActiveCfg = Release Mediatop|Win32
+		{DB093C1F-D8A1-B22C-4875-75AB87C6DC71}.Release Mediatop|Win32.Build.0 = Release Mediatop|Win32
+		{DB093C1F-D8A1-B22C-4875-75AB87C6DC71}.Release Pologne|Win32.ActiveCfg = Release Pologne|Win32
+		{DB093C1F-D8A1-B22C-4875-75AB87C6DC71}.Release Pologne|Win32.Build.0 = Release Pologne|Win32
+		{DB093C1F-D8A1-B22C-4875-75AB87C6DC71}.Release|Win32.ActiveCfg = Release|Win32
+		{DB093C1F-D8A1-B22C-4875-75AB87C6DC71}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

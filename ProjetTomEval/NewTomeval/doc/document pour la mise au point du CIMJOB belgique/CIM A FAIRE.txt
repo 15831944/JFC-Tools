@@ -1,0 +1,12 @@
+documenter le tomjob
+éliminer le population ventilé ainsi que les champs inutiles dans le tomjob
+Panel loader à vérifier, y compris en télé !
+OPTION_DUREEECOUTE à résoudre...
+Démonter le bricolage du non cherement de l'AQP lors de la lecture aqj
+Ecrire l'optimisation pour le calcul des couverture sans distribution (fc LanceEval())
+que faire avec les paramètres qui sont dand l'interface et inutile en plus.
+Courbe de réponse à calculer
+
+doc des ruses:
+9 éval des 3 sous plan sur les 3 semaines avant comptage.
+calcul de l'appartenance aux sous plan avec un lundi de référence

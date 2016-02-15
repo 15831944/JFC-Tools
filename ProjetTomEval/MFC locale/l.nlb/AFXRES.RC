@@ -1,0 +1,202 @@
+// This is a part of the Microsoft Foundation Classes C++ library.
+// Copyright (C) 1992-1998 Microsoft Corporation
+// All rights reserved.
+//
+// This source code is only intended as a supplement to the
+// Microsoft Foundation Classes Reference and related
+// electronic documentation provided with the library.
+// See these sources for detailed information regarding the
+// Microsoft Foundation Classes product.
+
+#ifndef __AFXRES_RC__
+#define __AFXRES_RC__
+
+#ifndef __AFXRES_H__
+	#include <afxres.h>
+#endif
+
+#ifdef APSTUDIO_INVOKED
+// This will prevent the VC++ Resource Editor user from saving this file
+1 TEXTINCLUDE DISCARDABLE
+BEGIN
+"< Cannot change standard MFC resources! >\0"
+END
+#endif //APSTUDIO_INVOKED
+
+#ifndef _AFXDLL
+
+/////////////////////////////////////////////////////////////////////////////
+// Default resource description for MFC applications
+/////////////////////////////////////////////////////////////////////////////
+
+/////////////////////////////////////////////////////////////////////////////
+// Strings
+
+STRINGTABLE DISCARDABLE
+BEGIN
+#ifndef _AFX_NO_APPMENU_RESOURCES
+	AFX_IDS_OPENFILE,               "Openen"
+	AFX_IDS_SAVEFILE,               "Bewaren als"
+	AFX_IDS_ALLFILTER,              "Alle bestanden (*.*)"
+	AFX_IDS_UNTITLED,               "zonder naam"
+	AFX_IDS_HIDE,                   "&Verbergen"
+#endif // !_AFX_NO_APPMENUSTRING_RESOURCES
+
+	AFX_IDS_MEMORY_EXCEPTION,       "Onvoldoende geheugen."
+	AFX_IDS_NOT_SUPPORTED_EXCEPTION,"U probeerde een niet ondersteunde opdracht uit te voeren."
+	AFX_IDS_RESOURCE_EXCEPTION,     "Een vereiste ressource is niet beschikbaar."
+	AFX_IDS_USER_EXCEPTION,         "Een onbekende fout is opgetreden."
+
+	// General error prompts
+#ifndef _AFX_NO_FILECMD_RESOURCES
+	AFX_IDP_INVALID_FILENAME,       "Ongeldige bestandsnaam."
+	AFX_IDP_FAILED_TO_OPEN_DOC,     "Fout bij het openen van het document."
+	AFX_IDP_FAILED_TO_SAVE_DOC,     "Fout bij het bewaren van het document. Het document is niet bewaard."
+	AFX_IDP_ASK_TO_SAVE,            "Aanpassingen in %1 bewaren?"
+	AFX_IDP_FAILED_TO_CREATE_DOC,   "Fout bij het creëren van een leeg document."
+	AFX_IDP_FILE_TOO_LARGE,         "Het bestand is te groot om te openen."
+	AFX_IDP_FAILED_TO_START_PRINT,  "Printopdracht kan niet gestart worden."
+#endif // !_AFX_NO_FILECMD_RESOURCES
+	AFX_IDP_FAILED_TO_LAUNCH_HELP,  "De helpfunctie kon niet opgestart worden."
+	AFX_IDP_INTERNAL_FAILURE,       "Interne applicatiefout."
+	AFX_IDP_COMMAND_FAILURE,        "Opdracht mislukt."
+	AFX_IDP_FAILED_MEMORY_ALLOC     "Onvoldoende geheugen om deze opdracht uit te voeren."
+	AFX_IDP_GET_NOT_SUPPORTED,      "Lezen is niet mogelijk omwille van de Alleen-Schrijven eigenschap."
+	AFX_IDP_SET_NOT_SUPPORTED,      "Wegschrijven is wegens de eigenschap Alleen-Lezen niet mogelijk."
+	AFX_IDP_UNREG_DONE,               "Ingangen tot het systeemregister werden geschrapt. Het INI-bestand (indien nodig) was gewist."
+	AFX_IDP_UNREG_FAILURE,            "Niet alle ingangen van het systeemregister (of het INI-bestand) zijn gewist."
+	AFX_IDP_DLL_LOAD_FAILED,        "Dit programma heeft het bestand %s nodig. Dit bestand is onvindbaar op uw systeem."
+	AFX_IDP_DLL_BAD_VERSION,        "Dit programma verbonden met export %s, ontbreekt in bestand %s. Op deze computer is waarschijnlijk een niet-compatibele versie van %s geïnstalleerd."
+
+	// CFile/CArchive error strings for user failure
+#ifndef _AFX_NO_CFILE_RESOURCES
+	AFX_IDP_FAILED_INVALID_FORMAT   "Onvoorzien bestandsformaat."
+	AFX_IDP_FAILED_INVALID_PATH     "%1\nOnmogelijk dit bestand terug te vinden. Verifieer dat path en naam van het bestand correct zijn."
+	AFX_IDP_FAILED_DISK_FULL        "De hard disk van bestemming is vol."
+	AFX_IDP_FAILED_ACCESS_READ      "Lezen van %1 is niet mogelijk; het bestand is in gebruik."
+	AFX_IDP_FAILED_ACCESS_WRITE     "Wegschrijven op %1 is niet mogelijk, wegens Alleen-Lezen-eigenschap of omdat de file in gebruik is."
+	AFX_IDP_FAILED_IO_ERROR_READ    "Bij het lezen van %1 is een onvoorziene fout opgetreden."
+	AFX_IDP_FAILED_IO_ERROR_WRITE   "Bij het wegschrijven van %1 is een onvoorziene fout opgetreden."
+#endif // !_AFX_NO_CFILE_RESOURCES
+
+	// Parsing error prompts
+	AFX_IDP_PARSE_INT,              "Gelieve een geheel getal in te geven."
+	AFX_IDP_PARSE_REAL,             "Gelieve een getal in te tikken."
+	AFX_IDP_PARSE_INT_RANGE,        "Geef een geheel getal tussen %1 en %2 in."
+	AFX_IDP_PARSE_REAL_RANGE,       "Geef een getal tussen %1 en %2 in."
+	AFX_IDP_PARSE_STRING_SIZE,      "Gelieve niet meer dan %1 tekens in te geven."
+	AFX_IDP_PARSE_RADIO_BUTTON,     "Gelieve een knop te kiezen."
+	AFX_IDP_PARSE_BYTE,             "Gelieve een geheel getal tussen 0 en 255 in te geven."
+	AFX_IDP_PARSE_UINT,             "Gelieve een positief geheel getal in te voeren."
+	AFX_IDP_PARSE_DATETIME,         "Gelieve een datum en/of uur in te geven."
+	AFX_IDP_PARSE_CURRENCY,         "Gelieve een munt in te geven."
+
+#ifndef _AFX_NO_OLE_RESOURCES
+	// OLE strings required for both servers and containers
+	AFX_IDS_PASTELINKEDTYPE         "%s verbonden"
+	AFX_IDS_UNKNOWNTYPE             "Onbekend type."
+	AFX_IDP_FAILED_TO_NOTIFY        "%1\nOnmogelijk om dit document te bewaren.\nHet document is misschien al geopend."
+	AFX_IDS_NOT_DOCOBJECT           "Het bestand werd niet door een documentobjectserver ondersteund."
+#endif //!_AFX_NO_OLE_RESOURCES
+
+	AFX_IDP_NO_ERROR_AVAILABLE      "Er is geen foutmelding beschikbaar."
+
+#ifndef _AFX_NO_CFILE_RESOURCES
+	AFX_IDP_FILE_NONE                "Er is geen enkele fout opgetreden."
+	AFX_IDP_FILE_GENERIC             "Een onbekende fout deed zich voor bij de toegang tot %1."
+	AFX_IDP_FILE_NOT_FOUND           "Kan %1 niet vinden."
+	AFX_IDP_FILE_BAD_PATH            "%1 bevat een ongeldig path."
+	AFX_IDP_FILE_TOO_MANY_OPEN       "%1 kan niet geopend worden, omdat te veel bestanden geopend zijn."
+	AFX_IDP_FILE_ACCESS_DENIED       "Toegang tot %1 werd geweigerd."
+	AFX_IDP_FILE_INVALID_FILE        "Een ongeldige bestandbeschrijver werd met %1 verbonden."
+	AFX_IDP_FILE_REMOVE_CURRENT      "Onmogelijk %1 te schrappen, omdat het het huidige repertorium is."
+	AFX_IDP_FILE_DIR_FULL            "%1 kan niet gecreëerd worden omdat het repetorium vol is."
+	AFX_IDP_FILE_BAD_SEEK            "Opzoekingsfout bij %1."
+	AFX_IDP_FILE_HARD_IO             "Een hardware I/O-fout werd tijdens de toegang tot %1 gemeld."
+	AFX_IDP_FILE_SHARING             "Er is een sectorprobleem opgetreden bij de toegang tot %1."
+	AFX_IDP_FILE_LOCKING             "Er is een vergrendelingsfout opgetreden bij de toegang tot %1."
+	AFX_IDP_FILE_DISKFULL            "Hard disk is vol bij het openen van %1."
+	AFX_IDP_FILE_EOF                 "Toegangspoging tot %1 op een plaats na het einde van %1."
+	AFX_IDS_UNNAMED_FILE             "Een bestand zonder naam."
+#endif // !_AFX_NO_CFILE_RESOURCES
+
+	AFX_IDP_ARCH_NONE               "Er is geen enkele fout opgetreden."
+	AFX_IDP_ARCH_GENERIC                "Een onbekende fout deed zich voor bij de toegang tot %1."
+	AFX_IDP_ARCH_READONLY           "%1 kan enkel gelezen worden. U probeert weg te schrijven."
+	AFX_IDP_ARCH_ENDOFFILE          "Toegangspoging tot %1 op een plaats na het einde van %1."
+	AFX_IDP_ARCH_WRITEONLY          "%1 is beschermd tegen lezen. Poging om %1 te lezen."
+	AFX_IDP_ARCH_BADINDEX           "%1 heeft een verkeerd bestandsformaat."
+	AFX_IDP_ARCH_BADCLASS           "%1 bevat een onvoorzien object."
+	AFX_IDP_ARCH_BADSCHEMA          "%1 bevat een verkeerd schema."
+
+#ifndef _AFX_NO_MAPI_RESOURCES
+	// MAPI strings / error messages
+	AFX_IDP_FAILED_MAPI_LOAD        "Systeemondersteuning voor electronische post kan niet geladen worden."
+	AFX_IDP_INVALID_MAPI_DLL        "System-DLL voor electronische post is niet geldig."
+	AFX_IDP_FAILED_MAPI_SEND        "De electronische post heeft het bericht niet kunnen verzenden."
+#endif //!_AFX_NO_MAPI_RESOURCES
+
+#ifndef _AFX_NO_OCC_RESOURCES
+	AFX_IDS_OCC_SCALEUNITS_PIXELS   "pixels"
+#endif //!_AFX_NO_OCC_RESOURCES
+END
+
+/////////////////////////////////////////////////////////////////////////////
+// Cursors
+
+AFX_IDC_CONTEXTHELP     CURSOR  DISCARDABLE     "res\\help.cur"
+
+#ifndef _AFX_NO_SPLITTER_RESOURCES
+AFX_IDC_SMALLARROWS     CURSOR  DISCARDABLE     "res\\sarrows.cur"
+AFX_IDC_HSPLITBAR       CURSOR  DISCARDABLE     "res\\splith.cur"
+AFX_IDC_VSPLITBAR       CURSOR  DISCARDABLE     "res\\splitv.cur"
+AFX_IDC_NODROPCRSR      CURSOR  DISCARDABLE     "res\\nodrop.cur"
+#endif //!_AFX_NO_SPLITTER_RESOURCES
+
+#ifndef _AFX_NO_TRACKER_RESOURCES
+AFX_IDC_TRACKNWSE       CURSOR  DISCARDABLE     "res\\trcknwse.cur"
+AFX_IDC_TRACKNESW       CURSOR  DISCARDABLE     "res\\trcknesw.cur"
+AFX_IDC_TRACKNS         CURSOR  DISCARDABLE     "res\\trckns.cur"
+AFX_IDC_TRACKWE         CURSOR  DISCARDABLE     "res\\trckwe.cur"
+AFX_IDC_TRACK4WAY       CURSOR  DISCARDABLE     "res\\trck4way.cur"
+AFX_IDC_MOVE4WAY        CURSOR  DISCARDABLE     "res\\move4way.cur"
+#endif //!_AFX_NO_TRACKER_RESOURCES
+
+#ifndef _AFX_NO_CTL3D_RESOURCES
+26567 BITMAP "res\\3dcheck.bmp" // Note: 26567 comes from CTL3D.H
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+// Standard Dialogs
+
+#ifndef _AFX_NO_NEWTYPEDLG_RESOURCES
+AFX_IDD_NEWTYPEDLG DIALOG DISCARDABLE  9, 26, 183, 70
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU | 0x04
+CAPTION "Nieuw"
+FONT 8, "MS Shell Dlg"
+BEGIN
+	LTEXT           "&Nieuw",IDC_STATIC,6,5,123,8,NOT WS_GROUP
+	LISTBOX         AFX_IDC_LISTBOX,6,15,125,49,WS_VSCROLL | WS_TABSTOP
+	DEFPUSHBUTTON   "OK",IDOK,137,6,40,14
+	PUSHBUTTON      "Annuleren",IDCANCEL,137,23,40,14
+	PUSHBUTTON      "&Help",ID_HELP,137,43,40,14
+END
+#endif // !_AFX_NO_NEWTYPEDLG_RESOURCES
+
+/////////////////////////////////////////////////////////////////////////////
+// CMiniFrameWnd Bitmap
+
+AFX_IDB_MINIFRAME_MENU      BITMAP  DISCARDABLE     "res\\minifwnd.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+// CCheckListBox Bitmaps
+
+AFX_IDB_CHECKLISTBOX_NT     BITMAP  DISCARDABLE     "res\\ntcheck.bmp"
+AFX_IDB_CHECKLISTBOX_95     BITMAP  DISCARDABLE     "res\\95check.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+
+#endif //!_AFXDLL
+#endif //!__AFXRES_RC__
+
+/////////////////////////////////////////////////////////////////////////////

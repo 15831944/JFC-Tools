@@ -1,0 +1,125 @@
+Cet historique de version débute le 9 Juillet 98, lendemain du jour
+ou la france s'est qualifiée opur la finale de la coupe du monde de foot,
+avec 2 buts à 1 contre les pays-bas.
+
+
+2.1     le 9/07/98
+------------------
+
+Pour check-up, dans les ventilation on donne le nb de cas:
+12c.->Population 1c.blanc 5c.->NbCas
+
+exemple:
+     4123502   417
+   105.52
+    37.25
+     6266497   590
+   120.24
+    38.23
+...
+
+
+janvier 99: Carat !
+
+4 février 1999:
+En faisant la doc je trouve un jolie petit bug dans le trusquin.
+
+Si on à plus que 2 classes dans la pluribroba, le vecteur binomiale deviennait faux!
+
+
+31 mars 99: v2.1c bug corrigé dans les ancrages belges
+v2.1d: bug écrans marginal
+v2.1e: bug ventilations télé
+v2.1f: (26 avril) bug dans calcul marginal des contacts
+v2.1g: (29 avril99) bug à la libération des ancrages en belgiques, parce ce le support part défaut (car il y a un défaut de probas) ne liberait pas les fAlloc
+
+v2.1h: (14 mai 99) bug belgique:
+			- zoom en 10 classes (bug dans la partie 10-20 de la source non utilisée=
+		(16 mai 99) bug belgique:
+			pb avec nbcas 0 pour des ancrages
+
+v2.1i BETA1: Italy (MediaConsulting)
+v2.1i BETA2: Italy (MediaConsulting) 31 Mai
+v2.1i (4 juin) Carat en marginal	
+v2.1j (2 juillet) retourne Nombre de spots utilisant une proba par défaut dans le plan de base
+v2.2  (juillet et août 99) tomlib
+v2.2a beta1 14/9/99-----> dead line au 1/3/2000 pour Médiaconsult
+v2.2a 14/9/99-----> Courbe de réponse donné dans le job pour médiaconsult
+v2.2b1 21/9/99 Médiaconsult, courbe de réponse et tom en hide
+v2.2b2 21/9/99 Médiaconsult, idem sans courbe de réponse pour compatibilité
+
+v2.2c 17/11/99 Médiaconsult->
+		Bug avec le détection de changement des cibles
+		Evolution de CSource avec PreviusIndexCible (a vérifier en standard)
+		évaluation sur 30 classes
+		5 décimales
+		Retourn hwndMaitre en fonction du NrLien
+
+v2.2d 20/11/99 MédiaConsultant
+v2.2d fin mars/début avril MédiaConsultant
+v2.2d -> version faite pour atelier télé//suite à un problème dans l'atelier télé (version perdue!)
+v2.2e -> Nouvelle fonction pour médiaconsult
+	* ran2 dans random.lib (résultat non vérifié)
+	* couverture et nombre de contacts validé en std et restom.
+v2.2f Mise au oint des bugs dans la version MEDIACONSUKTANT
+	* décalage de 1 dans la courbe de réponse
+	* Initialisation de Ran2 avec (-seed)
+v2.3  Médiaconsultant// mise au point avec Ferdinando 5 juillet 2000
+v2.4  Médiaconsultant// lancement du tomjob en bloquant (12/7/2000)
+v2.5  18/10/00 Médiaconsultant// mise au point avec ferdinando: changement de seed
+						         changement du calcul du grp ventilé sans courbe de réponse
+
+
+v2.5b bug corrigé MEDIACONSULTANT dans le cas particulier d'un spot.
+v2.5c bug corrigé MEDIACONSULTANT dans le cas particulier d'un code horaire (RUBRICA) sur 32 bits
+v2.5d bug corrigé MEDIACONSULTANT mise au point du calcul zoom avec Monte-Carlo + cas particulier mono spot mono inserion
+v2.5e MEDIACONSULTANT , calcul dans le zoom de la couverture validée( couverure utile)
+ puisque la couverture validée doit être juste dans la fonction ADDZOOM, on pas de 10 à 31
+ classes de contacts étudiés. Ce paramètres peut ralentir le processus, mais les Italiens demandent 
+ les même résultats que la fonction ADDSPOT. Il semble que leur dispositif zoom utilise donc le résultat 
+ et l'apport de la couverture et du nombre de contacts validés
+
+v2.5f MEDIACONSULTANT acceptation jusqu'a 50 rubrica en marginal
+v2.5g MEDIACONSULTANT acceptation jusqu'a 5000 rubrica en marginal
+
+----> FIN DU MEDIACONSULTANT (a virer dès que les italiens ont testé leur version)
+
+v2.5h (19/11/2002)
+------------------
+JFC
+
+bug lecture 1000 stations
+
+v2.5i (25/02/2003)
+------------------
+JFC
+Autorisation de 100 station en marginal (pour les couplages)
+
+v2.5j (9/04/2003)
+------------------
+JFC
+Amélioration de la recherche des QH lorsque les probas sont en demi heure.
+correction bug réallocation marginal tous les 100 spots.
+
+v2.5k (2/9/2003)
+------------------
+JFC
+correction bug: lecture des 50 régions pour la pologne
+
+v2.5l (2/9/2003)
+------------------
+JFC
+correction bug: liaison avec le dernier support du panel (28H00 et 28H30)
+qui a été détecté pour la pologne mais qui peut survenir dans toutes les configuration
+à avec un panel quart d'heure ou demi heure.
+
+v2.5m (26/01/2004)
+------------------
+CARAT
+Dead line 2005
+	
+
+		
+			
+		
+			

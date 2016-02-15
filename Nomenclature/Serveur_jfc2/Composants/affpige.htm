@@ -1,0 +1,481 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta name="GENERATOR" content="Mozilla/4.5 [fr] (Win98; I) [Netscape]">
+   <title>Affinage PIGE version 3</title>
+</head>
+<body>
+
+<center>
+<hr WIDTH="100%"><font size=+2>Affinage Pige - Aide pour affineur</font></center>
+
+<p><a href="#Introduction">Introduction</a>
+<p><a href="#Présentation du programme">Pr&eacute;sentation du programme</a>
+<br><a href="#Utilisation de AffPige">Utilisation de AffPige</a>
+<p><a href="#Présentation du gestionnaire client">Pr&eacute;sentation du
+gestionnaire client</a>
+<br><a href="#Utilisation du gestionnaire client">Utilisation du gestionnaire
+client</a>
+<br><a href="#Et après tous ça?">Et apr&egrave;s tout &ccedil;&agrave;?</a>
+<p>Suivre les &eacute;tapes suivante pour la mise &agrave; jour des fichiers
+spots et cl&eacute;s :
+<ul>
+<li>
+<a href="#Avant de lancer AffPige">Avant d'effectuer l'affinage des nouvelles
+sources</a></li>
+
+<li>
+<a href="#Avant de lancer AffPige">Effectuer l'affinage des nouvelles sources</a></li>
+
+<li>
+<a href="#Après l'affinage">Apr&egrave;s avoir effectuer l'affinage des
+nouvelles sources</a></li>
+
+<li>
+<a href="#Mise à jour de fichiers clés">Mettre &agrave; jour les fichiers
+cl&eacute;s HEBDO</a></li>
+
+<li>
+<a href="#Et après tous ça?">Disposer dans le r&eacute;pertoire de transit
+les fichiers spots et cl&eacute;s</a></li>
+</ul>
+
+<hr WIDTH="100%">
+<p>Plusieurs termes et fichiers seront utilis&eacute;s dans cette documentation.
+La signification pr&eacute;cise est d&eacute;taill&eacute; dans l'<a href="#ANNEXE">annexe</a>.
+<p>
+<hr WIDTH="50%">
+<p><a NAME="Introduction"></a><b><u><font size=+1>Introduction</font></u></b>
+<br>&nbsp;&nbsp;&nbsp; L'affinage est le processus de convertion de donn&eacute;es
+d'un format &agrave; un autre. Il est utilis&eacute; par les entreprises
+pour transformer les fichiers de donn&eacute;es qu'ils s'&eacute;changent
+sous le format qu'il souhaite, pour les int&eacute;gr&eacute;es ensuite
+dans leur propre application.
+<br>&nbsp;&nbsp;&nbsp; L'affinage de la Pige s'effectue chaque semaine
+pour formater les donn&eacute;es des fichiers ASCII que Secodip nous envoie
+dans une base de donn&eacute;e Access (Microsoft), dispos&eacute; chez
+JFC. Les deux fichiers sources sont dispos&eacute;es sur le serveur FTP
+de JFC, r&eacute;pertoire Secodip, par Secodip. Il y a un fichier Nomenclature
+(.lib) et un fichier DataSpots (.dat).
+<p>
+<hr WIDTH="50%">
+<p><a NAME="Présentation du programme"></a><b><u><font size=+1>Pr&eacute;sentation
+du programme</font></u></b>
+<br>&nbsp;&nbsp;&nbsp; AffPige effectue :
+<ul>
+<li>
+La mise &agrave; jour du fichier brut chez JFC depuis les fichiers sources
+(l'affinage). En simultan&eacute;e, un fichier diff&eacute;rentiel de mise
+&agrave; jour est cr&eacute;e.</li>
+
+<li>
+La traduction des supports SECODIP->JFC</li>
+
+<li>
+La cr&eacute;ation d'un fichier spot &agrave; partir du fichier brut</li>
+
+<li>
+La maj des fichiers cl&eacute;s clients auto ou manuelle</li>
+
+<li>
+La configuration des chemins des fichiers et r&eacute;pertoires li&eacute;s
+&agrave; l'affinage</li>
+
+<li>
+Le changement du mot de passe d'un fichier Access (Base de donn&eacute;e)</li>
+</ul>
+La maj du fichier spot est faite depuis le programme <a href="#Présentation de PigeMaj">PigeMaj</a>.
+<p>
+<hr WIDTH="50%">
+<p><a NAME="Avant de lancer AffPige"></a><b><u><font size=+1>Avant l'affinage</font></u></b>
+<ol>
+<li>
+<font size=+0>R&eacute;cup&eacute;rer sur la machine FTP de JFC, r&eacute;pertoire
+Secodip (ftp/secodip), les fichiers sources compress&eacute;s contenant
+les nouvelles donn&eacute;es.</font></li>
+
+<li>
+<font size=+0>D&eacute;poser ces fichiers dans le r&eacute;pertoire de
+traitement des sources (<u>\\TRAITEMENT\Affpige\xxxxx\Source)</u>.</font></li>
+
+<li>
+<font size=+0>Les d&eacute;compacter dans ce r&eacute;pertoire.</font></li>
+
+<li>
+<font size=+0>Supprimer les fichier(s) compress&eacute;s.</font></li>
+
+<li>
+<font size=+0>Renommer les fichiers sources en fichiers dat&eacute; (99Sem01dat.dat
+et 99Sem01lib.dat par exemple) et les copier dans le r&eacute;pertoire
+de sauvegarde des sources (<u>\\SERVEUR_JFC2\SourcesP\xxxxx)</u> ainsi que le répertoire de transit 
+(<u>c:\art\xxxxx\PigeData</u>)</font></li>
+
+<li>
+<font size=+0>Faire un backup du fichier brut (<u>\\TRAITEMENT\Affpige\pige_xxx.mdb)</u>
+et du fichier spot (<u>\\TRAITEMENT\Affpige\data\pigexxx.mdb)</u> (format
+ZIP par exemple).</font></li>
+</ol>
+
+<hr WIDTH="50%">
+<p><a NAME="Effectuer l'affinage"></a><b><u><font size=+1>Effectuer l'affinage</font></u></b>
+<p>Voir <u><a href="#L'affinage">L'affinage</a></u>
+<br>
+<hr WIDTH="50%">
+<p><a NAME="Après l'affinage"></a><b><u><font size=+1>Apr&egrave;s l'affinage</font></u></b>
+<br>&nbsp;&nbsp;&nbsp; Il ne reste plus qu'&agrave; renouveller le fichier
+spot. Un petit outils appel&eacute;s <a href="PigeMaj.htm">PigeMaj</a>
+s'occupe d'int&eacute;grer les nouvelles donn&eacute;es du fichier diff&eacute;rentiel
+(MajPigxxx.mdb) vers le fichier spot (Pigexxx.mdb).
+<p>
+<hr WIDTH="50%">
+<p><a NAME="Utilisation de AffPige"></a><b><u><font size=+1>Utilisation
+de AffPige</font></u></b>
+<p><img SRC="AffDlgMedia.JPG" BORDER=0 height=139 width=182 align=LEFT>Au
+d&eacute;marrage, il faut s&eacute;lectionner le m&eacute;dia dans lequel
+on va traiter les donn&eacute;es : Radio ou T&eacute;l&eacute;vision.
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<p>&nbsp;&nbsp;&nbsp; L'&eacute;x&eacute;cution des diverses t&acirc;ches
+s'&eacute;ffectue par le biais du Menu.
+<blockquote>
+<center>
+<hr WIDTH="50%"><font size=+1>Le Menu : Affiner</font>
+<br><img SRC="AffMenu1.JPG" BORDER=0 height=120 width=178></center>
+</blockquote>
+
+<ol>
+<li>
+<a NAME="L'affinage"></a><u>L'affinage</u></li>
+
+<br><font color="#FF6666">ATTENTION</font> : Avant de lancer l'affinage,
+v&eacute;rifiez la configuration des chemins des fichiers et r&eacute;pertoires
+li&eacute;s au programme AffPige.
+<p>Suivez les &eacute;tapes de l'affinage :
+<ul>
+<li>
+<b>Etape 1</b> : S&eacute;lectionner dans le menu <i>Affiner->Lancer l'affinage</i></li>
+</ul>
+<img SRC="AffDlgSources.JPG" height=152 width=482 align=ABSCENTER>
+<ul>
+<li>
+<b>Etape 2</b> : S&eacute;lectionner les deux fichiers sources Nomenclature
+et DataSpots grace au bouton "parcourir"; Puis s&eacute;lectionnez Ok.</li>
+
+<li>
+<b>Etape 3</b> : Une boite contenant une barre de progression apparait.
+La dur&eacute;e de cette &eacute;tape d&eacute;pend du nombre d'enregistrement
+&agrave; mettre &agrave; jour (instantan&eacute;e pour un fichier DataSpots
+de 1 mega et moins; 1&nbsp;&nbsp; minutes pour 5 megas ; + 1 heure pour
+200 m&eacute;gas).</li>
+</ul>
+<img SRC="AffDlgTraduc.JPG" height=301 width=428 align=TEXTTOP>
+<ul>
+<li>
+<b>Etape 4</b> : <font size=+0>Traduire les supports en gras de la colonne
+de gauche avec les supports JFC de la colonne de droite.</font></li>
+
+<li>
+<font size=+0><b>Etape 5</b> : </font>S&eacute;lectionnez le bouton
+<i><u>Mise
+&agrave; jour</u></i> et s&eacute;lectionnez le fichier diff&eacute;rentiel
+de maj (<u><font size=+0>\\TRAITEMENT\</font>AffPige\xxxxx\Data\MajPigxxx.mdb)</u></li>
+
+<li>
+<b>Etape 6</b> : V&eacute;rifiez les donn&eacute;es maj d&eacute;fectueuses
+dans les fichiers Errlib.txt et ErrDat.txt du r&eacute;pertoire <u><font size=+0>\\TRAITEMENT\</font>AffPige\xxxxx\Data</u>.</li>
+
+<li>
+<b>Etape 7</b> : Copier le fichier diff&eacute;rentiel de maj (<u>\\TRAITEMENT\AffPige\xxxxx\Data\MajPigxxx.mdb)</u>
+dans le r&eacute;pertoire <u>\\TRAITEMENT\AffPige\xxxxx\Data\MajPigeSave</u>
+ainsi que dans <u>\\TRAITEMENT\art\xxxxx\PigeData</u>. Le renommer en fichier
+dat&eacute; (99Sem01.mdb par exemple).</li>
+
+<li>
+<b>Etape 8</b> : Copier le fichier spot (<u>\\TRAITEMENT\AffPige\xxxxx\Data\Pigexxx.mdb)</u>
+dans le r&eacute;pertoire de transit <u>\\TRAITEMENT\art\xxxxx\PigeData</u>".</li>
+
+<br>&nbsp;</ul>
+
+<li>
+<u>La traduction</u></li>
+
+<ul>
+<li>
+S&eacute;lectionner dans le menu <i>Affiner->Traduire les supports</i></li>
+
+<li>
+Voir <b>Etape 4</b> et <b>Etape 5</b> de l'affinage</li>
+
+<br>&nbsp;</ul>
+
+<li>
+<u>La cr&eacute;ation d'un fichier spot neuf</u></li>
+
+<ul>
+<li>
+S&eacute;lectionner <i>Affiner->DB brut(->)DB client</i></li>
+
+<li>
+Attendre la fin du message et du curseur-sablier.</li>
+
+<br>&nbsp;</ul>
+
+<center>
+<hr WIDTH="50%"><font size=+1>Le Menu : DataPige</font>
+<br><img SRC="AffMenu2.JPG" height=120 width=190 align=TEXTTOP></center>
+</ol>
+
+<ol>
+<li>
+<u>La maj manuelle des fichiers cl&eacute;s</u></li>
+
+<ul>
+<li>
+S&eacute;lectionner <i>DataPige->Gestionnaire clients</i></li>
+
+<li>
+Effectuer les modifications n&eacute;cessaires pour chaque client.</li>
+
+<li>
+Copier les fichiers cl&eacute;s contenu dans <u>\\TRAITEMENT\AffPige\xxxxx\data\clients\</u>
+dans le r&eacute;pertoire des patchs pige windows (<u>\\SERVEUR_JFC2\compressed\patch\pige
+windows\xxxxx\data)</u>. Les renomm&eacute;es correctement.</li>
+
+<li>
+Copier les fichiers cl&eacute;s renomm&eacute;es dans le r&eacute;pertoire
+<u>\\TRAITEMENT\art\xxxxx\</u></li>
+
+<br>&nbsp;</ul>
+
+<li>
+<u>La configuration des fichiers et r&eacute;pertoires</u></li>
+
+<ul>
+<li>
+S&eacute;lectionner <i>DataPige->Fichiers et r&eacute;pertoires</i></li>
+</ul>
+<img SRC="AffDlgFics.JPG" height=262 width=465 align=TEXTTOP>
+<ul>
+<li>
+Renseigner le chemin entier, manuellement ou grace au bouton parcourir.</li>
+</ul>
+</ol>
+
+<ol START=3>
+<li>
+<u>Le changement du mot de passe d'une base</u></li>
+
+<ul>
+<li>
+S&eacute;lectionner <i>DataPige->Mote de passe</i></li>
+
+<li>
+S&eacute;lectionner le fichier Access dont le mot de passe va &ecirc;tre
+modifi&eacute;e.</li>
+</ul>
+<img SRC="AffDlgPasswd.JPG" height=202 width=295 align=TEXTTOP>
+<ul>
+<li>
+Renseigner l'ancien mot de passe, le nouveau et le confirmer.</li>
+</ul>
+</ol>
+
+<hr WIDTH="50%">
+<p><a NAME="Présentation du gestionnaire client"></a><b><u><font size=+1>Pr&eacute;sentation
+du gestionnaire client</font></u></b>
+<center>
+<p><img SRC="AffDlgClient.JPG" height=476 width=800></center>
+
+<p>Le gestionnaire client permet :
+<ul>
+<li>
+D'ajouter, ou supprimer un fichier cl&eacute;.</li>
+
+<li>
+De modifier les informations li&eacute;es &agrave; chacun des clients (soci&eacute;t&eacute;,
+adresses, code, dates, ...)</li>
+
+<li>
+De mette &agrave; jour les groupes et les annonceurs.</li>
+
+<li>
+De sauvegarder les modifications effectu&eacute;es.</li>
+
+<li>
+D'imprimer le carnet clients et la liste des groupes/annonceurs/produits
+d'un client.</li>
+</ul>
+Les donn&eacute;es clients (familles, groupes, annonceurs et produits,
+ainsi que les dates de validit&eacute;s) sont fournis par SECODIP.
+<p>
+<hr WIDTH="50%">
+<br>&nbsp;
+<p><a NAME="Utilisation du gestionnaire client"></a><b><u><font size=+1>Utilisation
+du gestionnaire client</font></u></b>
+<p>&nbsp;&nbsp;&nbsp; L'&eacute;x&eacute;cution des diverses t&acirc;ches
+s'&eacute;ffectue par le biais du menu et des boutons de l'interface.
+<ol>
+<li>
+<a NAME="Mise à jour de fichiers clés"></a><u>Mise &agrave; jour de fichiers
+cl&eacute;s</u></li>
+
+<br>. S&eacute;lectionner le client
+<br>. Effectuer la mise &agrave; jour d'apr&egrave;s les fiches
+<br>. Sauvegarder les modifications en cliquant sur le bouton <i>Mise &agrave;
+jour</i>
+<br>. Passer au client suivant ou Quitter
+<p>
+<hr WIDTH="50%"></ol>
+
+<center><font size=+1>Menu : Clients</font>
+<br><img SRC="AffMenu3.JPG" height=140 width=600 align=TEXTTOP></center>
+
+<ol>
+<li>
+<u>Ajout d'un fichier cl&eacute;</u></li>
+
+<ul>
+<li>
+S&eacute;lectionner <i>Clients->Nouveau</i></li>
+</ul>
+<img SRC="AffDlgModif.JPG" height=329 width=351>
+<ul>
+<li>
+Renseigner au minimum le nom de la soci&eacute;t&eacute;, le code et le
+droit d'acc&egrave;s.</li>
+</ul>
+</ol>
+
+<ol START=2>
+<li>
+<u>Suppression d'une base client</u></li>
+
+<ul>
+<li>
+S&eacute;lectionner un client parmi la liste.</li>
+
+<li>
+S&eacute;lectionner <i>Clients->Supprimer</i></li>
+
+<br>&nbsp;</ul>
+
+<li>
+<u>Modifier le carnet d'un client</u></li>
+
+<ul>
+<li>
+S&eacute;lectionner un client parmi la liste.</li>
+
+<li>
+S&eacute;lectionner <i>Clients->Modifier</i></li>
+</ul>
+
+<ul>
+<li>
+Modifier les champs d&eacute;sir&eacute;s. (voir boite de dialogue de "Ajout
+d'un fichier cl&eacute;")</li>
+
+<br>&nbsp;</ul>
+
+<li>
+<u>Ajouts d'une famille, d'un groupe, d'un annonceur ou d'un produit</u></li>
+
+<ul>
+<li>
+Cocher pour s&eacute;lectionner et d&eacute;cocher pour d&eacute;s&eacute;lectionner
+un &eacute;l&eacute;ments</li>
+
+<li>
+Cocher un &eacute;l&eacute;ment &agrave; un niveau sup&eacute;rieur s&eacute;lectionnera
+tous les &eacute;l&eacute;ments inclus dans ce premier &eacute;l&eacute;ment.</li>
+
+<br>&nbsp;</ul>
+
+<li>
+<u>Sauvegarder les modifications</u></li>
+
+<ul>
+<li>
+Pour sauvegarder les nouvelles modifications, s&eacute;lectionner le bouton
+<i>Mise
+&agrave; jour</i>.</li>
+
+<li>
+<font color="#FF0000">ATTENTION</font> : La s&eacute;lection n'est prise
+en compte que pour le client s&eacute;lectionn&eacute;. Elle seront perdues
+si vous s&eacute;lectionnez un autre client sans avoir appuy&eacute; sur
+<i>Mise
+&agrave; jour</i> !</li>
+</ul>
+
+<p><br>
+<hr WIDTH="50%">
+<center><font size=+1>Menu : Imprimer</font>
+<br><img SRC="AffMenu4.JPG" height=80 width=600></center>
+</ol>
+
+<ol>
+<li>
+<u>Imprimer la liste des clients</u></li>
+
+<ul>
+<li>
+S&eacute;lectionner <i>Impression->Liste des clients</i> pour imprimer
+la liste des clients et leur informations.</li>
+
+<br>&nbsp;</ul>
+
+<li>
+<u>Imprimer la fiche d'un client</u></li>
+
+<ul>
+<li>
+S&eacute;lectionner <i>Impression->Fiche client</i></li>
+</ul>
+<img SRC="AffImprim.JPG" height=218 width=338>
+<ul>
+<li>
+Cocher les options d&eacute;sir&eacute;es &agrave; l'impression</li>
+</ul>
+</ol>
+
+<hr WIDTH="50%">
+<br><a NAME="Et après tous ça?"></a><b><u><font size=+1>Et apr&egrave;s
+tout &ccedil;&agrave;?</font></u></b>
+<br>&nbsp;&nbsp;&nbsp; Lorsque les fichiers cl&eacute;s, ceux correspondant
+&agrave; la p&eacute;riodicit&eacute; de la mise &agrave; jour (les hebdos,
+les mensuels), sont pr&ecirc;ts, il faut les disposer dans le r&eacute;pertoire
+de transit <u>\\TRAITEMENT\art\xxxxx</u>. Et si ce n'est pas d&eacute;ja
+fait, il faut aussi disposer le fichier spot et le fichier diff&eacute;rentiel
+de mise &agrave; jour dans le r&eacute;pertoire de transit <u>\\TRAITEMENT\art\xxxxx\PigeData</u>.
+<br>&nbsp;&nbsp;&nbsp; Ces manipulations sont n&eacute;cessaires pour la
+pr&eacute;paration de ces fichiers au <a href="fretwiz.htm">DataFret</a>.
+<p>
+<hr WIDTH="50%">
+<center><a NAME="ANNEXE"></a><b><u><font size=+1>ANNEXE</font></u></b></center>
+
+<p>R&eacute;pertoire FTP de SECODIP sur le serveur FTP JFC : \\INET_SERVEUR\ftp\secodip
+<p>Fichiers source nomenclature et dataspot SECODIP RADIO : pigemlib.dat
+et pigemdat.dat
+<br>Fichiers source nomenclature et dataspot SECODIP TELE : pigenlib.dat
+et pigendat.dat
+<p>Fichier diff&eacute;rentiel de mise &agrave; jour RADIO : MajPigRad.mdb
+<br>Fichiers diff&eacute;rentiel de mise &agrave; jour TELE : MajPigTv.mdb
+<p><font size=+0>R&eacute;pertoire des sources SECODIP RADIO : </font>\\TRAITEMENT<font size=+0>\Affpige\Radio\Source</font>
+<br><font size=+0>R&eacute;pertoire des sources SECODIP TELE : </font>\\TRAITEMENT<font size=+0>\Affpige\Tv\Source</font>
+<p>Fichiers spot RADIO : PigeRad.mdb
+<br>Fichiers spot TELE : PigeTv.mdb
+<p><font size=+0>R&eacute;pertoire de sauvegarde des sources SECODIP renomm&eacute;e
+: \\SERVEUR_JFC2\compressed\SourcesP\Radio\</font>
+<br><font size=+0>R&eacute;pertoire de sauvegarde des sources SECODIP renomm&eacute;e
+: \\SERVEUR_JFC2\compressed\SourcesP\Tv\</font>
+<br>
+<hr WIDTH="100%"><font size=-1>Cr&eacute;ation&nbsp; : Mardi 8 Juin 1999</font>
+<br><font size=-1>Derni&egrave;re modification : Vendredi 11 Juin 1999</font>
+<br><font size=-1>VLF</font>
+</body>
+</html>

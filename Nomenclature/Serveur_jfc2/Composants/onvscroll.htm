@@ -1,0 +1,50 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="jfc">
+   <META NAME="GENERATOR" CONTENT="Mozilla/4.03 [fr] (Win95; I) [Netscape]">
+   <TITLE>onvscroll</TITLE>
+</HEAD>
+<BODY>
+void CTstcalendDlg::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar*
+pScrollBar)
+<BR>{
+<UL>&nbsp;int i,mini,maxi;
+
+<P>&nbsp;if(!pScrollBar) pScrollBar=&amp;m_idcscrollV;
+<BR>&nbsp;i=pScrollBar->GetScrollPos();
+<BR>&nbsp;pScrollBar->GetScrollRange(&amp;mini,&amp;maxi);
+
+<P>&nbsp;switch(nSBCode) {
+<UL>&nbsp; case SB_BOTTOM:&nbsp; pScrollBar->SetScrollPos(maxi,1); break;
+<BR>&nbsp; case SB_ENDSCROLL: break;
+<BR>&nbsp; case SB_LINEDOWN: pScrollBar->SetScrollPos(min(i+1, maxi),1);
+break;
+<BR>&nbsp; case SB_LINEUP:&nbsp; pScrollBar->SetScrollPos(max(i-1, mini),1);
+break;
+<BR>&nbsp; case SB_PAGEDOWN: pScrollBar->SetScrollPos(min((i+m_nbLig-1),
+maxi),1); break;
+<BR>&nbsp; case SB_PAGEUP:&nbsp; pScrollBar->SetScrollPos(max((i-m_nbLig-1),
+mini),1); break;
+<BR>&nbsp; case SB_TOP:&nbsp; pScrollBar->SetScrollPos(mini,1); break;
+<BR>&nbsp; case SB_THUMBPOSITION:
+<BR>&nbsp; case SB_THUMBTRACK: pScrollBar->SetScrollPos(nPos,1); break;</UL>
+&nbsp;}
+<BR>&nbsp;m_ObjGril.SetPositionV(pScrollBar->GetScrollPos());
+<BR>&nbsp;InvalidateRect(NULL,0);
+
+<P>&nbsp;CDialog::OnVScroll(nSBCode, nPos, pScrollBar);</UL>
+}
+
+<P><B>Remarque</B>
+
+<P>La variable <I>m_nbLig</I> est initialis&eacute; avant l'appel de la
+fonction <B>Initialise</B>(...) :<I></I>
+
+<P><I>CRect R;</I>
+<BR><I>m_ObjGril.GetClientRect(&amp;R);</I>
+<BR><I>m_nbLig=R.Height()/dy;</I>
+<BR><I>Initialise</I>(...)
+<BR>...
+</BODY>
+</HTML>

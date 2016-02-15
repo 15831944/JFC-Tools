@@ -1,0 +1,55 @@
+// Descriptif des centrales d'achat (ici 3 centrales d'achat> Voitures + Promodes + Voyages)
+#CENTRALE ACHAT
+#3
+PO
+392114831 00010
+107
+CENTRALE ACHAT VOITURES
+2 rue andré citroen
+xxx
+75015
+PARIS
+FRA
+01 45 45 45 45
+01 45 45 45 50
+#1
+Mr Citroen
+Andre
+ACitroen@Citroen.fr
+#0
+PO
+44444 31 9999
+107
+CENTRALE ACHAT PROMODES
+10 avenue royale
+Bâtiment B
+78000
+VERSAILLES
+FRA
+01 34 50 50 50
+01 34 50 50 51
+#2
+Mr SEIZE
+Louis
+LouisSeize@Promodes.fr
+#0
+Mme POMPADOUR
+Germaine
+GPompadour@Promodes.fr
+#0
+PO
+99999 99 9999
+107
+CENTRALE ACHAT VOYAGES
+102 rue Argentine
+xxx
+75010
+PARIS
+FRA
+01 41 00 00 00
+01 41 00 00 01
+#1
+Mr TRIGANO
+Philippe dit Fifi
+FifiTrigano@Voyages.fr
+#0

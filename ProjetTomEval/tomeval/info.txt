@@ -1,0 +1,21 @@
+Correspondances pour la télé (extern)
+
+LES STATIONS
+------------
+TF1:1
+F2:2
+F3:3
+C+:11
+LA CINQ:12
+M6:16
+
+
+LES JOURS
+---------
+Lundi 1
+Mardi 2
+Mercredi 4
+Jeudi 8
+Vendredi 16
+Samedi 32
+Dimanche 64

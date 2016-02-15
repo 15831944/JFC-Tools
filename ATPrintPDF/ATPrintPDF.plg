@@ -1,0 +1,226 @@
+<html>
+<body>
+<pre>
+<h1>Build Log</h1>
+<h3>
+--------------------Configuration: ATPrintPDF - Win32 Release--------------------
+</h3>
+<h3>Command Lines</h3>
+Creating command line "rc.exe /l 0x40c /fo"Release/ATPrintPDF.res" /d "NDEBUG" "C:\ATPrintPDF 1.6\ATPrintPDF.rc"" 
+Creating temporary file "C:\DOCUME~1\vol\LOCALS~1\Temp\RSP553.tmp" with contents
+[
+/nologo /MT /W3 /GX /O2 /I "../PdfLib/" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /Fp"Release/ATPrintPDF.pch" /Yu"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
+"C:\ATPrintPDF 1.6\ARML\ARMLAdress.cpp"
+"C:\ATPrintPDF 1.6\ARML\ARMLContext.cpp"
+"C:\ATPrintPDF 1.6\ARML\ARMLField.cpp"
+"C:\ATPrintPDF 1.6\ARML\ARMLFrame.cpp"
+"C:\ATPrintPDF 1.6\ARML\ARMLHStroke.cpp"
+"C:\ATPrintPDF 1.6\ARML\ARMLLineField.cpp"
+"C:\ATPrintPDF 1.6\ARML\ARMLLogo.cpp"
+"C:\ATPrintPDF 1.6\ARML\ARMLState.cpp"
+"C:\ATPrintPDF 1.6\ARML\ARMLStateBegin.cpp"
+"C:\ATPrintPDF 1.6\ARML\ARMLStateBody.cpp"
+"C:\ATPrintPDF 1.6\ARML\ARMLStateEnd.cpp"
+"C:\ATPrintPDF 1.6\ARML\ARMLStateError.cpp"
+"C:\ATPrintPDF 1.6\ARML\ARMLStateFooter.cpp"
+"C:\ATPrintPDF 1.6\ARML\ARMLStateFrame.cpp"
+"C:\ATPrintPDF 1.6\ARML\ARMLStateHeader.cpp"
+"C:\ATPrintPDF 1.6\ARML\ARMLStateTable.cpp"
+"C:\ATPrintPDF 1.6\ARML\ARMLTabCell.cpp"
+"C:\ATPrintPDF 1.6\ARML\ARMLTable.cpp"
+"C:\ATPrintPDF 1.6\ARML\ARMLTabpave.cpp"
+"C:\ATPrintPDF 1.6\ARPrintCmdLine.cpp"
+"C:\ATPrintPDF 1.6\ATCloseWnd.cpp"
+"C:\ATPrintPDF 1.6\ATPrintPDF.cpp"
+"C:\ATPrintPDF 1.6\ATPrintPDFDoc.cpp"
+"C:\ATPrintPDF 1.6\ATPrintPDFView.cpp"
+"C:\ATPrintPDF 1.6\ExcelProgressSplash.cpp"
+"C:\ATPrintPDF 1.6\Draw\GestionCouleurs.cpp"
+"C:\ATPrintPDF 1.6\Draw\JFCBitmap.cpp"
+"C:\ATPrintPDF 1.6\Draw\JFCDecimilToUnit.cpp"
+"C:\ATPrintPDF 1.6\Draw\JFCDraw.cpp"
+"C:\ATPrintPDF 1.6\Composite\JFCDrawAdress.cpp"
+"C:\ATPrintPDF 1.6\Composite\JFCDrawBeginPage.cpp"
+"C:\ATPrintPDF 1.6\Composite\JFCDrawBeginPath.cpp"
+"C:\ATPrintPDF 1.6\Composite\JFCDrawBody.cpp"
+"C:\ATPrintPDF 1.6\Composite\JFCDrawComponent.cpp"
+"C:\ATPrintPDF 1.6\Composite\JFCDrawComposite.cpp"
+"C:\ATPrintPDF 1.6\Composite\JFCDrawDocument.cpp"
+"C:\ATPrintPDF 1.6\Composite\JFCDrawEndPage.cpp"
+"C:\ATPrintPDF 1.6\Composite\JFCDrawEndPath.cpp"
+"C:\ATPrintPDF 1.6\Composite\JFCDrawFooter.cpp"
+"C:\ATPrintPDF 1.6\Composite\JFCDrawFrame.cpp"
+"C:\ATPrintPDF 1.6\Composite\JFCDrawHeader.cpp"
+"C:\ATPrintPDF 1.6\Composite\JFCDrawLineTo.cpp"
+"C:\ATPrintPDF 1.6\Composite\JFCDrawLogo.cpp"
+"C:\ATPrintPDF 1.6\Composite\JFCDrawMoveTo.cpp"
+"C:\ATPrintPDF 1.6\Composite\JFCDrawPage.cpp"
+"C:\ATPrintPDF 1.6\Composite\JFCDrawPicture.cpp"
+"C:\ATPrintPDF 1.6\Composite\JFCDrawSetColor.cpp"
+"C:\ATPrintPDF 1.6\Composite\JFCDrawSetFillColor.cpp"
+"C:\ATPrintPDF 1.6\Composite\JFCDrawSetFont.cpp"
+"C:\ATPrintPDF 1.6\Composite\JFCDrawSetLineWidth.cpp"
+"C:\ATPrintPDF 1.6\Composite\JFCDrawTable.cpp"
+"C:\ATPrintPDF 1.6\Composite\JFCDrawText.cpp"
+"C:\ATPrintPDF 1.6\Draw\JFCGDIDraw.cpp"
+"C:\ATPrintPDF 1.6\Draw\JFCPDFDraw.cpp"
+"C:\ATPrintPDF 1.6\MainFrm.cpp"
+"C:\ATPrintPDF 1.6\PageInfo.cpp"
+"C:\ATPrintPDF 1.6\Draw\PoliceManager.cpp"
+"C:\ATPrintPDF 1.6\PreviewBar.cpp"
+"C:\ATPrintPDF 1.6\VersionApp.cpp"
+"C:\ATPrintPDF 1.6\ViewportWindow.cpp"
+]
+Creating command line "cl.exe @C:\DOCUME~1\vol\LOCALS~1\Temp\RSP553.tmp" 
+Creating temporary file "C:\DOCUME~1\vol\LOCALS~1\Temp\RSP554.tmp" with contents
+[
+/nologo /MT /W3 /GX /O2 /I "../PdfLib/" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /Fp"Release/ATPrintPDF.pch" /Yc"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
+"C:\ATPrintPDF 1.6\StdAfx.cpp"
+]
+Creating command line "cl.exe @C:\DOCUME~1\vol\LOCALS~1\Temp\RSP554.tmp" 
+Creating temporary file "C:\DOCUME~1\vol\LOCALS~1\Temp\RSP555.tmp" with contents
+[
+pdflib.lib utzadico.lib /nologo /subsystem:windows /incremental:no /pdb:"Release/arzaprnt.pdb" /machine:I386 /out:"./Bin/arzaprnt.exe" /libpath:"./PdfLib/" 
+".\Release\ARMLAdress.obj"
+".\Release\ARMLContext.obj"
+".\Release\ARMLField.obj"
+".\Release\ARMLFrame.obj"
+".\Release\ARMLHStroke.obj"
+".\Release\ARMLLineField.obj"
+".\Release\ARMLLogo.obj"
+".\Release\ARMLState.obj"
+".\Release\ARMLStateBegin.obj"
+".\Release\ARMLStateBody.obj"
+".\Release\ARMLStateEnd.obj"
+".\Release\ARMLStateError.obj"
+".\Release\ARMLStateFooter.obj"
+".\Release\ARMLStateFrame.obj"
+".\Release\ARMLStateHeader.obj"
+".\Release\ARMLStateTable.obj"
+".\Release\ARMLTabCell.obj"
+".\Release\ARMLTable.obj"
+".\Release\ARMLTabpave.obj"
+".\Release\ARPrintCmdLine.obj"
+".\Release\ATCloseWnd.obj"
+".\Release\ATPrintPDF.obj"
+".\Release\ATPrintPDFDoc.obj"
+".\Release\ATPrintPDFView.obj"
+".\Release\ExcelProgressSplash.obj"
+".\Release\GestionCouleurs.obj"
+".\Release\JFCBitmap.obj"
+".\Release\JFCDecimilToUnit.obj"
+".\Release\JFCDraw.obj"
+".\Release\JFCDrawAdress.obj"
+".\Release\JFCDrawBeginPage.obj"
+".\Release\JFCDrawBeginPath.obj"
+".\Release\JFCDrawBody.obj"
+".\Release\JFCDrawComponent.obj"
+".\Release\JFCDrawComposite.obj"
+".\Release\JFCDrawDocument.obj"
+".\Release\JFCDrawEndPage.obj"
+".\Release\JFCDrawEndPath.obj"
+".\Release\JFCDrawFooter.obj"
+".\Release\JFCDrawFrame.obj"
+".\Release\JFCDrawHeader.obj"
+".\Release\JFCDrawLineTo.obj"
+".\Release\JFCDrawLogo.obj"
+".\Release\JFCDrawMoveTo.obj"
+".\Release\JFCDrawPage.obj"
+".\Release\JFCDrawPicture.obj"
+".\Release\JFCDrawSetColor.obj"
+".\Release\JFCDrawSetFillColor.obj"
+".\Release\JFCDrawSetFont.obj"
+".\Release\JFCDrawSetLineWidth.obj"
+".\Release\JFCDrawTable.obj"
+".\Release\JFCDrawText.obj"
+".\Release\JFCGDIDraw.obj"
+".\Release\JFCPDFDraw.obj"
+".\Release\MainFrm.obj"
+".\Release\PageInfo.obj"
+".\Release\PoliceManager.obj"
+".\Release\PreviewBar.obj"
+".\Release\StdAfx.obj"
+".\Release\VersionApp.obj"
+".\Release\ViewportWindow.obj"
+".\Release\ATPrintPDF.res"
+]
+Creating command line "link.exe @C:\DOCUME~1\vol\LOCALS~1\Temp\RSP555.tmp"
+<h3>Output Window</h3>
+Compiling resources...
+Compiling...
+StdAfx.cpp
+Compiling...
+ARMLAdress.cpp
+ARMLContext.cpp
+ARMLField.cpp
+ARMLFrame.cpp
+ARMLHStroke.cpp
+ARMLLineField.cpp
+ARMLLogo.cpp
+ARMLState.cpp
+ARMLStateBegin.cpp
+ARMLStateBody.cpp
+ARMLStateEnd.cpp
+ARMLStateError.cpp
+ARMLStateFooter.cpp
+ARMLStateFrame.cpp
+ARMLStateHeader.cpp
+ARMLStateTable.cpp
+ARMLTabCell.cpp
+ARMLTable.cpp
+ARMLTabpave.cpp
+ARPrintCmdLine.cpp
+Generating Code...
+Compiling...
+ATCloseWnd.cpp
+ATPrintPDF.cpp
+ATPrintPDFDoc.cpp
+ATPrintPDFView.cpp
+ExcelProgressSplash.cpp
+GestionCouleurs.cpp
+JFCBitmap.cpp
+JFCDecimilToUnit.cpp
+JFCDraw.cpp
+JFCDrawAdress.cpp
+JFCDrawBeginPage.cpp
+JFCDrawBeginPath.cpp
+JFCDrawBody.cpp
+JFCDrawComponent.cpp
+JFCDrawComposite.cpp
+JFCDrawDocument.cpp
+JFCDrawEndPage.cpp
+JFCDrawEndPath.cpp
+JFCDrawFooter.cpp
+JFCDrawFrame.cpp
+Generating Code...
+Compiling...
+JFCDrawHeader.cpp
+JFCDrawLineTo.cpp
+JFCDrawLogo.cpp
+JFCDrawMoveTo.cpp
+JFCDrawPage.cpp
+JFCDrawPicture.cpp
+JFCDrawSetColor.cpp
+JFCDrawSetFillColor.cpp
+JFCDrawSetFont.cpp
+JFCDrawSetLineWidth.cpp
+JFCDrawTable.cpp
+JFCDrawText.cpp
+JFCGDIDraw.cpp
+JFCPDFDraw.cpp
+MainFrm.cpp
+PageInfo.cpp
+PoliceManager.cpp
+PreviewBar.cpp
+VersionApp.cpp
+ViewportWindow.cpp
+Generating Code...
+Linking...
+
+
+
+<h3>Results</h3>
+arzaprnt.exe - 0 error(s), 0 warning(s)
+</pre>
+</body>
+</html>

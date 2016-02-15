@@ -1,0 +1,14 @@
+Alain, 
+
+Tu as mon feu vert pour la nomenclature, 
+
+J'ai ajouté sur le document Nomenclature la possibilité de saisir plusieurs interlocuteurs pour les régies et les centrales ?
+
+Un interlocuteur se caractérise maintenant par un nom un prénom et une adresse émail. 
+
+Sur la boîte de saisie des références (annonceurs, régies, ou centrales) nous conservons la présence d'un interlocuteur, puisqu'il faut au minimum un interlocuteur par référence (annonceurs, régies, ou centrales).
+
+Sur les menus « régie et centrale » j'ai ajouté les commandes qui permettent de gérer les interlocuteurs. 
+
+Fred. 
+

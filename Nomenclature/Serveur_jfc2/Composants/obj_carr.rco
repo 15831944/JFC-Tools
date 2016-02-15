@@ -1,0 +1,5 @@
+// Identificateurs des icônes
+#include "Obj_Carr.rch"
+
+// Définition des icônes
+IDI_CARR_ICO1	ICON	DISCARDABLE	"Obj_Carr.icon1"

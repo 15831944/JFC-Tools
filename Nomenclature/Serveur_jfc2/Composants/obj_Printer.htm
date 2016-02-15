@@ -1,0 +1,1148 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type"
+content="text/html; charset=iso-8859-1">
+<meta name="GENERATOR" content="Microsoft FrontPage Express 2.0">
+<title>CObj</title>
+</head>
+
+<body>
+
+<p><font size="6">CObj_Printer</font> </p>
+
+<p>L'objet Printer est un outils de création, de visualisation
+et d'impression d'état de sortie. Il est complètement solidaire
+du système Windows 9x, qui lui fournit les fonctions et
+composants de bases utiles à son fonctionnement. <br>
+Les états de sortie sont tous composés de 3 parties : </p>
+
+<ul>
+    <li>un <b>entête de page</b></li>
+    <li>un <b>corps de page</b></li>
+    <li>un <b>pied de page</b></li>
+</ul>
+
+<p>Les tableaux ou les informations d'analyses sont situés dans
+la partie centrale de la page, le corps. Le corps est composés
+de : </p>
+
+<ul>
+    <li>un <b>titre</b> qui apparait au début</li>
+    <li>un <b>entête de corps</b> qui apparait sur chaque page</li>
+    <li>un <b>corps</b></li>
+    <li>un <b>pied de corps</b> qui apparait sur chaque page</li>
+    <li>un <b>total</b> qui apparait à la fin (<font
+        color="#FF0000"><blink>ATTENTION!! A l'heure où s'écrit
+        cette ligne, il vaut mieux utilisé le pied de corps pour
+        afficher son total.</blink></font></li>
+</ul>
+
+<p>Les tableaux sont séparés entre eux par des <b>interlignes</b>.
+<br>
+Le corps peut se décomposé en lignes, et/ou en colonnes de n
+caractères. </p>
+
+<p><b><i>Implémentation</i></b></p>
+
+<p>Le projet dans lequel va être lié l'objet doit inclure : </p>
+
+<ul>
+    <li>le fichier #include &quot;l.fra\afxprint.rc&quot; dans
+        RESSOURCE.H</li>
+    <li>Les 4 fonctions standards d'impression <a
+        href="#BOOL CMyView::OnPreparePrinting(CPrintInfo* pInfo)">OnPreparePrinting</a>,
+        <a
+        href="#void CMyView::OnBeginPrinting(CDC* pDC, CPrintInfo* pInfo)">OnBeginPrinting</a>,
+        <a href="#OnPrint(CDC* pDC, CPrintInfo* pInfo)">OnPrint</a>,
+        <a href="#OnEndPrinting(CDC* pDC, CPrintInfo* pInfo)">OnEndPrinting</a>,
+        dans la vue (view) correspondante.</li>
+    <li>Les messages <i>ON_COMMAND(ID_FILE_PRINT,
+        CView::OnFilePrint)</i>&nbsp; et <i>ON_COMMAND(ID_FILE_PRINT_PREVIEW,
+        CView::OnFilePrintPreview)</i> dans le message map de la
+        vue correspondante.</li>
+</ul>
+
+<p>Il faut inclure dans le projet : </p>
+
+<ul>
+    <li>OBJ_PRINTER.CPP</li>
+    <li>OBJ_PRINTER.H</li>
+</ul>
+
+<p>Il faut inclure dans le fichier d'en-tête appelant l'objet,
+ou sa classe héritante: </p>
+
+<ul>
+    <li>#include &lt;OBJ_PRINTER.H&gt; ou le fichier d'entête .H
+        de sa classe héritante.</li>
+    <li>Créer un objet du type <b>CObj_Printer</b> ou de sa
+        classe héritante.</li>
+</ul>
+
+<p><b><i>Remarques</i></b></p>
+
+Pour forcer l'orientation du document (Portait ou Paysage), il faut mettre en place
+les procédures suivantes (voir le <A href="#Orientation">code</A> pour les détails) : 
+<ul>
+	<li>
+		Déclarer une fonction <b>SetOrientation</b> dans la classe Application (héritière de CWinApp)
+	</li>
+	<li>
+		Déclarer la fonction <b>OnPreparePrinting</b> dans la classe héritant de l'objet printer.
+	</li>		
+	<li>
+		Appeler depuis cette fonction la fonction <b>SetOrientation</b> avec DMORIENT_PORTRAIT ou DMORIENT_LANDSCAPE
+	</li>	
+</ul>
+
+<hr>
+
+<p><font size="5">Membres de la classe CObj_Printer</font> </p>
+
+<p><b>Structures</b> &nbsp; </p>
+
+<table border="0" width="100%">
+    <tr>
+        <td><a href="#CObj_Printer::SIniPrint">SIniPrint</a></td>
+        <td>Cette structure spécifie le nombre de lignes des
+        parties de la page, et le(s) variables des tableau(x)
+        associés à l'état.</td>
+    </tr>
+    <tr>
+        <td width="15%"><a href="#CObj_Printer::SInfoTab">SInfoTab</a></td>
+        <td>Cette structure spécifie le nombre de lignes et/ou
+        de colonnes des sections d'un tableau.</td>
+    </tr>
+</table>
+
+<p><b>Surdéfinition des fonctions standards d'impression</b>
+&nbsp; </p>
+
+<table border="0" width="100%">
+    <tr>
+        <td width="15%"><a
+        href="#CObj_Printer::OnPreparePrinting">OnPreparePrinting</a></td>
+        <td>voir la doc de MFC; Prépare la fenêtre de l'apercu
+        ou la boîte de dialogue d'impression.</td>
+    </tr>
+    <tr>
+        <td><a href="#CObj_Printer::OnBeginPrinting">OnBeginPrinting</a></td>
+        <td>voir la doc de MFC; Doit être utiliser pour
+        initiliser l'objet d'impression.</td>
+    </tr>
+    <tr>
+        <td><a href="#CObj_Printer::OnPrint">OnPrint</a></td>
+        <td>voir la doc de MFC; Dessine sur l'impimante ou sur la
+        fenêtre de l'apercu l'état de sortie.</td>
+    </tr>
+    <tr>
+        <td><a href="#CObj_Printer::OnEndPrinting">OnEndPrinting</a></td>
+        <td>voir la doc de MFC; Libère les ressources et
+        supprime l'objet d'impression.</td>
+    </tr>
+</table>
+
+<p><b>Surdéfinition des fonctions d'initialisations</b> &nbsp; </p>
+
+<table border="0" cellpadding="0" width="100%">
+    <tr>
+        <td width="15%">SetDocument</td>
+        <td width="87%">Passe le pointeur du document qui
+        possède les données de l'état.</td>
+    </tr>
+    <tr>
+        <td><a href="#CObj_Printer::Initialise">Initialise</a></td>
+        <td>Initialise les structures de l'état.</td>
+    </tr>
+</table>
+
+<p><b>Surdéfinition des fonctions de description</b> &nbsp; </p>
+
+<table border="0" width="100%">
+    <tr>
+        <td width="15%"><a href="#CObj_Printer::DrawTete">DrawTete</a></td>
+        <td>Dessine l'entête de page</td>
+    </tr>
+    <tr>
+        <td><a href="#CObj_Printer::DrawPieds">DrawPieds</a></td>
+        <td>Dessine le pied de page</td>
+    </tr>
+    <tr>
+        <td><a href="#CObj_Printer::DrawTab">DrawTab</a></td>
+        <td>Dessine les informations du corps de la page par
+        ligne</td>
+    </tr>
+    <tr>
+        <td><a href="#CObj_Printer::DrawCol">DrawCol</a></td>
+        <td>Dessine les informations du corps de la page par
+        colonne</td>
+    </tr>
+    <tr>
+        <td><a href="#CObj_Printer::DrawVTab">DrawVTab</a></td>
+        <td>Dessine des lignes verticales pour terminé le
+        contour d'un tableau</td>
+    </tr>
+    <tr>
+        <td><a href="#CObj_Printer::DrawBk">DrawBk</a></td>
+        <td>Possibilité d'avoir une incrustation dans le fond le
+        la page</td>
+    </tr>
+</table>
+
+<p><b>Dessin</b> &nbsp; </p>
+
+<table border="0" width="100%">
+    <tr>
+        <td><a href="#CObj_Printer::LoadFont">LoadFont</a></td>
+        <td>Charge un type de font depuis le tableau prédéfinie
+        des fonts</td>
+    </tr>
+    <tr>
+        <td><a href="#CObj_Printer::LoadPen">LoadPen</a></td>
+        <td>Charge un type de crayon depuis le tableau
+        prédéfinie des crayons</td>
+    </tr>
+    <tr>
+        <td><a href="#CObj_Printer::LoadBitmap">LoadBitmap</a></td>
+        <td>Charge une bitmap numéroté et nommée</td>
+    </tr>
+    <tr>
+        <td><a href="#CObj_Printer::TraitH">TraitH</a></td>
+        <td>Trace un trait horizontal</td>
+    </tr>
+    <tr>
+        <td width="15%"><a href="#CObj_Printer::TraitDoubleH">TraitDoubleH</a></td>
+        <td>Trace un double trait horizontal</td>
+    </tr>
+    <tr>
+        <td><a href="#CObj_Printer::TraitV">TraitV</a></td>
+        <td>Trace deux traits verticaux entourant une colonne</td>
+    </tr>
+    <tr>
+        <td><a href="#CObj_Printer::TraitVG">TraitVG</a></td>
+        <td>Trace le trait vertical gauche d'un rectangle</td>
+    </tr>
+    <tr>
+        <td><a href="#CObj_Printer::TraitVD">TraitVD</a></td>
+        <td>Trace le trait vertical droit dun rectangle</td>
+    </tr>
+    <tr>
+        <td><a href="#CObj_Printer::EcritG">EcritG</a></td>
+        <td>Ecrit un texte aligné à gauche</td>
+    </tr>
+    <tr>
+        <td><a href="#CObj_Printer::EcritD">EcritD</a></td>
+        <td>Ecrit un texte aligné à droite</td>
+    </tr>
+    <tr>
+        <td><a href="#CObj_Printer::EcritC">EcritC</a></td>
+        <td>Ecrit un texte centré</td>
+    </tr>
+    <tr>
+        <td><a href="#CObj_Printer::DessineBitmap">DessineBitmap</a></td>
+        <td>Dessine une bitmap</td>
+    </tr>
+    <tr>
+        <td><a href="#CObj_Printer::RemplisRect">RemplisRect</a></td>
+        <td>Remplissage d'un rectangle avec une couleur</td>
+    </tr>
+    <tr>
+        <td><a href="#CObj_Printer::ShadowRect">ShadowRect</a></td>
+        <td>Trace un cadre possédant une ombre</td>
+    </tr>
+    <tr>
+        <td><a href="#CObj_Printer::DessineCadre">DessineCadre</a></td>
+        <td>Trace un cadre</td>
+    </tr>
+    <tr>
+        <td><a href="#CObj_Printer::DessineCadre2">DessineCadre2</a></td>
+        <td>Trace un cadre décalé.</td>
+    </tr>
+</table>
+
+<hr>
+
+<p><a name="CObj_Printer::SIniPrint"></a><font size="5">CObj_Printer::SIniPrint</font>
+<br>
+<b>struct SIniPrint</b> <br>
+{ <br>
+<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; CInfoTabArray</b> <i>m_InfoTab</i>;
+<br>
+<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; short</b> <i>m_NbLigneTete</i>;
+<br>
+<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; short</b> <i>m_NbLignePieds</i>;
+<br>
+<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; short</b> <i>m_fOrientation</i>;
+<br>
+}; </p>
+
+<p><b>Paramètres</b> </p>
+
+<p><i>m_InfoTab&nbsp;&nbsp;&nbsp; </i>Stucture de tableau(x) du
+type <a href="#CObj_Printer::SInfoTab">SInfoTab</a>; </p>
+
+<p><i>m_NbLigneTete&nbsp;&nbsp;&nbsp; </i>Nombre de lignes pour
+l'entête de la page; </p>
+
+<p><i>m_NbLignePieds&nbsp;&nbsp;&nbsp; </i>Nombre de lignes pour
+le pied de la page; </p>
+
+<p><i>m_fOrientation</i>&nbsp;&nbsp;&nbsp; 0:libre 1:Paysage
+2:Portrait </p>
+
+<p><b>Remarque</b> </p>
+
+<p>Variables regroupant la configuration de l'impression. <br>
+</p>
+
+<hr>
+
+<p><a name="CObj_Printer::SInfoTab"></a><font size="5">CObj_Printer::SInfoTab</font>
+<br>
+<b>struct SInfoTab</b> <br>
+{ <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <b>short</b> <i>m_NbLigneTitre</i>;
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <b>short</b> <i>m_NbLigneTete</i>;
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <b>short</b> <i>m_NbLigneCorps</i>;
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <b>short</b> <i>m_NbLignePieds</i>;
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <b>short</b> <i>m_NbLigneTotal</i>;
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <b>short</b> <i>m_NbLigneInterLigne</i>;
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <b>CWordArray</b> <i>m_CarColonne</i>;
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <b>short</b> <i>m_NbCarGauche</i>;
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <b>short</b> <i>m_NbCarDroit</i>;
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <b>char</b> <i>m_fColonne</i>;
+<br>
+}; <br>
+<b>typedef CArray&lt;SInfoTab, SInfoTab&gt;</b> <i>CInfoTabArray</i>;
+</p>
+
+<p><b>Paramètres</b> </p>
+
+<p><i>m_NbLigneTitre</i>&nbsp;&nbsp;&nbsp; Nombre de lignes pour
+le titre du tableau; </p>
+
+<p><i>m_NbLigneTete&nbsp;&nbsp;&nbsp; </i>Nombre de lignes pour
+l'entête de corps du tableau; </p>
+
+<p><i>m_NbLigneCorps&nbsp;&nbsp;&nbsp; </i>Nombre de lignes pour
+le corps du tableau; </p>
+
+<p><i>m_NbLignePieds&nbsp;&nbsp;&nbsp; </i>Nombre de lignes pour
+le pied de corps du tableau; </p>
+
+<p><i>m_NbLigneTotal&nbsp;&nbsp;&nbsp; </i>Nombre de lignes pour
+la section&nbsp; total du tableau; </p>
+
+<p><i>m_NbLigneInterLigne</i>&nbsp;&nbsp;&nbsp; Nombre de lignes
+qui sépare les tableaux; </p>
+
+<p><i>m_CarColonne&nbsp;&nbsp;&nbsp; </i>Nombre de caractères
+pour chacune des colonnes du tableau. Ce champ est pris en compte
+si le paramètre <i>m_fColonne</i> vaut 1 ou 2; </p>
+
+<p><i>m_NbCarGauche&nbsp;&nbsp;&nbsp; </i>Nombre de caractères
+pour la partie gauche du corps de la page. </p>
+
+<p><i>m_NbCarDroit</i>&nbsp;&nbsp;&nbsp; Nombre de caractères
+pour la partie droite du corps de la page. </p>
+
+<p><i>m_fColonne</i>&nbsp;&nbsp;&nbsp; 0=appel par ligne; 1=appel
+par colonne; 2=appel colonne/ligne </p>
+
+<p><b>Remarque</b> </p>
+
+<p>Variables concernant chaque tableau. </p>
+
+<hr>
+
+<p><a name="CObj_Printer::Initialise"></a><font size="5">CObj_Printer::Initialise</font>
+<br>
+<b>virtual void Initialise</b>(<b>CDC *</b> <i>pDC</i>, <b>SIniPrint
+*</b> <i>pInit</i>); </p>
+
+<p><b>Paramètre</b> </p>
+
+<p><i>pDC&nbsp;&nbsp;&nbsp; </i>Device context de l'imprimante. </p>
+
+<p><i>pInit&nbsp;&nbsp;&nbsp; </i>Pointeur sur une structure de
+type <a href="#CObj_Printer::SIniPrint">SIniPrint</a> contenant
+les informations complètes de l'état; </p>
+
+<p><b>Remarque</b> </p>
+
+<hr>
+
+<p><a name="CObj_Printer::OnPreparePrinting"></a><font size="5">CObj_Printer::OnPreparePrinting</font>
+<br>
+<b>virtual bool OnPreparePrinting</b>(<b>CPrintInfo</b>* <i>pInfo</i>);
+</p>
+
+<p><b>Paramètre</b> </p>
+
+<p><i>pInfo</i> </p>
+
+<p><b>Remarque</b> <br>
+&nbsp; </p>
+
+<hr>
+
+<p><a name="CObj_Printer::OnBeginPrinting"></a><font size="5">CObj_Printer::OnBeginPrinting</font>
+<br>
+<b>virtual void OnBeginPrinting</b>(<b>CDC</b>* <i>pDC</i>, <b>CPrintInfo</b>*
+<i>pInfo</i>); </p>
+
+<p><b>Paramètre</b> </p>
+
+<p><i>pDC</i>&nbsp;&nbsp;&nbsp; Device context de l'imprimante </p>
+
+<p><i>pInfo</i> </p>
+
+<p><b>Remarque</b> <br>
+&nbsp; </p>
+
+<hr>
+
+<p><a name="CObj_Printer::OnEndPrinting"></a><font size="5">CObj_Printer::OnEndPrinting</font>
+<br>
+<b>virtual void OnEndPrinting</b>(<b>CDC</b>* <i>pDC</i>, <b>CPrintInfo</b>*
+<i>pInfo</i>); </p>
+
+<p><b>Paramètre</b> </p>
+
+<p><i>pDC</i>&nbsp;&nbsp;&nbsp; Device context de l'imprimante. </p>
+
+<p><i>pInfo</i> </p>
+
+<p><b>Remarque</b> <br>
+&nbsp; </p>
+
+<hr>
+
+<p><a name="CObj_Printer::OnPrint"></a><font size="5">CObj_Printer::OnPrint</font>
+<br>
+<b>virtual void OnPrint</b>(<b>CDC</b>* <i>pDC</i>, <b>CPrintInfo</b>*
+<i>pInfo</i>); </p>
+
+<p><b>Paramètre</b> </p>
+
+<p><i>pDC&nbsp;&nbsp;&nbsp; </i>Device context de l'imprimante. </p>
+
+<p><i>pInfo</i> </p>
+
+<p><b>Remarque</b> <br>
+&nbsp; </p>
+
+<hr>
+
+<p><a name="CObj_Printer::DrawTete"></a><font size="5">CObj_Printer::DrawTete</font>
+<br>
+<b>virtual bool DrawTete</b>(<b>CDC</b> * <i>pDC</i>, <b>CRect</b>
+* <i>pR</i>, <b>short</b> <i>NrPage</i>, <b>short</b> <i>NrLig</i>);
+</p>
+
+<p><b>Paramètre</b> </p>
+
+<p><i>pDC</i>&nbsp;&nbsp;&nbsp; Device context de l'imprimante. </p>
+
+<p><i>pR</i>&nbsp;&nbsp;&nbsp; Coordonnées et dimension du
+rectangle disponible pour dessiner; </p>
+
+<p><i>NrPage</i>&nbsp;&nbsp;&nbsp; Numéro de la page dans laquel
+on dessine; </p>
+
+<p><i>NrLig</i>&nbsp;&nbsp;&nbsp; Numéro de la ligne qui
+correspond au rectangle; </p>
+
+<p><b>Remarque</b> </p>
+
+<p>Cette fonction doit être surdéfinie. Les dessins et textes
+qui sont gérés appartiennent à l'entête de la page. </p>
+
+<hr>
+
+<p><a name="CObj_Printer::DrawPieds"></a><font size="5">CObj_Printer::DrawPieds</font>
+<br>
+<b>virtual bool DrawPieds</b>(<b>CDC</b> * <i>pDC</i>, <b>CRect</b>
+* <i>pR</i>, <b>short</b> <i>NrPage</i>, <b>short</b> <i>NrLig</i>);
+</p>
+
+<p><b>Paramètre</b> </p>
+
+<p><i>pDC</i>&nbsp;&nbsp;&nbsp; Device context de l'imprimante. </p>
+
+<p><i>pR</i>&nbsp;&nbsp;&nbsp; Coordonnées et dimension du
+rectangle disponible pour dessiner; </p>
+
+<p><i>NrPage</i>&nbsp;&nbsp;&nbsp; Numéro de la page dans laquel
+on dessine; </p>
+
+<p><i>NrLig</i>&nbsp;&nbsp;&nbsp; Numéro de la ligne qui
+correspond au rectangle; </p>
+
+<p><b>Remarque</b> </p>
+
+<p>Cette fonction doit être surdéfinie. Les dessins et textes
+qui sont gérés appartiennent au pied de la page. </p>
+
+<hr>
+
+<p><a name="CObj_Printer::DrawTab"></a><font size="5">CObj_Printer::DrawTab</font>
+<br>
+<b>virtual bool DrawTab</b>(<b>CDC</b> * <i>pDC</i>, <b>CRect</b>
+* <i>pR</i>, <b>short </b><i>NrTab</i>, <b>short </b><i>NrType</i>,
+<b>short </b><i>NrLig</i>, <b>short </b><i>NbLig</i>); </p>
+
+<p><b>Paramètre</b> </p>
+
+<p><i>pDC</i>&nbsp;&nbsp;&nbsp; Device context de l'imprimante. </p>
+
+<p><i>pR</i>&nbsp;&nbsp;&nbsp; Coordonnées et dimension du
+rectangle disponible pour dessiner; </p>
+
+<p><i>NrTab</i>&nbsp;&nbsp;&nbsp; Contient l'index du tableau qui
+est en cours de composition; </p>
+
+<p><i>NrType</i>&nbsp;&nbsp;&nbsp; Spécifie la section du corps
+qui est en cours de composition; Chacune des sections diposes
+d'un nombre de lignes spécifiées dans l'initialisation. </p>
+
+<ul>
+    <li>PRINT_TITRE : Section du corps de la page ou va
+        apparaitre le titre du tableau.</li>
+    <li>PRINT_TETE : Section du corps de la page dans lequel est
+        disposé l'entête d'un tableau. Elle est répété sur
+        chaque page.</li>
+    <li>PRINT_CORPS : Section du corps de la page où sont
+        disosés les informations principales.</li>
+    <li>PRINT_PIEDS : Section du corps de la page qui clôture le
+        corps. Elle est répété sur chaque page.</li>
+    <li>PRINT_TOTAL : Section du corps de la page qui clôture le
+        tableau.</li>
+    <li>PRINT_INTERLIGNE : Section du corps de la page utilisé
+        pour créer une séparation entre chaque tableau.</li>
+</ul>
+
+<p><i>NrLig</i>&nbsp;&nbsp;&nbsp; Spécifie le numéro de la
+ligne qui correspond au rectangle; </p>
+
+<p><i>NbLig</i>&nbsp;&nbsp;&nbsp; Nombre de lignes qui composent
+la section du corps définie par <i>NrType</i>; </p>
+
+<p><b>Remarque</b> </p>
+
+<p>Cette fonction doit être surdéfinie. Les dessins, tableaux
+et textes apparaissent dans la partie centrale de la page, le
+corps. Ce corps est divisé en lignes, dans lesquelles on gère
+les informations qui y sont affichés. </p>
+
+<hr>
+
+<p><a name="CObj_Printer::DrawCol"></a><font size="5">CObj_Printer::DrawCol</font>
+<br>
+<b>virtual bool DrawCol</b>(<b>CDC</b> * <i>pDC</i>, <b>CRect</b>
+* <i>pR</i>, <b>short</b><i>NrTab</i>, <b>short</b><i>NrType</i>,
+<b>short</b><i>NrLig</i>, <b>short</b><i>NbLig</i>, <b>short</b><i>NrCol</i>,
+<b>short</b><i>NbCol</i>); </p>
+
+<p><b>Paramètre</b> </p>
+
+<p><i>pDC</i>&nbsp;&nbsp;&nbsp; Device context de l'imprimante. </p>
+
+<p><i>pR</i>&nbsp;&nbsp;&nbsp; Coordonnées et dimension du
+rectangle disponible pour dessiner; </p>
+
+<p><i>NrTab</i>&nbsp;&nbsp;&nbsp; Contient l'index du tableau qui
+est en cours de composition; </p>
+
+<p><i>NrType</i>&nbsp;&nbsp;&nbsp; Spécifie la section du corps
+qui est en cours de composition; voir <a
+href="#CObj_Printer::DrawTab">CObj_Printer::DrawTab</a> </p>
+
+<p><i>NrLig</i>&nbsp;&nbsp;&nbsp; Spécifie le numéro de la
+ligne qui correspond au rectangle; </p>
+
+<p><i>NbLig</i>&nbsp;&nbsp;&nbsp; Nombre de lignes qui composent
+la section du corps définie par <i>NrType</i>; </p>
+
+<p><i>NrCol</i>&nbsp;&nbsp;&nbsp; Spécifie le numéro de la
+colonne qui correspond au rectangle;
+&lt;&lt;&lt;&lt;&lt;&lt;&lt;A REVOIR&gt;&gt;&gt;&gt;&gt;&gt;&gt; </p>
+
+<p><i>NbCol</i>&nbsp;&nbsp;&nbsp; Spécifie le nombre de
+caractères occupant la colonne; </p>
+
+<p><b>Remarque</b> </p>
+
+<p>Cette fonction doit être surdéfinie. Les dessins, tableaux
+et textes apparaissent dans la partie centrale de la page, le
+corps. Ce corps est divisé en lignes et colonnes, dans
+lesquelles on gère les informations qui y sont affichés. </p>
+
+<hr>
+
+<p><a name="CObj_Printer::DrawVTab"></a><font size="5">CObj_Printer::DrawVTab</font>
+<br>
+<b>virtual bool DrawVTab</b>(<b>CDC</b> * <i>pDC</i>, <b>CRect</b>
+* <i>pR_haut</i>, <b>CRect</b> * <i>pR_bas</i>); </p>
+
+<p><b>Paramètre</b> </p>
+
+<p><i>pDC</i>&nbsp;&nbsp;&nbsp; Device context de l'imprimante. </p>
+
+<p><i>pR_haut</i>&nbsp;&nbsp;&nbsp; Rectangle dans lequel on
+extrait les coordonnées des deux points haut; </p>
+
+<p><i>pR_bas</i>&nbsp;&nbsp;&nbsp; Rectangle dans lequel on
+extrait les coordonnées des deux points bas; </p>
+
+<p><b>Remarque</b> </p>
+
+<p>Trace DEUX traits verticaux dont les coordonnées sont
+déterminées par chaque rectangle. <br>
+</p>
+
+<hr>
+
+<p><a name="CObj_Printer::DrawBk"></a><font size="5">CObj_Printer::DrawBk</font>
+<br>
+<b>virtual bool DrawBk</b>(<b>CDC</b> * <i>pDC</i>, <b>CRect</b>
+* <i>pR</i>); </p>
+
+<p><b>Paramètre</b> </p>
+
+<p><i>pDC</i>&nbsp;&nbsp;&nbsp; Device context de l'imprimante. </p>
+
+<p><i>pR</i>&nbsp;&nbsp;&nbsp; Rectangle dans lequel on va
+dessiné ce qui va apparaitre sur le fond de la page; </p>
+
+<p><b>Remarque</b> </p>
+
+<p>Dessine ce qui va apparaite en arrière plan de la page. <br>
+</p>
+
+<hr>
+
+<p><a name="CObj_Printer::LoadFont"></a><font size="5">CObj_Printer::LoadFont</font>
+<br>
+<b>void LoadFont</b>(<b>CDC</b> * <i>pDC</i>, <b>short</b> <i>Nr</i>);
+</p>
+
+<p><b>Paramètre</b> </p>
+
+<p><i>pDC</i>&nbsp;&nbsp;&nbsp; Device context de l'imprimante; </p>
+
+<p><i>Nr</i>&nbsp;&nbsp;&nbsp; Index du tableau dans lequel
+différentes fontes sont définies; </p>
+
+<p><b>Remarque</b> </p>
+
+<p>Fonction qui charge des fontes qui sont déja prédéfinies. </p>
+
+<hr>
+
+<p><a name="CObj_Printer::LoadPen"></a><font size="5">CObj_Printer::LoadPen</font>
+<br>
+<b>void LoadPen</b>(<b>CDC</b> * <i>pDC</i>, <b>short</b> <i>Nr</i>);
+</p>
+
+<p><b>Paramètre</b> </p>
+
+<p><i>pDC</i>&nbsp;&nbsp;&nbsp; Device context de l'imprimante; </p>
+
+<p><i>Nr</i>&nbsp;&nbsp;&nbsp; Index du tableau dans lequel
+différents styles de stylos sont définis; </p>
+
+<p><b>Remarque</b> </p>
+
+<p>Fonction qui charge des stylos dont le styles est déja&nbsp;
+prédéfinie. </p>
+
+<hr>
+
+<p><a name="CObj_Printer::LoadBitmap"><font size="5"><strong>CObj_Printer::LoadBitmap</strong></font></a><br>
+<strong>void LoadBitmap</strong>(<strong>CDC</strong> <em>*pDC</em>,
+<strong>CString</strong> <em>filename</em>, <strong>short</strong>
+<em>Nr</em>);</p>
+
+<p><strong>Paramètre</strong></p>
+
+<p><i>pDC</i>&nbsp;&nbsp;&nbsp; Device context de l'imprimante; </p>
+
+<p><em>filename </em>Nom de la bitmap à charger;</p>
+
+<p><em>Nr </em>Numéro au format BITMAP_<em>Nr </em>qui lie la
+bitmap à chargé. Le maximum de bitmap pouvant être chargé est
+contenu dans MAXBITMAP. Nr doit être compris entre 0 et
+MAXBITMAP-1.</p>
+
+<p><strong>Remarque</strong></p>
+
+<p>Chargement d'une bitmap à partir de son nom de fichier.</p>
+
+<hr>
+
+<p><a name="CObj_Printer::TraitH"></a><font size="5">CObj_Printer::TraitH</font>
+<br>
+<b>void TraitH</b>(<b>CDC</b> * <i>pDC</i>, <b>CRect</b> * <i>pR</i>,
+<b>short</b><i>Pour100_Debut</i>=0, <b>short</b><i>Pour100_Fin</i>=100,
+<b>CPen</b> * <i>pPen</i>=NULL); </p>
+
+<p><b>Paramètre</b> </p>
+
+<p><i>pDC</i>&nbsp;&nbsp;&nbsp; Device context de l'imprimante. </p>
+
+<p><i>pR</i>&nbsp;&nbsp;&nbsp; Rectangle dans lequel on extrait
+les coordonnées du point gauche et droit; </p>
+
+<p><i>Pour100_Debut</i>&nbsp;&nbsp;&nbsp; Ratio(%) correspondant
+à la marge de gauche par rapport au cadre; </p>
+
+<p><i>Pour100_Fin</i>&nbsp;&nbsp;&nbsp; Ratio(%) correspondant à
+la marge de droite par rapport au cadre; </p>
+
+<p><i>pPen</i>&nbsp;&nbsp;&nbsp; Pointeur sur un style de stylo; </p>
+
+<p><b>Remarque</b> </p>
+
+<p>Trace un trait horizontal qui est situé au milieu du
+rectangle. </p>
+
+<hr>
+
+<p><a name="CObj_Printer::TraitDoubleH"></a><font size="5">CObj_Printer::TraitDoubleH</font>
+<br>
+<b>void TraitDoubleH</b>(<b>CDC</b> * <i>pDC</i>, <b>CRect</b> * <i>pR</i>,
+<b>short</b><i>Pour100_Debut</i>=0, <b>short</b><i>Pour100_Fin</i>=100,
+<b>CPen</b> * <i>pPen</i>=NULL); </p>
+
+<p><b>Paramètre</b> </p>
+
+<p><i>pDC</i>&nbsp;&nbsp;&nbsp; Device context de l'imprimante. </p>
+
+<p><i>pR</i>&nbsp;&nbsp;&nbsp; Rectangle dans lequel va
+apparaitre le texte. </p>
+
+<p><i>Pour100_Debut</i>&nbsp;&nbsp;&nbsp; Ratio(%) correspondant
+à la marge de gauche par rapport au cadre; </p>
+
+<p><i>Pour100_Fin</i>&nbsp;&nbsp;&nbsp; Ratio(%) correspondant à
+la marge de droite par rapport au cadre; </p>
+
+<p><i>pPen</i>&nbsp;&nbsp;&nbsp; Pointeur sur un style de stylo; </p>
+
+<p><b>Remarque</b> </p>
+
+<p>Trace un double trait horizontal qui est situé au milieu du
+rectangle. </p>
+
+<hr>
+
+<p><a name="CObj_Printer::TraitV"></a><font size="5">CObj_Printer::TraitV</font>
+<br>
+<b>void TraitV</b>(<b>CDC</b> * <i>pDC</i>, <b>CRect</b> * <i>pR_haut</i>,
+<b>CRect</b> * <i>pR_bas</i>, <b>short</b> <i>Pour100_Debut</i>=0,
+<b>short</b><i>Pour100_Fin</i>=100, <b>CPen</b> * <i>pPen</i>=NULL);
+</p>
+
+<p><b>Paramètre</b> </p>
+
+<p><i>pDC</i>&nbsp;&nbsp;&nbsp; Device context de l'imprimante. </p>
+
+<p><i>pR_haut</i>&nbsp;&nbsp;&nbsp; Rectangle dans lequel on
+extrait les coordonnées du point haut; </p>
+
+<p><i>pR_bas</i>&nbsp;&nbsp;&nbsp; Rectangle dans lequel on
+extrait les coordonnées du point bas; </p>
+
+<p><i>Pour100_Debut</i>&nbsp;&nbsp;&nbsp; Ratio(%) correspondant
+à la marge de gauche par rapport au cadre; </p>
+
+<p><i>Pour100_Fin</i>&nbsp;&nbsp;&nbsp; Ratio(%) correspondant à
+la marge de droite par rapport au cadre; </p>
+
+<p><i>pPen</i>&nbsp;&nbsp;&nbsp; Pointeur sur un style de stylo; </p>
+
+<p><b>Remarque</b> </p>
+
+<p>Trace un trait vertical à gauche et à droite grace à deux
+paires de points qui sont déteminés à partir des deux cadres. </p>
+
+<hr>
+
+<p><a name="CObj_Printer::TraitVG"></a><font size="5">CObj_Printer::TraitVG</font>
+<br>
+<b>void TraitVG</b>(<b>CDC</b> * <i>pDC</i>, <b>CRect</b> * <i>pR_haut</i>,
+<b>CRect</b> * <i>pR_bas</i>, <b>short</b> <i>Pour100_Debut</i>=0,
+<b>short</b><i>Pour100_Fin</i>=100, <b>CPen</b> * <i>pPen</i>=NULL);
+<br>
+<a name="CObj_Printer::TraitVD"></a><font size="5">CObj_Printer::TraitVD</font>
+<br>
+<b>void TraitVD</b>(<b>CDC</b> * <i>pDC</i>, <b>CRect</b> * <i>pR_haut</i>,
+<b>CRect</b> * <i>pR_bas</i>, <b>short</b> <i>Pour100_Debut</i>=0,
+<b>short</b><i>Pour100_Fin</i>=100, <b>CPen</b> * <i>pPen</i>=NULL);
+</p>
+
+<p><b>Paramètre</b> </p>
+
+<p><i>pDC</i>&nbsp;&nbsp;&nbsp; Device context de l'imprimante. </p>
+
+<p><i>pR_haut</i>&nbsp;&nbsp;&nbsp; Rectangle dans lequel on
+extrait les coordonnées du point haut; </p>
+
+<p><i>pR_bas</i>&nbsp;&nbsp;&nbsp; Rectangle dans lequel on
+extrait les coordonnées du point bas; </p>
+
+<p><i>Pour100_Debut</i>&nbsp;&nbsp;&nbsp; Ratio(%) correspondant
+à la marge de gauche qui délimite la position des extrémités
+du trait; </p>
+
+<p><i>Pour100_Fin</i>&nbsp;&nbsp;&nbsp; Ratio(%) correspondant à
+la marge de droite qui délimite la position des extrémités du
+trait; </p>
+
+<p><i>pPen</i>&nbsp;&nbsp;&nbsp; Pointeur sur un style de stylo </p>
+
+<p><b>Remarque</b> </p>
+
+<p>Trace un trait vertical à gauche ou à droite grace à deux
+points positionnée chacun dans un cadre. <br>
+</p>
+
+<hr>
+
+<p><br>
+&nbsp; </p>
+
+<p><a name="CObj_Printer::EcritG"></a><font size="5">CObj_Printer::EcritG</font>
+<br>
+<b>void EcritG</b>(<b>CDC</b> * <i>pDC</i>, <b>CString</b> <i>txt</i>,
+<b>CRect</b> * <i>pR</i>, <b>short</b> <i>Pour100_Debut</i>=0, <b>short</b><i>Pour100_Fin</i>=100,
+<b>short</b><i>Offset</i>=0, <b>CFont</b> * <i>pFont</i>=NULL, <b>COLORREF</b><i>TxtRGB</i>=RGB(0,0,0));
+<br>
+<a name="CObj_Printer::EcritD"></a><font size="5">CObj_Printer::EcritD</font>
+<br>
+<b>void EcritD</b>(<b>CDC</b> * <i>pDC</i>, <b>CString</b> <i>txt</i>,
+<b>CRect</b> * <i>pR</i>, <b>short</b> <i>Pour100_Debut</i>=0, <b>short</b><i>Pour100_Fin</i>=100,
+<b>short</b><i>Offset</i>=0, <b>CFont</b> * <i>pFont</i>=NULL, <b>COLORREF</b><i>TxtRGB</i>=RGB(0,0,0));
+</p>
+
+<p><b>Paramètre</b> </p>
+
+<p><i>pDC</i>&nbsp;&nbsp;&nbsp; Device context de l'imprimante. </p>
+
+<p><i>txt</i>&nbsp;&nbsp;&nbsp; Texte qui va être imprimé. </p>
+
+<p><i>pR</i>&nbsp;&nbsp;&nbsp; Rectangle dans lequel va
+apparaitre le texte. </p>
+
+<p><i>Pour100_Debut</i>&nbsp;&nbsp;&nbsp; Ratio(%) qui
+correspondant à la marge de gauche qui délimite l'espace ou va
+s'inscrire le texte; </p>
+
+<p><i>Pour100_Fin</i>&nbsp;&nbsp;&nbsp; Ratio(%) qui
+correspondant à la marge de droite qui délimite l'espace ou va
+s'inscrire le texte; </p>
+
+<p><i>Offset</i>&nbsp;&nbsp;&nbsp; Ratio(%) qui correspond au
+décalage du texte par rapport à la marge de gauche ou de
+droite. </p>
+
+<p><i>pFont</i>&nbsp;&nbsp;&nbsp; Pointeur sur la font utilisé
+pour imprimer le texte </p>
+
+<p><i>TxtRGB</i>&nbsp;&nbsp;&nbsp; Couleur du texte </p>
+
+<p><b>Remarque</b> </p>
+
+<p>Imprime un texte placé à gauche ou à droite à l'intérieur
+d'un cadre. </p>
+
+<hr>
+
+<p><a name="CObj_Printer::EcritC"></a><font size="5">CObj_Printer::EcritC</font>
+<br>
+<b>void EcritC</b>(<b>CDC</b> * <i>pDC</i>, <b>CString</b> <i>txt</i>,
+<b>CRect</b> * <i>pR</i>, <b>short</b> <i>Pour100_Debut</i>=0, <b>short</b><i>Pour100_Fin</i>=100,
+<b>CFont</b> * <i>pFont</i>=NULL, <b>COLORREF</b><i>TxtRGB</i>=RGB(0,0,0));
+</p>
+
+<p><b>Paramètre</b> </p>
+
+<p><i>pDC</i>&nbsp;&nbsp;&nbsp; Device context de l'imprimante. </p>
+
+<p><i>txt</i>&nbsp;&nbsp;&nbsp; Texte qui va être imprimé. </p>
+
+<p><i>pR</i>&nbsp;&nbsp;&nbsp; Rectangle dans lequel va
+apparaitre le texte. </p>
+
+<p><i>Pour100_Debut</i>&nbsp;&nbsp;&nbsp; Ratio(%) correspondant
+à la marge de gauche par rapport au cadre; </p>
+
+<p><i>Pour100_Fin</i>&nbsp;&nbsp;&nbsp; Ratio(%) correspondant à
+la marge de droite par rapport au cadre; </p>
+
+<p><i>pFont</i>&nbsp;&nbsp;&nbsp; Pointeur sur la font utilisée
+pour imprimer le texte </p>
+
+<p><i>TxtRGB</i>&nbsp;&nbsp;&nbsp; Couleur du texte </p>
+
+<p><b>Remarque</b> </p>
+
+<p>Imprime un texte centré dans un rectangle donné. </p>
+
+<hr>
+
+<p><a name="CObj_Printer::DessineBitmap"></a><font size="5">CObj_Printer::DessineBitmap</font>
+<br>
+<strong>void DessineBitmap</strong>(<strong>CDC</strong> <em>*pDC</em>,<strong>CRect</strong>
+<em>*pR</em>, <strong>short</strong> <em>Nr</em>, <strong>short</strong>
+<em>Pour100_Debut</em>=0, <strong>short</strong> <em>Pour100_Fin</em>=100);</p>
+
+<p><b>Paramètre</b> </p>
+
+<p><i>pDC</i>&nbsp;&nbsp;&nbsp; Device context de l'imprimante. </p>
+
+<p><i>pR</i>&nbsp;&nbsp;&nbsp; Rectangle qui correspondant à la
+position du cadre; </p>
+
+<p>&nbsp;<i>Nr</i>&nbsp;&nbsp;&nbsp; Numéro de la bitmap qui
+doit être imprimé; </p>
+
+<p><i>Pour100_Debut</i>&nbsp;&nbsp;&nbsp; Ratio(%) correspondant
+à la marge de gauche par rapport au cadre; </p>
+
+<p><i>Pour100_Fin</i>&nbsp;&nbsp;&nbsp; Ratio(%) correspondant à
+la marge de droite par rapport au cadre; </p>
+
+<p><b>Remarque</b> </p>
+
+<p>Dessine une bitmap. </p>
+
+<hr>
+
+<p><a name="CObj_Printer::RemplisRect"></a><font size="5">CObj_Printer::RemplisRect</font>
+<br>
+<b>void RemplisRect</b>(<b>CDC</b>* <i>pDC</i>, <b>CRect</b> * <i>pR</i>,
+<b>COLORREF</b><i>rgb</i>, <b>short</b><i>Pour100_Debut</i>=0, <b>short</b><i>Pour100_Fin</i>=100);
+</p>
+
+<p><b>Paramètre</b> </p>
+
+<p><i>pDC</i>&nbsp;&nbsp;&nbsp; Device context de l'imprimante. </p>
+
+<p><i>pR</i>&nbsp;&nbsp;&nbsp; Rectangle qui correspondant à la
+position du cadre; </p>
+
+<p><i>rgb</i>&nbsp;&nbsp;&nbsp; Couleur qui va emplir le cadre. </p>
+
+<p><i>Pour100_Debut</i>&nbsp;&nbsp;&nbsp; Ratio(%) correspondant
+à la marge de gauche par rapport au cadre; </p>
+
+<p><i>Pour100_Fin</i>&nbsp;&nbsp;&nbsp; Ratio(%) correspondant à
+la marge de droite par rapport au cadre; </p>
+
+<p><b>Remarque</b> </p>
+
+<p>Trace un cadre plein. <br>
+</p>
+
+<hr>
+
+<p><a name="CObj_Printer::ShadowRect"></a><font size="5">CObj_Printer::ShadowRect</font>
+<br>
+<b>void ShadowRect</b>(<b>CDC</b>* <i>pDC</i>, <b>CRect</b> * <i>pR_haut</i>,
+<b>CRect</b> * <i>pR_bas</i>, <b>COLORREF</b> <i>rgb</i>=RGB(0,0,0),
+<b>short</b><i>Pour100_Debut</i>=0, <b>short</b><i>Pour100_Fin</i>=100);
+</p>
+
+<p><b>Paramètre</b> </p>
+
+<p><i>pDC</i>&nbsp;&nbsp;&nbsp; Device context de l'imprimante. </p>
+
+<p><i>pR_haut</i>&nbsp;&nbsp;&nbsp; Rectangle qui correspondant
+à la position haute du cadre; </p>
+
+<p><i>pR_bas</i>&nbsp;&nbsp;&nbsp; Rectangle qui correspondant à
+la position basse du cadre; </p>
+
+<p><i>rgb</i>&nbsp;&nbsp;&nbsp; Couleur qui va créer l'ombre du
+cadre. </p>
+
+<p><i>Pour100_Debut</i>&nbsp;&nbsp;&nbsp; Ratio(%) correspondant
+à la marge de gauche par rapport au cadre; </p>
+
+<p><i>Pour100_Fin</i>&nbsp;&nbsp;&nbsp; Ratio(%) correspondant à
+la marge de droite par rapport au cadre; </p>
+
+<p><b>Remarque</b> </p>
+
+<p>Trace un cadre qui possède une ombre se projetant à droite
+et en bas; <br>
+</p>
+
+<hr>
+
+<p><a name="CObj_Printer::DessineCadre"></a><font size="5">CObj_Printer::DessineCadre</font>
+<br>
+<b>void DessineCadre</b>(<b>CDC</b>* <i>pDC</i>, <b>CRect</b> * <i>pR_haut</i>,
+<b>CRect</b> * <i>pR_bas</i>, <b>short</b> <i>Pour100_Debut</i>=0,
+<b>short</b><i>Pour100_Fin</i>=100, <b>CPen</b> * <i>pPen</i>=NULL);
+</p>
+
+<p><b>Paramètre</b> </p>
+
+<p><i>pDC</i>&nbsp;&nbsp;&nbsp; Device context de l'imprimante. </p>
+
+<p><i>pR_haut</i>&nbsp;&nbsp;&nbsp; Rectangle qui correspondant
+à la position haute du cadre; </p>
+
+<p><i>pR_bas</i>&nbsp;&nbsp;&nbsp; Rectangle qui correspondant à
+la position basse du cadre; </p>
+
+<p><i>Pour100_Debut</i>&nbsp;&nbsp;&nbsp; Ratio(%) correspondant
+à la marge de gauche par rapport au cadre; </p>
+
+<p><i>Pour100_Fin</i>&nbsp;&nbsp;&nbsp; Ratio(%) correspondant à
+la marge de droite par rapport au cadre; </p>
+
+<p><i>pPen</i>&nbsp;&nbsp;&nbsp; Pointeur sur un stylo; </p>
+
+<p><b>Remarque</b> </p>
+
+<p>Trace un cadre dont les coordonnées sont le résultat d'un
+assemblage de deux rectangles. <br>
+</p>
+
+<hr>
+
+<p><a name="CObj_Printer::DessineCadre2"></a><font size="5">CObj_Printer::DessineCadre2</font>
+<br>
+<b>void DessineCadre2</b>(<b>CDC</b>* <i>pDC</i>, <b>CRect</b> * <i>pR_haut</i>,
+<b>CRect</b> * <i>pR_bas</i>, <b>short</b> <i>Pour100_Debut</i>=0,
+<b>short</b><i>Pour100_Fin</i>=100, <b>CPen</b> * <i>pPen</i>=NULL);
+</p>
+
+<p><b>Paramètre</b> </p>
+
+<p><i>pDC</i>&nbsp;&nbsp;&nbsp; Device context de l'imprimante. </p>
+
+<p><i>pR_haut</i>&nbsp;&nbsp;&nbsp; Rectangle qui correspondant
+à la position haute du cadre; </p>
+
+<p><i>pR_bas</i>&nbsp;&nbsp;&nbsp; Rectangle qui correspondant à
+la position basse du cadre; </p>
+
+<p><i>Pour100_Debut</i>&nbsp;&nbsp;&nbsp; Ratio(%) correspondant
+à la marge de gauche par rapport au cadre; </p>
+
+<p><i>Pour100_Fin</i>&nbsp;&nbsp;&nbsp; Ratio(%) correspondant à
+la marge de droite par rapport au cadre; </p>
+
+<p><i>pPen</i>&nbsp;&nbsp;&nbsp; Pointeur sur un stylo; </p>
+
+<p><b>Remarque</b> <br>
+&nbsp; </p>
+
+<hr>
+
+<H4><U>Exemples</U></H4>
+
+
+<p>// CObjView printing <br>
+<a
+name="BOOL CMyView::OnPreparePrinting(CPrintInfo* pInfo)"></a>BOOL
+CMyView::OnPreparePrinting(CPrintInfo* pInfo) <br>
+{ <br>
+&nbsp;&nbsp;&nbsp; // default preparation <br>
+&nbsp;&nbsp;&nbsp; m_ObjPrint=new CObjPrint; <br>
+&nbsp;&nbsp;&nbsp; //c'est ici que l'on peut changer
+l'orientation du papier, ou autres options. <br>
+&nbsp;&nbsp;&nbsp; return DoPreparePrinting(pInfo); <br>
+} </p>
+
+<p><a
+name="void CMyView::OnBeginPrinting(CDC* pDC, CPrintInfo* pInfo)"></a>void
+CMyView::OnBeginPrinting(CDC* pDC, CPrintInfo* pInfo) <br>
+{ <br>
+&nbsp;&nbsp; m_ObjPrint-&gt;SetDocument(GetDocument()); <br>
+&nbsp;&nbsp;&nbsp; m_ObjPrint-&gt;OnBeginPrinting(pDC,pInfo); <br>
+} </p>
+
+<p><a name="OnPrint(CDC* pDC, CPrintInfo* pInfo)"></a>void
+CMyView::OnPrint(CDC* pDC, CPrintInfo* pInfo) <br>
+{ <br>
+&nbsp;&nbsp;&nbsp; m_ObjPrint-&gt;OnPrint(pDC,pInfo); <br>
+} </p>
+
+<p><a name="OnEndPrinting(CDC* pDC, CPrintInfo* pInfo)"></a>void
+CMyView::OnEndPrinting(CDC* pDC, CPrintInfo* pInfo) <br>
+{ <br>
+&nbsp;&nbsp;&nbsp; m_ObjPrint-&gt;OnEndPrinting(pDC,pInfo); <br>
+&nbsp;&nbsp;&nbsp; delete m_ObjPrint; <br>
+} </p>
+
+<hr>
+<H4><U><A name="Orientation">Forcer l'orientation</A></U></H4>
+<PRE>
+void CMyApp::SetOrientation(short Orientation)
+{
+	PRINTDLG pd;
+
+	pd.lStructSize=(DWORD)sizeof(PRINTDLG);
+	if(GetPrinterDeviceDefaults(&pd))
+	{
+		DEVMODE FAR * pDevMode=(DEVMODE FAR *)::GlobalLock(m_hDevMode);
+		LPDEVNAMES lpDevNames;
+		LPTSTR lpszDriverName, lpszDeviceName, lpszPortName;
+		HANDLE hPrinter;
+
+		if(pDevMode)
+		{
+			pDevMode->dmOrientation=Orientation;
+			lpDevNames=(LPDEVNAMES)GlobalLock(pd.hDevNames);
+			lpszDriverName=(LPTSTR)lpDevNames+lpDevNames->wDriverOffset;
+			lpszDeviceName=(LPTSTR)lpDevNames+lpDevNames->wDeviceOffset;
+			lpszPortName=(LPTSTR)lpDevNames+lpDevNames->wOutputOffset;
+
+			::OpenPrinter(lpszDeviceName, &hPrinter, NULL);
+			::DocumentProperties(NULL,hPrinter,lpszDeviceName,pDevMode,pDevMode,DM_IN_BUFFER|DM_OUT_BUFFER);
+			::ClosePrinter(hPrinter);
+			::GlobalUnlock(m_hDevNames);
+			::GlobalUnlock(m_hDevMode);
+		}
+	}
+}
+
+bool CMyPrint::OnPreparePrinting(CPrintInfo* pInfo)
+{
+	theApp.SetOrientation(DMORIENT_LANDSCAPE);
+	return true;
+}
+
+BOOL CMyView::OnPreparePrinting(CPrintInfo* pInfo) 
+{ 
+    // default preparation 
+	m_ObjPrint=new CObjPrint;
+    //c'est ici que l'on peut changer l'orientation du papier, ou autres options. 
+	m_ObjPrint->OnPreparePrinting(pInfo);
+    return DoPreparePrinting(pInfo); 
+} 
+</PRE>
+<hr>
+
+<font size="2">Création&nbsp; : Lundi 29 mars 1999</font> <br>
+<font size="2">Dernière modification : Jeudi 30 Mars 2000</font>
+<br>
+<font size="2">VLF</font>
+</body>
+</html>

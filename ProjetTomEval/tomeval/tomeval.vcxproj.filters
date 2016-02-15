@@ -1,0 +1,209 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{ad0ca11f-eee5-4280-bb81-ec4e985a3da7}</UniqueIdentifier>
+      <Extensions>cpp;c;cxx;rc;def;r;odl;idl;hpj;bat</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{96aa1e7c-10bc-4240-bd28-4ab584a51e91}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{01595a1b-593d-4bd5-ad8a-995c8461521a}</UniqueIdentifier>
+      <Extensions>ico;cur;bmp;dlg;rc2;rct;bin;cnt;rtf;gif;jpg;jpeg;jpe</Extensions>
+    </Filter>
+    <Filter Include="textes">
+      <UniqueIdentifier>{ad2b66c8-ecea-4f84-947a-c4fc82b5dd2d}</UniqueIdentifier>
+      <Extensions>*.txt</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Convert.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Eval.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FicAUX.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FicAUXitaly.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FicCIB.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FicCod.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FicIND.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FicLBX.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\common\FicTbl.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\common\FicVague.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="StdAfx.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="stdfonc.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tomcalc.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tomeval.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tomevalDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tomfich.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tomsourc.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TraceFile.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="tomeval.rc">
+      <Filter>Source Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Convert.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Eval.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FicAUX.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FicAUXitaly.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FicCIB.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FicCod.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FicIND.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FicLBX.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\common\FicTbl.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\common\FicVague.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mediaconsult.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="StdAfx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="stdfonc.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="tom2cup.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="tom_msg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="tomcarat.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="tomeval.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="tomevalDlg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="tomprot.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TraceFile.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="Mediaconsult_library\Random.lib" />
+    <Library Include="Mediaconsult_library\Dfor.lib" />
+    <Library Include="Mediaconsult_library\Dfport.lib" />
+    <Library Include="Mediaconsult_library\Dfconsol.lib" />
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="res\tomeval.ico">
+      <Filter>Resource Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="res\tomeval.rc2">
+      <Filter>Resource Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="afaire.txt">
+      <Filter>textes</Filter>
+    </CustomBuild>
+    <CustomBuild Include="carat.txt">
+      <Filter>textes</Filter>
+    </CustomBuild>
+    <CustomBuild Include="DATATM">
+      <Filter>textes</Filter>
+    </CustomBuild>
+    <CustomBuild Include="EvalJob.txt">
+      <Filter>textes</Filter>
+    </CustomBuild>
+    <CustomBuild Include="info.txt">
+      <Filter>textes</Filter>
+    </CustomBuild>
+    <CustomBuild Include="mediaconsult.txt">
+      <Filter>textes</Filter>
+    </CustomBuild>
+    <CustomBuild Include="methode.txt">
+      <Filter>textes</Filter>
+    </CustomBuild>
+    <CustomBuild Include="ReadMe.txt">
+      <Filter>textes</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Restom">
+      <Filter>textes</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Restom.txt">
+      <Filter>textes</Filter>
+    </CustomBuild>
+    <CustomBuild Include="tomjob">
+      <Filter>textes</Filter>
+    </CustomBuild>
+    <CustomBuild Include="tomjob.txt">
+      <Filter>textes</Filter>
+    </CustomBuild>
+    <CustomBuild Include="tomjob01">
+      <Filter>textes</Filter>
+    </CustomBuild>
+    <CustomBuild Include="versions.txt">
+      <Filter>textes</Filter>
+    </CustomBuild>
+  </ItemGroup>
+</Project>

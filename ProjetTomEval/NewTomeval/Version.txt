@@ -1,0 +1,138 @@
+VERSION 3.XX Décembre 2001
+--------------------------
+
+Etat des lieux:
+Echec de la mise en place des DLL à cause de l'impossibilité de partager des instances de classes
+Pas de multiplan
+Pas de marginal
+Pas de cohabitation durée d'écoute + proba
+
+
+V3.0a
+-----
+Utilisation de Tomy
+Mise en place du premier TomEval pour Carat avec le Sur-échantillon MédiaCabsat
+Les cibles calculées ne fonctionnent pas
+Les ventilations ne fonctionnent pas
+
+V3.1a
+-----
+Réalisation de la version Tomeval Télé pour l'Atelier Radio-Télé JFC
++Mise en place de calcul marginal
++Mise en place du calcul des ventilations
++Mise en place de calcul "multi-plan"
++Interface avec le format TOMJOB/RESTOM de l'Atelier
++Mise en place de calcul muti-sessions
+
+Mise en place du premier TomEval pour Carat avec le Sur-échantillon MédiaCabsat
+Les cibles calculées ne fonctionnent pas
+Les ventilations ne fonctionnent pas
+
+v3.1b
+-----
+Bug Carat, le prototype fonctionne toujours sur les équipé TV
+
+v3.1c (24 Mai 2002)
+--------------------
+Modification du prototype fonctionne toujours sur la vague BA01
+
+v3.1d (2 juillet 2002)
+--------------------
+Modification du prototype fonctionne toujours sur la vague C201
+
+v3.1e (8 Août 2002)
+-------------------
+Modification du prototype fonctionne toujours sur la vague C102
+
+v3.1f (1 Octobre 2002)
+----------------------
+VERSION OPERATIONNELLE CARAT (voir doc CR Réunion 23 Septembre)
+Correction du calculdes PMG: prise en compte de la différence quarts d'heure/écran
+bug corrigé: apport part jour, par semaine
+
+
+v3.2 (20 Octobre 2002)
+----------------------
+Carat avec Méthode dichotomique
+
+v3.2b (30 Octobre 2002)
+-------------------------
+CARAT avec calcul des PMG
+
+
+v3.2c (4 Novembre 2002)
+-------------------------
+CARAT avec toutes les impasses corrigé
+! utilisation du répertoire Médiacabsatagrege pour la lectire des .POP
++JFC
+
+v3.2d (8 Novembre 2002)
+-------------------------
+Bug dans le calcul des PMG (division par zéro)
+version Carat
+
+v3.2e (18 Novembre 2002)
+-------------------------
+Bug dans le calcul 
+version Carat+JFC
+
+v3.2f (22 Novembre 2002)
+-------------------------
+Tomeval CIM belgique
+
+v3.2g (2 Décembre 2002)
+-------------------------
+Tomeval CIM belgiQUE
+
+v3.3a (2 Décembre 2002)
+-------------------------
+Tomeval Carat
+Détail du calcul offre restreinte, offre élargie
+
+v3.3b (4 Décembre 2002)
+-------------------------
+Tomeval Carat
+
+v3.3c (8 Janvier 2002)
+-------------------------
+Tomeval CIM belge
+
+v3.3d (13 Janvier 2002)
+-------------------------
+Tomeval CIM belge
+
+
+v3.3d(14 Février2003)
+---------------------
+Atelier Télé (JFC)
+Pour cacher la boîte de dialogue
+
+6/2/2003: j'ai remarqué que la compilation en télé france ne fonctionna plus à cause 
+du nombre de cas et de la population qui ont été éliminé du tomeval globale... 
+Ce défaut est réparé, mais il faut faire ttention à la prochaine livraison.
+Février 2003: optimisation pour utilisation dans optiplan pologne
+
+2 Juillet 2003: 
+Réalisation d'un prototype pour algérie.
+Version à faire (sous classer la classe CIMBelge).
+!!!!!  Responsabilité d'analyse à JFC !!!!!!
+8 Juillet 2003
+PROTO ALGERIE.... on se rend compte qu'il ne faut pas diviser les coeffex par 10
+... 1 différence
+
+
+
+
+_____________________________________________________________________________
+
+
+
+TODO: pour carat, la table des liens vars les stations doit être réalisée par vague
+
+TODO: centraliser le calcul comme dans CTomyCroisee
+TODO: dans le redressement, s'assurer que les résultats sont positifs (?)
+TODO: généraliser le panel loader pour qu'il charge d'autres objets anonyme (CRC, totalTV...)
+
+DOC:
+TODO: faire la doc de description de la base de données Carat+recap protocole et des interdictions
+TODO: Explique que la ventilation sur CABSAT est impossible à cause du GRP initilisé qui bouge, de même en ce qui concerne le GRP des thématiques dn

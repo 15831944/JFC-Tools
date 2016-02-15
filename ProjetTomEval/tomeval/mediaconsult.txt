@@ -1,0 +1,6 @@
+Spécifs médiaconsult: 105
+
+fichier AUX avec des 32 bits
+fichier CRX qui est la taille=nb de critère, char= nb de modalité
+fichier .PDX taille = nbindiv/4 (toujours sur la cible)
+fichier .CRC identique

@@ -1,0 +1,526 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta name="Author" content="jfc">
+   <meta name="GENERATOR" content="Mozilla/4.5 [fr] (Win98; I) [Netscape]">
+   <title>Aide JFC Objet List Box</title>
+</head>
+<body>
+<font size=+3>CObj_Tab</font>
+<p>La classe <b>CObj_Tab</b> d&eacute;rive de la classe CStatic.
+<p><b><i><font size=+1>Implantation</font></i></b>
+<p>Il faut inclure dans le projet :
+<ul>
+<li>
+le fichier d'en-t&ecirc;te OBJ_TAB.H</li>
+
+<li>
+le fichier source OBJ_TAB.CPP</li>
+</ul>
+Il faut inclure dans le fichier d'en-t&ecirc;te appellant l'objet :
+<ul>
+<li>
+#include &lt;OBJ_TAB.H></li>
+
+<li>
+Modifier le type CStatic du control en CObj_Tab</li>
+</ul>
+
+<hr ALIGN=LEFT SIZE=3 WIDTH="100%">
+<p><font size=+2>Membres de la class CObj_Tab</font>
+<p><b>Initialisation</b>
+<br>&nbsp;
+<table WIDTH="100%" >
+<tr>
+<td WIDTH="15%"><a href="#CObj_LBox::Initialise">Initialise</a></td>
+
+<td WIDTH="15%">Initialise les param&egrave;tres g&eacute;n&eacute;raux
+de l'objet.</td>
+</tr>
+
+<tr>
+<td><a href="#CObj_Tab::InitialiseTitre">InitialiseTitre</a></td>
+
+<td WIDTH="100%">Initialise chacun des modules du tableau s&eacute;par&eacute;ment.</td>
+</tr>
+
+<tr>
+<td WIDTH="15%"><a href="#CObj_Tab::SetTitre">SetTitre</a></td>
+
+<td>Passe les &eacute;l&eacute;ments de chacun des titres s&eacute;par&eacute;ment
+&agrave; l'objet&nbsp;</td>
+</tr>
+
+<tr>
+<td WIDTH="15%"><a href="#CObj_Tab::SetTableau">SetTableau</a></td>
+
+<td WIDTH="100%">Passe les &eacute;l&eacute;ments du tableau &agrave; l'objet.</td>
+</tr>
+
+<tr>
+<td><a href="#CObj_Tab::SetFormatTitre">SetFormatTitre</a></td>
+
+<td>Configure le format d'une cellule dans un titre.</td>
+</tr>
+
+<tr>
+<td><a href="#CObj_Tab::SetFormatCellule">SetFormatCellule</a></td>
+
+<td>Configure le format d'une cellule dans le tableau.</td>
+</tr>
+
+<tr>
+<td><a href="#CObj_Tab::PutMsgInToTab">PutMsgInToTab</a></td>
+
+<td>Affichage d'un message dans le fond du tableau.</td>
+</tr>
+</table>
+
+<p><b>Position</b>
+<br>&nbsp;
+<table BORDER=0 WIDTH="100%" >
+<tr>
+<td WIDTH="15%"><a href="#CObj_Tab::SetPosition">SetPosition</a></td>
+
+<td>Met &agrave; jour l'affichage suivant la nouvelle position pass&eacute;
+en&nbsp; colonne/ligne.</td>
+</tr>
+</table>
+
+<p><b>S&eacute;lection</b>
+<br>&nbsp;
+<table BORDER=0 WIDTH="100%" >
+<tr>
+<td WIDTH="15%"><a href="#CObj_Tab::SelectTitre">SelectTitre</a></td>
+
+<td>S&eacute;lection d'un &eacute;l&eacute;ment d'un titre. Utilis&eacute;
+pour les tris.</td>
+</tr>
+
+<tr>
+<td><a href="#CObj_Tab::SetSelection">SetSelection</a></td>
+
+<td>S&eacute;lection d'un &eacute;l&eacute;ment d'un des modules.</td>
+</tr>
+
+<tr>
+<td><a href="#CObj_Tab::RAZSelection">RAZSelection</a></td>
+
+<td>D&eacute;sactive toutes les s&eacute;lections de chaque module.</td>
+</tr>
+</table>
+
+<p><b>Ascenseur</b>
+<br>&nbsp;
+<table BORDER=0 WIDTH="100%" >
+<tr>
+<td WIDTH="15%"><a href="#CObj_Tab::MAJPosScrollV">MAJPosScrollV</a></td>
+
+<td>Mise &agrave; jour de la position du calendrier suivant la position
+de l'ascenseur verticale.</td>
+</tr>
+
+<tr>
+<td><a href="#CObj_Tab::MAJPosScrollH">MAJPosScrollH</a></td>
+
+<td>Mise &agrave; jour de la position du calendrier suivant la position
+de l'ascenseur horizontale.</td>
+</tr>
+</table>
+
+<p><b>Lib&eacute;ration</b>
+<br>&nbsp;
+<table BORDER=0 WIDTH="100%" >
+<tr>
+<td WIDTH="15%"><a href="#CObj_Tab::LibereObjet">LibereObjet</a></td>
+
+<td>Lib&eacute;ration des allocations m&eacute;moire.</td>
+</tr>
+</table>
+
+<p><b>Surd&eacute;finition de fonction</b>
+<br>&nbsp;
+<table WIDTH="100%" >
+<tr>
+<td WIDTH="15%"><a href="#CObj_Tab::OnSort">OnSort</a></td>
+
+<td>Signal la s&eacute;lection d'un &eacute;l&eacute;ment d'un titre pour
+effectuer un tri.</td>
+</tr>
+</table>
+
+<p>
+<hr ALIGN=LEFT SIZE=3 WIDTH="100%">
+<p><a NAME="CObj_LBox::Initialise"></a><font size=+2>CObj_Tab::Initialise</font>
+<br><b>void Initialise</b>(<b>short</b> <i>Style</i>, <b>short</b> <i>Format</i>,
+<b>short
+</b><i>DataType</i>,
+<b>short</b><i>dxCel</i>,
+<b>short</b> <i>dyCel</i>,
+<b>short
+</b><i>nLigVisu</i>,
+<b>short</b><i>nColVisu</i>,
+<b>CScrollBar</b> *
+<i>ScrollH</i>,<b> CScrollBar</b> * <i>ScrollV</i>,
+<b>CFont</b> * <i>pFont</i>=NULL,
+<b>COLORREF
+</b><i>TabColorBg</i>=0);
+<p><b>Param&egrave;tres</b>
+<p><i>Style</i>&nbsp;&nbsp;&nbsp; Sp&eacute;cifie l'un des styles suivant
+:
+<ul>
+<li>
+STYLE_TAB_DEFAUT : Visualisation de donn&eacute;es</li>
+
+<li>
+STYLE_TAB_SELECTION : S&eacute;lection de colonnes/titres/cellules</li>
+
+<li>
+STYLE_TAB_EDIT : Edition des cellules. &lt;&lt;&lt;&lt;&lt;&lt;&lt; PAS
+ENCORE DISPONIBLE >>>>>>></li>
+</ul>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Des options peuvent &ecirc;tre
+jointe au style :
+<ul>
+<li>
+OPT_TAB_NOGRIL_COL : Pas de s&eacute;paration entre les colonnes</li>
+
+<li>
+OPT_TAB_NOGRIL_LIG : Pas de s&eacute;paration entre les lignes</li>
+
+<li>
+OPT_TAB_SELECT_COL : S&eacute;lection par colonne</li>
+
+<li>
+OPT_TAB_SELECT_LIG : S&eacute;lection par ligne</li>
+
+<li>
+OPT_TAB_SELECT_CEL : S&eacute;lection par cellule</li>
+
+<li>
+OPT_TAB_TRI_COL : Tri par colonne</li>
+
+<li>
+OPT_TAB_TRI_LIG : Tri par ligne</li>
+
+<li>
+OPT_TAB_NOGRIL_OUT : Pas de s&eacute;parateurs dans les espaces libres
+de l'objet.</li>
+</ul>
+<i>Format</i>&nbsp;&nbsp;&nbsp; Sp&eacute;cifie l'un des formats suivant:
+<ul>
+<li>
+FORMAT_TAB_BTN</li>
+</ul>
+<i>DataType</i>&nbsp;&nbsp;&nbsp; Sp&eacute;cifie le type des donn&eacute;es
+qui seront afich&eacute;es.
+<p><i>dxCel</i>&nbsp;&nbsp;&nbsp; Unit&eacute;s en pixel de la largeur
+par d&eacute;faut des cellules.
+<p><i>dyCel</i>&nbsp;&nbsp;&nbsp; Unit&eacute;s en pixel de la hauteur
+par d&eacute;faut des cellules.
+<p><i>nLigVisu</i>&nbsp;&nbsp;&nbsp; Nombre de ligne contenue dans l'espace
+affich&eacute;.
+<p><i>nColVisu</i>&nbsp;&nbsp;&nbsp; Nombre de colonne contenue dans l'espace
+affich&eacute;.
+<p><i>ScrollH</i>&nbsp;&nbsp;&nbsp; Pointeur de l'ascenseur horizontal
+li&eacute; &agrave; l'objet.
+<p><i>ScrollV</i>&nbsp;&nbsp;&nbsp; Pointeur de l'ascenseur vertical li&eacute;
+&agrave; l'objet.
+<p><i>pFont</i>&nbsp;&nbsp;&nbsp; Font utilis&eacute; pour les &eacute;l&eacute;ments
+de l'objet.
+<p><i>TabColorBg</i>&nbsp;&nbsp;&nbsp; Couleur du fond.
+<p><b>Remarque</b>
+<p>Cette fonction configure les param&egrave;tres globaux de l'objet. Aucune
+configuration par d&eacute;faut n'est disponible.
+<br>
+<hr WIDTH="100%">
+<p><a NAME="CObj_Tab::InitialiseTitre"></a><font size=+2>CObj_Tab::InitialiseTitre</font>
+<br><b>void InitialiseTitre</b>(<b>short</b> <i>TypeTitre</i>, <b>short
+</b><i>dxTitre</i>,
+<b>short
+</b><i>dyTitre</i>,
+<b>CFont</b> * <i>pFont</i>=NULL,
+<b>COLORREF
+</b><i>TitreColorBg</i>=0);
+<p><b>Param&egrave;tres</b>
+<p><i>TypeTitre</i>&nbsp;&nbsp;&nbsp; Sp&eacute;cifie l'un des modules
+suivant&nbsp; :
+<ul>
+<li>
+TITRE_LIG : Ce module correspond &agrave; la partie gauche de l'objet.</li>
+
+<li>
+TITRE_COL : Ce module correspond &agrave; la partie haute de l'objet.</li>
+
+<li>
+CORPS : Ce module correspond &agrave; la partie centrale de l'objet.</li>
+</ul>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Dans le futur, cet objet sera
+ammen&eacute; &agrave; poss&eacute;der d'autres modules, du genre multi-titre,
+titre-total, des sous-titres, etc...
+<p><i>dxTitre</i>&nbsp;&nbsp;&nbsp; Nombre de pixels minimum de la largeur
+des cellules du module. La largeur est automatiquement retaill&eacute;
+si un &eacute;l&eacute;ments est plus large.
+<p><i>dyTitre</i>&nbsp;&nbsp;&nbsp; Nombre de pixels minimum de la hauteur
+des cellules du module.
+<p><i>pFont</i>&nbsp;&nbsp;&nbsp; Font utilis&eacute; pour les &eacute;l&eacute;ments
+du module.
+<p><i>TitreColorBg</i>&nbsp;&nbsp;&nbsp; Couleur de fond du module.
+<p><b>Remarque</b>
+<p>Fonction permettant d'initialiser les param&egrave;tres pour chacun
+des modules.
+<br>
+<hr WIDTH="100%">
+<p><a NAME="CObj_Tab::SetTitre"></a><font size=+2>CObj_Tab::SetTitre</font>
+<br><b>void SetTitre</b>(<b>short</b> <i>TypeTitre</i>, <b>CStringArray</b>
+* <i>TabTitre</i>);
+<p><b>Param&egrave;tres</b>
+<p><i>TypeTitre&nbsp;&nbsp;&nbsp; </i>Sp&eacute;cifie l'un des titres suivant
+:
+<ul>
+<li>
+TITRE_LIG : Ce module correspond &agrave; la partie gauche du tableau.</li>
+
+<li>
+TITRE_COL : Ce module correspond &agrave; la partie haute du tableau.</li>
+</ul>
+<i>TabTitre</i>&nbsp;&nbsp;&nbsp; Pointeur repr&eacute;sentant le tableau
+des &eacute;l&eacute;ments du titre sp&eacute;cifi&eacute;.
+<p><b>Remarque</b>
+<p>D&eacute;fini les &eacute;l&eacute;ments qui vont appara&icirc;tre dans
+les barre de titres.
+<br>
+<hr WIDTH="100%">
+<p><a NAME="CObj_Tab::SetTableau"></a><font size=+2>CObj_Tab::SetTableau</font>
+<br><b>void SetTableau</b>(<b>short</b> <i>NbLig</i>, <b>CStringArray</b>
+* <i>TabElements</i>);
+<br><b>void SetTableau</b>(<b>short</b> <i>NbLig</i>, <b>short</b> <i>NbCol</i>,
+<b>short</b>
+** <i>TabElements</i>);
+<br><b>void SetTableau</b>(<b>short</b> <i>NbLig</i>, <b>short</b> <i>NbCol</i>,
+<b>long</b>
+** <i>TabElements</i>);
+<br><b>void SetTableau</b>(<b>short</b> <i>NbLig</i>, <b>short</b> <i>NbCol</i>,
+<b>char</b>
+** <i>TabElements</i>);
+<p><b>Param&egrave;tres</b>
+<p><i>NbLig</i>&nbsp;&nbsp;&nbsp; Nombre de lignes du tableau.
+<p><i>NbCol</i>&nbsp;&nbsp;&nbsp; Nombre de colonnes du tableau.
+<p><i>TabElements</i>&nbsp;&nbsp;&nbsp; Pointeur repr&eacute;sentant les
+&eacute;l&eacute;ments du tableau. Il peut &ecirc;tre de diff&eacute;rent
+type, suivant le type des &eacute;l&eacute;ments &agrave; traiter.
+<p><b>Remarque</b>
+<p>D&eacute;fini les &eacute;l&eacute;ments qui vont appara&icirc;tre dans
+la partie centrale de l'objet.
+<br>
+<hr WIDTH="100%">
+<p><a NAME="CObj_Tab::SetFormatTitre"></a><font size=+2>CObj_Tab::SetFormatTitre</font>
+<br><b>void SetFormatTitre</b>(<b>short</b> <i>TypeTitre</i>, <b>short
+</b><i>NroTitre</i>,
+<b>short
+</b><i>dxTitre</i>,
+<b>short</b> <i>dyTitre</i>,
+<b>UINT</b><i>Orientation</i>,
+<b>CFont</b>
+* <i>pFont</i>=NULL, <b>COLORREF </b><i>ColorCel</i>=0,
+<b>bool </b><i>flag</i>=false);
+<p><b>Param&egrave;tres</b>
+<p><i>TypeTitre</i>&nbsp;&nbsp;&nbsp; Voir <a href="#CObj_Tab::SetTitre">CObj_Tab::SetTitre</a>
+<p><i>NroTitre</i>&nbsp;&nbsp;&nbsp; Sp&eacute;cifie l'&eacute;l&eacute;ment
+du titre. De 0 &agrave; n. Ou -1 pour d&eacute;signer la barre de titre
+et tous ces &eacute;lements.
+<p><i>dxTitre</i>&nbsp;&nbsp;&nbsp; Sp&eacute;cifie la largeur en pixel
+de la cellule ou apparait l'&eacute;l&eacute;ment.
+<p><i>dyTitre</i>&nbsp;&nbsp;&nbsp; Sp&eacute;cifie la hauteur en pixel
+de la cellule ou apparait l'&eacute;l&eacute;ment.
+<p><i>Orientation</i>&nbsp;&nbsp;&nbsp; Sp&eacute;cifie la position de
+l'&eacute;l&eacute;ment dans sa cellule. Voir le param&egrave;tre <i>nFormat</i>
+de <b>DrawText.</b>
+<p><i>pFont</i>&nbsp;&nbsp;&nbsp; Font utilis&eacute; pour affich&eacute;
+cet &eacute;l&eacute;ment.
+<p><i>ColorCel</i>&nbsp;&nbsp;&nbsp; Couleur utilis&eacute; pour peindre
+la cellule de cet &eacute;l&eacute;ment.
+<p><i>flag</i>&nbsp;&nbsp;&nbsp; Met &agrave; jour l'affichage si true.
+<p><b>Remarque</b>
+<p>Configure le format d'un &eacute;l&eacute;ment et sa cellule, pour un
+titre sp&eacute;cifi&eacute;.
+<br>
+<hr WIDTH="100%">
+<p><a NAME="CObj_Tab::SetFormatCellule"></a><font size=+2>CObj_Tab::SetFormatCellule</font>
+<br><b>void SetFormatCellule</b>(<b>short</b> <i>CelX</i>, <b>short </b><i>CelY</i>,
+<b>short
+</b><i>Format</i>,
+<b>short</b>
+<i>DataType</i>,
+<b>UINT</b> <i>Orientation</i>,
+<b>CFont</b> * <i>pFont</i>=NULL,
+<b>COLORREF </b><i>ColorCel</i>=0, <b>bool</b> <i>flag</i>=false);
+<p><b>Param&egrave;tres</b>
+<p><i>CelX</i>&nbsp;&nbsp;&nbsp; Sp&eacute;cifie la colonne ou se trouve
+l'&eacute;l&eacute;ment &agrave; formater.
+<p><i>CelY</i>&nbsp;&nbsp;&nbsp; Sp&eacute;cifie la ligne ou se trouve
+l'&eacute;l&eacute;ment &agrave; formater.
+<p><i>Format</i>&nbsp;&nbsp;&nbsp; Sp&eacute;cifie un format. &lt;&lt;&lt;&lt;&lt;&lt;&lt;
+PAS ENCORE DISPONIBLE >>>>>>>
+<p><i>DataType</i>&nbsp;&nbsp;&nbsp; Sp&eacute;cifie le type de donn&eacute;e
+concernant cet &eacute;l&eacute;ment.
+<p><i>Orientation</i>&nbsp;&nbsp;&nbsp; Sp&eacute;cifie la position de
+l'&eacute;l&eacute;ment dans sa cellule. Voir le param&egrave;tre <i>nFormat</i>
+de <b>DrawText.</b>
+<p><i>pFont</i>&nbsp;&nbsp;&nbsp; Font utilis&eacute; pour affich&eacute;
+cet &eacute;l&eacute;ment.
+<p><i>ColorCel</i>&nbsp;&nbsp;&nbsp; Couleur utilis&eacute; pour peindre
+la cellule de cet &eacute;l&eacute;ment.
+<p><i>flag</i>&nbsp;&nbsp;&nbsp; Met &agrave; jour l'affichage si true.
+<p><b>Remarque</b>
+<p>Configure le format d'un &eacute;l&eacute;ment et sa cellule dans la
+partie centrale de l'objet.
+<br>
+<hr WIDTH="100%">
+<p><a NAME="CObj_Tab::SelectTitre"></a><font size=+2>CObj_Tab::SelectTitre</font>
+<br><b>void SelectTitre</b>(<b>short</b> <i>TypeTitre</i>, <b>short </b><i>NroTitre</i>,
+<b>bool
+</b><i>flag</i>=true);
+<p><b>Param&egrave;tres</b>
+<p><i>TypeTitre</i>&nbsp;&nbsp;&nbsp; Voir <a href="#CObj_Tab::SetTitre">CObj_Tab::SetTitre</a>
+<p><i>NroTitre</i>&nbsp;&nbsp;&nbsp; Sp&eacute;cifie l'&eacute;l&eacute;ment
+du titre. De 0 &agrave; n.
+<p><i>flag</i>&nbsp;&nbsp;&nbsp; Met &agrave; jour l'affichage si true.
+<p><b>Remarque</b>
+<p>Cette fonction permet de s&eacute;lectionner un &eacute;l&eacute;ment
+d'un titre. Elle est utile pour trier, ou pour s&eacute;lectionner la colonne
+enti&egrave;re du titre.
+<br>
+<hr WIDTH="100%">
+<p><a NAME="CObj_Tab::OnSort"></a><font size=+2>CObj_Tab::OnSort</font>
+<br><b>virtual void OnSort</b>(<b>short</b> <i>TypeTitre</i>, <b>short
+</b><i>NroTitre</i>);
+<p><b>Param&egrave;tres</b>
+<p><i>TypeTitre</i>&nbsp;&nbsp;&nbsp; Voir <a href="#CObj_Tab::SetTitre">CObj_Tab::SetTitre</a>
+<p><i>NroTitre</i>&nbsp;&nbsp;&nbsp; Sp&eacute;cifie l'&eacute;l&eacute;ment
+du titre. De 0 &agrave; n.
+<p><b>Remarque</b>
+<p>Appel&eacute; lorsqu'un titre a &eacute;t&eacute; s&eacute;lectionn&eacute;
+et que l'option de tri, qui lui est li&eacute;, est active.
+<br>
+<hr WIDTH="100%">
+<p><a NAME="CObj_Tab::SetSelection"></a><font size=+2>CObj_Tab::SetSelection</font>
+<br><b>void SetSelection</b>(<b>short</b> <i>TypeTitre</i>, <b>short </b><i>CelX</i>,
+<b>short
+</b><i>CelY</i>,
+<b>COLORREF</b>
+<i>SelColor</i>=RGB(0,0,255),
+<b>bool
+</b><i>fUpdate</i>=false);
+<p><b>Param&egrave;tres</b>
+<p><i>TypeTitre</i>&nbsp;&nbsp;&nbsp; Voir <a href="#CObj_Tab::InitialiseTitre">CObj_Tab::InitialiseTitre</a>
+<p><i>CelX</i>&nbsp;&nbsp;&nbsp; Sp&eacute;cifie la colonne ou se trouve
+l'&eacute;l&eacute;ment.
+<p><i>CelY</i>&nbsp;&nbsp;&nbsp; Sp&eacute;cifie la ligne ou se trouve
+l'&eacute;l&eacute;ment.
+<p><i>SelColor</i>&nbsp;&nbsp;&nbsp; Couleur de s&eacute;lection pour le
+fond de la cellule
+<p><i>fUpdate</i>&nbsp;&nbsp;&nbsp; Met &agrave; jour l'affichage si true.
+<p><b>Remarque</b>
+<br>&nbsp;
+<p>
+<hr WIDTH="100%">
+<p><a NAME="CObj_Tab::SetPosition"></a><font size=+2>CObj_Tab::SetPosition</font>
+<br><b>void SetPosition</b>(<b>short</b> <i>TypeTitre</i>, <b>short </b><i>CelX</i>,
+<b>short
+</b><i>CelY</i>,
+<b>bool</b>
+<i>fUpdate</i>=false);
+<p><b>Param&egrave;tres</b>
+<p><i>TypeTitre</i>&nbsp;&nbsp;&nbsp; Voir <a href="#CObj_Tab::InitialiseTitre">CObj_Tab::InitialiseTitre</a>
+<p><i>CelX</i>&nbsp;&nbsp;&nbsp; Sp&eacute;cifie la colonne ou se trouve
+l'&eacute;l&eacute;ment.
+<p><i>CelY</i>&nbsp;&nbsp;&nbsp; Sp&eacute;cifie la ligne ou se trouve
+l'&eacute;l&eacute;ment.
+<p><i>fUpdate</i>&nbsp;&nbsp;&nbsp; Met &agrave; jour l'affichage si true.
+<p><b>Remarque</b>
+<p>Cette fonction positionne l'&eacute;l&eacute;ment du croisement ligne-colonne
+le plus pr&ecirc;t possible du point 0 - cad en haut &agrave; gauche -.
+<br>
+<hr WIDTH="100%">
+<p><a NAME="CObj_Tab::RAZSelection"></a><font size=+2>CObj_Tab::RAZSelection</font>
+<br><b>void RAZSelection</b>(<b>short</b> <i>TypeTitre</i>, <b>short </b><i>CelX</i>,
+<b>short
+</b><i>CelY</i>,
+<b>bool</b>
+<i>fUpdate</i>=false);
+<p><b>Param&egrave;tres</b>
+<p><i>TypeTitre</i>&nbsp;&nbsp;&nbsp; Voir <a href="#CObj_Tab::InitialiseTitre">CObj_Tab::InitialiseTitre</a>
+<p><i>CelX</i>&nbsp;&nbsp;&nbsp; Sp&eacute;cifie la colonne ou se trouve
+l'&eacute;l&eacute;ment &agrave; r&eacute;initialiser.
+<p><i>CelY</i>&nbsp;&nbsp;&nbsp; Sp&eacute;cifie la ligne ou se trouve
+l'&eacute;l&eacute;ment &agrave; r&eacute;initialiser.
+<p><i>fUpdate</i>&nbsp;&nbsp;&nbsp; Met &agrave; jour l'affichage si true.
+<p><b>Remarque</b>
+<br>&nbsp;
+<p>
+<hr WIDTH="100%">
+<p><a NAME="CObj_Tab::MAJPosScrollV"></a><font size=+2>CObj_Tab::MAJPosScrollV</font>
+<br><b>short MAJPosScrollV</b>(<b>UINT</b> <i>nSBCode</i>, <b>UINT </b><i>nPos</i>,
+<b>short
+</b><i>flag</i>);
+<p><b>Param&egrave;tres</b>
+<p>nSBCode&nbsp;&nbsp;&nbsp; Valeur de la fonction OnVScroll.
+<p>nPos&nbsp;&nbsp;&nbsp; Valeur de la fonction OnVScroll.
+<p>flag&nbsp;&nbsp;&nbsp; Sp&eacute;cifie &agrave; l'objet de mettre &agrave;
+jour la nouvelle position (1). Sinon, le programme devra s'en occup&eacute;
+(0).
+<p><b>Remarque</b>
+<p>Appel&eacute;e dans la fonction OnVScroll(), elle sert &agrave; mettre
+&agrave; jour la position du tableau lorsque l'ascenseur vertical &agrave;
+boug&eacute;.
+<br>
+<hr WIDTH="100%">
+<p><a NAME="CObj_Tab::MAJPosScrollH"></a><font size=+2>CObj_Tab::MAJPosScrollH</font>
+<br><b>short MAJPosScrollH</b>(<b>UINT</b> <i>nSBCode</i>, <b>UINT </b><i>nPos</i>,
+<b>short
+</b><i>flag</i>);
+<p><b>Param&egrave;tres</b>
+<p>nSBCode&nbsp;&nbsp;&nbsp; Valeur de la fonction OnHScroll.
+<p>nPos&nbsp;&nbsp;&nbsp; Valeur de la fonction OnHScroll.
+<p>flag&nbsp;&nbsp;&nbsp; Sp&eacute;cifie &agrave; l'objet de mettre &agrave;
+jour la nouvelle position (1). Sinon, le programme devra s'en occup&eacute;
+(0).
+<p><b>Remarque</b>
+<p>Appel&eacute;e dans la fonction OnHScroll(), elle sert &agrave; mettre
+&agrave; jour la position du tableau lorsque l'ascenseur horizontal &agrave;
+boug&eacute;.
+<br>
+<hr WIDTH="100%">
+<p><a NAME="CObj_Tab::PutMsgInToTab"></a><font size=+2>CObj_Tab::PutMsgInToTab</font>
+<br><b>void PutMsgInToTab</b>(<b>CString</b> <i>Msg</i>, <b>CFont</b> *
+<i>pFont</i>=NULL,
+<b>COLORREF
+</b><i>TxtColor</i>=RGB(0,0,0),
+<b>bool
+</b><i>flag</i>=true);
+<p><b>Param&egrave;tres</b>
+<p><i>Msg</i>&nbsp;&nbsp;&nbsp; Message &agrave; faire apparaitre dans
+le fond du tableau.
+<p><i>pFont</i>&nbsp;&nbsp;&nbsp; Font utilis&eacute; pour le message.
+<p><i>TxtColor</i>&nbsp;&nbsp;&nbsp; Couleur du texte du message
+<p><i>flag</i>&nbsp;&nbsp;&nbsp; Met &agrave; jour l'affichage si true.
+<p><b>Remarque</b>
+<p>Cette fonction peut &ecirc;tre utile pour avertir d'une mauvaise utilisation
+de l'objet, ou faire afficher un message si aucuns &eacute;l&eacute;ments
+n'apparait dans un fonctionnement normale.
+<br>
+<hr WIDTH="100%">
+<p><a NAME="CObj_Tab::LibereObjet"></a><font size=+2>CObj_Tab::LibereObjet</font>
+<br><b>void LibereObjet</b>(<b>void</b>);
+<p><b>Remarque</b>
+<p>Lib&eacute;ration m&eacute;moire des variables qui contiennent les &eacute;l&eacute;ments
+des diff&eacute;rents modules de l'objet, et autres allocations.
+<br>Cette fonction doit &ecirc;tre appel&eacute; avant que l'objet disparaisse.
+<br>
+<hr WIDTH="100%"><font size=-1>Cr&eacute;ation&nbsp; : Mardi 8 juin 1999</font>
+<br><font size=-1>Derni&egrave;re modification : Jeudi 10 juin 1999</font>
+<br><font size=-1>VLF</font>
+</body>
+</html>

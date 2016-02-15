@@ -1,0 +1,271 @@
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=windows-1252">
+<META NAME="Generator" CONTENT="Microsoft Word 97">
+<TITLE>Author: Eugen Paval</TITLE>
+<META NAME="EMAIL" CONTENT="1">
+<META NAME="Version" CONTENT="8.0.3418">
+<META NAME="Template" CONTENT="C:\program files\microsoft office\Office\Email.dot">
+</HEAD>
+<BODY>
+<DIR>
+<DIR>
+<DIR>
+
+<B><FONT FACE="Arial" SIZE=3><P>Paval, Eugen</P>
+</FONT><FONT FACE="Arial" SIZE=2><P>From:</B>&#9;Paval, Eugen</P>
+<B><P>Posted At:</B>&#9;Friday, January 15, 1999 3:43 PM</P>
+<B><P>Conversation:</B>&#9;Another method to achieve repositioning/resizing of child controls</P>
+<B><P>Posted To:</B>&#9;Drafts</P>
+
+<B><P>Subject:</B>&#9;Another method to achieve repositioning/resizing of child controls</P>
+</DIR>
+</DIR>
+</DIR>
+
+<P>Author: Eugen Paval</P>
+<P>Original title: GEOMETRY</P>
+
+<P>Yet, another method to reposition/resize child windows within their parent framework. Although the subject received a lot of attention, including this web site, I invite you to look at the following method as it presents certain advantages over the others I already know. </P>
+
+<P>First of all this is not a library. There is no associated DLL or LIB to link to. Secondly, it is not a class hierarchy. You don’t have to derive your classes from classes exposing this functionality. Often, you already have a hierarchy of classes designed for a certain behavior. This behavior does not include repositioning/resizing of child controls, but you want to add it. Since the MFC doesn’t let you use multiple inheritance when it comes to windows, you might wonder what is the solution. Well, the solution is templates. GEOMETRY is actually a collection of templates designed to make your windows to resize gracefully.</P>
+
+<P>The interface to GEOMETRY is a single class template CGeometryWnd. You can use this class template with all your window classes including dialogs, forms, property sheets/property pages and splitter windows. Being a template library, GEOMETRY is contained in a single file Geometry.h. All you have to do is to include this file, to use CGeometryWnd and possibly a series of macros, in relation with your classes.</P>
+
+<P>For example to make a dialog resizeable you need to:</P>
+
+<OL>
+
+<LI>make your dialog in resource editor resizeable (replace the dialog frame with a resizeable border)</LI>
+<LI>specify the rules to apply to child controls (either in the resource editor or in the source code)</LI>
+<LI>include in dialog’s source code Geometry.h</LI>
+<LI>use the template CGeometryWnd over your dialog’s class</LI></OL>
+
+
+<P>Ex:</P><DIR>
+<DIR>
+
+</FONT><B><FONT FACE="Courier New" SIZE=2 COLOR="#ff0000"><P>#include &lt;Geometry.h&gt;</P>
+<P>USE_GEOMETRY_TEMPLATES;</P>
+</B></FONT><FONT FACE="Courier New" SIZE=2><P>/////////////////////////////////////////////////////////////////////////////</P>
+<P>// CAboutDlg dialog used for App About</P>
+
+<P>class CAboutDlg : public CDialog</P>
+<P>{</P>
+</FONT><B><FONT FACE="Courier New" SIZE=2 COLOR="#ff0000"><P>&#9;DECLARE_GEOMETRY_RTSUPPORT()</P>
+</B></FONT><FONT FACE="Courier New" SIZE=2><P>public:</P>
+<P>&#9;CAboutDlg();</P>
+
+<P>// Dialog Data</P>
+<P>&#9;//{{AFX_DATA(CAboutDlg)</P>
+<P>&#9;enum { IDD = IDD_ABOUTBOX };</P>
+<P>&#9;//}}AFX_DATA</P>
+
+<P>&#9;virtual BOOL OnInitDialog();</P>
+<P>&#9;//{{AFX_VIRTUAL(CAboutDlg)</P>
+<P>&#9;protected:</P>
+<P>&#9;virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support</P>
+<P>&#9;//}}AFX_VIRTUAL</P>
+
+<P>// Implementation</P>
+<P>protected:</P>
+<P>&#9;//{{AFX_MSG(CAboutDlg)</P>
+<P>&#9;&#9;// No message handlers</P>
+<P>&#9;//}}AFX_MSG</P>
+<P>&#9;DECLARE_MESSAGE_MAP()</P>
+<P>};</P>
+
+<P>CAboutDlg::CAboutDlg() : CDialog(CAboutDlg::IDD)</P>
+<P>{</P>
+<P>&#9;//{{AFX_DATA_INIT(CAboutDlg)</P>
+<P>&#9;//}}AFX_DATA_INIT</P>
+<P>}</P>
+
+<P>void CAboutDlg::DoDataExchange(CDataExchange* pDX)</P>
+<P>{</P>
+<P>&#9;CDialog::DoDataExchange(pDX);</P>
+<P>&#9;//{{AFX_DATA_MAP(CAboutDlg)</P>
+<P>&#9;//}}AFX_DATA_MAP</P>
+<P>}</P>
+
+<P>BEGIN_MESSAGE_MAP(CAboutDlg, CDialog)</P>
+<P>&#9;//{{AFX_MSG_MAP(CAboutDlg)</P>
+<P>&#9;&#9;// No message handlers</P>
+<P>&#9;//}}AFX_MSG_MAP</P>
+<P>END_MESSAGE_MAP()</P>
+
+<P>BOOL CAboutDlg::OnInitDialog()</P>
+<P>{</P>
+<P>&#9;CDialog::OnInitDialog();</P>
+
+</FONT><B><FONT FACE="Courier New" SIZE=2 COLOR="#ff0000"><P>&#9;AddConstraint(IDOK,CConstraint(&quot;X&quot;));</P>
+</B></FONT><FONT FACE="Courier New" SIZE=2><P>&#9;return TRUE;</P>
+<P>}</P>
+
+<P>// App command to run the dialog</P>
+<P>void CTestPSGeoApp::OnAppAbout()</P>
+<P>{</P>
+</FONT><B><FONT FACE="Courier New" SIZE=2 COLOR="#ff0000"><P>&#9;CGeometryWnd&lt;CAboutDlg&gt; aboutDlg;</P>
+</B></FONT><FONT FACE="Courier New" SIZE=2><P>&#9;aboutDlg.DoModal();</P>
+<P>}</P>
+</DIR>
+</DIR>
+
+</FONT><FONT FACE="Arial" SIZE=2><P>The constraints added to child windows, control their behavior in case the parent resizes. The constraints can be added at design time (aka in resource editor, see note) or at runtime using the </FONT><FONT FACE="Arial" SIZE=2 COLOR="#ff0000">DECLARE_GEOMETRY_RTSUPPORT()</FONT><FONT FACE="Arial" SIZE=2> macro and </FONT><FONT FACE="Arial" SIZE=2 COLOR="#ff0000">AddConstraint()</FONT><FONT FACE="Arial" SIZE=2> function. The constraint object has two important constructors:</P>
+
+</FONT><FONT FACE="Courier New" SIZE=2 COLOR="#ff0000"><P>CConstraint(LPCSTR lpOptions)&#9; and</P>
+<P>CConstraint(float x,float y=0,float cx=0,float cy=0)</P>
+</FONT><FONT FACE="Arial" SIZE=2>
+<P>In the first case you can specify the repositioning/resizing of the control by using a control string (see table for details). Basically the string format is:</P>
+<DIR>
+<DIR>
+
+<I><P>Option1[value]+Option2[value]+…</P>
+</I></DIR>
+</DIR>
+
+<P>Where Optionx (see table below) controls the position/size of the control and [value] ([] are not optional) is an optional parameter specifying the amount (between 0 and 1 as a float number) with which the control will reposition/resize from the total amount of the parent resize value.</P>
+</FONT>
+<TABLE BORDER CELLSPACING=1 CELLPADDING=7 WIDTH=590>
+<TR><TD WIDTH="12%" VALIGN="TOP">
+<B><FONT FACE="Arial" SIZE=2><P ALIGN="CENTER">Option</B></FONT></TD>
+<TD WIDTH="37%" VALIGN="TOP">
+<B><FONT FACE="Arial" SIZE=2><P ALIGN="CENTER">Meaning</B></FONT></TD>
+<TD WIDTH="51%" VALIGN="TOP">
+<B><FONT FACE="Arial" SIZE=2><P ALIGN="CENTER">Comment</B></FONT></TD>
+</TR>
+<TR><TD WIDTH="12%" VALIGN="TOP">
+<FONT FACE="Arial" SIZE=2><P>X</FONT></TD>
+<TD WIDTH="37%" VALIGN="TOP">
+<FONT FACE="Arial" SIZE=2><P>Reposition on x axis</FONT></TD>
+<TD WIDTH="51%" VALIGN="TOP">
+<FONT FACE="Arial" SIZE=2><P>Control will move on the x axis</FONT></TD>
+</TR>
+<TR><TD WIDTH="12%" VALIGN="TOP">
+<FONT FACE="Arial" SIZE=2><P>Y</FONT></TD>
+<TD WIDTH="37%" VALIGN="TOP">
+<FONT FACE="Arial" SIZE=2><P>Reposition on y axis</FONT></TD>
+<TD WIDTH="51%" VALIGN="TOP">
+<FONT FACE="Arial" SIZE=2><P>Control will move on the y axis</FONT></TD>
+</TR>
+<TR><TD WIDTH="12%" VALIGN="TOP">
+<FONT FACE="Arial" SIZE=2><P>CX</FONT></TD>
+<TD WIDTH="37%" VALIGN="TOP">
+<FONT FACE="Arial" SIZE=2><P>Resize on x axis</FONT></TD>
+<TD WIDTH="51%" VALIGN="TOP">
+<FONT FACE="Arial" SIZE=2><P>Control will resize its width</FONT></TD>
+</TR>
+<TR><TD WIDTH="12%" VALIGN="TOP">
+<FONT FACE="Arial" SIZE=2><P>CY</FONT></TD>
+<TD WIDTH="37%" VALIGN="TOP">
+<FONT FACE="Arial" SIZE=2><P>Resize on y axis</FONT></TD>
+<TD WIDTH="51%" VALIGN="TOP">
+<FONT FACE="Arial" SIZE=2><P>Control will resize its height</FONT></TD>
+</TR>
+<TR><TD WIDTH="12%" VALIGN="TOP">
+<FONT FACE="Arial" SIZE=2><P>x</FONT></TD>
+<TD WIDTH="37%" VALIGN="TOP">
+<FONT FACE="Arial" SIZE=2><P>Stay on x axis center</FONT></TD>
+<TD WIDTH="51%" VALIGN="TOP">
+<FONT FACE="Arial" SIZE=2><P>Equivalent with X[0.5]</FONT></TD>
+</TR>
+<TR><TD WIDTH="12%" VALIGN="TOP">
+<FONT FACE="Arial" SIZE=2><P>y</FONT></TD>
+<TD WIDTH="37%" VALIGN="TOP">
+<FONT FACE="Arial" SIZE=2><P>Stay on y axis center</FONT></TD>
+<TD WIDTH="51%" VALIGN="TOP">
+<FONT FACE="Arial" SIZE=2><P>Equivalent with Y[0.5]</FONT></TD>
+</TR>
+<TR><TD WIDTH="12%" VALIGN="TOP">
+<FONT FACE="Arial" SIZE=2><P>cx</FONT></TD>
+<TD WIDTH="37%" VALIGN="TOP">&nbsp;</TD>
+<TD WIDTH="51%" VALIGN="TOP">
+<FONT FACE="Arial" SIZE=2><P>Equivalent with CX[0.5]</FONT></TD>
+</TR>
+<TR><TD WIDTH="12%" VALIGN="TOP">
+<FONT FACE="Arial" SIZE=2><P>cy</FONT></TD>
+<TD WIDTH="37%" VALIGN="TOP">&nbsp;</TD>
+<TD WIDTH="51%" VALIGN="TOP">
+<FONT FACE="Arial" SIZE=2><P>Equivalent with CY[0.5]</FONT></TD>
+</TR>
+<TR><TD WIDTH="12%" VALIGN="TOP">
+<FONT FACE="Arial" SIZE=2><P>MX</FONT></TD>
+<TD WIDTH="37%" VALIGN="TOP">
+<FONT FACE="Arial" SIZE=2><P>Maintain aspect on x axis</FONT></TD>
+<TD WIDTH="51%" VALIGN="TOP">
+<FONT FACE="Arial" SIZE=2><P>Preserves the X/CXParent ratio</FONT></TD>
+</TR>
+<TR><TD WIDTH="12%" VALIGN="TOP">
+<FONT FACE="Arial" SIZE=2><P>MY</FONT></TD>
+<TD WIDTH="37%" VALIGN="TOP">
+<FONT FACE="Arial" SIZE=2><P>Maintain aspect on y axis</FONT></TD>
+<TD WIDTH="51%" VALIGN="TOP">
+<FONT FACE="Arial" SIZE=2><P>Preserves the Y/CYParent ratio</FONT></TD>
+</TR>
+<TR><TD WIDTH="12%" VALIGN="TOP">
+<FONT FACE="Arial" SIZE=2><P>MCX</FONT></TD>
+<TD WIDTH="37%" VALIGN="TOP">
+<FONT FACE="Arial" SIZE=2><P>Maintain aspect on the width</FONT></TD>
+<TD WIDTH="51%" VALIGN="TOP">
+<FONT FACE="Arial" SIZE=2><P>Preserves the CX/CXParent ratio</FONT></TD>
+</TR>
+<TR><TD WIDTH="12%" VALIGN="TOP">
+<FONT FACE="Arial" SIZE=2><P>MCY</FONT></TD>
+<TD WIDTH="37%" VALIGN="TOP">
+<FONT FACE="Arial" SIZE=2><P>Maintain aspect on the height</FONT></TD>
+<TD WIDTH="51%" VALIGN="TOP">
+<FONT FACE="Arial" SIZE=2><P>Preserves the CY/CYParent ratio</FONT></TD>
+</TR>
+</TABLE>
+
+<FONT FACE="Arial" SIZE=2>
+<I><P>Note:</P>
+<P>To add the constraints at design time directly in resource editor you’ ll gonna surround the controls sharing the same constraint options with <B>invisible</B> group boxes having the caption in the form <B>&quot;$Geometry:Option1[value]+Option2[value]+…&quot;</B> w/o the quotes. Please note the $Geometry in front of the options string, this is not optional. Be careful with the capital/minor letters as they have different significance. Using this form of constraints specification you don’t need DECLARE_GEOMETRY_RTSUPPORT() and AddConstraint() as previously displayed.</P>
+</I>
+<P>Using the second constructor you will specify the values between 0 and 1 that will be multiplied with the total resize amount of the parent. A value of 0 means don’t move/resize a value of 1 means full movement/resizing. Please note that the values of movement/resizing on one axis added together must not be greater than 1 (otherwise the control will be clipped away from its parent).</P>
+
+</FONT><FONT FACE="Courier New" SIZE=2 COLOR="#ff0000"><P>AddConstraint(UINT nIDC,CConstraint&amp; constraint)</P>
+</FONT><FONT FACE="Arial" SIZE=2><P>takes as parameters the control ID and a reference to a constraint object.</P>
+
+<P>To achieve dynamic creation of windows MFC uses DECLARE_DYNCREATE(), IMPLEMENT_DYNCREATE() along with RUNTIME_CLASS() macros. For example the CFormView derived classes are usually created by the framework in this way. To accommodate this case GEOMETRY uses a set of macros of its own:</P>
+
+</FONT><FONT FACE="Courier New" SIZE=2 COLOR="#ff0000"><P>DECLARE_GEOMETRY_DYNCREATE(yourClass)</P>
+<P>IMPLEMENT_GEOMETRY_DYNCREATE(yourClass)</P>
+<P>GEOMETRY_RUNTIME_CLASS(yourClass)</P>
+</FONT><FONT FACE="Arial" SIZE=2>
+<P>The first macro is to be used in the definition of the class (however outside the class scope), the second in the implementation of the class and eventually the third instead of RUNTIME_CLASS(). The first two don’t replace DECLARE_DYNCREATE(), IMPLEMENT_DYNCREATE() macros, they still have to be used.</P>
+
+<P>For example:</P>
+
+</FONT><FONT FACE="Courier New" SIZE=2 COLOR="#ff0000"><P>#include &lt;Geometry.h&gt;</P>
+<P>USE_GEOMETRY_TEMPLATES;</P>
+</FONT><FONT FACE="Courier New" SIZE=2>
+<P>class CTestPSGeoView : public CFormView</P>
+<P>{</P>
+<P>protected: // create from serialization only</P>
+<P>&#9;CTestPSGeoView();</P>
+<P>&#9;DECLARE_DYNCREATE(CTestPSGeoView)</P>
+<P>…</P>
+<P>};</P>
+</FONT><FONT FACE="Courier New" SIZE=2 COLOR="#ff0000"><P>DECLARE_GEOMETRY_DYNCREATE(CTestPSGeoView);</P>
+</FONT><FONT FACE="Arial" SIZE=2>
+<P>In the definition file of the CTestPSGeoView class and</P>
+
+</FONT><FONT FACE="Courier New" SIZE=2><P>IMPLEMENT_DYNCREATE(CTestPSGeoView,CFormView)</P>
+</FONT><FONT FACE="Courier New" SIZE=2 COLOR="#ff0000"><P>IMPLEMENT_GEOMETRY_DYNCREATE(CTestPSGeoView)</P>
+</FONT><FONT FACE="Arial" SIZE=2>
+<P>In the implementation file.</P>
+
+<P>Also, there is necessary the substitution:</P>
+
+</FONT><FONT FACE="Courier New" SIZE=2><P>CMultiDocTemplate* pDocTemplate;</P>
+<P>pDocTemplate = new CMultiDocTemplate(</P>
+<P>&#9;IDR_TESTPSTYPE,</P>
+<P>&#9;RUNTIME_CLASS(CTestPSGeoDoc),</P>
+<P>&#9;RUNTIME_CLASS(CChildFrame), // custom MDI child frame</P>
+</FONT><FONT FACE="Courier New" SIZE=2 COLOR="#ff0000"><P>&#9;GEOMETRY_RUNTIME_CLASS(CTestPSGeoView));</P>
+</FONT><FONT FACE="Arial" SIZE=2>
+<P>That’s it! An example along with the full source code is provided. You may use freely this template library, even modify it, but at your own risk and specifying where the code comes from. The template library was built and tested on VC 6.0 only.</P>
+
+<P>&nbsp;</P></FONT></BODY>
+</HTML>

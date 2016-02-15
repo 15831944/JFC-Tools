@@ -1,0 +1,53 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="jfc">
+   <META NAME="GENERATOR" CONTENT="Mozilla/4.03 [fr] (Win95; I) [Netscape]">
+   <TITLE>fonction du scroll horizontal</TITLE>
+</HEAD>
+<BODY>
+void CTstcalendDlg::OnHScroll(UINT nSBCode,
+UINT nPos, CScrollBar* pScrollBar)
+<BR>{
+<UL>int i,mini,maxi;
+
+<P>if(!pScrollBar) pScrollBar=&amp;m_scrollbar;
+<BR>i=pScrollBar->GetScrollPos();
+<BR>pScrollBar->GetScrollRange(&amp;mini,&amp;maxi);
+
+<P>switch(nSBCode) {
+<UL>case SB_LEFT:&nbsp; pScrollBar->SetScrollPos(mini,1); break;
+<BR>case SB_ENDSCROLL:break;
+<BR>case SB_LINELEFT:pScrollBar->SetScrollPos(max(i-1, mini),1); break;
+<BR>case SB_LINERIGHT: pScrollBar->SetScrollPos(min(i+1, maxi),1); break;
+<BR>case SB_PAGELEFT: pScrollBar->SetScrollPos(max((i-m_nbCol-1), mini),1);
+break;
+<BR>case SB_PAGERIGHT: pScrollBar->SetScrollPos(min((i+m_nbCol-1), maxi),1);
+break;
+<BR>case SB_RIGHT:&nbsp; pScrollBar->SetScrollPos(maxi,1); break;
+<BR>case SB_THUMBPOSITION:
+<BR>case SB_THUMBTRACK: pScrollBar->SetScrollPos(nPos,1); break;</UL>
+}
+
+<P>// au besoin on redessine le bouton &agrave; qui il est associ&eacute;
+<BR>m_objcal.SetPosition(pScrollBar->GetScrollPos());
+<BR>InvalidateRect(NULL,0);
+
+<P>CDialog::OnHScroll(nSBCode, nPos, pScrollBar);</UL>
+}
+<BR>&nbsp;
+
+<P><B>Remarque</B>
+
+<P>La variable <I>m_nbCol</I> est calcul&eacute; avant la fonction <B>Initialisation(...)</B>
+:
+
+<P><I>Rect R;</I>
+<BR><I>m_ObjCal.GetClientRect(&amp;R);&nbsp;&nbsp;&nbsp; // r&eacute;cup&eacute;ration
+du rectangle client</I>
+<BR><I>m_nbCol=(R.right-R.left)/dx;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+// Calcul du nb de colonne maxi</I>
+<BR>...
+<BR>&nbsp;
+</BODY>
+</HTML>

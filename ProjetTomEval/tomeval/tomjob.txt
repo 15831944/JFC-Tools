@@ -1,0 +1,46 @@
+CTRL000000000	// Effacé par WINTM
+TOMEVAL			// Effacé par WINTM
+24,descript TOM	// Nr,Nom de l'étude(pour info)
+4,Ménagères -50	// Nr de cible, Libelle(pour info)
+------- Ligne blanche
+2				// TypeSuppU <100 sinon voir EvalJob.txt
+9				// coeff. beta
+3				// Nb de sous plan
+1				// NbSource
+xxxx			// Position du fichier CIBJOB
+3,2,8,3			// nombre de ventilation(0 si rien),NbClasses
+------- Ligne blanche au debut de la source
+4,1,0								// Nr src.C%,vague,format
+c:\artradio\source\SFR03\JFC_A196	// Nom de fichier src C%
+50000000,popvent1,...// population cible GRP et pop GRP vent[*NbClassesTot] (si ventilation)
+3000			// NbIndividus source C%
+3				// nb de région dans la source(toutes)
+10,12,19 .... 	// NrUnique  des regions
+1000000,1250000,2155000,...    // population cible dans chacunes des régions
+1000000,1250000,2155000,...    // idem ci-dessus, pour chaque ventilation, 1 ligne par région
+
+
+------ Ligne blanche au debut des insertions
+1 ligne par support dans le format suivant:****
+NrStationunique,Horaire,Jour,NrUniqueRegion(+1000=Exclusif),Option,GRP(réel),Privé,NbInsertion(NbPlan)...,GRP ventilé (n classes)......
+..jour =31,32,64 en radio
+..jour =1,2,4,8,16,32,64 en télé
+.
+.
+.
+pour les n support**********************
+------ Ligne blanche fin de support (debut de la source suivante)
+Prix1,prix2,...(Nb plans)
+EOJ
+
+
+// Debut CIBJOB (pour chaque de source)
+250.7,314.9,....// coefficients(int) d'extrapolation des individus de la cible
+250.7,314.9,....// coefficients(int) d'extrapolation des individus de l'ensemble
+1,2,0,...		// NrRegion appartenance(char) des individus (CibJob)
+0,1,2,1,2,3,....// Nr classe(char) de l'individu du critère ventilé 1 (CibJob)
+0,1,2,1,2,3,....// idem pour les n critères de ventilations
+// Fin CIBJOB
+
+
+

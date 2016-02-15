@@ -1,0 +1,96 @@
+; Table des station de la région zBL01 (belgique nord)
+; * et # et ; réservés:
+; *Nombre de station *n
+; #Début de la table
+*86
+
+;  Nr Nom5c M T Ty Libellé long 30c. ..........-< NrT RégTe Ord LOGO         Fam DateDU DateAU Coeff Nb Options...
+;  *5 ****5 * * ** ****************************30 **3 ****5 *** **********12 *** ****** ****** ***** *2 *******...
+#
+00001 RAD.1 R F 00 RADIO 1                        000 $$$$$ 000 NOLOGO.BMP   000 010180 311259 1.000 01 X=-4
+00002 RAD.2 R F 00 RADIO 2                        000 $$$$$ 001 NOLOGO.BMP   000 010180 311259 1.000 01 X=-4
+00003 KLARA R F 00 KLARA                          000 $$$$$ 002 NOLOGO.BMP   000 010180 311259 1.000 01 X=-4
+00004 STBRU R F 00 STUDIO BRUSSEL                 000 $$$$$ 003 NOLOGO.BMP   000 010180 311259 1.000 01 X=-4
+00005 DONNA R F 00 RADIO DONNA                    000 $$$$$ 004 NOLOGO.BMP   000 010180 311259 1.000 01 X=-4
+00011 VRT   R F 00 BRTN RADIOS                    000 $$$$$ 005 NOLOGO.BMP   000 010180 311259 1.000 02 A X=-4
+00012 NACHT R F 00 NACHTRADIO                     000 $$$$$ 006 NOLOGO.BMP   000 010180 311296 1.000 02 C=[4(1,2,4,5)] X=-4
+00013 LOKAL R F 00 T. RADIOS LIBRES               000 $$$$$ 007 NOLOGO.BMP   000 010180 311259 1.000 01 A
+00014 ANDER R F 00 T. AUTRES RADIOS               000 $$$$$ 008 NOLOGO.BMP   000 010180 311259 1.000 02 A X=-4
+00015 TOT.R R F 00 TOTAL RADIOS                   000 $$$$$ 009 NOLOGO.BMP   000 010180 311259 1.000 02 A X=-4
+00016 NRTBF R F 00 RTBF RADIOS                    000 $$$$$ 010 NOLOGO.BMP   000 010180 311259 1.000 02 A X=-4
+00017 NCONT R G 30 RADIO CONTACT                  000 $$$$$ 011 NOLOGO.BMP   000 010180 311259 1.000 00
+00018 NNOST R F 00 NOSTALGIE                      000 $$$$$ 012 NOLOGO.BMP   000 010180 311259 1.000 00
+00019 P12+  R G 30 PEAK 12+                       000 $$$$$ 013 NOLOGO.BMP   000 010180 310899 1.000 00
+00020 SPI.T R G 30 SPIRIT TOTAAL                  000 $$$$$ 014 NOLOGO.BMP   000 010180 311296 1.000 00
+00021 SPIRI R G 30 SPIRIT                         000 $$$$$ 015 NOLOGO.BMP   000 010180 311299 1.000 00
+00022 SPI.U R G 30 SPIRIT URBAN                   000 $$$$$ 016 NOLOGO.BMP   000 010180 311296 1.000 00
+00023 ROULA R G 30 ROULARTA                       000 $$$$$ 017 NOLOGO.BMP   000 010180 311296 1.000 00
+00029 P1224 R G 30 PEAK 12-24                     000 $$$$$ 018 NOLOGO.BMP   000 010180 310899 1.000 00
+00030 P1234 R G 30 PEAK 12-34                     000 $$$$$ 019 NOLOGO.BMP   000 010180 310899 1.000 00
+00031 PVVA  R G 30 PEAK VVA 18-44                 000 $$$$$ 020 NOLOGO.BMP   000 010180 311299 1.000 00
+00032 L.B.N R G 30 L.B.N                          000 $$$$$ 021 NOLOGO.BMP   000 010197 311259 1.000 00
+00033 TOP.R R F 00 TOP RADIO                      000 $$$$$ 022 NOLOGO.BMP   000 011097 311259 1.000 00
+00034 CONT2 R G 30 CONTACT 2                      000 $$$$$ 023 NOLOGO.BMP   000 010199 311259 1.000 00
+00035 VRCOM R G 30 T. LOKAL+COMMERC.              000 $$$$$ 024 NOLOGO.BMP   000 010199 311259 1.000 01 A
+00036 KABEL R G 30 KABELRADIO                     000 $$$$$ 025 NOLOGO.BMP   000 010199 311259 1.000 01 A
+00037 MIXAN R G 30 FMIX ADULT NORTH               000 $$$$$ 026 NOLOGO.BMP   000 010199 311259 1.000 00
+00038 MI12+ R G 30 FMIX 12+ NORTH                 000 $$$$$ 027 NOLOGO.BMP   000 010199 311259 1.000 00
+00039 NRJNL R F 00 ENERGY VL                      000 $$$$$ 028 NOLOGO.BMP   001 010999 311259 1.000 01 X=-4
+00040 MIXYN R G 30 FMIX YOUNG NORTH               000 $$$$$ 029 NOLOGO.BMP   001 010100 311259 1.000 01 X=-4
+00041 MANGO R G 30 MANGO                          000 $$$$$ 030 NOLOGO.BMP   001 010100 311259 1.000 01 X=-4
+00042 HFREQ R G 30 HIGH FREQUENCY                 000 $$$$$ 031 NOLOGO.BMP   001 010100 311259 1.000 00
+00043 CDANC R G 30 C-DANCE                        000 $$$$$ 032 NOLOGO.BMP   001 010100 311259 1.000 00
+00044 MAEVA R G 30 MAEVA                          000 $$$$$ 033 NOLOGO.BMP   001 010100 311259 1.000 00
+00045 ROXY  R G 30 ROXY                           000 $$$$$ 034 NOLOGO.BMP   001 010100 311259 1.000 00
+00046 FCONT R G 30 FULL CONTACT                   000 $$$$$ 035 NOLOGO.BMP   001 010101 311259 1.000 02 C=[2(17,34)] X=-4
+00047 CITY  R G 30 CITY FM                        000 $$$$$ 036 NOLOGO.BMP   001 010102 311259 1.000 01 X=-4
+00049 HNOEN R F 00 ENERGY HNO                     000 $$$$$ 037 NOLOGO.BMP   001 010901 311259 1.000 01 X=-4
+00050 4FM   R F 00 4FM                            000 $$$$$ 038 NOLOGO.BMP   001 011001 311259 1.000 01 X=-4
+00051 Q Mus R F 00 Q Music                        000 $$$$$ 039 NOLOGO.BMP   001 011201 311259 1.000 01 X=-4
+00052 4 HF  R F 00 4 HF                           000 $$$$$ 040 NOLOGO.BMP   001 010102 311259 1.000 01 X=-4
+00053 FMLIM R F 00 FM LIMBURG                     000 $$$$$ 041 NOLOGO.BMP   001 010901 311259 1.000 01 X=-4
+00054 RGR   R F 00 BOENKRADIO RGR                 000 $$$$$ 042 NOLOGO.BMP   001 010901 311259 1.000 01 X=-4
+00055 ATLAN R F 00 ATLANTIS                       000 $$$$$ 043 NOLOGO.BMP   001 010901 311259 1.000 01 X=-4
+00056 BDEAL R F 00 BIG DEAL                       000 $$$$$ 044 NOLOGO.BMP   001 010102 311259 1.000 03 A C=[2(2,5)] X=-4
+00057 LANDE R F 00 LANDELIJKE STAT.               000 $$$$$ 045 NOLOGO.BMP   001 010102 311259 1.000 02 A X=-4
+00058 VMM G R F 00 VMM GROEP                      000 $$$$$ 046 NOLOGO.BMP   001 010102 311259 1.000 02 A X=-4
+00059 G.CON R F 00 GROEP CONTACT                  000 $$$$$ 047 NOLOGO.BMP   001 010102 311259 1.000 02 A X=-4
+00060 CaDan R F 00 cableDance                     000 $$$$$ 048 NOLOGO.BMP   000 010180 311259 1.000 01 X=-4
+00061 Vl.in R F 00 Vlaanderen int.                000 $$$$$ 049 NOLOGO.BMP   000 010180 311259 1.000 01 X=-4
+00062 Dab K R F 00 Dab Klassiek                   000 $$$$$ 050 NOLOGO.BMP   000 010180 311259 1.000 01 X=-4
+00063 antig R F 00 antigoon                       000 $$$$$ 051 NOLOGO.BMP   000 010180 311259 1.000 01 X=-4
+00064 arta  R F 00 arta                           000 $$$$$ 052 NOLOGO.BMP   000 010180 311259 1.000 01 X=-4
+00065 chris R F 00 christina                      000 $$$$$ 053 NOLOGO.BMP   000 010180 311259 1.000 01 X=-4
+00066 l.r.g R F 00 l.r.g                          000 $$$$$ 054 NOLOGO.BMP   000 010180 311259 1.000 01 X=-4
+00067 miner R F 00 minerva                        000 $$$$$ 055 NOLOGO.BMP   000 010180 311259 1.000 01 X=-4
+00068 mol   R F 00 mol                            000 $$$$$ 056 NOLOGO.BMP   000 010180 311259 1.000 01 X=-4
+00069 multi R F 00 multipop                       000 $$$$$ 057 NOLOGO.BMP   000 010180 311259 1.000 01 X=-4
+00070 Refle R F 00 Reflex                         000 $$$$$ 058 NOLOGO.BMP   000 010180 311259 1.000 01 X=-4
+00071 TOs   R F 00 TOs                            000 $$$$$ 059 NOLOGO.BMP   000 010180 311259 1.000 01 X=-4
+00072 Tiene R F 00 Tienen 10@ +                   000 $$$$$ 060 NOLOGO.BMP   000 010180 311259 1.000 01 X=-4
+00073 Benel R F 00 Benelux                        000 $$$$$ 061 NOLOGO.BMP   000 010180 311259 1.000 01 X=-4
+00074 Ham   R F 00 Ham                            000 $$$$$ 062 NOLOGO.BMP   000 010180 311259 1.000 01 X=-4
+00075 Maasv R F 00 Maasvallei                     000 $$$$$ 063 NOLOGO.BMP   000 010180 311259 1.000 01 X=-4
+00076 Velm  R F 00 Velm                           000 $$$$$ 064 NOLOGO.BMP   000 010180 311259 1.000 01 X=-4
+00077 Vrd   R F 00 Vrd                            000 $$$$$ 065 NOLOGO.BMP   000 010180 311259 1.000 01 X=-4
+00078 Bever R F 00 Beverland                      000 $$$$$ 066 NOLOGO.BMP   000 010180 311259 1.000 01 X=-4
+00079 cante R F 00 canteclaer                     000 $$$$$ 067 NOLOGO.BMP   000 010180 311259 1.000 01 X=-4
+00080 Delso R F 00 Delsol                         000 $$$$$ 068 NOLOGO.BMP   000 010180 311259 1.000 01 X=-4
+00081 Fores R F 00 Forest                         000 $$$$$ 069 NOLOGO.BMP   000 010180 311259 1.000 01 X=-4
+00082 GO    R F 00 GO                             000 $$$$$ 070 NOLOGO.BMP   000 010180 311259 1.000 01 X=-4
+00083 goldi R F 00 goldies  Radio                 000 $$$$$ 071 NOLOGO.BMP   000 010180 311259 1.000 01 X=-4
+00084 Meetj R F 00 Meetjesland                    000 $$$$$ 072 NOLOGO.BMP   000 010180 311259 1.000 01 X=-4
+00085 mig   R F 00 mig                            000 $$$$$ 073 NOLOGO.BMP   000 010180 311259 1.000 01 X=-4
+00086 roela R F 00 roeland                        000 $$$$$ 074 NOLOGO.BMP   000 010180 311259 1.000 01 X=-4
+00087 super R F 00 superstar                      000 $$$$$ 075 NOLOGO.BMP   000 010180 311259 1.000 01 X=-4
+00088 Tequi R F 00 Tequila                        000 $$$$$ 076 NOLOGO.BMP   000 010180 311259 1.000 01 X=-4
+00089 Z.r.O R F 00 Z.r.O                          000 $$$$$ 077 NOLOGO.BMP   000 010180 311259 1.000 01 X=-4
+00090 alpin R F 00 alpine                         000 $$$$$ 078 NOLOGO.BMP   000 010180 311259 1.000 01 X=-4
+00091 blank R F 00 blankenberge                   000 $$$$$ 079 NOLOGO.BMP   000 010180 311259 1.000 01 X=-4
+00092 exclu R F 00 exclusief                      000 $$$$$ 080 NOLOGO.BMP   000 010180 311259 1.000 01 X=-4
+00093 Parad R F 00 Paradijs                       000 $$$$$ 081 NOLOGO.BMP   000 010180 311259 1.000 01 X=-4
+00094 VbrO  R F 00 VbrO                           000 $$$$$ 082 NOLOGO.BMP   000 010180 311259 1.000 01 X=-4
+00095 rgr2  R F 00 rgr2                           000 $$$$$ 083 NOLOGO.BMP   000 010180 311259 1.000 01 X=-4
+00096 Locnl R F 00 Belgian local nl               000 $$$$$ 084 NOLOGO.BMP   000 010180 311259 1.000 01 X=-4
+00097 Othnl R F 00 Belgian Other nl               000 $$$$$ 085 NOLOGO.BMP   000 010180 311259 1.000 01 X=-4
+

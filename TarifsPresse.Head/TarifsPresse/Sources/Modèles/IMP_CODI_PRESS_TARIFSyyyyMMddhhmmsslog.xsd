@@ -1,0 +1,85 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="NewDataSet" xmlns="" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+  <xs:element name="NewDataSet" msdata:IsDataSet="true" msdata:Locale="en-US">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="TARIF_DELETE">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="NomSupport" type="xs:string" minOccurs="0" />
+              <xs:element name="NomPeriode" type="xs:string" minOccurs="0" />
+              <xs:element name="DateAppliPeriode" type="xs:string" minOccurs="0" />
+              <xs:element name="DateFinPeriode" type="xs:string" minOccurs="0" />
+              <xs:element name="Nom_ligne_offre" type="xs:string" minOccurs="0" />
+              <xs:element name="Statut" type="xs:string" minOccurs="0" />
+              <xs:element name="CodeTypePublicite" type="xs:string" minOccurs="0" />
+              <xs:element name="TypePublicite" type="xs:string" minOccurs="0" />
+              <xs:element name="CodeTypeEdition" type="xs:string" minOccurs="0" />
+              <xs:element name="TypeEdition" type="xs:string" minOccurs="0" />
+              <xs:element name="CodeCouleur" type="xs:string" minOccurs="0" />
+              <xs:element name="Couleur" type="xs:string" minOccurs="0" />
+              <xs:element name="CodeFormat" type="xs:string" minOccurs="0" />
+              <xs:element name="Format" type="xs:string" minOccurs="0" />
+              <xs:element name="CodeEmplacement" type="xs:string" minOccurs="0" />
+              <xs:element name="Emplacement" type="xs:string" minOccurs="0" />
+              <xs:element name="CodeRubrique" type="xs:string" minOccurs="0" />
+              <xs:element name="Rubrique" type="xs:string" minOccurs="0" />
+              <xs:element name="CodeImplantation" type="xs:string" minOccurs="0" />
+              <xs:element name="Implantation" type="xs:string" minOccurs="0" />
+              <xs:element name="CodeTypeEncart" type="xs:string" minOccurs="0" />
+              <xs:element name="TypeEncart" type="xs:string" minOccurs="0" />
+              <xs:element name="CodeTypeTraitement" type="xs:string" minOccurs="0" />
+              <xs:element name="TypeTraitement" type="xs:string" minOccurs="0" />
+              <xs:element name="CodePagination" type="xs:string" minOccurs="0" />
+              <xs:element name="Pagination" type="xs:string" minOccurs="0" />
+              <xs:element name="CodeDiffusion" type="xs:string" minOccurs="0" />
+              <xs:element name="Diffusion" type="xs:string" minOccurs="0" />
+              <xs:element name="CodeSupport" type="xs:string" minOccurs="0" />
+              <xs:element name="Support" type="xs:string" minOccurs="0" />
+              <xs:element name="Tarif" type="xs:string" minOccurs="0" />
+              <xs:element name="DateModification" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="TARIF_INSERT">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="NomSupport" type="xs:string" minOccurs="0" />
+              <xs:element name="NomPeriode" type="xs:string" minOccurs="0" />
+              <xs:element name="DateAppliPeriode" type="xs:string" minOccurs="0" />
+              <xs:element name="DateFinPeriode" type="xs:string" minOccurs="0" />
+              <xs:element name="Nom_ligne_offre" type="xs:string" minOccurs="0" />
+              <xs:element name="Statut" type="xs:string" minOccurs="0" />
+              <xs:element name="CodeTypePublicite" type="xs:string" minOccurs="0" />
+              <xs:element name="TypePublicite" type="xs:string" minOccurs="0" />
+              <xs:element name="CodeTypeEdition" type="xs:string" minOccurs="0" />
+              <xs:element name="TypeEdition" type="xs:string" minOccurs="0" />
+              <xs:element name="CodeCouleur" type="xs:string" minOccurs="0" />
+              <xs:element name="Couleur" type="xs:string" minOccurs="0" />
+              <xs:element name="CodeFormat" type="xs:string" minOccurs="0" />
+              <xs:element name="Format" type="xs:string" minOccurs="0" />
+              <xs:element name="CodeEmplacement" type="xs:string" minOccurs="0" />
+              <xs:element name="Emplacement" type="xs:string" minOccurs="0" />
+              <xs:element name="CodeRubrique" type="xs:string" minOccurs="0" />
+              <xs:element name="Rubrique" type="xs:string" minOccurs="0" />
+              <xs:element name="CodeImplantation" type="xs:string" minOccurs="0" />
+              <xs:element name="Implantation" type="xs:string" minOccurs="0" />
+              <xs:element name="CodeTypeEncart" type="xs:string" minOccurs="0" />
+              <xs:element name="TypeEncart" type="xs:string" minOccurs="0" />
+              <xs:element name="CodeTypeTraitement" type="xs:string" minOccurs="0" />
+              <xs:element name="TypeTraitement" type="xs:string" minOccurs="0" />
+              <xs:element name="CodePagination" type="xs:string" minOccurs="0" />
+              <xs:element name="Pagination" type="xs:string" minOccurs="0" />
+              <xs:element name="CodeDiffusion" type="xs:string" minOccurs="0" />
+              <xs:element name="Diffusion" type="xs:string" minOccurs="0" />
+              <xs:element name="CodeSupport" type="xs:string" minOccurs="0" />
+              <xs:element name="Support" type="xs:string" minOccurs="0" />
+              <xs:element name="Tarif" type="xs:string" minOccurs="0" />
+              <xs:element name="DateModification" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

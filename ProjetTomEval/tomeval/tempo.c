@@ -1,0 +1,2 @@
+#ifdef HORAIRE_THEORIQUE
+#endif

@@ -1,0 +1,299 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta name="Author" content="jfc">
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+<title>Aide JFC Objet List Box</title>
+</head>
+
+<body>
+
+<p><font size="6">CObj_Horr</font><img src="Obj_Horr.JPG" align="right" hspace="0"
+width="410" height="369"> </p>
+
+<p>La classe <b>CObj_Horr</b> dérive de la classe CStatic. </p>
+
+<p><font size="4"><b><i>Implantation</i></b></font> </p>
+
+<p>Il faut inclure dans le projet : 
+
+<ul>
+  <li>le fichier d'en-tête OBJ_HORR.H</li>
+  <li>le fichier source OBJ_HORR.CPP</li>
+  <li>#include &lt;OBJ_HORR.RCO&gt; dans la ressource principale</li>
+</ul>
+
+<p>Il faut inclure dans le fichier d'en-tête appellant l'objet : 
+
+<ul>
+  <li>#include &lt;OBJ_HORR.H&gt;</li>
+  <li>Modifier le type CStatic du control en <b>CObj_Horr</b></li>
+</ul>
+
+<hr size="3" align="left">
+
+<p><font size="5">Membres de la class CObj_Horr</font> </p>
+
+<p><b>Initialisation</b> <br>
+&nbsp; </p>
+
+<table border="0" width="773">
+  <tr>
+    <td width="145"><a href="#CObj_LBox::Initialise">Initialise</a></td>
+    <td width="620">Initialise les paramètres généraux de l'objet.</td>
+  </tr>
+  <tr>
+    <td width="145"><a href="#CObj_Horr::SetZoomQH">SetZoomQH</a></td>
+    <td width="620">Rend visible ou invisible la loupe du zoom.&nbsp;</td>
+  </tr>
+</table>
+
+<p><b>Position</b>&nbsp; </p>
+
+<table border="0" width="773">
+  <tr>
+    <td width="144"><a href="#CObj_Horr::DonneResultZoom">DonneResultZoom</a></td>
+    <td width="621">Retourne la position de la loupe du zoom</td>
+  </tr>
+  <tr>
+    <td width="144"><a href="#CObj_Horr::SetPosition">SetPosition</a></td>
+    <td width="621">Positionne le début du découpage</td>
+  </tr>
+</table>
+
+<p><b>Sélection</b>&nbsp; </p>
+
+<table border="0" width="773">
+  <tr>
+    <td width="145"><a href="#CObj_Horr::DonneResultHour">DonneResultHour</a></td>
+    <td width="620">Récupération du découpage horaire</td>
+  </tr>
+  <tr>
+    <td width="145"><a href="#CObj_Horr::SetSelections">SetSelections</a></td>
+    <td width="620">Initialisation du découpage horaire</td>
+  </tr>
+</table>
+
+<p><b>Libération</b>&nbsp; </p>
+
+<table border="0" width="773">
+  <tr>
+    <td width="145"><a href="#CObj_Horr::LibereObjet">LibereObjet</a></td>
+    <td width="620">Libèration des allocations mémoire</td>
+  </tr>
+</table>
+
+<p><b>Surdéfinition de fonction</b>&nbsp; </p>
+
+<table border="0" width="100%">
+  <tr>
+    <td width="20%"><a href="#CObj_Horr::OnSelectionChanged">OnSelectionChanged</a></td>
+    <td width="100%">Signal un changement dans le découpage</td>
+  </tr>
+  <tr>
+    <td><a href="#CObj_Horr::OnZoom">OnZoom</a></td>
+    <td>Signal un changement dans la position du zoom</td>
+  </tr>
+</table>
+
+<hr size="3" align="left">
+
+<p><a name="CObj_LBox::Initialise"></a><font size="5">CObj_Horr::Initialise</font> <br>
+<b>void Initialise</b>(<b>int</b> <i>Styles</i>,<b>int</b> <i>HoraireDebut</i>,<b>char</b>
+*<i>Selections</i>); </p>
+
+<p><b>Paramètres</b> </p>
+
+<p><i>styles</i>&nbsp;&nbsp;&nbsp; Spécifie l'un des styles suivant : 
+
+<ul>
+  <li>HOURS_STANDARD : Découpage des heures par quart-d'heure.</li>
+  <li>MINUTES_STANDARD : Découpage des heures par minutes.</li>
+  <li>HOURS_MINUTES : Découpage des heures par quart d'heure à l'affichage, mais
+    fonctionnement en minute. Permet l'utilisation d'une loupe pour se déplacer dans le
+    découpage quart-d'heure, et zoomer le quart-d'heure en minutes pour un autre découpage
+    horaire.</li>
+  <li>TV100MINUTES : Découpage horaire en &quot;100&quot; minutes. Utilisez pour la
+    télévision.<br>
+    <br>
+    Les options suivantes peuvent être jointes : </li>
+  <li>INVISIBLE_VSCROLL : Le scrollbar vertical n'est pas affiché</li>
+  <li>QH_ZOOM : Combiné avec le style HOURS_MINUTES uniquement. Crée une loupe pour zoomer
+    sur les quart-d'heure.</li>
+  <li>SCROLL_HEURE : La barre horaire &quot;scrollable&quot; est présente.</li>
+  <li>COUPURE_OBLIGATOIRE : La présence d'une et d'au moins d'une tranche horaire est
+    nécessaire et ne peut-être supprimer.</li>
+</ul>
+
+<p><i>HoraireDebut</i>&nbsp;&nbsp;&nbsp; Heure de début du découpage (300 == 03h00)</p>
+
+<p><i>Selections</i>&nbsp;&nbsp;&nbsp; Tableaux des pré-sélections des horaires.
+Comprend 97 quart-d'heures, 1441 ou 2401 minutes selon le style. </p>
+
+<blockquote>
+  <ul>
+    <li>Les valeurs d'un horaire minute ou quart-d'heure disponibles sont (selon les styles,
+      certaines valeurs ne peuvent pas apparaitre): </li>
+    <li>0 : pas sélectionné</li>
+    <li>1 : quart-d'heure sélectionné</li>
+    <li>2 : minute sélectionné</li>
+    <li>3 : quart-d'heure sélectionné, avec un horaire minute compris dans ce quart-d'heure</li>
+  </ul>
+</blockquote>
+
+<p><b>Remarque</b> </p>
+
+<p>Cette fonction doit être la première à être appelé. Elle initialise les
+paramètres généraux&nbsp; de l'objet calendrier. </p>
+
+<hr>
+
+<p><a name="CObj_Horr::SetZoomQH"></a><font size="5">CObj_Horr::SetZoomQH</font> <br>
+<b>short SetZoomQH</b>(<b>bool</b> <i>fVisible</i>=false); </p>
+
+<p><b>Valeur de retour</b> </p>
+
+<p>Retourne 0 si le style ne permet pas le zoom; sinon 1; </p>
+
+<p><b>Paramètres</b> </p>
+
+<p><i>fVisible&nbsp;&nbsp;&nbsp; </i>Positionnée à 1, ce flag rend visible la loupe du
+zoom; 0 la rend invisible. </p>
+
+<p><b>Remarque</b> </p>
+
+<p>Rend visible ou invisible la loupe du zoom, si le style le permet. </p>
+
+<hr>
+
+<p><a name="CObj_Horr::DonneResultZoom"></a><font size="5">CObj_Horr::DonneResultZoom</font>
+<br>
+<b>short DonneResultZoom</b>(<b>void</b>); </p>
+
+<p><b>Remarque</b> </p>
+
+<p>Retourne la position de la loupe dans le découpage horaire-quart-d'heure. </p>
+
+<hr>
+
+<p><a name="CObj_Horr::SetPosition"></a><font size="5">CObj_Horr::SetPosition</font> <br>
+<b>void SetPosition</b>(<b>int</b> <i>Position</i>, <b>bool</b> <i>fUpdate</i>=true); </p>
+
+<p><b>Valeur de retour</b> </p>
+
+<p>Pas pris en compte actuellement. </p>
+
+<p><b>Paramètres</b> </p>
+
+<p><i>Position&nbsp;&nbsp;&nbsp; </i>Valeur de la position à laquelle va débuter le
+découpage. </p>
+
+<p><i>fUpdate&nbsp;&nbsp;&nbsp; </i>Ce flag mis à 1 permet de rafrachir le découpage
+avec la nouvelle position; 0 ne modifie pas l'affichage. </p>
+
+<p><b>Remarque</b> </p>
+
+<p>Positionne le début du découpage à une nouvelle valeur. Possibilité de rafraichir
+l'affichage avec la nouvelle position. </p>
+
+<hr>
+
+<p><a name="CObj_Horr::DonneResultHour"></a><font size="5">CObj_Horr::DonneResultHour</font>
+<br>
+<b>short DonneResultHour</b>(<b>char</b> * <i>Selections</i>) </p>
+
+<p><b>Valeur de retour</b> </p>
+
+<p>Pas pris en compte actuellement. </p>
+
+<p><b>Paramètres</b> </p>
+
+<p><i>Selections&nbsp;&nbsp;&nbsp; </i>Tableau de 97 quart-d'heures, 1441 ou 2401 minutes
+selon le style, contenant le résultat du découpage. </p>
+
+<blockquote>
+  <blockquote>
+    <p>Voir <a href="#CObj_LBox::Initialise">CObj_Horr::Initialise</a> pour les valeurs d'un
+    horaire minute ou quart-d'heure disponibles.</p>
+  </blockquote>
+</blockquote>
+
+<p><b>Remarque</b> </p>
+
+<p>Récupération du découpage horaire, par quart-d'heures ou par minutes, selon le
+style. </p>
+
+<hr>
+
+<p><a name="CObj_Horr::SetSelections"></a><font size="5">CObj_Horr::SetSelections</font> <br>
+<b>void SetSelections</b>(<b>char</b> *<i>Selections</i>, <b>bool </b><i>fUpdate</i>=true);
+</p>
+
+<p><b>Paramètres</b> </p>
+
+<p><i>Selections&nbsp;&nbsp;&nbsp; </i>Tableau de 97 quart-d'heures, 1441 ou 2401 minutes
+selon le style, contenant un découpage horaire pré-défini.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Voir <a href="#CObj_LBox::Initialise">CObj_Horr::Initialise</a> pour les valeurs d'un
+horaire minute ou quart-d'heure disponibles.<br>
+<i>fUpdate</i>&nbsp;&nbsp;&nbsp; Ce flag mis à 1 permet de rafrachir le découpage avec
+les nouveaux horaires; 0 ne modifie pas l'affichage. </p>
+
+<p><b>Remarque</b> </p>
+
+<p>Initialisation du découpage horaire avec de nouvelles valeurs. </p>
+
+<hr>
+
+<p><a name="CObj_Horr::LibereObjet"></a><font size="5">CObj_Horr::LibereObjet</font> <br>
+<b>void LibereObjet</b>(<b>void</b>); </p>
+
+<p><b>Remarque</b> </p>
+
+<p>Libération mémoire du tableau du découpage horaire, et autres allocations. <br>
+Cette fonction doit être appelé avant que l'objet disparaisse. </p>
+
+<hr>
+
+<p><a name="CObj_Horr::OnSelectionChanged"></a><font size="5">CObj_Horr::OnSelectionChanged</font>
+<br>
+<b>virtual void OnSelectionChanged</b>(<b>char</b> *<i>Selections</i>); </p>
+
+<p><b>Paramètres</b> </p>
+
+<p><i>Selections&nbsp;&nbsp;&nbsp; </i>Tableau de 97 quart-d'heures, 1441 ou 2401 minutes
+selon le style, contenant le découpage actuel. </p>
+
+<blockquote>
+  <blockquote>
+    <p>Voir <a href="#CObj_LBox::Initialise">CObj_Horr::Initialise</a> pour les valeurs d'un
+    horaire minute ou quart-d'heure disponibles.</p>
+  </blockquote>
+</blockquote>
+
+<p><b>Remarque</b> </p>
+
+<p>Appelé lorsque le découpage horaire a été modifié. </p>
+
+<hr>
+
+<p><a name="CObj_Horr::OnZoom"></a><font size="5">CObj_Horr::OnZoom</font> <br>
+<b>virtual void OnZoom</b>(<b>int</b> <i>QH</i>); </p>
+
+<p><b>Paramètres</b> </p>
+
+<p><i>QH&nbsp;&nbsp;&nbsp; </i>Position du quart-d'heure qui est zoomé par la loupe.</p>
+
+<p><b>Remarque</b></p>
+
+<p>Appelé lorsque la loupe à été déplacé. Donne le quart-d'heure qui peut être
+détaillé dans un découpage horaire-minute.</p>
+
+<hr>
+
+<p><font size="2">Création&nbsp; : Mecredi 9 juin 1999</font><br>
+<font size="2">Dernière modification : Mardi 14 décembre 1999</font><br>
+<font size="2">VLF</font></p>
+</body>
+</html>

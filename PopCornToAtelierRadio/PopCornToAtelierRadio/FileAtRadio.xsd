@@ -1,0 +1,461 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="Study">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Root_Cartouche">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Information">
+                <xs:complexType>
+                  <xs:attribute name="Nom" type="xs:string" use="required" />
+                  <xs:attribute name="NumeroEtu" type="xs:unsignedShort" use="required" />
+                  <xs:attribute name="Etape" type="xs:unsignedByte" use="required" />
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="Date">
+                <xs:complexType>
+                  <xs:attribute name="DateDebut" type="xs:short" use="required" />
+                  <xs:attribute name="DateFin" type="xs:short" use="required" />
+                  <xs:attribute name="DateDebut010180" type="xs:unsignedByte" use="required" />
+                  <xs:attribute name="DateFin010180" type="xs:unsignedByte" use="required" />
+                  <xs:attribute name="DateEtudeValide" type="xs:int" use="required" />
+                  <xs:attribute name="DateHeureExtraitConsolide" type="xs:unsignedByte" use="required" />
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="Periode">
+                <xs:complexType>
+                  <xs:attribute name="DateDebutPeriodeA" type="xs:int" use="required" />
+                  <xs:attribute name="NbSemainePeriodeA" type="xs:unsignedShort" use="required" />
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="Echange">
+                <xs:complexType>
+                  <xs:attribute name="TauxEchange" type="xs:string" use="required" />
+                  <xs:attribute name="Devise" type="xs:unsignedByte" use="required" />
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="Divers">
+                <xs:complexType>
+                  <xs:attribute name="NrMaillage" type="xs:unsignedByte" use="required" />
+                  <xs:attribute name="AgrJours" type="xs:string" use="required" />
+                  <xs:attribute name="PlageHoraire" type="xs:string" use="required" />
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="blocCoches">
+                <xs:complexType>
+                  <xs:attribute name="EtatSel" type="xs:integer" use="required" />
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="blocVagues">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="VagueUtil" />
+                    <xs:element name="VagueRefSource">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="Vague">
+                            <xs:complexType>
+                              <xs:attribute name="Code" type="xs:unsignedByte" use="required" />
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="blocStations">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="GroupeStation">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element maxOccurs="unbounded" name="Stations">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element maxOccurs="unbounded" name="Station">
+                                  <xs:complexType>
+                                    <xs:attribute name="Code" type="xs:short" use="required" />
+                                  </xs:complexType>
+                                </xs:element>
+                              </xs:sequence>
+                              <xs:attribute name="CodeReg" type="xs:unsignedByte" use="required" />
+                            </xs:complexType>
+                          </xs:element>
+                          <xs:element maxOccurs="unbounded" name="LienTarifs">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element maxOccurs="unbounded" name="RegStaTarif">
+                                  <xs:complexType>
+                                    <xs:attribute name="TypeEvolutif" type="xs:unsignedByte" use="required" />
+                                    <xs:attribute name="Date" type="xs:short" use="required" />
+                                    <xs:attribute name="NumeroTarif" type="xs:unsignedByte" use="required" />
+                                    <xs:attribute name="CodeTarif" type="xs:string" use="required" />
+                                    <xs:attribute name="TxMGaranti" type="xs:unsignedByte" use="required" />
+                                  </xs:complexType>
+                                </xs:element>
+                              </xs:sequence>
+                              <xs:attribute name="CodeReg" type="xs:unsignedByte" use="required" />
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                        <xs:attribute name="Nom" type="xs:string" use="required" />
+                        <xs:attribute name="NumeroMaillage" type="xs:unsignedByte" use="required" />
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="blocListeStaPasHeure" />
+              <xs:element name="blocListeStaPasEcran" />
+              <xs:element name="blocListeCorGrp" />
+              <xs:element name="blocFormats">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element maxOccurs="unbounded" name="Format">
+                      <xs:complexType>
+                        <xs:attribute name="Index" type="xs:unsignedByte" use="required" />
+                        <xs:attribute name="Duree" type="xs:unsignedByte" use="required" />
+                        <xs:attribute name="NbFois" type="xs:unsignedByte" use="required" />
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                  <xs:attribute name="BaseFormat" type="xs:unsignedByte" use="required" />
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="blocFormatsSpecifs" />
+              <xs:element name="blocStrates">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="Strate">
+                      <xs:complexType>
+                        <xs:attribute name="Index" type="xs:unsignedByte" use="required" />
+                        <xs:attribute name="Numero" type="xs:unsignedByte" use="required" />
+                        <xs:attribute name="NbFois" type="xs:unsignedByte" use="required" />
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="blocEtudeOption">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="OptionClassement">
+                      <xs:complexType>
+                        <xs:attribute name="fClasMixte" type="xs:unsignedByte" use="required" />
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="OptionPoids">
+                      <xs:complexType>
+                        <xs:attribute name="PoidsPui" type="xs:unsignedByte" use="required" />
+                        <xs:attribute name="PoidsEco" type="xs:unsignedByte" use="required" />
+                        <xs:attribute name="PoidsAff" type="xs:unsignedByte" use="required" />
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="OptionAffinite">
+                      <xs:complexType>
+                        <xs:attribute name="NrCibleBaseAff" type="xs:byte" use="required" />
+                        <xs:attribute name="fAffIndice" type="xs:unsignedByte" use="required" />
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="OptionTarif">
+                      <xs:complexType>
+                        <xs:attribute name="PTarifFacial" type="xs:unsignedByte" use="required" />
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="OptionCalcul">
+                      <xs:complexType>
+                        <xs:attribute name="fMoyenneGRP" type="xs:unsignedByte" use="required" />
+                        <xs:attribute name="fPenetration" type="xs:unsignedByte" use="required" />
+                        <xs:attribute name="ValueMoyenneGRP" type="xs:unsignedByte" use="required" />
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="OptionEdition">
+                      <xs:complexType>
+                        <xs:attribute name="fLigneGrisee" type="xs:unsignedByte" use="required" />
+                        <xs:attribute name="fPleinEcran" type="xs:unsignedByte" use="required" />
+                        <xs:attribute name="fCoeffMemo" type="xs:unsignedByte" use="required" />
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="blocCampagne">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="RefCampagne">
+                      <xs:complexType>
+                        <xs:attribute name="Libelle" type="xs:string" use="required" />
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="RefOrgCampagne">
+                      <xs:complexType>
+                        <xs:attribute name="Libelle" type="xs:string" use="required" />
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="InfoCampagne" />
+                    <xs:element name="BlocCampagneCentrale" />
+                    <xs:element name="BlocCampagneRegie" />
+                    <xs:element name="BlocCampagneStation" />
+                    <xs:element name="BlocOffreProduit" />
+                    <xs:element name="Frontiere">
+                      <xs:complexType>
+                        <xs:attribute name="FrontiereDebut" type="xs:unsignedByte" use="required" />
+                        <xs:attribute name="FrontiereFin" type="xs:unsignedByte" use="required" />
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="blocTarification">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="blocPrixBiem" />
+                  </xs:sequence>
+                  <xs:attribute name="BaseFormat" type="xs:unsignedByte" use="required" />
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="blocTitrePerso">
+                <xs:complexType>
+                  <xs:attribute name="LgTitPersonalise" type="xs:unsignedByte" use="required" />
+                  <xs:attribute name="TitPersonalise" type="xs:string" use="required" />
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="blocSpecifYacast">
+                <xs:complexType>
+                  <xs:attribute name="NivNomenTar" type="xs:unsignedByte" use="required" />
+                  <xs:attribute name="IdNomenTar" type="xs:unsignedByte" use="required" />
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="Root_Plans">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Plan">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="Fenetre">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="blocFenetres">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element name="FenPlan">
+                                  <xs:complexType>
+                                    <xs:sequence>
+                                      <xs:element name="blocStrates">
+                                        <xs:complexType>
+                                          <xs:sequence>
+                                            <xs:element name="Strate">
+                                              <xs:complexType>
+                                                <xs:attribute name="NrStrate" type="xs:unsignedByte" use="required" />
+                                              </xs:complexType>
+                                            </xs:element>
+                                          </xs:sequence>
+                                        </xs:complexType>
+                                      </xs:element>
+                                      <xs:element name="blocFormats">
+                                        <xs:complexType>
+                                          <xs:sequence>
+                                            <xs:element name="Format">
+                                              <xs:complexType>
+                                                <xs:attribute name="NrFormat" type="xs:unsignedByte" use="required" />
+                                              </xs:complexType>
+                                            </xs:element>
+                                          </xs:sequence>
+                                        </xs:complexType>
+                                      </xs:element>
+                                      <xs:element name="blocPlgHoraires">
+                                        <xs:complexType>
+                                          <xs:sequence>
+                                            <xs:element maxOccurs="unbounded" name="PlgHor">
+                                              <xs:complexType>
+                                                <xs:attribute name="Valid" type="xs:unsignedByte" use="required" />
+                                              </xs:complexType>
+                                            </xs:element>
+                                          </xs:sequence>
+                                        </xs:complexType>
+                                      </xs:element>
+                                      <xs:element name="blocRegions">
+                                        <xs:complexType>
+                                          <xs:sequence>
+                                            <xs:element name="Region">
+                                              <xs:complexType>
+                                                <xs:sequence>
+                                                  <xs:element maxOccurs="unbounded" name="Station">
+                                                    <xs:complexType>
+                                                      <xs:attribute name="NoSta" type="xs:unsignedByte" use="required" />
+                                                    </xs:complexType>
+                                                  </xs:element>
+                                                </xs:sequence>
+                                                <xs:attribute name="NoReg" type="xs:unsignedByte" use="required" />
+                                              </xs:complexType>
+                                            </xs:element>
+                                          </xs:sequence>
+                                        </xs:complexType>
+                                      </xs:element>
+                                      <xs:element name="blocSemActives">
+                                        <xs:complexType>
+                                          <xs:sequence>
+                                            <xs:element maxOccurs="unbounded" name="SemAct">
+                                              <xs:complexType>
+                                                <xs:attribute name="Actif" type="xs:unsignedByte" use="required" />
+                                              </xs:complexType>
+                                            </xs:element>
+                                          </xs:sequence>
+                                        </xs:complexType>
+                                      </xs:element>
+                                    </xs:sequence>
+                                    <xs:attribute name="Iconic" type="xs:unsignedByte" use="required" />
+                                    <xs:attribute name="Left" type="xs:unsignedShort" use="required" />
+                                    <xs:attribute name="Right" type="xs:unsignedShort" use="required" />
+                                    <xs:attribute name="Top" type="xs:unsignedShort" use="required" />
+                                    <xs:attribute name="Bottom" type="xs:unsignedShort" use="required" />
+                                    <xs:attribute name="NoGrille" type="xs:unsignedByte" use="required" />
+                                    <xs:attribute name="DateDebut" type="xs:unsignedByte" use="required" />
+                                    <xs:attribute name="DateFin" type="xs:unsignedByte" use="required" />
+                                    <xs:attribute name="NumCible" type="xs:byte" use="required" />
+                                    <xs:attribute name="NomCible" type="xs:string" use="required" />
+                                    <xs:attribute name="NrVague" type="xs:unsignedByte" use="required" />
+                                  </xs:complexType>
+                                </xs:element>
+                              </xs:sequence>
+                              <xs:attribute name="Iconic" type="xs:unsignedByte" use="required" />
+                              <xs:attribute name="Left" type="xs:unsignedShort" use="required" />
+                              <xs:attribute name="Right" type="xs:unsignedShort" use="required" />
+                              <xs:attribute name="Top" type="xs:unsignedShort" use="required" />
+                              <xs:attribute name="Bottom" type="xs:unsignedShort" use="required" />
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="Data">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="blocRegions">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element name="Region">
+                                  <xs:complexType>
+                                    <xs:sequence>
+                                      <xs:element maxOccurs="unbounded" name="Station">
+                                        <xs:complexType>
+                                          <xs:attribute name="Sta" type="xs:unsignedByte" use="required" />
+                                          <xs:attribute name="Lock" type="xs:unsignedByte" use="required" />
+                                        </xs:complexType>
+                                      </xs:element>
+                                    </xs:sequence>
+                                    <xs:attribute name="No" type="xs:unsignedByte" use="required" />
+                                  </xs:complexType>
+                                </xs:element>
+                              </xs:sequence>
+                              <xs:attribute name="CurRegion" type="xs:unsignedByte" use="required" />
+                              <xs:attribute name="CurStation" type="xs:unsignedByte" use="required" />
+                              <xs:attribute name="CurNiveau" type="xs:unsignedByte" use="required" />
+                            </xs:complexType>
+                          </xs:element>
+                          <xs:element name="blocTaux" />
+                          <xs:element name="blocStrates">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element name="Strate">
+                                  <xs:complexType>
+                                    <xs:attribute name="No" type="xs:unsignedByte" use="required" />
+                                    <xs:attribute name="Code" type="xs:unsignedByte" use="required" />
+                                    <xs:attribute name="Mode" type="xs:unsignedByte" use="required" />
+                                    <xs:attribute name="Nom" type="xs:string" use="required" />
+                                  </xs:complexType>
+                                </xs:element>
+                              </xs:sequence>
+                              <xs:attribute name="CurStrate" type="xs:unsignedByte" use="required" />
+                            </xs:complexType>
+                          </xs:element>
+                          <xs:element name="blocFormats">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element maxOccurs="unbounded" name="Format">
+                                  <xs:complexType>
+                                    <xs:attribute name="No" type="xs:unsignedByte" use="required" />
+                                    <xs:attribute name="Mode" type="xs:unsignedByte" use="required" />
+                                    <xs:attribute name="Nom" type="xs:unsignedByte" use="required" />
+                                  </xs:complexType>
+                                </xs:element>
+                              </xs:sequence>
+                              <xs:attribute name="CurFormat" type="xs:unsignedByte" use="required" />
+                            </xs:complexType>
+                          </xs:element>
+                          <xs:element name="blocLegAttributs">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element name="LegAttrib">
+                                  <xs:complexType>
+                                    <xs:attribute name="ValSp" type="xs:unsignedByte" use="required" />
+                                    <xs:attribute name="Leg" type="xs:string" use="required" />
+                                  </xs:complexType>
+                                </xs:element>
+                              </xs:sequence>
+                            </xs:complexType>
+                          </xs:element>
+                          <xs:element name="blocSpots">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element name="SpotsPresents">
+                                  <xs:complexType>
+                                    <xs:sequence>
+                                      <xs:element maxOccurs="unbounded" name="Sp">
+                                        <xs:complexType>
+                                          <xs:attribute name="Reg" type="xs:unsignedByte" use="required" />
+                                          <xs:attribute name="Sta" type="xs:unsignedByte" use="required" />
+                                          <xs:attribute name="Num" type="xs:int" use="required" />
+                                          <xs:attribute name="Hor" type="xs:unsignedShort" use="required" />
+                                          <xs:attribute name="Jr" type="xs:unsignedByte" use="required" />
+                                          <xs:attribute name="NoStr" type="xs:unsignedByte" use="required" />
+                                          <xs:attribute name="NoFor" type="xs:unsignedByte" use="required" />
+                                          <xs:attribute name="ValAtt" type="xs:unsignedByte" use="required" />
+                                          <xs:attribute name="Attr" type="xs:string" use="optional" />
+                                        </xs:complexType>
+                                      </xs:element>
+                                    </xs:sequence>
+                                  </xs:complexType>
+                                </xs:element>
+                                <xs:element name="SpotsAbsents" />
+                              </xs:sequence>
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="Selections" />
+                    <xs:element name="Parametres" />
+                  </xs:sequence>
+                  <xs:attribute name="NrEtude" type="xs:unsignedShort" use="required" />
+                  <xs:attribute name="NrPlan" type="xs:unsignedByte" use="required" />
+                  <xs:attribute name="Version" type="xs:unsignedByte" use="required" />
+                  <xs:attribute name="Nom" type="xs:string" use="required" />
+                  <xs:attribute name="RefPlan" type="xs:unsignedByte" use="required" />
+                  <xs:attribute name="Occupe" type="xs:unsignedByte" use="required" />
+                  <xs:attribute name="NoSas" type="xs:unsignedByte" use="required" />
+                  <xs:attribute name="DateDebut" type="xs:unsignedShort" use="required" />
+                  <xs:attribute name="DateFin" type="xs:unsignedShort" use="required" />
+                  <xs:attribute name="NumCible" type="xs:byte" use="required" />
+                  <xs:attribute name="NomCible" type="xs:string" use="required" />
+                  <xs:attribute name="NumVague" type="xs:unsignedByte" use="required" />
+                  <xs:attribute name="NomVague" type="xs:string" use="required" />
+                  <xs:attribute name="DateHeureMemo" type="xs:unsignedInt" use="required" />
+                  <xs:attribute name="NbSemainePA" type="xs:unsignedByte" use="required" />
+                  <xs:attribute name="DateFinPA" type="xs:unsignedShort" use="required" />
+                  <xs:attribute name="DateDebutPA" type="xs:unsignedShort" use="required" />
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+      <xs:attribute name="FileVersion" type="xs:decimal" use="required" />
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

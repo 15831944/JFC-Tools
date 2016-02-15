@@ -1,0 +1,28 @@
+DEBUT Calcul de la distribution pour une combinaison donnée
+Individu  8146    poids: 551    nbcontacts: 1
+Individu 11485    poids: 897    nbcontacts: 1
+Individu 11684    poids: 925    nbcontacts: 1
+Individu 15024    poids: 717    nbcontacts: 1
+Individu 15460    poids: 449    nbcontacts: 1
+Individu 15631    poids: 442    nbcontacts: 1
+Individu 15925    poids: 592    nbcontacts: 1
+FIN Calcul de la distribution pour une combinaison donnée
+
+
+
+DEBUT Calcul de la distribution pour une combinaison donnée
+Individu 11555    poids: 659    nbcontacts: 1
+Individu 11630    poids: 603    nbcontacts: 1
+Individu 11919    poids: 479    nbcontacts: 1
+Individu 13843    poids: 436    nbcontacts: 1
+Individu 14533    poids: 697    nbcontacts: 1
+FIN Calcul de la distribution pour une combinaison donnée
+
+
+
+DEBUT Calcul de la distribution pour une combinaison donnée
+Individu 11630    poids: 603    nbcontacts: 1
+Individu 11749    poids: 822    nbcontacts: 1
+Individu 15160    poids: 295    nbcontacts: 1
+Individu 18666    poids: 487    nbcontacts: 1
+FIN Calcul de la distribution pour une combinaison donnée

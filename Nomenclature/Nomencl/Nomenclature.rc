@@ -1,0 +1,783 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// French (France) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_FRA)
+#ifdef _WIN32
+LANGUAGE LANG_FRENCH, SUBLANG_FRENCH
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_FRA)\r\n"
+    "#ifdef _WIN32\r\n"
+    "LANGUAGE 12, 1\r\n"
+    "#pragma code_page(1252)\r\n"
+    "#endif //_WIN32\r\n"
+    "#include ""res\\Nomenclature.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""l.fra\\afxres.rc""          // Standard components\r\n"
+    "#include ""l.fra\\afxprint.rc""        // printing/print preview resources\r\n"
+    "#endif\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON                    "res\\icon1.ico"
+IDR_NOMENCTYPE          ICON                    "res\\NomenclatureDoc.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDR_MAINFRAME           BITMAP                  "res\\Toolbar.bmp"
+IDB_BITMAP_ITEM         BITMAP                  "res\\ItemImage16.bmp"
+IDB_BITMAPJFC           BITMAP                  "RES\\LogoJfc.bmp"
+IDB_BITMAPJFCSMALL      BITMAP                  "RES\\LogoJfc2.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Toolbar
+//
+
+IDR_MAINFRAME TOOLBAR  16, 15
+BEGIN
+    BUTTON      ID_FILE_NEW
+    BUTTON      ID_FILE_OPEN
+    BUTTON      ID_FILE_SAVE
+    SEPARATOR
+    BUTTON      ID_EDIT_CUT
+    BUTTON      ID_EDIT_COPY
+    BUTTON      ID_EDIT_PASTE
+    SEPARATOR
+    BUTTON      ID_FILE_PRINT
+    SEPARATOR
+    BUTTON      ID_APP_ABOUT
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDR_MAINFRAME MENU 
+BEGIN
+    POPUP "Année"
+    BEGIN
+        MENUITEM "Nouvelle",                    ID_ANNE_NOUVELLE
+        MENUITEM "Dupliquer",                   ID_ANNE_DUPLIQUER
+        MENUITEM SEPARATOR
+    END
+    POPUP "Liste"
+    BEGIN
+        MENUITEM "&Imprimer...\tCtrl+P",        ID_FILE_PRINTBIS
+        MENUITEM "Aperçu a&vant impression",    ID_FILE_PRINT_PREVIEW
+        MENUITEM "C&onfiguration de l'impression...", ID_FILE_PRINT_SETUP
+    END
+    POPUP "Infos"
+    BEGIN
+        MENUITEM "Information superviseur",     ID_INFOS_APROPOSDENOMENCLATURE
+        MENUITEM "A propos de ...",             ID_APP_ABOUT
+        MENUITEM SEPARATOR
+        MENUITEM "Accès Taux FO",               ID_UTILTAUX
+    END
+    POPUP "Tiers EDI"
+    BEGIN
+        MENUITEM "Régies",                      ID_REGIES
+        MENUITEM "Centrales d'achat",           ID_CENTRALESDACHAT
+    END
+END
+
+IDR_MENUPOPUP MENU 
+BEGIN
+    POPUP "MenuNomencl"
+    BEGIN
+        MENUITEM "Ajouter",                     ID_MENUNOMENCL_AJOUTERNVLLEBRANCHE
+        MENUITEM "Ajouter annonceur sans groupe", ID_MENUNOMENCL_AJOUTERANNONCEURSANSGROUPE
+        MENUITEM "Ajouter annonceur sans produit", ID_MENUNOMENCL_AJOUTERANNONCEURSANSGROUPESANSPRODUIT
+        MENUITEM "Modifier",                    ID_MENUNOMENCL_RENOMMERBRANCHE
+        MENUITEM "Supprimer",                   ID_MENUNOMENCL_SUPPRIMERBRANCHE
+        MENUITEM SEPARATOR
+        MENUITEM "Couper",                      ID_MENUNOMENCL_COUPERBRANCHE
+        MENUITEM "Coller",                      ID_MENUNOMENCL_COLLERBRANCHE
+        MENUITEM "Info Produit",                ID_MENUNOMENCL_INFOPRODUIT
+        MENUITEM SEPARATOR
+        MENUITEM "Taux FO",                     ID_MENUNOMENCL_TAUX
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Accelerator
+//
+
+IDR_MAINFRAME ACCELERATORS 
+BEGIN
+    "N",            ID_FILE_NEW,            VIRTKEY, CONTROL
+    "O",            ID_FILE_OPEN,           VIRTKEY, CONTROL
+    "S",            ID_FILE_SAVE,           VIRTKEY, CONTROL
+    "P",            ID_FILE_PRINT,          VIRTKEY, CONTROL
+    "Z",            ID_EDIT_UNDO,           VIRTKEY, CONTROL
+    "X",            ID_EDIT_CUT,            VIRTKEY, CONTROL
+    "C",            ID_EDIT_COPY,           VIRTKEY, CONTROL
+    "V",            ID_EDIT_PASTE,          VIRTKEY, CONTROL
+    VK_BACK,        ID_EDIT_UNDO,           VIRTKEY, ALT
+    VK_DELETE,      ID_EDIT_CUT,            VIRTKEY, SHIFT
+    VK_INSERT,      ID_EDIT_COPY,           VIRTKEY, CONTROL
+    VK_INSERT,      ID_EDIT_PASTE,          VIRTKEY, SHIFT
+    VK_F6,          ID_NEXT_PANE,           VIRTKEY 
+    VK_F6,          ID_PREV_PANE,           VIRTKEY, SHIFT
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_ABOUTBOX DIALOGEX 0, 0, 235, 55
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "A propos du Répertoire des clients"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    ICON            IDR_MAINFRAME,IDC_STATIC,17,21,20,20
+    LTEXT           "Nomenclature version 1.2",IDC_STATIC,46,14,119,8,SS_NOPREFIX
+    LTEXT           "Copyright (C) 2000",IDC_STATIC,46,29,119,8
+    DEFPUSHBUTTON   "OK",IDOK,179,7,50,14,WS_GROUP
+    CONTROL         "",IDC_CADRE6,"Static",SS_BLACKFRAME | SS_SUNKEN,7,7,168,41,WS_EX_CLIENTEDGE
+END
+
+IDD_NOMENCLATURE_FORM DIALOGEX 0, 0, 258, 311
+STYLE DS_SETFONT | WS_CHILD | WS_BORDER
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    CONTROL         "",IDC_CADRE1,"Static",SS_BLACKFRAME,6,4,246,300,WS_EX_CLIENTEDGE
+    CONTROL         "Tree1",IDC_TREE1,"SysTreeView32",TVS_HASBUTTONS | TVS_HASLINES | TVS_LINESATROOT | WS_BORDER | WS_TABSTOP,15,28,227,269,WS_EX_CLIENTEDGE
+    CTEXT           "Gestion de la nomenclature",IDC_STATIC1,9,11,237,10,0,WS_EX_TRANSPARENT
+    CONTROL         "",IDC_STATIC_TRAIT,"Static",SS_BLACKFRAME | SS_SUNKEN,18,23,224,1
+END
+
+IDD_DIALOG_FORMULAIRE_NOM DIALOGEX 0, 0, 287, 46
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_CLIENTEDGE
+CAPTION "Définir le nom"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    CONTROL         "",IDC_CADRE3,"Static",SS_BLACKFRAME,9,10,215,31,WS_EX_CLIENTEDGE
+    DEFPUSHBUTTON   "OK",IDOK,231,9,50,14
+    PUSHBUTTON      "Annuler",IDCANCEL,231,26,50,14
+    EDITTEXT        IDC_EDIT3_2,38,18,174,12,ES_AUTOHSCROLL
+    LTEXT           "Nom :",IDC_STATIC_ALIAS3,15,22,20,8,0,WS_EX_TRANSPARENT
+END
+
+IDD_DIALOG_FORMULAIRE_STANDARD DIALOGEX 0, 0, 320, 95
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Définir les références "
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    CONTROL         "",IDC_CADRE5,"Static",SS_BLACKFRAME,7,7,249,81,WS_EX_CLIENTEDGE
+    PUSHBUTTON      "OK",IDOK,263,7,50,14
+    PUSHBUTTON      "Annuler",IDCANCEL,263,25,50,14
+    EDITTEXT        IDC_EDIT1_1,68,47,174,12,ES_AUTOHSCROLL
+    LTEXT           "Répertoire :",IDC_STATIC_NOMREP1,16,51,43,8,0,WS_EX_TRANSPARENT
+    EDITTEXT        IDC_EDIT1_2,68,30,174,12,ES_AUTOHSCROLL
+    LTEXT           "Nom :",IDC_STATIC_ALIAS1,16,35,43,8,0,WS_EX_TRANSPARENT
+    EDITTEXT        IDC_EDIT1_3,68,64,174,12,ES_AUTOHSCROLL
+    LTEXT           "Code compta :",IDC_STATIC_CODE1,16,68,47,8,0,WS_EX_TRANSPARENT
+    CONTROL         "",IDC_STATIC,"Static",SS_BLACKFRAME | SS_SUNKEN,17,23,225,1
+    LTEXT           "Références",IDC_STATIC_REF2,108,12,68,8
+    PUSHBUTTON      "Infos EDI",IDC_INFOEDI,263,73,50,14
+END
+
+IDD_DIALOG_FORMULAIRE_PRODUIT DIALOGEX 0, 0, 327, 190
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "   Définir les références"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    CONTROL         "",IDC_CADRE4,"Static",SS_BLACKFRAME,6,7,252,176,WS_EX_CLIENTEDGE
+    DEFPUSHBUTTON   "OK",IDOK,268,7,50,14
+    PUSHBUTTON      "Annuler",IDCANCEL,268,24,50,14
+    EDITTEXT        IDC_EDIT2_1,70,45,174,12,ES_AUTOHSCROLL
+    LTEXT           "Répertoire :",IDC_STATIC_NOMREP2,19,50,46,8,0,WS_EX_TRANSPARENT
+    EDITTEXT        IDC_EDIT2_2,70,27,174,12,ES_AUTOHSCROLL
+    LTEXT           "Nom :",IDC_STATIC_ALIAS2,19,32,46,8,0,WS_EX_TRANSPARENT
+    EDITTEXT        IDC_EDIT2_3,70,63,174,12,ES_AUTOHSCROLL
+    LTEXT           "Code compta :",IDC_STATIC_CODE2,19,67,46,8,0,WS_EX_TRANSPARENT
+    COMBOBOX        IDC_COMBOMARQUE2,70,113,175,89,CBS_DROPDOWNLIST | CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Marque :",IDC_MARQUE2,19,117,47,8,0,WS_EX_TRANSPARENT
+    CONTROL         "",IDC_STATIC,"Static",SS_BLACKFRAME | SS_SUNKEN,20,105,225,1
+    CONTROL         "",IDC_STATIC,"Static",SS_BLACKFRAME | SS_SUNKEN,20,20,225,1
+    LTEXT           "Références",IDC_STATIC_REF,113,11,47,8
+    CONTROL         "",IDC_STATIC,"Static",SS_BLACKFRAME | SS_SUNKEN,19,132,225,1
+    LTEXT           "Famille",IDC_FAMILLE2,19,144,38,8
+    COMBOBOX        IDC_COMBOFAMILLE2,70,140,176,89,CBS_DROPDOWNLIST | CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Secteur",IDC_SECTEUR2,19,163,38,8
+    COMBOBOX        IDC_COMBOSECTEUR2,70,159,176,89,CBS_DROPDOWNLIST | CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Date Exercice :",IDC_STATIC,19,87,45,9
+    EDITTEXT        IDC_EDIT2_4,70,83,23,12,ES_AUTOHSCROLL
+    LTEXT           "(quantième,mois : jjmm)",IDC_STATIC,130,85,74,9
+    LTEXT           "Année",IDC_STATIC2_ANNEECOUR,95,85,25,9
+    PUSHBUTTON      "Infos EDI",IDC_INFOEDI,268,167,50,14
+END
+
+IDD_DIALOG_INFO DIALOGEX 0, 0, 311, 56
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_CLIENTEDGE
+CAPTION "Informations administrateur"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    CONTROL         "",IDC_CADRE2,"Static",SS_BLACKFRAME,7,4,244,47,WS_EX_CLIENTEDGE
+    DEFPUSHBUTTON   "OK",IDOK,258,4,47,15
+    LTEXT           "Attention, cette application bloque l'accès à la nomenclature pour les autres utilisateurs.Elle ne doit être utilisée que par l'administrateur de données, dont la responsabilité est de mettre à jour cette nomenclature.",IDC_STATIC,13,7,232,24
+    LTEXT           "La mise à jour des produits et des campagnes ne peut se faire que dans la nomenclature ANNONCEUR.",IDC_STATIC,13,31,234,16
+END
+
+IDD_DIALOG_FORMULAIRE_IMPRESSION DIALOGEX 0, 0, 180, 82
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Choisir la nomenclature à imprimer"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    CONTROL         "",IDC_CADRE6,"Static",SS_BLACKFRAME,7,7,110,70,WS_EX_CLIENTEDGE
+    CONTROL         "Annonceur",IDC_RADIO1,"Button",BS_AUTORADIOBUTTON | WS_GROUP,17,25,78,8
+    CONTROL         "Marque",IDC_RADIO2,"Button",BS_AUTORADIOBUTTON,17,35,78,8
+    CONTROL         "Secteur",IDC_RADIO3,"Button",BS_AUTORADIOBUTTON,17,45,78,8
+    CONTROL         "Avec les campagnes",IDC_CHECK1,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,18,61,82,10
+    DEFPUSHBUTTON   "OK",IDOK,124,5,50,14
+    DEFPUSHBUTTON   "Annuler",IDCANCEL,124,23,50,14
+    CONTROL         "",IDC_STATIC,"Static",SS_BLACKFRAME | SS_SUNKEN,18,20,88,1
+    LTEXT           "Nomenclature",IDC_STATIC,41,10,52,8
+    CONTROL         "",IDC_STATIC,"Static",SS_BLACKFRAME | SS_SUNKEN,18,56,88,1
+END
+
+IDD_DIALOG_FORMULAIRE_GROUPE DIALOGEX 0, 0, 320, 111
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Définir les références du groupe"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,263,7,50,14
+    PUSHBUTTON      "Annuler",IDCANCEL,263,24,50,14
+    CONTROL         "",IDC_CADRE7,"Static",SS_BLACKFRAME,7,7,248,97,WS_EX_CLIENTEDGE
+    EDITTEXT        IDC_EDIT4_1,69,47,174,12,ES_AUTOHSCROLL
+    LTEXT           "Répertoire :",IDC_STATIC_NOMREP4,17,51,43,8,0,WS_EX_TRANSPARENT
+    EDITTEXT        IDC_EDIT4_2,69,30,174,12,ES_AUTOHSCROLL
+    LTEXT           "Nom :",IDC_STATIC_ALIAS4,17,35,43,8,0,WS_EX_TRANSPARENT
+    EDITTEXT        IDC_EDIT4_3,69,64,174,12,ES_AUTOHSCROLL
+    LTEXT           "Code compta :",IDC_STATIC_CODE4,17,68,47,8,0,WS_EX_TRANSPARENT
+    CONTROL         "",IDC_STATIC,"Static",SS_BLACKFRAME | SS_SUNKEN,18,23,225,1
+    LTEXT           "Références",IDC_STATIC_REF4,109,12,68,8
+    LTEXT           "Date exercice :",IDC_STATIC_DATE4,17,86,49,8,0,WS_EX_TRANSPARENT
+    EDITTEXT        IDC_EDIT4_4,69,82,21,12,ES_AUTOHSCROLL
+    LTEXT           "(quantième,mois : jjmm)",IDC_STATIC_INFODATE4,144,84,86,9
+    LTEXT           "AnneeCour",IDC_STATIC_ANNEECOUR,92,84,33,8
+    PUSHBUTTON      "Infos EDI",IDC_INFOEDI,263,89,50,14,NOT WS_VISIBLE
+END
+
+IDD_DIALOG_NLLE_ANNEE DIALOGEX 0, 0, 191, 103
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Création nouvelle année nomenclature"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,133,7,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,133,24,50,14
+    CONTROL         "",IDC_CADRE8,"Static",SS_BLACKFRAME,7,7,119,89,WS_EX_CLIENTEDGE
+    LISTBOX         IDC_LIST_ANNEE_POSSIBLE,71,13,46,76,LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Année :",IDC_STATIC_ANNEE,28,49,27,8
+END
+
+IDD_DIALOG_TAUXFO DIALOGEX 0, 0, 491, 138
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Dialog"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    CONTROL         "",IDC_CADRE9,"Static",SS_BLACKFRAME,7,7,477,124,WS_EX_CLIENTEDGE
+    LISTBOX         IDC_LIST_STATIONS,21,24,104,82,LBS_SORT | LBS_NOINTEGRALHEIGHT | LBS_EXTENDEDSEL | WS_VSCROLL | WS_TABSTOP
+    EDITTEXT        IDC_TAUX1,251,46,25,12,ES_RIGHT | ES_AUTOHSCROLL
+    EDITTEXT        IDC_TAUX2,282,46,25,12,ES_RIGHT | ES_AUTOHSCROLL
+    EDITTEXT        IDC_TAUX3,313,46,25,12,ES_RIGHT | ES_AUTOHSCROLL
+    EDITTEXT        IDC_TAUX4,344,46,25,12,ES_RIGHT | ES_AUTOHSCROLL
+    EDITTEXT        IDC_TAUX5,375,46,25,12,ES_RIGHT | ES_AUTOHSCROLL
+    EDITTEXT        IDC_TAUXCM,406,46,25,12,ES_RIGHT | ES_AUTOHSCROLL
+    EDITTEXT        IDC_EXTAUX1,251,67,25,12,ES_RIGHT | ES_AUTOHSCROLL | WS_DISABLED
+    EDITTEXT        IDC_EXTAUX2,282,67,25,12,ES_RIGHT | ES_AUTOHSCROLL | WS_DISABLED
+    EDITTEXT        IDC_EXTAUX3,313,67,25,12,ES_RIGHT | ES_AUTOHSCROLL | WS_DISABLED
+    EDITTEXT        IDC_EXTAUX4,344,67,25,12,ES_RIGHT | ES_AUTOHSCROLL | WS_DISABLED
+    EDITTEXT        IDC_EXTAUX5,375,67,25,12,ES_RIGHT | ES_AUTOHSCROLL | WS_DISABLED
+    EDITTEXT        IDC_EXTAUXCM,406,67,25,12,ES_RIGHT | ES_AUTOHSCROLL | WS_DISABLED
+    PUSHBUTTON      "Appliquer Taux",IDSauverTaux,138,112,53,12
+    PUSHBUTTON      "Supprimer Taux",IDSuppTaux,201,112,58,12
+    DEFPUSHBUTTON   "Annuler",IDCANCEL,435,112,37,12
+    LTEXT           "Date et Nom de l'utilisateur",IDC_NVNOMDATE,142,45,66,15
+    CTEXT           "Sélection Stations",IDC_SELCHAINE,25,12,93,10
+    EDITTEXT        IDC_TAUXFO,440,46,27,12,ES_RIGHT | ES_AUTOHSCROLL | WS_DISABLED
+    EDITTEXT        IDC_EXTAUXFO,440,67,27,12,ES_RIGHT | ES_AUTOHSCROLL | WS_DISABLED
+    LTEXT           "Taux Fin d'ordre",IDC_INFOTFO,309,13,112,8
+    CONTROL         "",IDC_STATIC,"Static",SS_BLACKFRAME | SS_SUNKEN,249,24,223,1
+    CONTROL         "",IDC_STATIC,"Static",SS_WHITEFRAME | SS_SUNKEN,279,25,1,81
+    CONTROL         "",IDC_STATIC,"Static",SS_WHITEFRAME | SS_SUNKEN,310,25,1,81
+    CONTROL         "",IDC_STATIC,"Static",SS_WHITEFRAME | SS_SUNKEN,341,25,1,81
+    CONTROL         "",IDC_STATIC,"Static",SS_WHITEFRAME | SS_SUNKEN,372,25,1,81
+    CONTROL         "",IDC_STATIC,"Static",SS_WHITEFRAME | SS_SUNKEN,403,25,1,81
+    CONTROL         "",IDC_STATIC,"Static",SS_BLACKFRAME | SS_SUNKEN,139,41,295,1
+    CONTROL         "",IDC_STATIC,"Static",SS_BLACKFRAME | SS_SUNKEN,138,105,334,1
+    CTEXT           "CM",IDC_STATIC,409,30,19,8
+    CTEXT           "Taux1",IDC_STATIC,252,30,19,8
+    CTEXT           "Taux2",IDC_STATIC,284,30,19,8
+    CTEXT           "Taux3",IDC_STATIC,316,30,19,8
+    CTEXT           "Taux4",IDC_STATIC,348,30,19,8
+    CTEXT           "Taux5",IDC_STATIC,380,30,19,8
+    CONTROL         "",IDC_STATIC,"Static",SS_WHITEFRAME | SS_SUNKEN,138,42,1,64
+    CONTROL         "",IDC_STATIC,"Static",SS_WHITEFRAME | SS_SUNKEN,248,24,1,82
+    LTEXT           "Date et Nom de l'utilisateur",IDC_EXNOMDATE2,143,66,65,15
+    CONTROL         "",IDC_STATIC,"Static",SS_BLACKFRAME | SS_SUNKEN,140,63,295,1
+    CONTROL         "",IDC_STATIC,"Static",SS_WHITEFRAME | SS_SUNKEN,434,25,1,81
+    CONTROL         "",IDC_STATIC,"Static",SS_WHITEFRAME | SS_SUNKEN,436,25,1,81
+    CONTROL         "",IDC_STATIC,"Static",SS_WHITEFRAME | SS_SUNKEN,471,24,1,82
+    CONTROL         "",IDC_STATIC,"Static",SS_BLACKFRAME | SS_SUNKEN,438,41,33,1
+    CONTROL         "",IDC_STATIC,"Static",SS_BLACKFRAME | SS_SUNKEN,438,63,33,1
+    LTEXT           "Taux FO",IDC_STATIC,439,30,29,8
+    LTEXT           "Utilisateur/ Date",IDC_STATIC,160,30,52,9
+    CONTROL         "Radios",IDC_SELRADIO,"Button",BS_AUTORADIOBUTTON | WS_GROUP,21,115,41,8
+    CONTROL         "TV",IDC_SELTV,"Button",BS_AUTORADIOBUTTON,68,115,26,8
+    CONTROL         "",IDC_SEPTAUXSIMUL,"Static",SS_WHITEFRAME | SS_SUNKEN,138,83,334,3
+    EDITTEXT        IDC_SIMTAUX1,251,90,25,12,ES_RIGHT | ES_AUTOHSCROLL
+    EDITTEXT        IDC_SIMTAUX2,281,90,25,12,ES_RIGHT | ES_AUTOHSCROLL
+    EDITTEXT        IDC_SIMTAUX3,313,90,25,12,ES_RIGHT | ES_AUTOHSCROLL
+    EDITTEXT        IDC_SIMTAUX4,343,90,25,12,ES_RIGHT | ES_AUTOHSCROLL
+    EDITTEXT        IDC_SIMTAUX5,375,90,25,12,ES_RIGHT | ES_AUTOHSCROLL
+    EDITTEXT        IDC_SIMTAUXCM,405,90,25,12,ES_RIGHT | ES_AUTOHSCROLL
+    EDITTEXT        IDC_SIMTAUXFO,439,90,27,12,ES_RIGHT | ES_AUTOHSCROLL | WS_DISABLED
+    LTEXT           "Taux Simulés",IDC_TAUXSIMUL,143,88,104,16
+    PUSHBUTTON      "Supprimer Taux Simulés",IDSuppTauxSimul,269,112,89,12
+END
+
+IDD_DIALOG_UTILTAUX DIALOG  0, 0, 266, 77
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "AUTORISATION MISE A JOUR TAUX FIN D'ORDRE"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,209,7,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,209,26,50,14,NOT WS_VISIBLE
+    CONTROL         "",IDC_CADRE10,"Static",SS_BLACKFRAME | SS_SUNKEN,7,7,195,64
+    LTEXT           "Nom Utilisateur :",IDC_STATIC,16,17,58,8
+    EDITTEXT        IDC_NOM_UTILTAUX,73,15,122,12,ES_AUTOHSCROLL
+    LTEXT           "Mot de passe :    (6 car. maxi)",IDC_STATIC,16,30,50,18
+    EDITTEXT        IDC_MP_UTILTAUX,73,32,122,12,ES_PASSWORD | ES_AUTOHSCROLL
+    PUSHBUTTON      "Ajouter",IDC_AJOUTUTILTAUX,73,50,53,14,WS_DISABLED
+    PUSHBUTTON      "Supprimer",IDC_SUPPUTILTAUX,136,50,59,14,WS_DISABLED
+END
+
+IDD_DIALOG_EDI DIALOGEX 0, 0, 407, 250
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Informations EDI"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    CONTROL         "",IDC_CADRE1,"Static",SS_BLACKFRAME,6,6,330,238,WS_EX_CLIENTEDGE
+    GROUPBOX        "Codage tiers EDI",IDC_STATIC,13,14,314,44
+    GROUPBOX        "",IDC_STATIC,13,59,314,104
+    GROUPBOX        "Interlocuteur(s)",IDC_CADRECONTACT,13,165,314,71
+    EDITTEXT        IDC_EDIT_CODE,67,29,99,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_NOM,68,67,243,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_ADR1,68,82,243,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_ADR2,68,97,243,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_VILLE,68,112,243,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_CODEPOSTAL,68,127,95,12,ES_AUTOHSCROLL
+    COMBOBOX        IDC_COMBO_PAYS,217,127,95,77,CBS_DROPDOWN | CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    EDITTEXT        IDC_EDIT_NOTEL,68,142,95,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_NOFAX,217,143,95,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_NOMCONTACT,68,175,243,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_PRENOMCONTACT,68,189,243,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_ADRMAILCONTACT,68,204,243,12,ES_AUTOHSCROLL
+    DEFPUSHBUTTON   "OK",IDOK,344,7,55,14
+    PUSHBUTTON      "Cancel",IDCANCEL,344,24,55,14
+    LTEXT           "Code Tiers : ",IDC_STATIC,23,31,42,8
+    LTEXT           "Type : ",IDC_STATIC,24,45,32,8
+    EDITTEXT        IDC_EDIT_TYPE,67,43,30,12,ES_AUTOHSCROLL | WS_DISABLED
+    LTEXT           "Type Code : ",IDC_STATIC,237,45,41,8
+    EDITTEXT        IDC_EDIT_TYPECODE,282,43,29,12,ES_AUTOHSCROLL | WS_DISABLED
+    LTEXT           "Nom :",IDC_STATIC,24,68,33,11
+    LTEXT           "(*)",IDC_OBLIG1,313,31,8,10
+    LTEXT           "(*)",IDC_OBLIG2,313,68,8,10
+    LTEXT           "Adresse(1) :",IDC_STATIC,24,83,38,10
+    LTEXT           "Adresse(2) :",IDC_STATIC,24,98,39,10
+    LTEXT           "Code postal :",IDC_STATIC,24,128,42,9
+    LTEXT           "Code Pays :",IDC_STATIC,176,128,38,8
+    LTEXT           "Ville :",IDC_STATIC,24,114,36,9
+    LTEXT           "Nom :",IDC_STATIC,24,176,26,11
+    LTEXT           "Prénom :",IDC_STATIC,24,191,31,10
+    LTEXT           "Email :",IDC_STATIC,24,206,39,10
+    LTEXT           "(*)",IDC_OBLIG3,313,177,8,10
+    LTEXT           "(*)",IDC_OBLIG4,313,192,8,10
+    LTEXT           "(*)",IDC_OBLIG5,313,206,8,10
+    LTEXT           "N° Tél :",IDC_STATIC,24,145,35,9
+    LTEXT           "N° Fax :",IDC_STATIC,176,145,35,9
+    PUSHBUTTON      "<<",IDC_PREC_CONTACT,170,219,18,12
+    PUSHBUTTON      " >>",IDC_SUIV_CONTACT,197,219,18,12
+    PUSHBUTTON      "Suppression",IDC_SUPP_CONTACT,262,219,50,12
+    PUSHBUTTON      "Ajouter",IDC_ADD_CONTACT,67,219,50,12,NOT WS_VISIBLE
+    CONTROL         147,IDC_STATIC,"Static",SS_BITMAP | NOT WS_VISIBLE,341,200,59,44
+    EDITTEXT        IDC_EDIT_CODE_GLN,211,29,99,12,ES_AUTOHSCROLL
+    LTEXT           "Code GLN : ",IDC_STATIC,170,31,42,8
+END
+
+IDD_DIALOG_TIERSEDI DIALOGEX 0, 0, 264, 230
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Régies / Centrales d'achat"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,207,7,50,12
+    PUSHBUTTON      "Cancel",IDCANCEL,207,24,50,12,NOT WS_VISIBLE
+    CONTROL         "",IDC_CADRE1,"Static",SS_BLACKFRAME,7,7,193,216,WS_EX_CLIENTEDGE
+    PUSHBUTTON      "Ajouter",IDC_AJOUTER,208,143,49,12
+    PUSHBUTTON      "Modifier",IDC_MODIFIER,208,211,49,12
+    PUSHBUTTON      "Supprimer",IDC_SUPPRIMER,208,160,49,12
+    LISTBOX         IDC_LIST_TIERSEDI,7,7,193,216,LBS_SORT | LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
+    CONTROL         150,IDC_STATIC,"Static",SS_BITMAP | NOT WS_VISIBLE,215,178,35,27
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,1
+ PRODUCTVERSION 1,0,0,1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040c04b0"
+        BEGIN
+            VALUE "FileDescription", "Application MFC Nomenclature"
+            VALUE "FileVersion", "1, 0, 0, 1"
+            VALUE "InternalName", "Nomenclature"
+            VALUE "LegalCopyright", "Copyright (C) 2000"
+            VALUE "OriginalFilename", "Nomenclature.EXE"
+            VALUE "ProductName", "Application Nomenclature"
+            VALUE "ProductVersion", "1, 0, 0, 1"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x40c, 1200
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO 
+BEGIN
+    IDD_ABOUTBOX, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 228
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 48
+    END
+
+    IDD_NOMENCLATURE_FORM, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 251
+        BOTTOMMARGIN, 304
+    END
+
+    IDD_DIALOG_FORMULAIRE_NOM, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 280
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 39
+    END
+
+    IDD_DIALOG_FORMULAIRE_STANDARD, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 313
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 88
+    END
+
+    IDD_DIALOG_FORMULAIRE_PRODUIT, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 320
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 183
+    END
+
+    IDD_DIALOG_INFO, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 304
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 48
+    END
+
+    IDD_DIALOG_FORMULAIRE_IMPRESSION, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 173
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 75
+    END
+
+    IDD_DIALOG_FORMULAIRE_GROUPE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 301
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 104
+    END
+
+    IDD_DIALOG_NLLE_ANNEE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 185
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 96
+    END
+
+    IDD_DIALOG_TAUXFO, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 484
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 131
+    END
+
+    IDD_DIALOG_UTILTAUX, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 259
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 70
+    END
+
+    IDD_DIALOG_EDI, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 400
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 243
+    END
+
+    IDD_DIALOG_TIERSEDI, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 257
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 223
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE 
+BEGIN
+    IDR_MAINFRAME           "Répertoire des clients \n\nNomenclature.Document\nNomenc Document"
+END
+
+STRINGTABLE 
+BEGIN
+    AFX_IDS_APP_TITLE       "Nomenclature"
+    AFX_IDS_IDLEMESSAGE     "Prêt"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_INDICATOR_EXT        "EXT"
+    ID_INDICATOR_CAPS       "MAJ"
+    ID_INDICATOR_NUM        "NUM"
+    ID_INDICATOR_SCRL       "DEF"
+    ID_INDICATOR_OVR        "ECR"
+    ID_INDICATOR_REC        "ENR"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_FILE_NEW             "Crée un nouveau document\nNouveau"
+    ID_FILE_OPEN            "Ouvre un document existant\nOuvrir"
+    ID_FILE_CLOSE           "Ferme le document actif\nFermer"
+    ID_FILE_SAVE            "Enregistre le document actif\nEnregistrer"
+    ID_FILE_SAVE_AS         "Enregistre le document actif sous un nouveau nom\nEnregistrer sous"
+    ID_FILE_PAGE_SETUP      "Change les options d'impression\nMise en page"
+    ID_FILE_PRINT_SETUP     "Change les options d'imprimante et d'impression\nConfiguration de l'impression"
+    ID_FILE_PRINT           "Imprime le document actif\nImprimer"
+    ID_FILE_PRINT_PREVIEW   "Affiche des pages entières\nAperçu avant impression"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_APP_ABOUT            "Affiche des informations sur le programme, le numéro de version et le copyright\nA propos de"
+    ID_APP_EXIT             "Ferme l'application ; propose d'enregistrer les documents\nQuitter"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_FILE_MRU_FILE1       "Ouvre ce document"
+    ID_FILE_MRU_FILE2       "Ouvre ce document"
+    ID_FILE_MRU_FILE3       "Ouvre ce document"
+    ID_FILE_MRU_FILE4       "Ouvre ce document"
+    ID_FILE_MRU_FILE5       "Ouvre ce document"
+    ID_FILE_MRU_FILE6       "Ouvre ce document"
+    ID_FILE_MRU_FILE7       "Ouvre ce document"
+    ID_FILE_MRU_FILE8       "Ouvre ce document"
+    ID_FILE_MRU_FILE9       "Ouvre ce document"
+    ID_FILE_MRU_FILE10      "Ouvre ce document"
+    ID_FILE_MRU_FILE11      "Ouvre ce document"
+    ID_FILE_MRU_FILE12      "Ouvre ce document"
+    ID_FILE_MRU_FILE13      "Ouvre ce document"
+    ID_FILE_MRU_FILE14      "Ouvre ce document"
+    ID_FILE_MRU_FILE15      "Ouvre ce document"
+    ID_FILE_MRU_FILE16      "Ouvre ce document"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_NEXT_PANE            "Passe au volet de fenêtre suivant\nVolet suivant"
+    ID_PREV_PANE            "Revient au volet précédent\nVolet précédent"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_WINDOW_SPLIT         "Réorganise les fenêtres en une mosaïque\nMosaïque"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_EDIT_CLEAR           "Efface la sélection\nEffacer"
+    ID_EDIT_CLEAR_ALL       "Efface tout\nEffacer tout"
+    ID_EDIT_COPY            "Copie la sélection et la place dans le Presse-papiers\nCopier"
+    ID_EDIT_CUT             "Supprime la sélection et la place dans le Presse-papiers\nCouper"
+    ID_EDIT_FIND            "Recherche le texte spécifié\nRechercher"
+    ID_EDIT_PASTE           "Insère le contenu du Presse-papiers\nColler"
+    ID_EDIT_REPEAT          "Répète la dernière action\nRépéter"
+    ID_EDIT_REPLACE         "Remplace le texte spécifique par un texte différent\nRemplacer"
+    ID_EDIT_SELECT_ALL      "Sélectionne le document entier\nSélectionner tout"
+    ID_EDIT_UNDO            "Annule la dernière action\nAnnuler"
+    ID_EDIT_REDO            "Rétablit l'action précédemment annulée\nRétablir"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_VIEW_TOOLBAR         "Affiche ou masque la barre d'outils\nBarre d'outils"
+    ID_VIEW_STATUS_BAR      "Affiche ou masque la barre d'état\nBarre d'état"
+END
+
+STRINGTABLE 
+BEGIN
+    AFX_IDS_SCSIZE          "Change la taille de la fenêtre"
+    AFX_IDS_SCMOVE          "Change la position de la fenêtre"
+    AFX_IDS_SCMINIMIZE      "Réduit la fenêtre en icône"
+    AFX_IDS_SCMAXIMIZE      "Agrandit la fenêtre au format de l'écran"
+    AFX_IDS_SCNEXTWINDOW    "Passe à la fenêtre de document suivante"
+    AFX_IDS_SCPREVWINDOW    "Passe à la fenêtre de document précédente"
+    AFX_IDS_SCCLOSE         "Ferme la fenêtre active et propose l'enregistrement des documents"
+END
+
+STRINGTABLE 
+BEGIN
+    AFX_IDS_SCRESTORE       "Restaure la fenêtre à sa taille d'origine"
+    AFX_IDS_SCTASKLIST      "Active la liste des tâches"
+END
+
+STRINGTABLE 
+BEGIN
+    AFX_IDS_PREVIEW_CLOSE   "Ferme le mode d'aperçu avant impression\nFermer l'aperçu"
+END
+
+#endif    // French (France) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_FRA)
+#ifdef _WIN32
+LANGUAGE 12, 1
+#pragma code_page(1252)
+#endif //_WIN32
+#include "res\Nomenclature.rc2"  // non-Microsoft Visual C++ edited resources
+#include "l.fra\afxres.rc"          // Standard components
+#include "l.fra\afxprint.rc"        // printing/print preview resources
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

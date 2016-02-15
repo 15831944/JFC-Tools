@@ -1,0 +1,223 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta name="Author" content="jfc">
+   <meta name="GENERATOR" content="Mozilla/4.5 [fr] (Win98; I) [Netscape]">
+   <title>Aide de l'Objet Colonne</title>
+</head>
+<body>
+<font size=+3>CObj_Col</font><img SRC="Obj_Col.JPG" height=141 width=111 align=RIGHT>
+<p>La classe <b>CObj_Col</b> d&eacute;rive de la classe CStatic. L'objet
+<b>CObj_Col
+</b>cr&eacute;e
+une colonne de n lignes.
+<p><b><font size=+1>Implantation</font></b>
+<p>Il faut inclure dans le projet :
+<ul>
+<li>
+le fichier d'en-t&ecirc;te OBJ_COL.H</li>
+
+<li>
+le fichier source OBJ_COL.CPP</li>
+</ul>
+Il faut inclure dans le fichier d'en-t&ecirc;te appellant l'objet :
+<ul>
+<li>
+#include &lt;OBJ_COL.H></li>
+
+<li>
+Modifier le type Static du control static en CObj_Col</li>
+</ul>
+
+<hr ALIGN="LEFT" SIZE="3" WIDTH="100%">
+<p><font size=+2>Membres de la class CObj_Col</font>
+<p><b>Initialisation</b>
+<br>&nbsp;
+<table WIDTH="695" >
+<tr>
+<td WIDTH="131"><a href="#CObj_Gril::Initialise">Initialise</a></td>
+
+<td WIDTH="556">Initialise les param&egrave;tres g&eacute;n&eacute;raux
+de l'objet.</td>
+</tr>
+</table>
+
+<p><b>Position</b>
+<br>&nbsp;
+<table WIDTH="693" >
+<tr>
+<td WIDTH="131"><a href="#CObj_Gril::SetPosition">SetPosition</a></td>
+
+<td WIDTH="554">Met &agrave; jour l'affichage de la grille en fonction
+de la position de l'ascensceur horizontal.</td>
+</tr>
+
+<tr>
+<td WIDTH="131"><a href="#CObj_Gril::SetNbLines">SetNbLignes</a></td>
+
+<td WIDTH="554">R&eacute;initialise le nombre de lignes de la grille.</td>
+</tr>
+</table>
+
+<p><b>Ascenseur</b>
+<br>&nbsp;
+<table WIDTH="690" >
+<tr>
+<td WIDTH="133"><a href="#CObj_Gril::MAJPosScrollV">MAJPosScrollV</a></td>
+
+<td WIDTH="549">Mise &agrave; jour de la position de la grille suivant
+la position de l'ascenceur vertical.</td>
+</tr>
+</table>
+
+<p><b>Printer</b>
+<br>&nbsp;
+<table BORDER=0 WIDTH="99%" >
+<tr>
+<td WIDTH="20%"><a href="#CObj_Cal::PaintToPrinter">PaintToPrinter</a></td>
+
+<td WIDTH="80%">Signal &agrave; l'objet que le device context est maintenant
+celui de l'imprimante.</td>
+</tr>
+</table>
+
+<p><b>Surd&eacute;finition de fonction</b>
+<br>&nbsp;
+<table WIDTH="687" >
+<tr>
+<td WIDTH="134"><a href="#CObj_Gril::DessineFond">DessineFond</a></td>
+
+<td WIDTH="545">Dessine le fond de la grille.</td>
+</tr>
+
+<tr>
+<td WIDTH="134"><a href="#CObj_Gril::DessineCellule">DessineCellule</a></td>
+
+<td WIDTH="545">Dessine une cellule.</td>
+</tr>
+</table>
+
+<hr ALIGN="LEFT" SIZE="3" WIDTH="100%">
+<p><a NAME="CObj_Gril::Initialise"></a><font size=+2>CObj_Col::Initialise</font>
+<br><b>short Initialise</b>(<b>short</b> <i>Style</i>, <b>short</b> <i>NbCelluleY</i>,
+<b>short</b><i>UTVertical</i>,
+<b>short</b><i>PosDefY</i>=0,
+<b>CScrollBar</b>
+* <i>ScrollY</i>=NULL,<b> CRect</b> * <i>pR_Print</i>=NULL);
+<p><b>Param&egrave;tres</b>
+<p><i>Style&nbsp;&nbsp;&nbsp; </i>Sp&eacute;cifie le style g&eacute;n&eacute;rale
+de l'objet
+<ul>
+<li>
+STYLE_COL_DEFAUT</li>
+
+<li>
+STYLE_COL_NO_GRILLE</li>
+</ul>
+
+<blockquote>Options:</blockquote>
+
+<ul>
+<li>
+OPTION_COL_PRINTER</li>
+</ul>
+<i>NbCelluleY&nbsp;&nbsp;&nbsp; </i>Variable qui indique le nombre de cellules
+en ordonn&eacute;e
+<p><i>UTVertical&nbsp;&nbsp;&nbsp; </i>Unit&eacute; verticale en pixel
+d'une cellule
+<p><i>PosDefY&nbsp;&nbsp;&nbsp; </i>Indique la position de d&eacute;but
+en ordonn&eacute;e (0 par d&eacute;faut)
+<p><i>pR_Print&nbsp;&nbsp;&nbsp; </i>Coordonn&eacute;e du rectangle ou
+va &ecirc;tre dessin&eacute; la grille dans la feuille.
+<p><b>Remarque</b>
+<p>Cette fonction initialise les param&egrave;tres g&eacute;n&eacute;raux
+de l'objet.
+<br>
+<hr ALIGN="LEFT" SIZE="3" WIDTH="100%">
+<p><a NAME="CObj_Gril::SetPosition"></a><font size=+2>CObj_Col::SetPosition</font>
+<br><b>short SetPosition</b>(<b>short</b> <i>PosX</i>, <b>bool</b> <i>flag</i>=false);
+<p><b>Param&egrave;tre</b>
+<p><i>PosX&nbsp;&nbsp;&nbsp; </i>Nouvelle position horizontale &agrave;
+mettre &agrave; jour dans la grille.
+<p><i>flag&nbsp;&nbsp;&nbsp; </i>Met &agrave; jour l'affichage si true.
+<p><b>Remarque</b>
+<p>Cette fonction public est appel&eacute; depuis la fonction externe <a href="onhscroll.htm">OnHScroll</a>
+pour mettre &agrave; jour l'affichage de la grille en fonction de la position
+de l'ascensceur horizontal.
+<br>
+<hr ALIGN="LEFT" SIZE="3" WIDTH="100%">
+<p><a NAME="CObj_Gril::SetNbLines"></a><font size=+2>CObj_Col::SetNbLines</font>
+<br><b>short SetNbLines</b>(<b>short</b> <i>NbLines</i>);
+<p><b>Valeur de retour</b>
+<p>0 si NbLines est inf&eacute;rieur ou &eacute;gale &agrave; 0; sinon
+1;
+<p><b>Param&egrave;tres</b>
+<p><i>NbLines&nbsp;&nbsp;&nbsp; </i>Indique le nouveau nombre de lignes
+de la grille;
+<p><b>Remarque</b>
+<p>R&eacute;initialise le nombre de lignes de la grille.
+<br>
+<hr ALIGN="LEFT" SIZE="3" WIDTH="100%">
+<p><a NAME="CObj_Gril::MAJPosScrollV"></a><font size=+2>CObj_Col::MAJPosScrollV</font>
+<br><b>short MAJPosScrollV</b>(<b>UINT</b> <i>nSBCode</i>, <b>UINT </b><i>nPos</i>,
+<b>short
+</b><i>flag</i>);
+<p><b>Valeur de retour</b>
+<p>La nouvelle position de l'acsenceur; -1 si pas boug&eacute;.
+<p><b>Param&egrave;tres</b>
+<p>nSBCode&nbsp;&nbsp;&nbsp; Valeur de la fonction OnVScroll.
+<p>nPos&nbsp;&nbsp;&nbsp; Valeur de la fonction OnVScroll.
+<p>flag&nbsp;&nbsp;&nbsp; Sp&eacute;cifie &agrave; l'objet de mettre &agrave;
+jour la nouvelle position (1). Sinon, le programme devra s'en occup&eacute;
+(0).
+<p><b>Remarque</b>
+<p>Appel&eacute;e dans la fonction OnVScroll(), elle sert &agrave; mettre
+&agrave; jour la position de la grille lorsque l'ascenseur horizontal &agrave;
+boug&eacute;.
+<br>
+<hr ALIGN="LEFT" SIZE="3" WIDTH="100%">
+<p><a NAME="CObj_Cal::PaintToPrinter"></a><font size=+2>CObj_Col::PaintToPrinter</font>
+<br><b>void</b> <i>PaintToPrinter</i>(<b>CDC</b> * <i>pDC</i>, <b>CFont</b>
+* <i>pFont</i>=NULL);
+<p><b>Param&egrave;tres</b>
+<p><i>pDC&nbsp;&nbsp;&nbsp; </i>Device context de l'imprimante.
+<p><i>pFont&nbsp;&nbsp;&nbsp; </i>Font utilis&eacute; pour les libell&eacute;
+de la grille.
+<p><b>Remarque</b>
+<p>Cette fonction est a appel&eacute; apr&egrave;s l'initialisation de
+l'objet. Il faut fournir un CRect dans la fonction <b>Initialisation</b>.
+Elle informe l'objet que le device context est maintenant celui de l'imprimante.
+<br>
+<hr ALIGN="LEFT" SIZE="3" WIDTH="100%">
+<p><a NAME="CObj_Gril::DessineFond"></a><font size=+2>CObj_Col::DessineFond</font>
+<br><b>virtual void DessineFond</b>(<b>CDC</b> * <i>dc</i>, <b>CRect </b><i>RectObj</i>);
+<p><b>Param&egrave;tres</b>
+<p><i>dc&nbsp;&nbsp;&nbsp; </i>Pointeur du DC de l'objet
+<p><i>RectObj&nbsp;&nbsp;&nbsp; </i>Rectangle de l'objet
+<p><b>Remarque</b>
+<p>Cette fonction doit &ecirc;tre surd&eacute;fini par une classe h&eacute;riti&egrave;re.
+Elle permet de dessiner le fond de la grille.
+<br>
+<hr ALIGN="LEFT" SIZE="3" WIDTH="100%">
+<p><a NAME="CObj_Gril::DessineCellule"></a><font size=+2>CObj_Col::DessineCellule</font>
+<br><b>virtual void DessineCellule</b>(<b>CDC</b> * <i>dc</i>, <b>CRect
+</b><i>RectCel</i>,
+<b>short</b><i>Y</i>,
+<b>short
+</b><i>PosY</i>);
+<p><b>Param&egrave;tres</b>
+<p><i>dc&nbsp;&nbsp;&nbsp; </i>Pointeur du DC de l'objet
+<p><i>RectCel&nbsp;&nbsp;&nbsp; </i>Rectangle de la cellule &agrave; dessiner
+<p><i>Y&nbsp;&nbsp;&nbsp; </i>Indique la cellule Y (0 &lt; Y &lt;= <i>NbCelluleY</i>)
+<p><i>PosY&nbsp;&nbsp;&nbsp; </i>Indique la position y de la cellule s&eacute;lectionn&eacute;e
+dans la grille.
+<p><b>Remarque</b>
+<p>Cette fonction doit &ecirc;tre surd&eacute;fini par une classe h&eacute;riti&egrave;re.
+Elle permet de dessiner une cellule.
+<hr WIDTH="100%"><font size=-1>Cr&eacute;ation&nbsp; : Mercredi 6 janvier
+1999</font>
+<br><font size=-1>Derni&egrave;re modification : Mercredi 9 juin 1999</font>
+<br><font size=-1>VLF</font>
+</body>
+</html>

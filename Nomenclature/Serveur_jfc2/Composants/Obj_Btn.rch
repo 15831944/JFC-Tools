@@ -1,0 +1,28 @@
+
+// on vérifie que le fichier n'a pas déjà été inclu
+#ifndef OBJ_BTN_RCH
+
+// on définit la macro pour éviter les inclusions multiples
+#define OBJ_BTN_RCH
+
+// Resource Ids
+#define IDI_PRINTER          32000
+#define IDI_EXPORT           32001
+#define IDI_00LEDTRANS       32002
+#define IDI_01LEDBLEU        32003
+#define IDI_02LEDMARRON      32004
+#define IDI_03LEDORANGE      32005
+#define IDI_04LEDROUGE       32006
+#define IDI_05LEDVERTBOUTEIL 32007
+#define IDI_06LEDVERTE       32008
+#define IDI_07LEDVERTESELECT 32009
+#define IDI_08LEDVIDE        32010
+#define IDI_09LEDVIOLET      32011
+#define IDI_10LEDNUM1        32012
+#define IDI_11LEDVERTENUM1   32013
+#define IDI_12LEDNUM2        32014
+#define IDI_13LEDVERTENUM2   32015
+#define IDI_14CROIXEXIT      32016
+
+// fin de l'inclusion conditionnelle
+#endif

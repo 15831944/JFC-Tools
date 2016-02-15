@@ -1,0 +1,202 @@
+principe de base de l'évaluation
+---------------------------------
+
+1/ Pour chaque source on calcul le SourceWeight:
+	
+	SrcWeight[src]=PopGRP/PopCOUV
+
+
+2/ Pour chaque support, on calcul un MédiaWeight:
+	
+	MW[sup]= (NbCont / NbContP)/T->SrcWeight[src];
+
+
+3/ Pour chaque plan,pour chaque individu,pour tous les support
+on calcul 2 vecteurs de probas,:
+	
+	p=proba[1000]*NbInsert
+	P[NrI]+=p;
+	PP[NrI]+=p*MW[sup];
+
+4/ Pour chaque individus on calcul le coefficient individuel.
+
+	CI[i]=PP[i]/P[i];
+
+C'est aussi à ce moment que l'on calcul les contacts:
+Il sont redressé dans la foullée et sont donc exprimé
+pour la source de GRP
+	
+	NbContacts+=CoeffEx[i] * PP[i] * SrcWeight[src]
+
+5/ Calcul de la proba de base
+on utilise le trusquin pour établir le vecteur binomiale de base
+d'un spot(noté VBx)
+	VBx=f(proba[s][i],CI[i])
+
+5a/	Option Correction de l'Hypothèse d'indépendance,qui modifie le vecteur
+	binomiale de cette façon:
+			PointGlisse=VBx[1]*CoeffCHI;
+			VBx[1]-=PointGlisse;
+			PointGlisse/=2.0;
+			VBx[2]+=PointGlisse;
+			VBx[0]+=PointGlisse;
+
+	CoeffCHI=Coeffcient de Correction de l'Hypothèse d'Indépendance
+	Ce coeff est déterminé en dur en fc de la cible:
+		20% pour les cibles concernants les 15 ans et +
+		60% pour les cibles enfants
+
+	Un code spécifique est utilisé car avec cette option on à toujours 
+	un vecteur binomiale de base en plurifréquentation.
+
+5b/ Option de calcul des duplications
+	CoeffDupp=Coefficient de duplications:	95% en télé
+	cette option n'est pas programmée pour être utilisée sans coeffCHI.
+
+6/ Calcul du vecteur binomiale pour chaque individu:
+Si il y a une probabilité de plurifréquentation, on effectue
+une macro-évaluation:
+	
+	VBmacro[u]+=VBx[ux]*B[ub];
+
+
+sinon c'est une micro-évaluation :
+
+	for(n--;n>=1;n--)B[n]=B[n-1]*p+B[n]*q;
+	B[0]*=q; 
+
+
+7/ Intégration
+
+	Distrib[n]+=B[n]*CoeffEx[i];
+
+8/ Consolidation du plan
+	
+	DistribExact[n]+=Distrib[src][n+1]*T->SrcWeight[src];
+	n=T->NbFoisToucheMax-1;
+	DistribCumulee[n]=DistribExact[n];
+	for(n--;n>=0;n--)DistribCumulee[n]=DistribCumulee[n+1]+T->DistribExact[p][n];
+	NbIndivTouchés=PopCibTotalGRP*T->DistribCumulee[0]/100.0;
+
+9/ Calcul de la couverture validée
+	
+	CourbeReponse[n]=1-pow(1-Beta0,n+1);
+	CouvertureValide+=DistribExact[n]*CourbeReponse[n];
+
+
+Option sur l'évaluation
+-----------------------
+m_fExtern=1 pour un job utilisé par un outils externe à JFC.
+	dans ce cas, les sources de couvertures ne sont connues que par le moteur.
+
+Dans le cas contraire, cas de l'Atelier radio par exemple, celui-ci délivre le vecteur 
+des individus sur la source de couverture. On peut donc dire que le moteur n'est utilisable
+en externe que dans le cadre de cibles starndard. En fait, en externe les cibles sont fait au préalable 
+par le réperoire des cibles, et stoquées dans un fichier spécifique de la base de donnée 
+exportée aux clients
+En fait il serait possible d'utiliser le moteur en cible construire et externe, il faudrait alors
+le doter de la fonction qui construit le vecteur de poids des indivividus d'une cible,
+en fonction des critères classes sélectionnée. Il faudrait aussi transmettre toutes les infos
+concernant les régions.
+
+m_fVentilCouv=1 pour une évaluation avec des ventilations calculées sur la source de couverture.
+
+m_fCalculCHI=1 Calcul une Correction de l'Hypothèse d'indépendance calculé en fc de CoeffCHI.
+
+Cette méthode à l'avantage d'être simple, mais colle peu à la réalité.
+J'imagine quelque chose qui pourrait ressembler à cela:
+
+Dans l'affinage du panel, en plus des probas on détermine pour chaque support le nombre d'individus
+qui sont dupliqués par rapport au support précédent.
+Avec ce coefficient de duplication, on peu calculer, en fonction de la structure d'un plan,
+un coefficient de duplication adapté à chaque spot. Ce coeff sera aussi fonction de la cible!
+Finalement assez simple, on se trouverait avec un fichier de proba, et un fichier de duplication.
+Pour calculer la duplication des individus séparé par plusieurs support, il suffirait de calculer
+les duplication successives de tous les support les séparants.
+Des problèmes se posent:
+	*Le calcul en marginal en serait alourdi (pas grave, cest pour la télé, et donc on peut imaginer
+	mettre ce calcul que sur des machines puissantes)
+	* les duplications des zappers ne serait pas pris en compte puisque l'on considère un coeff pour les individus
+	d'un support d'un station par rapport à la même situation un laps de temps auparavent. 
+
+
+m_fCalculDupp=1; pour calculer dans le cas d'un univers en écran (cas de la télé) l'effet d'un multispot dans cet
+écran. Il faut savoir que Médiamétrie ne considère jamais un multispot. Ce calcul est difficile à mettre en oevre 
+à cause de la probabilité en multifréquentation d'une proba.
+
+m_fCorrigeCoeffEx=1 permet de corriger les coefficient d'extrapolation des individus en fonction d'un découpage
+de ceux-ci. Cette option est utilisée dans les versions multirégionnales de façon à redresser à l'avance l'infrastructure
+des individus de la source de couverture en fonction des contraintes régionnales imposées par la source de GRP:
+	ex: La source de GRP impose que telle région représente 20% de la population.La source de couverture, dans laquelle
+	cette région est représentée par 15% de la population est corrigée à l'avance pour quelle ait la même représentation,
+	même si l'on travaille à un niveau nationnale.
+
+m_fQuickJob=1 calcul des couverture (produits des Q) pour optimiser les temps de calcul 
+
+
+
+
+Les fonctions secondaires
+-------------------------
+
+1/ La ventilation
+	Elle permet de ventiler sur toutes les classes d'un critère.
+	Comme elle est un sous cible, tout ce qui est relatif à la cible est recalculé (srcweight, coeffex)
+	Seul la couverture est calculée.
+	Puisque la ventilation est utilisée en télé pour estimer des sous-cibles qui n'existent pas dans les 
+	cibles standard, on peut imaginer calculer les distribution pour ces sous-cibles.
+	Dans ce cas, plutot que de modifier les ventilation, il serait préférable d'utiliser le job de base
+	et de lui attribuer le critère et la classe que l'on veut évaluer.
+
+2/ Le calcul TOM Marginal
+	Ce calcul est similaire à ceului de l'évaluation de base, à ceci près que un objet est conservé en mémoire
+	pour chaque calcul marginal en cours. Un numéro de lien est émis au début du dialogue. ce numéro est rappellé
+	à chaque mise à jour du plan, le nouveau support est révallué.
+	du temps est gagné lors de la mise à jour des P et PP.
+	Les coefficient individuelles (CI) ayant changés, le vecteur binomiale de tous les individus suceptibles
+	d'être modifié par ce support est recalculé, et ce pour tous les support concerné par les individus en question.
+
+3/ le Zoom
+	Identique au marginal, les vecteure sont simplement dupliqués.
+	Les résultat sont soustrait à ceux du plan actif.
+
+
+
+Les biais
+---------
+
+Le calcul n'est pas linéraire !
+Les trops grans MW sont limités à 5; de contacts seront perdus dans les hautes classes de contacts
+Les spot sans proba, mais ayant un GRP sont probabilisés avec une proba de 0.1% pour tous les individus
+de la cible.
+Les spot ayant un GRP nul sont eliminés du calcul de façon forcé, sinon ils interviennent dans le calcul de P!
+
+Le trusquin binomiale
+---------------------
+Le trusquin permet de calculer un vecteur binomial issus d'une proba de base, et d'un coeff.
+			VBx=f(proba,coeff)
+Puisque la loi binomiale oblige à toujours avoir un sigma égual à 1, il etait impossible d'imaginer
+une probabilité d'être touché une fois par un spot touchant un individu et traduisant des contacts dans la limitte
+de la probabilité de cet individu. Aussi le trusquin permet de moduler la proba de base en fonction du coeff, en respectant
+les contacts issus de ce produit (proba*coeff) et calculant une nouvelle proba d'être touché 1 fois, mais aussi 2 à 5 fois (plurifréquentation).
+Bien que ce procédé soit totalement absurde dans le cas d'évaluation d'un spot, il prend une forme réaliste dans l'évaluation d'un plan.
+
+Exemple:
+Normalement avec 1 spot de 3 GRP, on obtient 3% de couverture
+Si le média weight est trop fort, il est possible de trouver 2% de 1 fois touchés, et 0.5% touchés 2 fois
+
+L'avantage, c'est que, tout en respectant le GRP de chaque spot d'un plan, en admettant un plan touchant exclusivement des femmes,
+et qu toutes ce femmes (52%) soient touchés au moins une fois, on est sûr que la couverture réalisé sera de 52%, pas plus même si
+le media weight moyen est très fort.
+	
+	
+
+
+
+
+
+
+
+	
+
+

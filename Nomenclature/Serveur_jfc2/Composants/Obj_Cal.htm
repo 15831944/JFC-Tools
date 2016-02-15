@@ -1,0 +1,1465 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta name="Author" content="jfc">
+<meta name="GENERATOR" content="Microsoft FrontPage 4.0">
+<title>Objet calendrier</title>
+</head>
+
+<body>
+<font size="+3">
+
+<p>CObj_Cal&nbsp;</font><img SRC="Obj_Cal.JPG" height="90" width="447" align="CENTER"> </p>
+
+<p>La classe <b>CObj_Cal</b> dérive de la classe CStatic. L'objet <b>CObj_Cal</b> crée
+un calendrier composé de sections horizontales : une section mois,&nbsp; et/ou une
+section semaine, et/ou une section jour. La section jour représente par défaut la base
+calendaire. Chaque section à une fonction d'initialisation. Elles apparaissent dans
+n'importe quel ordre, du moment que la dernière appélée soit celle de base (la plus
+petite). (<i><a href="#Séquence d'initialisation">cf séquences d'initialisation</a></i>)
+</p>
+
+<p>L'objet calendrier peut être lié avec un scrollbar horizontal externe. Le pointeur du
+scrollbar est passé à l'objet dans la fonction d'initilisation. La fonction OnHScroll()
+utilise la fonction <a href="#CObj_Cal::MAJPosScrollH">MAJPosScrollH</a> pour mettre à
+jour la position du calendrier lorsque l'ascenseur à bougé. </p>
+
+<p>L'objet <b>CObj_Cal</b> permet à l'utilisateur de sélectionner (ou non) une ou
+plusieurs unités calendaire. Si cette sélection est nécessaire depuis l'extérieur,
+l'objet héritier surdéfinie la fonction <a href="#CObj_Cal::OnSelectionChanged">CObj_Cal::OnSelectionChanged</a>
+et a ainsi accès à la sélection. Il en va de même pour les curseurs : la fonction <a
+href="#CObj_Cal::OnCurseurMoved">CObj_Cal::OnCurseurMoved</a> signale l'héritier qu'un
+curseur a été déplacé. <br>
+La fonction <a href="#CObj_Cal::OnLevelSelect">CObj_Cal::OnLevelSelect</a> peut être
+surdéfinie si l'utilisateur souhaite modifier le niveau de sélection suivant l'action de
+la souris. </p>
+
+<p><b><i><font size="+1">Implantation</font></i></b> </p>
+
+<p>Il faut inclure dans le projet : 
+
+<ul>
+  <li>le fichier d'en-tête OBJ_CAL.H</li>
+  <li>le fichier source OBJ_CAL.CPP</li>
+  <li>le fichier source OBJ_GRILL.H</li>
+  <li>le fichier source OBJ_GRILL.CPP</li>
+</ul>
+
+<p>Il faut inclure dans le fichier d'en-tête appellant l'objet : 
+
+<ul>
+  <li>#include &lt;OBJ_CAL.H&gt;</li>
+  <li>Modifier le type Static du control static en CObj_Cal</li>
+</ul>
+
+<p>NOTE : L'objet grille <a href="Obj_Gril.htm">Obj_Gril</a>l est lié par défaut à
+l'objet calendrier <b>Obj_Cal</b>. C'est à dire qu'il est nécessaire d'inclure les
+fichiers <b>Obj_Grill.h</b> et <b>Obj_Grill.cpp</b> dans le projet. A l'inverse, l'objet
+grille n'est pas lié à l'objet calendrier (pas encore du moins!). <br>
+</p>
+
+<hr size="3" align="left">
+
+<p><font size="+2">Membres de la class CObj_Cal</font> </p>
+
+<p><b>Initialisation</b> <br>
+&nbsp; </p>
+
+<table BORDER="0" WIDTH="693">
+  <tr>
+    <td WIDTH="143"><a href="#CObj_Cal::Initialise(1)">Initialise</a></td>
+    <td WIDTH="542">Initialise les paramètres généraux de l'objet et définit un style.</td>
+  </tr>
+  <tr>
+    <td VALIGN="TOP" WIDTH="143"><a href="#CObj_Cal::InitialiseSelection(1)">InitialiseSelection(1)</a></td>
+    <td VALIGN="TOP" WIDTH="542">Initialise les paramètres de la sélection simple (click
+    gauche) de l'objet.</td>
+  </tr>
+  <tr>
+    <td WIDTH="143"><a href="#CObj_Cal::InitialiseSelection(2)">InitialiseSelection(2)</a></td>
+    <td WIDTH="542">Initialise les paramètres de la sélection multiple de l'objet.</td>
+  </tr>
+  <tr>
+    <td><a href="#CObj_Cal::InitialiseAnnee">InitialiseAnnee</a></td>
+    <td>Initialise les paramètes de la section année.</td>
+  </tr>
+  <tr>
+    <td WIDTH="143"><a href="#CObj_Cal::InitialiseMois">InitialiseMois</a></td>
+    <td WIDTH="542">Initialise les paramètes de la section mois.</td>
+  </tr>
+  <tr>
+    <td WIDTH="143"><a href="#CObj_Cal::InitialiseSemaine">InitialiseSemaine</a></td>
+    <td WIDTH="542">Initialise les paramètes de la section semaine.</td>
+  </tr>
+  <tr>
+    <td WIDTH="143"><a href="#CObj_Cal::InitialiseJour">InitialiseJour</a></td>
+    <td WIDTH="542">Initialise les paramètes de la section jour.</td>
+  </tr>
+  <tr>
+    <td WIDTH="143"><a href="#CObj_Cal::LibereCalend">LibereCalend</a></td>
+    <td WIDTH="542">Libère les objects alloués dans l'initialisation.</td>
+  </tr>
+</table>
+
+<p><b>Période</b> <br>
+&nbsp; </p>
+
+<table BORDER="0" WIDTH="75%">
+  <tr>
+    <td><a href="#CObj_Cal::ChangePeriode">ChangePeriode</a></td>
+    <td>Redimensionnement du calendrier en fonction des nouvelles valeurs.</td>
+  </tr>
+</table>
+
+<p><b>Position</b> <br>
+&nbsp; </p>
+
+<table BORDER="0" WIDTH="690">
+  <tr>
+    <td WIDTH="143"><a href="#CObj_Cal::SetPosition">SetPosition</a></td>
+    <td WIDTH="539">Met à jour l'affichage du calendrier en fonction de la position de
+    l'ascensceur.</td>
+  </tr>
+  <tr>
+    <td WIDTH="143"><a href="#CObj_Cal::GetCoupureCalend">GetCoupureCalend</a></td>
+    <td WIDTH="539">Retourne le tableau des coupures calendaires.</td>
+  </tr>
+</table>
+
+<p><b>Curseur</b> <br>
+&nbsp; </p>
+
+<table BORDER="0" WIDTH="696">
+  <tr>
+    <td WIDTH="143"><a href="#CObj_Cal::SetCurseur">SetCurseur</a></td>
+    <td WIDTH="545">Insère un nouveau curseur.</td>
+  </tr>
+  <tr>
+    <td WIDTH="143"><a href="#CObj_Cal::SetPosCurseur">SetPosCurseur</a></td>
+    <td WIDTH="545">Repositionne un curseur.</td>
+  </tr>
+  <tr>
+    <td WIDTH="143"><a href="#CObj_Cal::GetPosCurseur">GetPosCurseur</a></td>
+    <td WIDTH="545">Retourne la position d'un curseur.</td>
+  </tr>
+  <tr>
+    <td WIDTH="143"><a href="#CObj_Cal::SetTablier">SetTablier</a></td>
+    <td WIDTH="545">Définit un tablier de sélection.</td>
+  </tr>
+</table>
+
+<p><b>Sélection</b> <br>
+&nbsp; </p>
+
+<table BORDER="0">
+  <tr>
+    <td WIDTH="25%"><a href="#CObj_Cal::GetSelections">GetSelections</a></td>
+    <td WIDTH="546">Retourne la sélection click gauche.</td>
+  </tr>
+  <tr>
+    <td WIDTH="25%"><a href="#CObj_Cal::GetSelectionsRight">GetSelectionsRight</a></td>
+    <td>Retourne la sélection click droit.</td>
+  </tr>
+  <tr>
+    <td WIDTH="25%"><a href="#CObj_Cal::ChangeLeftSelectionColor">ChangeLeftSelectionColor</a></td>
+    <td>Modifie la couleur de sélection click gauche.</td>
+  </tr>
+  <tr>
+    <td WIDTH="25%"><a href="#CObj_Cal::ChangeRightSelectionColor">ChangeRightSelectionColor</a></td>
+    <td>Modifie la couleur de sélection click droit.</td>
+  </tr>
+  <tr>
+    <td WIDTH="25%"><a href="#CObj_Cal::SetSelections">SetSelections</a></td>
+    <td WIDTH="546">Initialise une sélection et sursélection.&nbsp;</td>
+  </tr>
+  <tr>
+    <td WIDTH="25%"><a href="#CObj_Cal::SetSelectionIndep">SetSelectionIndep</a></td>
+    <td>Initialise une plage indépendante non-modifiable.</td>
+  </tr>
+  <tr>
+    <td><a href="#CObj_Cal::AddSelectionIndep">AddSelectionIndep</a></td>
+    <td>Ajoute une bande de sélection indépendante</td>
+  </tr>
+  <tr>
+    <td WIDTH="25%"><a href="#CObj_Cal::GetSelectionIndep">GetSelectionIndep</a></td>
+    <td>Retourne la plage indépendante.</td>
+  </tr>
+  <tr>
+    <td WIDTH="25%"><a href="#CObj_Cal::RAZSelectionIndep">RAZSelectionIndep</a></td>
+    <td>Détruit la plage indépendante.</td>
+  </tr>
+  <tr>
+    <td WIDTH="25%"><a href="#CObj_Cal::SetLevelSelect">SetLevelSelect</a></td>
+    <td WIDTH="546">Définit les niveau de sélections..</td>
+  </tr>
+  <tr>
+    <td><a href="#CObj_Cal::ChangeModeSelection">ChangeModeSelection</a></td>
+    <td>Modifie le mode et la règle de sélection.</td>
+  </tr>
+</table>
+
+<p><b>Ascenseur</b> <br>
+&nbsp; </p>
+
+<table BORDER="0" WIDTH="696">
+  <tr>
+    <td WIDTH="141"><a href="#CObj_Cal::MAJPosScrollH">MAJPosScrollH</a></td>
+    <td WIDTH="547">Mise à jour de la position du calendrier suivant la position de
+    l'ascenseur.</td>
+  </tr>
+</table>
+
+<p><b>Printer</b> <br>
+&nbsp; </p>
+
+<table BORDER="0" WIDTH="100%">
+  <tr>
+    <td WIDTH="21%"><a href="#CObj_Cal::PaintToPrinter">PaintToPrinter</a></td>
+    <td WIDTH="79%">Signal à l'objet que le device context est maintenant celui de
+    l'imprimante.</td>
+  </tr>
+</table>
+
+<p><b>Surdéfinition de fonction</b> <br>
+&nbsp; </p>
+
+<table BORDER="0" WIDTH="693">
+  <tr>
+    <td WIDTH="142"><a href="#CObj_Cal::OnCurseurMoved">OnCurseurMoved</a></td>
+    <td WIDTH="543">Signal qu'un curseur a été déplacé.</td>
+  </tr>
+  <tr>
+    <td WIDTH="142"><a href="#CObj_Cal::OnSelectionChanged">OnSelectionChanged</a></td>
+    <td WIDTH="543">Signal que la sélection a changé.</td>
+  </tr>
+  <tr>
+    <td WIDTH="142"><a href="#CObj_Cal::OnLevelSelect">OnLevelSelect</a></td>
+    <td WIDTH="543">Signal que la sélection se fait sur un aute niveau.</td>
+  </tr>
+</table>
+
+<hr size="3" align="left">
+
+<p><a NAME="CObj_Cal::Initialise(1)"></a><font size="+2">CObj_Cal::Initialise</font> <br>
+<b>void Initialise</b>(<b>short</b> <i>Style</i>=STYLE_CAL_DEFAUT<b>, COleDateTime</b> <i>JourDeb</i>=COleDateTime::GetCurrentTime(),
+<b>short</b><i>NbCases</i>=365, <b>CScrollBar</b> * <i>ptScroll</i>=NULL, <b>CFont</b> *<i>ptFont</i>=NULL,
+<b>short</b><i>DefPos</i>=0, <b>CRect</b> * <i>pR_Print</i>=NULL); </p>
+
+<p><b>Paramètres</b> </p>
+
+<p><i>Style&nbsp;&nbsp;&nbsp; </i>Spécifie l'un des styles suivant : 
+
+<ul>
+  <li>STYLE_CAL_DEFAUT</li>
+  <li>STYLE_CAL_PIGE : Sélection étendue_jfc sur tous les niveau click gauche; sursélection
+    étendue_jfc sur un niveau dans la sélection click droit.</li>
+  <li>STYLE_CAL_CREUSET</li>
+</ul>
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Des options peuvent joindre le style : 
+
+<ul>
+  <li>OPTION_CAL_SPLITGRAY : trait des jours en gris</li>
+  <li>OPTION_CAL_BIGTABLIER : tablier définit sur toute la hauteur</li>
+  <li>OPTION_CAL_PRINTER : dessin dirigé vers un apercu ou imprimante</li>
+</ul>
+<i>
+
+<p>JourDeb&nbsp;&nbsp;&nbsp; </i>Spécifie la date ou commence le calendrier </p>
+
+<p><i>NbCases</i>&nbsp;&nbsp;&nbsp; Variable qui indique la plage calendaire </p>
+
+<p><i>ptScroll</i>&nbsp;&nbsp;&nbsp; Pointeur du control ScrollBar lié au calendrier </p>
+
+<p><i>ptFont</i>&nbsp;&nbsp;&nbsp; Font utilisé pour les libellé du calendrier </p>
+
+<p><i>DefPos&nbsp;&nbsp;&nbsp; </i>Indique la position de début du calendrier (0 par
+défaut) </p>
+
+<p><i>pR_Print&nbsp;&nbsp;&nbsp; </i>Coordonnée du rectangle ou va être dessiné le
+calendrier dans la feuille. </p>
+
+<p><b>Remarque</b> </p>
+
+<p>Cette fonction doit être la première à être appelé. Elle initialise les
+paramètres généraux&nbsp; de l'objet calendrier. <br>
+Elle est suivit par au moins une des fonctions d'initialisation. (<i><a
+href="#Séquence d'initialisation">cf séquences d'initialisation</a></i>) </p>
+
+<p><blink><font color="#FF0000">ATTENTION!!!</font></blink> <br>
+Le paramètre <i>UTHorizontal</i> doit être initialisé seulement dans la dernière
+fonction d'initialisation appelé. <br>
+</p>
+
+<hr size="3" align="left">
+
+<p><a NAME="CObj_Cal::InitialiseSelection(1)"></a><font size="+2">CObj_Cal::InitialiseSelection(1)</font>
+<br>
+<b>void InitialiseSelection</b>(<b>short</b> <i>ModeSelect</i>=CAL_SIMPLE, <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<b>short</b><i>LevelSelect</i>=CAL_LEVEL_JOUR|CAL_LEVEL_SEMAINE|CAL_LEVEL_MOIS, <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<b>COLORREF</b><i>ColorSelect</i>=RGB(0,255,0)); </p>
+
+<p><a NAME="CObj_Cal::InitialiseSelection(2)"></a><font size="+2">CObj_Cal::InitialiseSelection(2)</font>
+<br>
+<b>void InitialiseSelection</b>(<b>SInitSelection</b> * <i>LeftSelection</i>, <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<b>SInitSelection</b> * <i>RightSelection</i>=NULL, <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<b>short</b><i>SelectRules</i>=CAL_INDEPENDANTE); </p>
+
+<p><b>Paramètres</b> </p>
+
+<p><i>ModeSelect</i>&nbsp;&nbsp;&nbsp; Spécifie l'un des 4 modes de sélections
+disponible; -1 si aucune. 
+
+<ul>
+  <li>CAL_SIMPLE : Sélection d'une seul unité calendaire</li>
+  <li>CAL_MULTIPLE : Sélection de plusieurs unités calendaire</li>
+  <li>CAL_ETENDUE : Sélection d'une seul plage calendaire</li>
+  <li>CAL_ETENDUE_JFC : Sélection de plusieurs plages calendaire</li>
+  <li><br>
+    &nbsp; <p>&nbsp; </p>
+    <p>Deux types de sélection mensuelles sont également disponibles en complément du mode
+    : </p>
+  </li>
+  <li>CAL_MOIS_CALENDAIRE : Sélection d'un mois entier, de jour à jour</li>
+  <li>CAL_MOIS_HEBDOMADAIRE : Sélection d'un mois selon les semaines actives ( &gt;=3jours)</li>
+</ul>
+<i>
+
+<p>Level_Select</i>&nbsp;&nbsp;&nbsp; Spécifie une combinaison des niveaux dont la
+sélection est possible : 
+
+<ul>
+  <li>CAL_LEVEL_JOUR : sélection au niveau des jours</li>
+  <li>CAL_LEVEL_SEMAINE : sélection au niveau des semaines</li>
+  <li>CAL_LEVEL_MOIS : sélection au niveau des mois</li>
+  <li>CAL_LEVEL_ANNEE : sélection au niveau année</li>
+</ul>
+<i>
+
+<p>ColorSelect</i>&nbsp;&nbsp;&nbsp; Couleur utilisé pour la sélection click gauche </p>
+
+<p><i>LeftSelection </i>et <i>RightSelection&nbsp;&nbsp;&nbsp; </i>Pointeur sur une
+structure contenant les informations de la sélection; NULL si la sélection doit être
+inutilisée : 
+
+<ul>
+  <li><b>struct SInitSelection</b></li>
+  <li><br>
+    { <br>
+    &nbsp;&nbsp;&nbsp; <b>short</b> <i>LevelSelect</i> <br>
+    &nbsp;&nbsp; <b>COLORREF</b> <i>ColorSel</i>; <br>
+    &nbsp;&nbsp;&nbsp; <b>short</b> <i>TypeSelect</i>;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    //indique le type de selection (gauche(0) ou droite(1)) <br>
+    &nbsp;&nbsp;&nbsp; <b>short</b> <i>ModeSel</i>; <br>
+    &nbsp;&nbsp;&nbsp; <b>short</b> <i>ShowRect</i>;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    //zone de sélection : jour(0) ou toute la hauteur du calendrier(1) <br>
+    }; <p>Les paramètres à informer sont les suivants : <ul>
+      <li><i>LevelSelect</i> : niveau de sélection : CAL_LEVEL_JOUR et/ou CAL_LEVEL_SEMAINE et/ou
+        CAL_LEVEL_MOIS et/ou CAL_LEVEL_ANNEE</li>
+      <li><i>ColorSel</i> : RGB de la sélection</li>
+      <li><i>TypeSelect</i> : indique le type de sélection (gauche(0) ou droite(1))</li>
+      <li><i>ModeSel</i> : 4 modes : CAL_SIMPLE ou CAL_MULTIPLE ou CAL_ETENDUE ou CAL_ETENDUE_JFC</li>
+      <li><i>ShowRect</i> : zone d'affichage de la sélection : niveau jour(0) ou tous les
+        niveaux(1).</li>
+    </ul>
+  </li>
+</ul>
+<i>
+
+<p>SelectRules&nbsp;&nbsp;&nbsp; </i>Règles des sélections : 
+
+<ul>
+  <li>CAL_INDEPENDANTE : les deux sélections sont indépendantes. Elles ne peuvent pas se
+    superposées.</li>
+  <li>CAL_CROISEE : les deux sélections sont libres. Elles peuvent se superposées.</li>
+  <li>CAL_LEFTINTORIGHT : la sélection click gauche n'est possible qu'à l'intérieur de la
+    sélection click droite.</li>
+  <li>CAL_RIGHTINTOLEFT : la sélection click droite n'est possible qu'à l'intérieur de la
+    sélection click gauche.</li>
+  <li>CAL_PREGNANCE :</li>
+</ul>
+
+<ul>
+  <p>&nbsp; </p>
+  <table BORDER="1" COLS="3" WIDTH="41%">
+    <tr ALIGN="CENTER">
+      <td><b>Etat</b></td>
+      <td><b>Clique</b></td>
+      <td><b>Selection</b></td>
+    </tr>
+    <tr>
+      <td>Sans sélection</td>
+      <td>Gauche</td>
+      <td>Sélection</td>
+    </tr>
+    <tr>
+      <td>Sélection</td>
+      <td>Gauche</td>
+      <td>Sans sélection</td>
+    </tr>
+    <tr>
+      <td>Sur-sélection</td>
+      <td>Gauche</td>
+      <td>Sélection</td>
+    </tr>
+    <tr>
+      <td>Sans sélection</td>
+      <td>Droit</td>
+      <td>Sur-sélection</td>
+    </tr>
+    <tr>
+      <td>Sélection</td>
+      <td>Droit</td>
+      <td>Sur-sélection</td>
+    </tr>
+    <tr>
+      <td>Sur-sélection</td>
+      <td>Droit</td>
+      <td>Sélection</td>
+    </tr>
+  </table>
+</ul>
+
+<ul>
+  <li>CAL_OPPOSITION :</li>
+</ul>
+
+<ul>
+  <p>&nbsp; </p>
+  <table BORDER="1" COLS="3" WIDTH="41%">
+    <tr ALIGN="CENTER">
+      <td><b>Etat</b></td>
+      <td><b>Clique</b></td>
+      <td><b>Selection</b></td>
+    </tr>
+    <tr>
+      <td>Sans sélection</td>
+      <td>Gauche</td>
+      <td>Sélection</td>
+    </tr>
+    <tr>
+      <td>Sélection</td>
+      <td>Gauche</td>
+      <td>Sans sélection</td>
+    </tr>
+    <tr>
+      <td>Sur-sélection</td>
+      <td>Gauche</td>
+      <td>Sélection</td>
+    </tr>
+    <tr>
+      <td>Sans sélection</td>
+      <td>Droit</td>
+      <td>Sur-sélection</td>
+    </tr>
+    <tr>
+      <td>Sélection</td>
+      <td>Droit</td>
+      <td>Sur-sélection</td>
+    </tr>
+    <tr>
+      <td>Sur-sélection</td>
+      <td>Droit</td>
+      <td>Sans sélection</td>
+    </tr>
+  </table>
+</ul>
+<b>
+
+<p>Remarque</b> </p>
+
+<p>Ces fonctions doivent être appelé après la fonction<b> Initialisation</b>. <br>
+La première installe la sélection click gauche. La seconde paramètre soit l'une, soit
+l'autre,ou soit les deux. <br>
+</p>
+
+<hr size="3" align="left">
+
+<p><a NAME="CObj_Cal::InitialiseAnnee"></a><font size="+2">CObj_Cal::InitialiseAnnee</font>
+<br>
+<b>void InitialiseAnnee</b>(<b>short</b><i>Format</i>=FORMAT_CAL_STANDARD, <b>COLORREF</b><i>ColorBg</i>=RGB(255,255,255),
+<b>COLORREF</b><i>ColorTxt</i>=RGB(0,0,0), <b>COLORREF</b><i>ColorSplit</i>t=RGB(210,210,210),
+<b>short</b><i>UTVertical</i>=16, <b>short</b><i>UTHorizontal</i>=0, <b>short</b><i>NumOrdre</i>=0);
+</p>
+
+<p><b>Paramètres</b> </p>
+
+<p><i>Format&nbsp;&nbsp;&nbsp; </i>Spécifie le format d'affichage : 
+
+<ul>
+  <li>FORMAT_CAL_STANDARD : l'année au format YYYY</li>
+</ul>
+<i>
+
+<p>ColorBg&nbsp;&nbsp;&nbsp; </i>Couleur du fond </p>
+
+<p><i>ColorTxt&nbsp;&nbsp;&nbsp; </i>Couleur du texte </p>
+
+<p><i>ColorSplit&nbsp;&nbsp;&nbsp; </i>Couleur des coupures </p>
+
+<p><i>UTVertical&nbsp;&nbsp;&nbsp; </i>Unité verticale en pixel de la section mois </p>
+
+<p><i>UTHorizontal&nbsp;&nbsp;&nbsp; </i>Unité horizontale en pixel d'une case
+calendaire; 0(défaut) si le mois n'est pas la section de base calendaire </p>
+
+<p><i>NumOrdre&nbsp;&nbsp;&nbsp; </i>Variable qui indique la position de la section mois
+dans l'objet par rapport aux 2 autres sections 
+
+<ul>
+  <li>0 : première position OU section unique (défaut)</li>
+  <li>1 : position inférieur; une autre section doit avoir la position 0</li>
+  <li>2 : position intermédiare; les autres sections doivent avoir leur propre position</li>
+  <li>3 : dernière position; tous les niveaux sont présents</li>
+</ul>
+<b>
+
+<p>Remarques</b> </p>
+
+<p>Initialise les paramètres liés à la section Année. <br>
+Le paramètre <i>UTHorizontal</i> est non-nulle si aucune autre section (mois, semaine,
+jour) n'est présente. (<i><a href="#Séquence d'initialisation">cf séquences
+d'initialisation</a></i>) <br>
+</p>
+
+<hr size="3" align="left">
+
+<p><a NAME="CObj_Cal::InitialiseMois"></a><font size="+2">CObj_Cal::InitialiseMois</font> <br>
+<b>void InitialiseMois</b>(<b>BOOL</b> <i>fAlignSem</i>=0, <b>short</b><i>Format</i>=FORMAT_CAL_STANDARD,
+<b>COLORREF</b><i>ColorBg</i>=RGB(255,255,255), <b>COLORREF</b><i>ColorTxt</i>=RGB(0,0,0),
+<b>COLORREF</b><i>ColorSplit</i>t=RGB(210,210,210), <b>short</b><i>UTVertical</i>=16, <b>short</b><i>UTHorizontal</i>=0,
+<b>short</b><i>NumOrdre</i>=0); </p>
+
+<p><b>Paramètres</b> </p>
+
+<p><i>fAlignSem&nbsp;&nbsp;&nbsp; </i>flag qui indique à l'objet d'aligner les mois
+suivant les semaines (TRUE). Sinon FALSE </p>
+
+<p><i>Format&nbsp;&nbsp;&nbsp; </i>Spécifie le format d'affichage : 
+
+<ul>
+  <li>FORMAT_CAL_STANDARD : le numéro du mois (01-12)</li>
+  <li>FORMAT_CAL_MOIS : le libellé du mois</li>
+  <li>FORMAT_CAL_MOISABRG : le libellé abrégé du mois</li>
+  <li>FORMAT_CAL_STDANABRG : le numéro du mois/année abrégé</li>
+  <li>FORMAT_CAL_MOISANNEE : le libellé du mois suivit de l'année</li>
+</ul>
+<i>
+
+<p>ColorBg&nbsp;&nbsp;&nbsp; </i>Couleur du fond </p>
+
+<p><i>ColorTxt&nbsp;&nbsp;&nbsp; </i>Couleur du texte </p>
+
+<p><i>ColorSplit&nbsp;&nbsp;&nbsp; </i>Couleur des coupures </p>
+
+<p><i>UTVertical&nbsp;&nbsp;&nbsp; </i>Unité verticale en pixel de la section mois </p>
+
+<p><i>UTHorizontal&nbsp;&nbsp;&nbsp; </i>Unité horizontale en pixel d'une case
+calendaire; 0(défaut) si le mois n'est pas la section de base calendaire </p>
+
+<p><i>NumOrdre&nbsp;&nbsp;&nbsp; </i>Variable qui indique la position de la section mois
+dans l'objet par rapport aux 2 autres sections 
+
+<ul>
+  <li>0 : première position OU section unique (défaut)</li>
+  <li>1 : position inférieur; une autre section doit avoir la position 0</li>
+  <li>2 : position intermédiare; les autres sections doivent avoir leur propre position</li>
+  <li>3 : dernière position; tous les niveaux sont présents</li>
+</ul>
+<b>
+
+<p>Remarques</b> </p>
+
+<p>Initialise les paramètres liés à la section Mois. <br>
+Le paramètre <i>UTHorizontal</i> est non-nulle si aucune autre section (semaine, jour)
+n'est présente. (<i><a href="#Séquence d'initialisation">cf séquences d'initialisation</a></i>)
+<br>
+</p>
+
+<hr size="3" align="left">
+
+<p><a NAME="CObj_Cal::InitialiseSemaine"></a><font size="+2">CObj_Cal::InitialiseSemaine</font>
+<br>
+<b>void InitialiseSemaine</b>(<b>short</b> <i>JourDebSem</i>=0, <b>short</b><i>Format</i>t=FORMAT_CAL_STANDARD,
+<b>COLORREF</b><i>ColorBg</i>=RGB(255,255,255), <b>COLORREF</b><i>ColorTxt</i>=RGB(0,0,0),
+<b>COLORREF</b><i>ColorSplit</i>=RGB(210,210,210)<i>, </i><b>short</b><i>UTVertical</i>=16,
+<b>short</b><i>UTHorizontal</i>=0, <b>short</b><i>NumOrdre=1</i>); </p>
+
+<p><b>Paramètres</b> </p>
+
+<p><i>JourDebSem&nbsp;&nbsp;&nbsp;</i> Numéro du jour qui débute les semaines dans le
+calendrier (0=Lundi, 1=Mardi, ..., 6=Dimanche) </p>
+
+<p><i>Format&nbsp;&nbsp;&nbsp; </i>Spécifie le format d'affichage : 
+
+<ul>
+  <li>FORMAT_CAL_STANDARD : le numéro de la semaine (01-52)</li>
+  <li>FORMAT_CAL_JOURDEBUTSEM : le premier jour de la semaine</li>
+</ul>
+<i>
+
+<p>ColorBg&nbsp;&nbsp;&nbsp; </i>Couleur du fond </p>
+
+<p><i>ColorTxt&nbsp;&nbsp;&nbsp; </i>Couleur du texte </p>
+
+<p><i>ColorSplit&nbsp;&nbsp;&nbsp; </i>Couleur des coupures </p>
+
+<p><i>UTVertical&nbsp;&nbsp;&nbsp; </i>Unité verticale en pixel de la section semaine </p>
+
+<p><i>UTHorizontal&nbsp;&nbsp;&nbsp; </i>Unité horizontale en pixel d'une case
+calendaire; 0(défaut) si la semaine n'est pas la section de base calendaire </p>
+
+<p><i>NumOrdre&nbsp;&nbsp;&nbsp; </i>Variable qui indique la position de la section
+semaine dans l'objet par rapport aux 2 autres sections 
+
+<ul>
+  <li>0 : première position OU section unique (défaut)</li>
+  <li>1 : position inférieur; une autre section doit avoir la position 0</li>
+  <li>2 : position intermédiare; les autres sections doivent avoir leur propre position</li>
+  <li>3 : dernière position; tous les niveaux sont présents</li>
+</ul>
+<b>
+
+<p>Remarques</b> </p>
+
+<p>Initialise les paramètres liés à la section Semaine. <br>
+Le paramètre <i>UTHorizontal</i> est non-nulle si la section jour est absente. (<i><a
+href="#Séquence d'initialisation">cf séquences d'initialisation</a></i>) <br>
+</p>
+
+<hr size="3" align="left">
+
+<p><a NAME="CObj_Cal::InitialiseJour"></a><font size="+2">CObj_Cal::InitialiseJour</font> <br>
+<b>void</b> <b>InitialiseJour</b>(<b>short</b> <i>Format</i>=FORMAT_CAL_STANDARD, <b>COLORREF</b><i>ColorBg</i>=RGB(255,255,255),
+<b>COLORREF</b><i>ColorTxt</i>=RGB(0,0,0), <b>COLORREF</b><i>ColorSplit</i>=RGB(210,210,210)<i>,
+</i><b>short</b><i>UTVertical</i>=16, <b>short</b><i>UTHorizontal</i>=0, <b>short</b><i>NumOrdre</i>=2);
+</p>
+
+<p><b>Paramètres</b> </p>
+
+<p><i>Format&nbsp;&nbsp;&nbsp; </i>Spécifie le format d'affichage : 
+
+<ul>
+  <li>FORMAT_CAL_STANDARD : le numéro du jour (01-31)</li>
+  <li>FORMAT_CAL_JOUR : la première lettre du jour et en dessous le numéro</li>
+  <li>FORMAT_CAL_JOURSEM : le jour de la semaine (Lundi, ...)</li>
+</ul>
+<i>
+
+<p>ColorBg&nbsp;&nbsp;&nbsp; </i>Couleur du fond </p>
+
+<p><i>ColorTxt&nbsp;&nbsp;&nbsp; </i>Couleur du texte </p>
+
+<p><i>ColorSplit&nbsp;&nbsp;&nbsp; </i>Couleur des coupures </p>
+
+<p><i>UTVertical&nbsp;&nbsp;&nbsp; </i>Unité verticale en pixel de la section jour </p>
+
+<p><i>UTHorizontal&nbsp;&nbsp;&nbsp; </i>Unité horizontale en pixel d'une case
+calendaire; NE DOIT PAS ETRE NULLE </p>
+
+<p><i>NumOrdre&nbsp;&nbsp;&nbsp; </i>Variable qui indique la position de la section
+semaine dans l'objet par rapport aux 2 autres sections 
+
+<ul>
+  <li>0 : première position OU section unique (défaut)</li>
+  <li>1 : position inférieur; une autre section doit avoir la position 0</li>
+  <li>2 : position intermédiare; les autres sections doivent avoir leur propre position</li>
+  <li>3 : dernière position; tous les niveaux sont présents</li>
+</ul>
+<b>
+
+<p>Remarques</b> </p>
+
+<p>Initialise les paramètres liés à la section Jour. <br>
+Le paramètre <i>UTHorizontal</i> est toujours initialisé si cette fonction
+d'initialisation est présente. (<i><a href="#Séquence d'initialisation">cf séquences
+d'initialisation</a></i>) <br>
+</p>
+
+<hr size="3" align="left">
+
+<p><a NAME="CObj_Cal::LibereCalend"></a><font size="+2">CObj_Cal::LibereCalend</font> <br>
+<b><font size="+0">void LibereCalend(void)</font></b> </p>
+
+<p><b><font size="+0">Remarques</font></b> </p>
+
+<p>Libère les variables et les objects alloués à l'initialisation. Cette fonction doit
+être appelé AVANT une reconfiguration du calendrier (par les fonctions
+d'initialisation). <br>
+</p>
+
+<hr>
+
+<p><font size="+2">CObj_Cal::SetPosition</font> <br>
+<b>short SetPosition</b>(<b>short</b> <i>Pos</i>, <b>bool</b> <i>flag</i>=false); </p>
+
+<p><b>Paramètres</b> </p>
+
+<p><i>Pos&nbsp;&nbsp;&nbsp; </i>Nouvelle position à mettre à jour dans le calendrier </p>
+
+<p><i>flag&nbsp;&nbsp; </i>Met à jour l'affichage si true. </p>
+
+<p><b>Remarques</b> </p>
+
+<p>Cette fonction public est appelé depuis la fonction externe <a href="onhscroll.htm">OnHScroll</a>
+pour mettre à jour l'affichage du calendrier en fonction de la position de l'ascensceur. <br>
+</p>
+
+<hr size="3" align="left">
+
+<p><a NAME="CObj_Cal::GetCoupureCalend"></a><font size="+2">CObj_Cal::GetCoupureCalend</font>
+<br>
+<b>char * GetCoupureCalend</b>(void); </p>
+
+<p><b>Valeur de retour</b> </p>
+
+<p>Un tableau contenant les coupures du calendrier. </p>
+
+<p><b>Remarques</b> </p>
+
+<p>Le tableau à une longueur de <i>NbCases+2</i>. Chaque coupure correspond à une valeur
+: 
+
+<ul>
+  <li>0 : coupure journalière</li>
+  <li>1 : coupure hebdomadaire</li>
+  <li>2 : coupure mensuelle</li>
+  <li>3 : coupure hebdomadaire et mensuelle</li>
+  <li>4 : coupure annuelle</li>
+  <li>5 : coupure hebdomadaire et annuelle</li>
+  <li>6 : coupure mensuelle et annuelle</li>
+  <li>7 : coupure hebdomadaire, mensuelle et hebdomadaire</li>
+</ul>
+
+<hr size="3" align="left">
+
+<p><a NAME="CObj_Cal::SetCurseur"></a><font size="+2">CObj_Cal::SetCurseur</font> <br>
+<b>short SetCurseur</b>(<b>short</b> <i>NumCurs</i>, <b>short</b> <i>Pos</i>, <b>COLORREF</b><i>
+Color</i>); </p>
+
+<p><b>Paramètres</b> </p>
+
+<p><i>NumCurs&nbsp;&nbsp;&nbsp; </i>Numéro de curseur. Random. </p>
+
+<p><i>Pos&nbsp;&nbsp;&nbsp; </i>Position du curseur dans le calendrier </p>
+
+<p><i>Color&nbsp;&nbsp;&nbsp; </i>Couleur du curseur de type RBG </p>
+
+<p><b>Remarques</b> </p>
+
+<p>Insère un nouveau curseur dans le calendrier à l'emplacement indiqué par <i>Pos.</i>
+<br>
+</p>
+
+<hr size="3" align="left">
+
+<p><a NAME="CObj_Cal::SetPosCurseur"></a><font size="+2">CObj_Cal::SetPosCurseur</font> <br>
+<b>short SetPosCurseur</b>(<b>short</b> <i>ncurs</i>, <b>short</b><i> NewPos</i>); </p>
+
+<p><b>Valeur de retour</b> </p>
+
+<p>0 si la nouvelle position est en dehors des limites ou si le numéro du curseur est
+invalide; sinon 1. </p>
+
+<p><b>Paramètres</b> </p>
+
+<p><i>ncurs</i>&nbsp;&nbsp;&nbsp; Numéro du curseur à repositionner. </p>
+
+<p><i>NewPos</i>&nbsp;&nbsp;&nbsp; Nouvelle position à apporter au curseur. </p>
+
+<p><b>Remarque</b> </p>
+
+<p>Cette fonction est utile pour modifier la position d'un curseur sans la souris. Cela
+peut être aussi utile pour modifier la bande de sélection d'un tablier. <br>
+</p>
+
+<hr size="3" align="left">
+
+<p><a NAME="CObj_Cal::GetPosCurseur"></a><font size="+2">CObj_Cal::GetPosCurseur</font> <br>
+<b>short GetPosCurseur</b>(<b>short</b> <i>ncurs</i>); </p>
+
+<p><b>Valeur de retour</b> </p>
+
+<p>La position du curseur <i>ncurs</i> dans le calendrier. -1 si aucun ne correspond. </p>
+
+<p><b>Paramètre</b> </p>
+
+<p><i>ncurs&nbsp;&nbsp;&nbsp; </i>Numéro du curseur dont on veut connaitre la position. </p>
+
+<p><b>Remarque</b> </p>
+
+<p>Retourne la position du curseur identifié par son numéro. <br>
+</p>
+
+<hr size="3" align="left">
+
+<p><a NAME="CObj_Cal::SetTablier"></a><font size="+2">CObj_Cal::SetTablier</font> <br>
+<b>short SetTablier</b>(<b>short</b> <i>Curseur1</i>, <b>short</b><i>Curseur2</i>, <b>COLORREF</b><i>
+colorOn</i>); </p>
+
+<p><b>Paramètres</b> </p>
+
+<p><i>Curseur1&nbsp;&nbsp;&nbsp; </i>Numéro du curseur définissant une extrémité du
+calendrier </p>
+
+<p><i>Curseur2&nbsp;&nbsp;&nbsp; </i>Numéro du curseur définissant une extrémité du
+calendrier </p>
+
+<p><i>colorOn</i>&nbsp;&nbsp;&nbsp; Spécifie la couleur de fond de la partie valide du
+calendrier </p>
+
+<p><b>Remarque</b> </p>
+
+<p>Définit un tablier de sélection. <br>
+</p>
+
+<hr size="3" align="left">
+
+<p><a NAME="CObj_Cal::GetSelections"></a><font size="+2">CObj_Cal::GetSelections</font> <br>
+<b>CByteArray</b> * <b>GetSelections</b>(<b>void</b>); </p>
+
+<p><b>Valeur de retour</b> </p>
+
+<p>Un pointeur sur un tableau de <i>NbCases </i>octets ayant pour valeur : 0 pour une case
+non sélectionnés; sinon&nbsp; non nulle. </p>
+
+<p><b>Remarque</b> </p>
+
+<p>Retourne la sélection click gauche. <br>
+</p>
+
+<hr size="3" align="left">
+
+<p><a NAME="CObj_Cal::GetSelectionsRight"></a><font size="+2">CObj_Cal::GetSelectionsRight</font>
+<br>
+<b>CByteArray *GetSelectionsRight(void);</b> </p>
+
+<p><b>Valeur de retour</b> </p>
+
+<p>Un pointeur sur un tableau de <i>NbCases </i>octets ayant pour valeur : 0 pour une case
+non sélectionnés; sinon&nbsp; non nulle. </p>
+
+<p><b>Remarque</b> </p>
+
+<p>Retourne la sélection click droit. <br>
+</p>
+
+<hr size="3" align="left">
+
+<p><a NAME="CObj_Cal::SetSelections"></a><font size="+2">CObj_Cal::SetSelections</font> <br>
+<b>void SetSelections</b>(<b>CByteArray</b> * <i>Selections</i>, <b>CByteArray</b> * <i>SurSelections</i>);
+</p>
+
+<p><b>Paramètres</b> </p>
+
+<p><i>Selections&nbsp;&nbsp;&nbsp; </i>Tableau de <i>NbCases </i>octetscontenant la
+sélection click gauche sous la forme de 1 (sélection) et de 0 (pas de sélection); NULL
+si non utilisé. </p>
+
+<p><i>SurSelections&nbsp;&nbsp;&nbsp; </i>Tableau de <i>NbCases </i>octets contenant la
+sélection click droit sous la forme de 1 (sélection) et de 0 (pas de sélection); NULL
+si non utilisé. </p>
+
+<p><b>Remarque</b> </p>
+
+<p>Initialise une sélection et une sursélection. <br>
+</p>
+
+<hr size="3" align="left">
+
+<p><a NAME="CObj_Cal::ChangeLeftSelectionColor"></a><font size="+2">CObj_Cal::ChangeLeftSelectionColor</font>
+<br>
+<b>void ChangeLeftSelectionColor(COLORREF </b><i>color</i><b>, bool </b><i>flagRedraw</i><b>);</b>
+</p>
+
+<p><b>Paramètres</b> </p>
+
+<p><i>color</i>&nbsp;&nbsp;&nbsp; Spécifie la nouvelle couleur de sélection du click
+gauche. </p>
+
+<p><i>flagRedraw</i> Flag déterminant le raffraichissement immédiat à l'écran de la
+sélection (true) ou pas de changement (false). </p>
+
+<p><b>Remarque</b> </p>
+
+<p>Modifie la couleur de sélection du click gauche, avec ou sans rafraichissement
+immédiat. <br>
+</p>
+
+<hr size="3" align="left">
+
+<p><a NAME="CObj_Cal::ChangeRightSelectionColor"></a><font size="+2">CObj_Cal::ChangeRightSelectionColor</font>
+<br>
+<b>void ChangeRightSelectionColor(COLORREF color, bool flagRedraw);</b> </p>
+
+<p><b>Paramètres</b> </p>
+
+<p><i>color</i>&nbsp;&nbsp;&nbsp; Spécifie la nouvelle couleur de sélection du click
+droit. </p>
+
+<p><i>flagRedraw</i> Flag déterminant le raffraichissement immédiat à l'écran de la
+sélection (true) ou pas de changement (false). </p>
+
+<p><b>Remarque</b> </p>
+
+<p>Modifie la couleur de sélection du click droit, avec ou sans rafraichissement
+immédiat. <br>
+</p>
+
+<hr size="3" align="left">
+
+<p><a NAME="CObj_Cal::ChangePeriode"></a><font size="+2">CObj_Cal::ChangePeriode</font> <br>
+<b>void ChangePeriode(COleDateTime </b><i>JourDeb</i><b>, short </b><i>NbCases</i><b>,
+bool </b><i>fUpdate</i>=false<b>);</b> </p>
+
+<p><b>Paramètres</b> </p>
+
+<p><i>JourDeb&nbsp;&nbsp;&nbsp; </i>Spécifie la date où commence le calendrier. </p>
+
+<p><i>NbCases</i>&nbsp;&nbsp;&nbsp; Variable qui indique la plage calendaire. </p>
+
+<p><i>fUpdate</i> Flag déterminant le raffraichissement immédiat à l'écran du
+changement de la période (true) ou pas de rafraichissement (false). </p>
+
+<p><b>Remarque</b> </p>
+
+<p>Cette fonction a pour but de réinitialiser la période du calendrier. </p>
+
+<hr size="3" align="left">
+
+<p><a NAME="CObj_Cal::AddSelectionIndep"></a><font size="+2">CObj_Cal::AddSelectionIndep</font>
+<br>
+<b>void AddSelectionIndep(CByteArray </b><i>*IndepSel</i><b>, short </b><i>UTVerticalDebut = </i>0<b>, short </b><i>UTVerticalFin = </i>6<b>,
+bool </b><i>fCadre = </i>true<b>, COLORREF </b><i>ColorSelIndep</i>=RGB(255,192,192)<b>,
+long</b><em> fOption</em><b>=</b>0<b>);</b> </p>
+
+<p><b>Paramètres</b> </p>
+
+<p><i>IndepSel&nbsp;&nbsp;&nbsp; </i>Tableau de <i>N </i>octets contenant la plage de
+sélection indépendante sous la forme de 1 (sélection) et de 0 (pas de sélection); NULL
+si non utilisé. </p>
+
+<p><i>UTVerticalDebut </i>Unité vertical qui correspond à la hauteur de la plage qui sera
+affiché; -1 pour toute la hauteur.(nb pixels depuis le bas) </p>
+
+<p><i>UTVerticalFin </i>Unité vertical qui correspond à la hauteur de la plage qui sera
+affiché; (nb pixels haut depuis le bas) </p>
+
+<p><i>fCadre </i>Flag permettant d'affiché la plage encadré (true), ou sans contour
+(false). </p>
+
+<p><i>ColorSelIndep&nbsp;&nbsp;&nbsp; </i>Couleur de la plage de sélection indépendante.
+</p>
+
+<p><em> fOption&nbsp;&nbsp;&nbsp; </em>Option de la sélection indépendante; Fixe
+l'apparence caché (en dessous de la sélection) si égale à CAL_SEL_INDEP_HIDE; 0 par
+défaut.</p>
+
+<p><b>Remarque</b> </p>
+
+<p>Ajoute et initialise une plage de sélection calendaire indépendante et non-modifiable
+par la sélection click gauche ou click droit. </p>
+
+<hr size="3" align="left">
+
+<p><a NAME="CObj_Cal::SetSelectionIndep"></a><font size="+2">CObj_Cal::SetSelectionIndep</font>
+<br>
+<b>void SetSelectionIndep(CByteArray </b><i>*IndepSel</i><b>, short </b><i>UTVerticalDebut = </i>0<b>, short </b><i>UTVerticalFin = </i>6<b>,
+bool </b><i>fCadre = </i>true<b>, COLORREF </b><i>ColorSelIndep</i>=RGB(255,192,192), <b>long</b>
+<em>fOption</em>=0,<b> long</b> <i>nIndepSel</i> = 0<b>);</b> </p>
+
+<p><b>Paramètres</b> </p>
+
+<p><i>IndepSel&nbsp;&nbsp;&nbsp; </i>Tableau de <i>N </i>octets contenant la plage de
+sélection indépendante sous la forme de 1 (sélection) et de 0 (pas de sélection); NULL
+si non utilisé. </p>
+
+<p><i>UTVerticalDebut </i>Unité vertical qui correspond à la hauteur de la plage qui sera
+affiché; -1 pour toute la hauteur.(nb pixels depuis le bas) </p>
+
+<p><i>UTVerticalFin </i>Unité vertical qui correspond à la hauteur de la plage qui sera
+affiché; (nb de pixels haut depuis le bas) </p>
+
+<p><i>fCadre </i>Flag permettant d'affiché la plage encadré (true), ou sans
+contour(false). </p>
+
+<p><i>ColorSelIndep&nbsp;&nbsp;&nbsp; </i>Couleur de la plage de sélection indépendante.
+</p>
+
+<p><em> fOption&nbsp;&nbsp;&nbsp; </em>Option de la sélection indépendante; Fixe
+l'apparence caché (en dessous de la sélection) si égale à CAL_SEL_INDEP_HIDE; 0 par
+défaut.</p>
+
+<p><i>nIndepSel&nbsp;&nbsp;&nbsp; </i>Numéro de la sélection indépendante que l'on
+désire modifier; la première par défaut. </p>
+
+<p><b>Remarque</b> </p>
+
+<p>Initialise une plage de sélection calendaire indépendante et non-modifiable par la
+sélection click gauche ou click droit. <br>
+</p>
+
+<hr size="3" align="left">
+
+<p><a NAME="CObj_Cal::GetSelectionIndep"></a><font size="+2">CObj_Cal::GetSelectionIndep</font>
+<br>
+<b>CByteArray *GetSelectionIndep(long </b><i>nIndepSel = </i>0<b>);</b> </p>
+
+<p><b>Paramètres</b> </p>
+
+<p><i>nIndepSel&nbsp;&nbsp;&nbsp; </i>Numéro de la sélection indépendante que l'on
+désire récupérer; la première par défaut. </p>
+
+<p><b>Valeur de retour</b> </p>
+
+<p>Un pointeur sur un tableau de <i>N </i>octets ayant pour valeur : 0 pour une case non
+sélectionné; sinon non nulle. </p>
+
+<p><b>Remarque</b> </p>
+
+<p>Retourne la plage indépendante. <br>
+</p>
+
+<hr size="3" align="left">
+
+<p><a NAME="CObj_Cal::RAZSelectionIndep"></a><font size="+2">CObj_Cal::RAZSelectionIndep</font>
+<br>
+<b>void RAZSelectionIndep(long </b><i>nIndepSel = </i>-1<b>);</b> </p>
+
+<p><b>Paramètres</b> </p>
+
+<p><i>nIndepSel&nbsp;&nbsp;&nbsp; </i>Numéro de la sélection indépendante que l'on
+désire annuler; ou -1 pour toutes. </p>
+
+<p><b>Remarque</b> </p>
+
+<p>Remise à zéro de la plage de sélection calendaire indépendante. <br>
+</p>
+
+<hr size="3" align="left">
+
+<p><a NAME="CObj_Cal::SetLevelSelect"></a><font size="+2">CObj_Cal::SetLevelSelect</font> <br>
+<b>void SetLevelSelect(short </b><i>Select, , </i><b>BOOL</b><i> fRAZSel</i><b>);</b> </p>
+
+<p><b>Paramètres</b> </p>
+
+<p><i>Select&nbsp;&nbsp;&nbsp; </i>Combinaison d'un ou plusieurs niveau de sélection : 
+
+<ul>
+  <li>CAL_LEVEL_ANNEE</li>
+  <li>CAL_LEVEL_MOIS</li>
+  <li>CAL_LEVEL_SEMAINE</li>
+  <li>CAL_LEVEL_JOUR</li>
+</ul>
+<i>
+
+<p>fRAZSel&nbsp;&nbsp;&nbsp; </i>Efface la sélection du niveau précédent (1) ou met a
+jour cette sélection au nouveau niveau de sélection (0). </p>
+
+<p><b>Remarque</b> </p>
+
+<p>Modifie le niveau de sélection. <br>
+</p>
+
+<hr size="3" align="left">
+
+<p><a NAME="CObj_Cal::MAJPosScrollH"></a><font size="+2">CObj_Cal::MAJPosScrollH</font> <br>
+<b>short MAJPosScrollH(UINT </b><i>nSBCode</i><b>, UINT </b><i>nPos</i><b>, short </b><i>flag</i><b>);</b>
+</p>
+
+<p><b>Paramètres</b> </p>
+
+<p><i>nSBCode</i>&nbsp;&nbsp;&nbsp; Valeur de la fonction OnHScroll. </p>
+
+<p><i>nPos&nbsp;&nbsp;&nbsp; </i>Valeur de la fonction OnHScroll. </p>
+
+<p><i>flag&nbsp;&nbsp;&nbsp; </i>Spécifie à l'objet de mettre à jour la nouvelle
+position (1). Sinon, le programme devra s'en occupé (0). </p>
+
+<p><b>Remarque</b> </p>
+
+<p>Appelée dans la fonction OnHScroll(), elle sert à mettre à jour la position du
+calendrier lorsque l'ascenseur horizontal à bougé. <br>
+</p>
+
+<hr size="3" align="left">
+
+<p><a NAME="CObj_Cal::PaintToPrinter"></a><font size="+2">CObj_Cal::PaintToPrinter</font> <br>
+<b>void</b> <b>PaintToPrinter</b>(<b>CDC</b> * <i>pDC</i>, <b>CFont</b> * <i>pFont</i>=NULL);
+</p>
+
+<p><b>Paramètres</b> </p>
+
+<p><i>pDC&nbsp;&nbsp;&nbsp; </i>Device context de l'imprimante. </p>
+
+<p><i>pFont&nbsp;&nbsp;&nbsp; </i>Font utilisé pour les libellé du calendrier </p>
+
+<p><b>Remarque</b> </p>
+
+<p>Cette fonction est a appelé après l'initialisation de l'objet. Il faut fournir un
+CRect dans la fonction <b>Initialisation</b>. (<i><a href="#Séquence d'initialisation">cf
+séquences d'initialisation</a></i>). Elle informe l'objet que le device context est
+maintenant celui de l'imprimante. <br>
+</p>
+
+<hr size="3" align="left">
+
+<p><a NAME="CObj_Cal::OnCurseurMoved"></a><font size="+2">CObj_Cal::OnCurseurMoved</font> <br>
+<b>virtual BOOL OnCurseurMoved</b>(<b>short</b> <i>NumCurs</i>, <b>short</b><i>Pos</i>); </p>
+
+<p><b>Paramètres</b> </p>
+
+<p><i>NumCurs&nbsp;&nbsp;&nbsp; </i>Identifie le numéro du curseur </p>
+
+<p><i>Pos&nbsp;&nbsp;&nbsp; </i>Indique la nouvelle position du curseur </p>
+
+<p><b>Remarque</b> </p>
+
+<p>Appelé lorsqu'un curseur se déplace ou a été déplacé. <br>
+</p>
+
+<hr size="3" align="left">
+
+<p><a NAME="CObj_Cal::OnSelectionChanged"></a><font size="+2">CObj_Cal::OnSelectionChanged</font>
+<br>
+<b>virtual BOOL OnSelectionChanged</b>(<b>CByteArray</b> * <i>Selections</i>, <b>CByteArray</b>
+* <i>SurSelections</i>); </p>
+
+<p><b>Paramètres</b> </p>
+
+<p><i>Selections&nbsp;&nbsp;&nbsp; </i>Tableau de <i>NbCases </i>contenant la sélection
+click gauche sous la forme de &gt;=1 (sélection) et de 0 (pas de sélection); NULL si
+inchangée. </p>
+
+<p><i>SurSelections&nbsp;&nbsp;&nbsp; </i>Tableau de <i>NbCases </i>contenant la
+sélection click droit sous la forme de &gt;=1 (sélection) et de 0 (pas de sélection);
+NULL si inchangée. </p>
+
+<p><b>Remarque</b> </p>
+
+<p>Appelé lorsque l'une des sélections a changé. <br>
+</p>
+
+<hr size="3" align="left">
+
+<p><a NAME="CObj_Cal::OnLevelSelect"></a><font size="+2">CObj_Cal::OnLevelSelect</font> <br>
+<b>virtual BOOL OnLevelSelect</b>(<b>short</b> <i>Level</i>, <b>UINT</b><i>nFlags</i>); </p>
+
+<p><b>Paramètres</b> </p>
+
+<p><i>Level</i>&nbsp;&nbsp;&nbsp; Indique le niveau dans lequel la souris est active. </p>
+
+<p><i>nFlags</i>&nbsp;&nbsp;&nbsp; Indique le bouton de la souris qui est activé. </p>
+
+<p><b>Remarque</b> </p>
+
+<p>Appelé lorsque la souris est active sur un nouveau niveau. <br>
+</p>
+
+<hr size="3" align="left">
+
+<p><a NAME="CObj_Cal::ChangeModeSelection"></a><font size="+2">CObj_Cal::ChangeModeSelection</font>
+<br>
+<b>void&nbsp; ChangeModeSelection(long </b><i>MouseKey</i><b>, long </b><i>ModeSelect</i><b>,
+long </b><i>SelectRules</i><b>, bool </b><i>fRAZSelect</i><b> = </b>false<b>);</b> </p>
+
+<p><b>Paramètres</b> </p>
+
+<p><i>MouseKey&nbsp;&nbsp;&nbsp; </i>Indique le bouton de la souris qui est activé. </p>
+
+<p><i>ModeSelect</i>&nbsp;&nbsp;&nbsp; Spécifie l'un des 4 modes de sélections
+disponible; -1 si aucune. 
+
+<ul>
+  <li>CAL_SIMPLE : Sélection d'une seul unité calendaire</li>
+  <li>CAL_MULTIPLE : Sélection de plusieurs unités calendaire</li>
+  <li>CAL_ETENDUE : Sélection d'une seul plage calendaire</li>
+  <li>CAL_ETENDUE_JFC : Sélection de plusieurs plages calendaire</li>
+  <li><br>
+    &nbsp; <p>&nbsp; </p>
+    <p>Deux types de sélection mensuelles sont également disponibles en complément du mode
+    : </p>
+  </li>
+  <li>CAL_MOIS_CALENDAIRE : Sélection d'un mois entier, de jour à jour (par défaut).</li>
+  <li>CAL_MOIS_HEBDOMADAIRE : Sélection d'un mois selon les semaines actives ( &gt;=3jours)</li>
+</ul>
+<i>
+
+<p>SelectRules&nbsp;&nbsp;&nbsp; </i>Règles des sélections : 
+
+<ul>
+  <li>CAL_INDEPENDANTE : les deux sélections sont indépendantes. Elles ne peuvent pas se
+    superposées.</li>
+  <li>CAL_CROISEE : les deux sélections sont libres. Elles peuvent se superposées.</li>
+  <li>CAL_LEFTINTORIGHT : la sélection click gauche n'est possible qu'à l'intérieur de la
+    sélection click droite.</li>
+  <li>CAL_RIGHTINTOLEFT : la sélection click droite n'est possible qu'à l'intérieur de la
+    sélection click gauche.</li>
+  <li>CAL_PREGNANCE :</li>
+</ul>
+
+<ul>
+  <p>&nbsp; </p>
+  <table BORDER="1" COLS="3" WIDTH="41%">
+    <tr ALIGN="CENTER">
+      <td><b>Etat</b></td>
+      <td><b>Clique</b></td>
+      <td><b>Selection</b></td>
+    </tr>
+    <tr>
+      <td>Sans sélection</td>
+      <td>Gauche</td>
+      <td>Sélection</td>
+    </tr>
+    <tr>
+      <td>Sélection</td>
+      <td>Gauche</td>
+      <td>Sans sélection</td>
+    </tr>
+    <tr>
+      <td>Sur-sélection</td>
+      <td>Gauche</td>
+      <td>Sélection</td>
+    </tr>
+    <tr>
+      <td>Sans sélection</td>
+      <td>Droit</td>
+      <td>Sur-sélection</td>
+    </tr>
+    <tr>
+      <td>Sélection</td>
+      <td>Droit</td>
+      <td>Sur-sélection</td>
+    </tr>
+    <tr>
+      <td>Sur-sélection</td>
+      <td>Droit</td>
+      <td>Sélection</td>
+    </tr>
+  </table>
+</ul>
+
+<ul>
+  <li>CAL_OPPOSITION :</li>
+</ul>
+
+<ul>
+  <p>&nbsp; </p>
+  <table BORDER="1" COLS="3" WIDTH="41%">
+    <tr ALIGN="CENTER">
+      <td><b>Etat</b></td>
+      <td><b>Clique</b></td>
+      <td><b>Selection</b></td>
+    </tr>
+    <tr>
+      <td>Sans sélection</td>
+      <td>Gauche</td>
+      <td>Sélection</td>
+    </tr>
+    <tr>
+      <td>Sélection</td>
+      <td>Gauche</td>
+      <td>Sans sélection</td>
+    </tr>
+    <tr>
+      <td>Sur-sélection</td>
+      <td>Gauche</td>
+      <td>Sélection</td>
+    </tr>
+    <tr>
+      <td>Sans sélection</td>
+      <td>Droit</td>
+      <td>Sur-sélection</td>
+    </tr>
+    <tr>
+      <td>Sélection</td>
+      <td>Droit</td>
+      <td>Sur-sélection</td>
+    </tr>
+    <tr>
+      <td>Sur-sélection</td>
+      <td>Droit</td>
+      <td>Sans sélection</td>
+    </tr>
+  </table>
+</ul>
+<i>
+
+<p>fRAZSelect&nbsp;&nbsp;&nbsp; </i>Efface la sélection (1 ou true); sinon rien (0 ou
+false). </p>
+
+<p><b>Remarques</b> </p>
+
+<p>Le style PIGE ne permet aucune modification du style de la sélection après la
+première initialisation. </p>
+
+<hr size="3" align="left">
+
+<p><a NAME="Séquence d'initialisation"></a><font size="+2">Séquence d'initialisation</font>
+</p>
+
+<p>Voici quelques exemples concernant l'initialisation du calendrier. <br>
+L'objet static <i>m_ObjCal</i> à été déclaré du type <i>CObj_Cal</i>; <br>
+Le scrollbar horizontal est <i>m_scrollbar</i>; </p>
+
+<p><b>Exemple 1</b> <br>
+&nbsp; </p>
+
+<table BORDER="1" WIDTH="100%">
+  <tr>
+    <td><i>Année - Mois - Semaine - Jour</i> <br>
+    <i>1000 jours</i> <br>
+    <i>Pas de sélection</i> <br>
+    <i>Fond Blanc&nbsp;</i> <hr size="3" align="left">
+    <p>COleDateTime date=COleDateTime::GetCurrentTime();&nbsp; <br>
+    <i>/Init du calendrier</i> <br>
+    <i>m_ObjCal.Initialise(STYLE_CAL_DEFAUT, date, 1000, &amp;m_scrollbar, NULL, 0, NULL);</i>
+    <br>
+    <i>m_ObjCal.InitialiseMois(0, FORMAT_CAL_MOISANNEE, RGB(255,255,255), NULL, 0, 16, <b>0</b>,
+    <b>1</b>);</i> <br>
+    <i>m_ObjCal.InitialiseSemaine(0, FORMAT_CAL_JOURDEBUTSEM, RGB(255,255,255), NULL, 0, 16, <b>0</b>,
+    <b>2</b>);</i> <br>
+    <i>m_ObjCal.InitialiseAnnee(FORMAT_CAL_STANDARD,RGB(255,255,255),NULL,0,16,<b>0</b>,<b>0</b>);</i>
+    <br>
+    <i>m_ObjCal.InitialiseJour(FORMAT_CAL_JOUR, RGB(255,255,255), NULL, 0, 12, <b>3</b>, <b>3</b>);</i></td>
+  </tr>
+</table>
+
+<p>L'ordre dans lequel apparait les fonctions <i>InitialiseAnnee, InitialiseMois </i>et<i>
+InitialiseSemaine</i> importe peu, du moment que <i>InitialiseJour</i> ferme la marche.
+Car l'unité calendaire la plus petite ici est bien celle des jours. Donc elle est
+utilisée comme référence pour les autres niveaux année, mois et semaine. </p>
+
+<p><b>Exemple 2</b> <br>
+&nbsp; </p>
+
+<table BORDER="1" WIDTH="100%">
+  <tr>
+    <td><i>Jour</i> <i>- Semaine - Mois</i> <br>
+    <i>15 jours</i> <br>
+    <i>ETENDUE_JFC</i> <br>
+    <i>Niveau Jour et Semaine séletionnables</i> <br>
+    <i>Fond gris pour les mois, blanc pour les semaines, vert pour les jours&nbsp;</i> <hr
+    size="3" align="left">
+    <p>COleDateTime date=COleDateTime::GetCurrentTime();&nbsp; <br>
+    <i>/Init du calendrier</i> <br>
+    <i>m_ObjCal.Initialise(STYLE_CAL_DEFAUT,date, 15, &amp;m_scrollbar, NULL, 0, NULL);</i> <br>
+    <i>m_ObjCal.InitialiseSeletion(</i>CAL_ETENDUE_JFC, CAL_LEVEL_JOUR|CAL_LEVEL_SEMAINE,
+    RGB(0,255,0)<i>);</i> <br>
+    <i>m_ObjCal.InitialiseSemaine(0, FORMAT_CAL_STANDARD, RGB(255,255,255), NULL, 0, 16, <b>0</b>,
+    1);</i> <br>
+    <i>m_ObjCal.InitialiseMois(0, FORMAT_CAL_MOISANNEE, RGB(192,192,192), NULL, 0 16, <b>0</b>,
+    2);</i> <br>
+    <i>m_ObjCal.InitialiseJour(FORMAT_CAL_JOURSEM, RGB(0, 255, 0), NULL, 0, 50, <b>15</b>, 0);</i></td>
+  </tr>
+</table>
+
+<p><b>Exemple 3</b> </p>
+
+<p>Ceci est l'initialisation du calendrier PIGE. Le style PIGE possèdent des paramètres
+pas défauts. <br>
+&nbsp; </p>
+
+<table BORDER="1" WIDTH="100%">
+  <tr>
+    <td><i>Mois - Semaine - Jour</i> <br>
+    <i>364 jours</i> <br>
+    <i>Fond blanc</i> <br>
+    <i>Style PIGE :</i> <br>
+    <i>- trait des jours en gris;</i> <br>
+    <i>- Sélection click gauche et affichage sur les 3 niveaux;</i> <br>
+    <i>- Sélection Etendu_jfc pour les deux sélections;</i> <br>
+    <i>- Sursélection click droit dans la sélection;</i> <br>
+    <i>Couleur verte pour la sélection, jaune pour la sursélection;&nbsp;</i> <hr size="3"
+    align="left">
+    <p><i>//Init du calendrier</i> <br>
+    <i>m_ObjCal.Initialise(STYLE_CAL_PIGE,date,1000,&amp;m_HScroll);</i> <br>
+    <i>m_ObjCal.InitialiseMois(0,FORMAT_CAL_MOISABR,RGB(255,255,255),NULL,NULL,18,<b>0</b>,<b>0</b>);</i>
+    <br>
+    <i>m_ObjCal.InitialiseSemaine(0,FORMAT_CAL_JOURDEBUTSEM,RGB(255,255,255),NULL,NULL,17,<b>0</b>,<b>1</b>);</i>
+    <br>
+    <i>m_ObjCal.InitialiseJour(FORMAT_CAL_STANDARD,RGB(255,255,255),NULL,NULL,17,<b>5</b>,<b>2</b>);</i></td>
+  </tr>
+</table>
+
+<p><b>Exemple 4</b> </p>
+
+<p>Cette initialisation permet d'avoir le même fonctionnement et les mêmes paramètres
+que celui du style PIGE. <br>
+&nbsp; </p>
+
+<table BORDER="1" WIDTH="100%">
+  <tr>
+    <td><i>Mois - Semaine - Jour</i> <br>
+    <i>364 jours</i> <br>
+    <i>Fond blanc</i> <br>
+    <i>trait des jours en gris;</i> <br>
+    <i>Sélection click gauche et affichage sur les 3 niveaux;</i> <br>
+    <i>Sélection Etendu_jfc pour les deux sélections;</i> <br>
+    <i>Sursélection click droit dans la sélection;</i> <br>
+    <i>Couleur verte pour la sélection, jaune pour la sursélection;&nbsp;</i> <hr size="3"
+    align="left">
+    <p>COleDateTime date=COleDateTime::GetCurrentTime();&nbsp; <br>
+    <i>SInitSelection LeftSelection;</i> <br>
+    <i>LeftSelection.LevelSelect=LEVEL_CAL_ANNEE|LEVEL_CAL_MOIS|LEVEL_CAL_SEMAINE|LEVEL_CAL_JOUR;</i>
+    <br>
+    <i>LeftSelection.ColorSel=RGB(0, 255, 0);</i> <br>
+    <i>LeftSelection.TypeSelect=0;</i> <br>
+    <i>LeftSelection.ModeSel=CAL_ETENDUE_JFC;</i> <br>
+    <i>LeftSelection.ShowRect=1;</i> </p>
+    <p><i>SInitSelection RightSelection;</i> <br>
+    <i>RightSelection.LevelSelect=LEVEL_CAL_ANNEE|LEVEL_CAL_MOIS|LEVEL_CAL_SEMAINE|LEVEL_CAL_JOUR;</i>
+    <br>
+    <i>RightSelection.ColorSel=RGB(0, 255, 255);</i> <br>
+    <i>RightSelection.TypeSelect=1;</i> <br>
+    <i>RightSelection.ModeSel=CAL_ETENDUE_JFC;</i> <br>
+    <i>RightSelection.ShowRect=1;</i> </p>
+    <p><i>//Init du calendrier</i> <br>
+    <i>m_ObjCal.Initialise(STYLE_CAL_DEFAUT|OPTION_CAL_SPLITGRAY|OPTION_CAL_BIGTABLIER, date,
+    364, &amp;m_scrollbar, NULL, 0, &amp;LeftSelection, &amp;RightSelection, CAL_CROISEE);</i>
+    <br>
+    <i>m_ObjCal.InitialiseAnnee(FORMAT_CAL_STANDARD,RGB(255,255,255),NULL,NULL,17,<b>0</b>,<b>0</b>);</i>
+    <br>
+    <i>m_ObjCal.InitialiseMois(0, FORMAT_CAL_MOISANNEE, RGB(255,255,255), NULL, NULL, 16, <b>0</b>,
+    <b>1</b>);</i> <br>
+    <i>m_ObjCal.InitialiseSemaine(0, FORMAT_CAL_JOURDEBUTSEM, RGB(255,255,255), NULL, NULL,
+    16, <b>0</b>, <b>2</b>);</i> <br>
+    <i>m_ObjCal.InitialiseJour(FORMAT_CAL_JOUR, RGB(255,255,255), NULL, 0, 12, <b>314/52</b>, <b>3</b>);</i></td>
+  </tr>
+</table>
+
+<p><b>Exemple 5</b> <br>
+&nbsp; </p>
+
+<table BORDER="1" WIDTH="100%">
+  <tr>
+    <td WIDTH="100%"><i>Mois - Semaine - Jour</i> <br>
+    <i>364 jours</i> <br>
+    <i>Fond Blanc&nbsp;</i> <br>
+    <i>Dessin dirigé vers l'imprimante&nbsp;</i> <br>
+    <i>Font Times new roman</i> <hr>
+    <p><i>COleDateTime date=COleDateTime::GetCurrentTime();</i> <br>
+    <i>m_ObjCal.Initialise(OPTION_CAL_PRINTER|STYLE_CAL_DEFAUT,date,364,NULL,NULL,0,&amp;R);</i>
+    <br>
+    <i>m_ObjCal.InitialiseMois(0, FORMAT_CAL_MOISANNEE, RGB(255,255,255), NULL,0,m_HLig,0,0);</i>
+    <br>
+    <i>m_ObjCal.InitialiseSemaine(0, FORMAT_CAL_STANDARD, RGB(255,255,255),
+    NULL,0,m_HLig,0,1);</i> <br>
+    <i>m_ObjCal.InitialiseJour(FORMAT_CAL_JOUR, RGB(255,255,255), NULL, 0, m_HLig, m_LCol*2,
+    2);</i> <br>
+    <i>m_ObjCal.PaintToPrinter(pDC, &amp;m_Font[FONT_TIME8]);</i></td>
+  </tr>
+</table>
+
+<hr>
+
+<p><font size="-1">Création&nbsp; : Vendredi 15 mai 1998</font> <br>
+<font size="-1">Dernière modification : Lundi 24 Juillet 2000</font> <br>
+<font size="-1">VLF</font> </p>
+</body>
+</html>

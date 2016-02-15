@@ -1,0 +1,394 @@
+		MODIFICATION DES FICHIERS DECRIVANT L'ARBORESCENCE SUITE AUX INFOS EDI
+		======================================================================
+
+1/ FICHIER ANNONCEUR
+====================
+		
+	Au niveau Annonceur le seul fichier concerné est le fichier produit.arb qui se trouve dans chaque
+	répertoire année de la nomenclature		
+
+	Rappel arborescence Nomenclature
+	================================
+
+				      
+	C:\....\Nomenclature\Secteur.arb
+	  		    \Acces.lck
+	  		    \Annee.txt	 
+	  		    \2000\Annonceur\ (avec tous les ss-répertoires)
+	  			  produit.arb
+	  			  marque.arb
+			    \1999\Annonceur\ (avec tous les ss-répertoires)
+	  			  produit.arb
+	  			  marque.arb
+	  		    \etc....
+	
+	Les fichiers communs 
+	====================
+	Acces.lck   : fichier de verrouillage temporaire lors de création ou modification de la base
+	Annee.txt   : liste des différentes années existantes au sein de la nomenclature  		    
+	Secteur.arb : fichier des familles/secteurs (pour définir un produit)
+	
+	Les fichiers annuels
+	====================
+	Répertoire Annonceur : contient toutes l'arborescence Groupe/Annonceur/Produit d'une année
+	produit.arb          : descriptif de cette arborescence 
+	marque.arb	     : liste des marques liées à cette nomenclature 	
+	  		      			     			  			    	
+	Remarques
+	=========
+	Désormais les annonceurs pourront être lié à un secteur/famille
+	De plus ils ne sont plus forcément lié à un groupe (inclure date exercice)
+	On aura donc au total 3 possibilités pour les annonceurs
+		Annonceur affilié à un groupe et ayant des produits
+		Annonceur non affilié à un groupe et ayant des produits
+		Annonceur isolé (ni groupe ni produit)
+	
+
+
+	Modification Fichier Produit.arb (après ajout des infos EDI Annonceur)
+	======================================================================
+
+	En fait les infos supplémentaires se trouvent essentiellement au niveau de l'annonceur,
+	de la ligne 9a à 9n, en fait 14 nouvelles lignes d'infos pour chaque annonceur)
+	Les infos obligatoires EDI sont spécifiées par (*)
+	
+	ATTENTION :
+	==========
+	Afin de récupérer les précédentes infos arborecence Nomencalture, il va de soi que l'on ait obligé de
+	faire une moulinette afin d'adhérer à ce nouveau format de fichier
+
+	Ligne 1 : #NoVersion   suivi de commentaire 
+	Ligne 2 : Titre Arborescence Produit = #ANNONCEUR
+	
+	Niveau Groupe
+	Ligne 3 : Nb Groupe Produit
+	+ Lignes infos groupe (7 lignes composées de 	1 / Nom répertoire Groupe Produit
+							2 / Nom Alias Groupe 
+							3 / Code Groupe
+							4 / Date exercice (format dd/mm/yyyy)
+							5 / Type 6 pour Groupe
+							6 / non utilisée
+							7 / non utilisée
+							8 / Nombre annonceurs
+							
+	Niveau annonceur (10 lignes + 14)		1 / Nom répertoire Annonceur
+        (soit 23 lignes au total)  			2 / Nom Alias Annonceur
+							3 / Code Annonceur
+							4 / Date Exercice Annonceur non lié groupe (dd/mm/yyyy)
+							5 / Famille Annonceur
+							6 / Secteur Annonceur
+							7 / Type 5 pour Annonceur
+							8 / non utilisée
+							9 / non utilisée
+							9a/ (*) Type du tiers EDI (ici toujours BY pour Annonceur)
+							9b/ (*) Code du tiers EDI (en France Code SIRET ou International)
+							9c/ (*) Type de code tiers > toujours 107
+							9d/ (*) Nom du tiers(= Nom annonceur / info redondante)
+							9e/ Adresse ligne 1 de l'annonceur
+							9f/ Adresse ligne 2 de l'annonceur
+							9g/ Code postal de l'annonceur
+							9h/ Ville de l'annonceur
+							9i/ Code pays de l'annonceur
+							9j/ N° téléphone de l'annonceur
+							9k/ N° de fax de l'annonceur
+							9l/ (*) Nom contact interlocuteur pour cet annonceur
+							9m/ (*) Prénom contact interlocuteur
+							9n/ (*) Adresse email contact interlocuteur
+							10/ Nombre de produits
+							
+	Niveau Produit	(9 lignes)			1 / Nom répertoire Produit
+							2 / Nom Alias Produit
+							3 / Code Produit
+							4 / Marque du produit		
+							5 / Famille du produit
+							6 / Secteur du produit
+							7 / Type 4 pour produit
+							8 / non utilisée
+							9 / non utilisée
+	Fin de chaque produit #0
+							
+							
+							
+	EXEMPLES DE FCIHIERS :
+	
+	// Description arborescence Groupe // 
+	#ANNONCEUR
+	#2
+	Groupe1
+	PARFUMERIE
+	0001
+	01/01/2000
+	6
+	xxx
+	xxx
+	#1
+	Annonceur2
+	CHANEL
+	00010002
+	xxx
+	xxx
+	xxx
+	5
+	xxx
+	xxx
+	BY
+	392114831 00010
+	107
+	CHANEL
+	30 rue St Honoré
+	xxx
+	75008
+	PARIS
+	FRA
+	01 30 10 10 10
+	01 30 10 11 11
+	Mr DE LAVOISIERE
+	Henri
+	HenriDelavoisiere@Chanel.fr
+	#2
+	Produit1
+	Coco
+	000100020001
+	Marque1
+	Famille1
+	Secteur1
+	4
+	xxx
+	xxx
+	#0
+	Produit2
+	Christalle
+	000100020002
+	Marque2
+	Famille1
+	Secteur1
+	4
+	xxx
+	xxx
+	#0
+	Groupe2
+	etc.......................................
+
+	
+	Fichier Secteur.arb
+	===================
+
+	Ligne 1 : commentaire
+	Ligne 2 : Titre Arborescence Secteur = #SECTEUR
+	
+	Niveau Famille
+	Ligne 3 : Nb Famille
+	+ Lignes infos groupe (8 lignes composées de 	1 / Nom Famille
+							2 / Nb secteur pour cette famille
+							
+	Niveau Secteur
+							1 / Nom Secteur
+	
+	Exemple:							
+	// Descriptif arborescence SECTEUR
+	#SECTEUR
+	#2
+	Famille1
+	#2
+	Secteur1
+	Secteur2
+	#0
+	Famille2
+	#3
+	Secteur1bis
+	Secteur2bis
+	Secteur3bis
+	#0
+
+	Fichier Marque.arb
+	==================
+
+	Ligne 1 : commentaire
+	Ligne 2 : Titre Arborescence Marque = MARQUE
+	Ligne 3 : Nb marques
+	suivi des nb marques
+	
+	Derniere ligne #0 : marque la fin des marques
+	
+	Exemple :
+	// Description arborescence produit //
+	MARQUE
+	#2
+	Marque1ter
+	Marque2
+	#0
+
+2/ FICHIERS REGIE ET CENTRALE D'ACHAT
+=====================================
+
+	Seule question que je me pose, ces fichiers sont-ils indépendants des années ou comme le fichier
+	des annonceurs on fait 1 fichier régie et 1 fichier centrale d'achat par année ????
+	Cela ne gêne en rien pour le moment la description de ces fichiers
+	(*) les informations obligatoires (les mêmes que pour les annonceurs)
+	
+	De la même façon que pour les fichiers produit.arb, une ligne avec l'info "xxx" indique que
+	c'est une ligne sans info
+	
+	A/ FICHIER REGIE
+	================
+	
+	Nom >> Regie.arb
+	
+	Ligne 1 : commentaire
+	Ligne 2 : Titre Arborescence Régie = #REGIE
+	Ligne 3 : Nombre de régies (#Nb)
+	
+	+ Lignes infos régie composés de 12 lignes
+		1 / (*) Type du tiers EDI (ici toujours DS pour Régie)
+		2 / (*) Code du tiers EDI (en France Code SIRET ou International)
+		3 / (*) Type de code tiers > toujours 107
+		4 / (*) Nom de la régie
+		5 / Adresse ligne 1 de la régie
+		6 / Adresse ligne 2 de la régie
+		7 / Code postal de la régie
+		8 / Ville de la régie
+		9 / Code pays de la régie
+		10/ N° téléphone de la régie
+		11/ N° de fax de la régie
+		12/ Nombre de blocs contact interlocuteurs pour cette régie
+		
+			Chaque bloc interlocuteur composé de 3 lignes
+					l/ (*) Nom contact interlocuteur pour cette régie
+					2/ (*) Prénom contact interlocuteur
+					3/ (*) Adresse email contact interlocuteur			
+			Fin de chaque interlocuteur par #0
+		
+			
+	Exemple fichier Régie
+	=====================			
+	
+	// Descriptif des régies 
+	#REGIE
+	#2
+	DS
+	392114831 00010
+	107
+	RMC
+	30 boulevard Vladivostok
+	xxx
+	75001
+	PARIS
+	FRA
+	01 30 30 30 30
+	01 30 30 30 31
+	#2
+	Mr AIMARD
+	Jean
+	JeanAimardFlamand@Rmc.fr
+	#0
+	Mme MIRAIRIN
+	Mylène
+	MyleneMiraisin@Rmc.fr
+	#0
+	DS
+	492111234 00002
+	107
+	Chérie FM
+	1 rue anatole France
+	Batiment C
+	75018
+	PARIS
+	FRA
+	01 45 15 15 00
+	01 45 15 15 10
+	#1
+	Mr YALETELEFONQUISON
+	Gaston
+	GastonYaLeTel@Cheriefm.fr
+	#0
+	
+		
+	B/ FICHIER CENTRALE D'ACHAT
+	===========================
+	
+	Nom >> CtAchat.arb
+	
+	Ligne 1 : commentaire
+	Ligne 2 : Titre Arborescence Régie = #CENTRALE ACHAT
+	
+	(Ligne 3 : Nombre de régies (#Nb)
+	
+	+ Lignes infos régie composés de 12 lignes
+		1 / (*) Type du tiers EDI (ici toujours PO pour Centrale d'achat)
+		2 / (*) Code du tiers EDI (en France Code SIRET ou International)
+		3 / (*) Type de code tiers > toujours 107
+		4 / (*) Nom de la Centrale d'achat
+		5 / Adresse ligne 1 de la Centrale d'achat
+		6 / Adresse ligne 2 de la Centrale d'achat
+		7 / Code postal de la Centrale d'achat
+		8 / Ville de la Centrale d'achat
+		9 / Code pays de la Centrale d'achat
+		10/ N° téléphone de la Centrale d'achat
+		11/ N° de fax de la Centrale d'achat
+		12/ Nombre de blocs contact interlocuteurs pour cette centrale d'achat
+		
+			Chaque bloc interlocuteur composé de 3 lignes
+					l/ (*) Nom contact interlocuteur pour cette centrale d'achat
+					2/ (*) Prénom contact interlocuteur
+					3/ (*) Adresse email contact interlocuteur			
+			Fin de chaque interlocuteur par #0
+			
+	Exemple fichier Centrale Achat
+	==============================			
+	
+	// Descriptif des centrales d'achat
+	#CENTRALE ACHAT
+	#3
+	PO
+	392114831 00010
+	107
+	CENTRALE ACHAT VOITURES
+	2 rue andré citroen
+	xxx
+	75015
+	PARIS
+	FRA
+	01 45 45 45 45
+	01 45 45 45 50
+	#1
+	Mr Citroen
+	Andre
+	ACitroen@Citroen.fr
+	#0
+	PO
+	44444 31 9999
+	107
+	CENTRALE ACHAT PROMODES
+	10 avenue royale
+	Bâtiment B
+	78000
+	VERSAILLES
+	FRA
+	01 34 50 50 50
+	01 34 50 50 51
+	#2
+	Mr SEIZE
+	Louis
+	LouisSeize@Promodes.fr
+	#0
+	Mme POMPADOUR
+	Germaine
+	GPompadour@Promodes.fr
+	#0
+	PO
+	99999 99 9999
+	107
+	CENTRALE ACHAT VOYAGES
+	102 rue Argentine
+	xxx
+	75010
+	PARIS
+	FRA
+	01 41 00 00 00
+	01 41 00 00 01
+	#1
+	Mr TRIGANO
+	Philippe dit Fifi
+	FifiTrigano@Voyages.fr
+	#0
+				

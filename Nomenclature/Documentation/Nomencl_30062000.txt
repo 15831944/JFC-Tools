@@ -1,0 +1,148 @@
+				STRUCTURE DES FICHIERS DECRIVANT L'ARBORESCENCE
+				===============================================
+
+Modification Juin 2000
+======================
+Désormais les annonceurs pourront être lié à un secteur/famille
+De plus ils ne sont plus forcément lié à un groupe (inclure date exercice)
+Donc 3 lignes supplémentaires (voir ***)
+
+
+Fichier Produit.arb
+===================
+
+	Ligne 1 : commentaire
+	Ligne 2 : Titre Arborescence Produit = #ANNONCEUR
+	
+	Niveau Groupe
+	Ligne 3 : Nb Groupe Produit
+	+ Lignes infos groupe (5 lignes composées de 	1 / Nom répertoire Groupe Produit
+							2 / Nom Alias Groupe 
+							3 / Code Groupe
+							7 / Date exercice (format dd/mm/yyyy)
+							8 / Nombre annonceurs
+							
+	Niveau annonceur (4 lignes)			1 / Nom répertoire Annonceur
+							2 / Nom Alias Annonceur
+							3 / Code Annonceur
+							4 / Date Exercice Annonceur non lié groupe (dd/mm/yyyy)
+							5 / Famille Annonceur
+							6 / Secteur Annonceur
+							8 / Nombre de produits
+							
+	Niveau Produit	(6 lignes)			1 / Nom répertoire Produit
+							2 / Nom Alias Produit
+							3 / Code Produit
+							4 / Marque du produit		
+							5 / Famille du produit
+							6 / Secteur du produit
+	Fin de chaque produit #0
+							
+							
+							
+	Exemple :
+	// Description arborescence Groupe // 
+	#ANNONCEUR
+	#2
+	Groupe1
+	PARFUMERIE
+	0001
+	01/01/2000
+	#1
+	Annonceur2
+	CHANEL
+	00010002
+	#2
+	Produit1
+	Coco
+	000100020001
+	Marque1
+	Famille1
+	Secteur1
+	#0
+	Produit2
+	Christalle
+	000100020002
+	Marque2
+	Famille1
+	Secteur1
+	#0
+	Groupe2
+	etc.......................................
+
+	
+Fichier Secteur.arb
+===================
+
+	Ligne 1 : commentaire
+	Ligne 2 : Titre Arborescence Secteur = #SECTEUR
+	
+	Niveau Famille
+	Ligne 3 : Nb Famille
+	+ Lignes infos groupe (8 lignes composées de 	1 / Nom Famille
+							2 / Nb secteur pour cette famille
+							
+	Niveau Secteur
+							1 / Nom Secteur
+	
+	Exemple:							
+	// Descriptif arborescence SECTEUR
+	#SECTEUR
+	#2
+	Famille1
+	#2
+	Secteur1
+	Secteur2
+	#0
+	Famille2
+	#3
+	Secteur1bis
+	Secteur2bis
+	Secteur3bis
+	#0
+
+Fichier Marque.arb
+==================
+
+	Ligne 1 : commentaire
+	Ligne 2 : Titre Arborescence Marque = MARQUE
+	Ligne 3 : Nb marques
+	suivi des nb marques
+	
+	Derniere ligne #0 : marque la fin des marques
+	
+	Exemple :
+	// Description arborescence produit //
+	MARQUE
+	#2
+	Marque1ter
+	Marque2
+	#0
+
+					FICHIER ACCES.LOG
+					=================
+				
+Description
+===========
+	Servira uniquement à pister les différentes nouvelles créations ou destructions (groupes,annonceurs,
+	produits,secteurs) au niveau de l'administrateur de la nomenclature
+	Egalement à gérer au niveau de la consolidation lors de la création des campagnes (on indiquera
+	tout simplement la date et le nom de la nouvelle campagne créée)				
+	
+	Pour chacune de des modifications on indiquera :
+	le nom de l'intervenant sur 10 car maxi : ADMIN pour administrateur ou NOM UTILISATEUR
+	la date format dd/mm/yyyy + hh:mm suivi de la rubrique et de l'intitulé de la modification
+	 
+	exemple : 
+	   ADMIN      22/05/2000 12:50 Groupe  : création TELECOM
+	   ADMIN      22/05/2000 13:15 Produit : création NOKIA 6110
+	   ADMIN      22/05/2000 13:16 Produit : suppression ERIKSON T10
+	   MARIANNE   22/05/2000 15:10 Campagne: création DANONE
+	   etc.....
+	   
+	La suppression de ce fichier sera à la charge de l'administrateur
+	
+	Eventuellemnt un message pourra apparaitre en début de lancement nomenclature si ce fichier
+	dépasse une certaine taille	   
+	    
+	

@@ -1,0 +1,101 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="campagne">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" name="format">
+          <xs:complexType>
+            <xs:attribute name="duration" type="xs:unsignedByte" use="required" />
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="groupe">
+          <xs:complexType>
+            <xs:attribute name="label" type="xs:string" use="required" />
+            <xs:attribute name="color" type="xs:string" use="required" />
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="vague">
+          <xs:complexType>
+            <xs:attribute name="label" type="xs:string" use="required" />
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="roulement">
+          <xs:complexType>
+            <xs:attribute name="label" type="xs:string" use="required" />
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="version">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="periode">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element maxOccurs="unbounded" name="station">
+                      <xs:complexType>
+                        <xs:sequence minOccurs="0">
+                          <xs:element maxOccurs="unbounded" name="remise">
+                            <xs:complexType>
+                              <xs:attribute name="code" type="xs:string" use="required" />
+                              <xs:attribute name="value" type="xs:string" use="required" />
+                              <xs:attribute name="rank" type="xs:unsignedByte" use="required" />
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                        <xs:attribute name="code" type="xs:unsignedByte" use="required" />
+                        <xs:attribute name="codeedi" type="xs:string" use="required" />
+                        <xs:attribute name="tarifDate" type="xs:string" use="required" />
+                        <xs:attribute name="auto" type="xs:unsignedByte" use="required" />
+                        <xs:attribute name="id" type="xs:unsignedShort" use="required" />
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                  <xs:attribute name="label" type="xs:string" use="required" />
+                  <xs:attribute name="debut" type="xs:unsignedInt" use="required" />
+                  <xs:attribute name="fin" type="xs:unsignedInt" use="required" />
+                </xs:complexType>
+              </xs:element>
+              <xs:element maxOccurs="unbounded" name="spot">
+                <xs:complexType>
+                  <xs:sequence minOccurs="0">
+                    <xs:element maxOccurs="unbounded" name="modulation">
+                      <xs:complexType>
+                        <xs:attribute name="code" type="xs:string" use="required" />
+                        <xs:attribute name="codeedi" type="xs:string" use="required" />
+                        <xs:attribute name="value" type="xs:string" use="required" />
+                        <xs:attribute name="rank" type="xs:unsignedByte" use="required" />
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                  <xs:attribute name="station" type="xs:unsignedByte" use="required" />
+                  <xs:attribute name="station_EDI" type="xs:string" use="required" />
+                  <xs:attribute name="duration" type="xs:unsignedByte" use="required" />
+                  <xs:attribute name="codeecran" type="xs:unsignedShort" use="required" />
+                  <xs:attribute name="date" type="xs:unsignedInt" use="required" />
+                  <xs:attribute name="startuv" type="xs:unsignedShort" use="required" />
+                  <xs:attribute name="enduv" type="xs:unsignedShort" use="required" />
+                  <xs:attribute name="groupe" type="xs:string" use="required" />
+                  <xs:attribute name="vague" type="xs:string" use="required" />
+                  <xs:attribute name="roulement" type="xs:string" use="required" />
+                  <xs:attribute name="tarifbrutforce" type="xs:decimal" use="required" />
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+            <xs:attribute name="label" type="xs:string" use="required" />
+            <xs:attribute name="etude" type="xs:string" use="required" />
+            <xs:attribute name="proba" type="xs:string" use="required" />
+            <xs:attribute name="cible" type="xs:string" use="required" />
+            <xs:attribute name="creationDate" type="xs:unsignedInt" use="required" />
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+      <xs:attribute name="name" type="xs:string" use="required" />
+      <xs:attribute name="annonceur" type="xs:string" use="required" />
+      <xs:attribute name="marque" type="xs:string" use="required" />
+      <xs:attribute name="produit" type="xs:string" use="required" />
+      <xs:attribute name="start" type="xs:unsignedInt" use="required" />
+      <xs:attribute name="end" type="xs:unsignedInt" use="required" />
+      <xs:attribute name="creator" type="xs:string" use="required" />
+      <xs:attribute name="creationdate" type="xs:unsignedInt" use="required" />
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

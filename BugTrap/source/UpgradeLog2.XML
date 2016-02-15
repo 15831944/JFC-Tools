@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type='text/xsl' href='_UpgradeReport_Files/UpgradeReport.xslt'?><UpgradeLog>
+<Properties><Property Name="Solution" Value="BugTrap">
+</Property><Property Name="Solution File" Value="E:\BugTrap-master\source\BugTrap.sln">
+</Property><Property Name="Date" Value="vendredi 22 mars 2013">
+</Property><Property Name="Time" Value="12:42:34">
+</Property><Property Name="Log Number" Value="2">
+</Property></Properties><Event ErrorLevel="0" Project="zlib" Source="..\zlib\zlib.vcproj" Description="Converting project file 'E:\BugTrap-master\zlib\zlib.vcproj'.">
+</Event><Event ErrorLevel="2" Project="zlib" Source="..\zlib\zlib.vcproj" Description="File 'E:\BugTrap-master\zlib\zlib.vcproj' was not found.">
+</Event><Event ErrorLevel="2" Project="zlib" Source="..\zlib\zlib.vcproj" Description="Project upgrade failed.">
+</Event><Event ErrorLevel="3" Project="zlib" Source="..\zlib\zlib.vcproj" Description="Not Converted">
+</Event></UpgradeLog>

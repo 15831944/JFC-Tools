@@ -1,0 +1,848 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta name="GENERATOR" content="Mozilla/4.5 [fr] (Win98; I) [Netscape]">
+   <title>Le Fret Language fretscrip Fret administrator</title>
+</head>
+<body>
+<img SRC="logobw1.jpg" ALT="logobw1.jpg (15333 octets)" height=78 width=50 align=RIGHT>
+<br>
+<hr>
+<center><table BORDER CELLPADDING=5 >
+<tr>
+<td>
+<center><font size=+3>Le Data Fret JFC</font></center>
+</td>
+</tr>
+</table></center>
+<a href="#Présentation">Pr&eacute;sentation</a>
+<br><a href="#Description">Description</a>
+<br>&nbsp;&nbsp;&nbsp; <a href="#Les tubes disponibles sur le serveur DATA FRET">Les
+tubes</a>
+<br>&nbsp;&nbsp;&nbsp; <a href="#Les fichiers disposés dans chaque wagon">Les
+fichiers dispos&eacute;s dans chaque wagon</a>
+<br>&nbsp;&nbsp;&nbsp; <a href="#Ce qui se cache sous l’icône : (fichier .sca)(le second est à utiliser en automatique)">Les
+fichiers scripts SCA</a>
+<br>&nbsp;&nbsp;&nbsp; <a href="#Dans le répertoire de travail">Les fichiers
+de configuration DAT</a>
+<br>&nbsp;&nbsp;&nbsp; <a href="#Ce que l’on peut trouver sur le répertoire partagé (sharedir.dat) ; P sont ceux du Pilote">Les
+r&eacute;pertoires partag&eacute;s</a>
+<br><a href="#Schéma de principe">Sch&eacute;ma de principe</a>
+<br><a href="language_fretscrip.htm">Le language FretScript</a>
+<br>&nbsp;&nbsp;&nbsp; <a href="language_fretscrip.htm#Liste des commandes">Liste
+des commandes</a>
+<br>&nbsp;&nbsp;&nbsp; <a href="language_fretscrip.htm#Exemple de script : les tarifs">Exemple
+de script : les tarifs</a>
+<br><a href="fret_administrator.htm">L'outil Fret Administrator</a>
+<br>&nbsp;&nbsp;&nbsp; <a href="#Présentation fretadm">Pr&eacute;sentation</a>
+<br>&nbsp;&nbsp;&nbsp; <a href="#Fonctionnement fretadm">Fonctionnement</a>
+<br>&nbsp;&nbsp;&nbsp; <a href="#L'arborescence DataFret fretadm">Arborescence
+DataFret</a>
+<br>&nbsp;&nbsp;&nbsp; <a href="#Description des éléments fretadm">Description
+des &eacute;l&eacute;ments</a>
+<br>&nbsp;&nbsp;&nbsp; <a href="#Les Menus">Les menus</a>
+<br>
+<hr>
+<center>
+<p><a href="fretwiz.htm"><img SRC="backline.jpg" ALT="backline.jpg (420 octets)" BORDER=0 height=15 width=15 align=LEFT></a><a NAME="Présentation"></a><u><font size=+1>Pr&eacute;sentation</font></u></center>
+
+<p>Le Data Fret est un dispositif permettant la mise &agrave; jour de donn&eacute;es.
+L’origine de ces fichiers est un serveur FTP qui se trouve chez JFC. La
+destination est un poste de travail ou un serveur de fichier situ&eacute;
+chez un client de JFC (voir sch&eacute;ma). La couche TCP/IP du poste en
+liaison directe avec le serveur JFC est n&eacute;cessaire au progiciel
+(winsock.dll 16 bits). Le DATA FRET est compatible avec toutes les versions
+r&eacute;centes de Windows (W3.11, W95 , NT3.51 et NT4). Les moyens du
+DATA FRET sont multiples :
+<blockquote><font face="Wingdings">&Oslash;</font> Utilisation de FTP pour
+copier des fichiers
+<br><font face="Wingdings">&Oslash;</font> Ex&eacute;cution de programmes
+de mise &agrave; jour
+<br><font face="Wingdings">&Oslash;</font> V&eacute;rification de situation
+(&eacute;tat des programmes, du disque...)</blockquote>
+L’implantation de cet outil est souple, et permet de s’adapter &agrave;
+diff&eacute;rents besoins :
+<blockquote><font face="Wingdings">&Oslash;</font> La mise &agrave; jour
+directe d’un poste (niveau1)
+<br><font face="Wingdings">&Oslash;</font> La mise &agrave; jour directe
+d’un poste pilote, ce qui permet de v&eacute;rifier sur un site la validit&eacute;
+des donn&eacute;es.
+<br><font face="Wingdings">&Oslash;</font> La mise &agrave; jour d’un poste
+de niveau 2, une fois que les donn&eacute;es ont &eacute;t&eacute; v&eacute;rifi&eacute;es
+et valid&eacute;es par le pilote.
+<br><font face="Wingdings">&Oslash;</font> La mise &agrave; jour d’un serveur
+de fichier via le poste pilote.
+<br><font face="Wingdings">&Oslash;</font> Le choix d’automatiser ou non
+certaines proc&eacute;dures (ex. : les tarifs)</blockquote>
+
+<hr align="left">
+<center>
+<p><a href="fretwiz.htm"><img SRC="backline.jpg" ALT="backline.jpg (420 octets)" BORDER=0 height=15 width=15 align=LEFT></a><a NAME="Description"></a><u><font size=+1>Description</font></u></center>
+
+<blockquote>Les donn&eacute;es Fret sont dispos&eacute;es sur le serveur
+FTP chez JFC. Elles sont organis&eacute;es selon l'arborescence suivante
+:
+<ul>
+<li>
+<b>M&eacute;dia</b></li>
+
+<ul>
+<li>
+<b>Tube</b></li>
+
+<ul>
+<li>
+<b>Wagon</b></li>
+</ul>
+</ul>
+</ul>
+Le r&eacute;pertoire <b>m&eacute;dia</b> correspond au genre des mises
+&agrave; jour. (ex : T&eacute;l&eacute;, Radio, Divers)
+<br>Le r&eacute;pertoire <b>tube</b> diff&eacute;rencie le type des mises
+&agrave; jour.&nbsp;&nbsp;&nbsp; (ex : Version, Tarif, Source, etc)
+<br>Le r&eacute;pertoire <b>wagon</b> poss&egrave;de les donn&eacute;es.&nbsp;&nbsp;&nbsp;
+(ex : p2, t2, s2)
+<center><table BORDER CELLSPACING=2 WIDTH="614" >
+<tr>
+<td VALIGN=TOP COLSPAN="5" WIDTH="100%" BGCOLOR="#008080">
+<center><a NAME="Les tubes disponibles sur le serveur DATA FRET"></a>Les
+tubes disponibles sur le serveur DATA FRET</center>
+</td>
+</tr>
+
+<tr>
+<td VALIGN=TOP WIDTH="20%">
+<center><b><font size=+0>Chemin des tubes</font></b></center>
+</td>
+
+<td VALIGN=TOP WIDTH="15%">
+<center><b>Tube</b></center>
+</td>
+
+<td VALIGN=TOP WIDTH="10%">
+<center><b><font size=+0>M&eacute;dia</font></b></center>
+</td>
+
+<td VALIGN=TOP WIDTH="37%">
+<center><b><font size=+0>Type de donn&eacute;es</font></b></center>
+</td>
+
+<td VALIGN=TOP WIDTH="23%">
+<center><b><font size=+0>Droits</font></b>
+<br><b><font size=+0>(groupe)</font></b></center>
+</td>
+</tr>
+
+<tr>
+<td VALIGN=TOP WIDTH="20%"><font size=+0>/fret/tele/fictele</font></td>
+
+<td WIDTH="100%">FicTele</td>
+
+<td ALIGN=CENTER VALIGN=TOP WIDTH="10%"><font size=+0>T&eacute;l&eacute;vision</font></td>
+
+<td VALIGN=TOP WIDTH="37%"><font size=+0>Sp&eacute;cial (tarif + M&eacute;diamat)</font></td>
+
+<td VALIGN=TOP WIDTH="20%">
+<center><font size=+0>T&eacute;l&eacute;</font></center>
+</td>
+</tr>
+
+<tr>
+<td VALIGN=TOP WIDTH="18%"><font size=+0>/fret/tele/patch</font></td>
+
+<td WIDTH="15%">Version</td>
+
+<td ALIGN=CENTER VALIGN=TOP WIDTH="20%"><font size=+0>T&eacute;l&eacute;vision</font></td>
+
+<td VALIGN=TOP WIDTH="15%"><font size=+0>Patch</font></td>
+
+<td VALIGN=TOP WIDTH="18%">
+<center><font size=+0>T&eacute;l&eacute;</font></center>
+</td>
+</tr>
+
+<tr>
+<td VALIGN=TOP WIDTH="20%"><font size=+0>/fret/tele/source</font></td>
+
+<td>Source</td>
+
+<td ALIGN=CENTER VALIGN=TOP WIDTH="15%"><font size=+0>T&eacute;l&eacute;vision</font></td>
+
+<td VALIGN=TOP WIDTH="100%"><font size=+0>Source (de%)+vague.cod</font></td>
+
+<td VALIGN=TOP WIDTH="23%">
+<center><font size=+0>T&eacute;l&eacute;</font></center>
+</td>
+</tr>
+
+<tr>
+<td VALIGN=TOP WIDTH="20%"><font size=+0>/fret/tele/pigehebd</font></td>
+
+<td WIDTH="35%">Pige hebdomadaire</td>
+
+<td ALIGN=CENTER VALIGN=TOP WIDTH="20%"><font size=+0>T&eacute;l&eacute;vision</font></td>
+
+<td VALIGN=TOP WIDTH="50%"><font size=+0>DataPige hebdomadaire</font></td>
+
+<td VALIGN=TOP WIDTH="23%">
+<center><font size=+0>Pige t&eacute;l&eacute;</font></center>
+</td>
+</tr>
+
+<tr>
+<td VALIGN=TOP WIDTH="20%"><font size=+0>/fret/tele/pigemens</font></td>
+
+<td WIDTH="35%">Pige mensuel</td>
+
+<td ALIGN=CENTER VALIGN=TOP WIDTH="20%"><font size=+0>T&eacute;l&eacute;vision</font></td>
+
+<td VALIGN=TOP WIDTH="37%"><font size=+0>DataPige mensuelle</font></td>
+
+<td VALIGN=TOP WIDTH="20%">
+<center><font size=+0>Pige t&eacute;l&eacute;</font></center>
+</td>
+</tr>
+
+<tr>
+<td VALIGN=TOP WIDTH="20%"><font size=+0>/fret/radio/patch</font></td>
+
+<td>Version</td>
+
+<td ALIGN=CENTER VALIGN=TOP WIDTH="20%"><font size=+0>Radio</font></td>
+
+<td VALIGN=TOP WIDTH="37%"><font size=+0>Patch</font></td>
+
+<td VALIGN=TOP WIDTH="23%">
+<center><font size=+0>Radio</font></center>
+</td>
+</tr>
+
+<tr>
+<td VALIGN=TOP WIDTH="20%"><font size=+0>/fret/radio/tarif</font></td>
+
+<td>Tarif</td>
+
+<td ALIGN=CENTER VALIGN=TOP WIDTH="20%"><font size=+0>Radio</font></td>
+
+<td VALIGN=TOP WIDTH="37%"><font size=+0>Tarif</font></td>
+
+<td VALIGN=TOP WIDTH="23%">
+<center><font size=+0>Radio</font></center>
+</td>
+</tr>
+
+<tr>
+<td VALIGN=TOP WIDTH="20%"><font size=+0>/fret/radio/srcnat</font></td>
+
+<td>Source Nationale</td>
+
+<td ALIGN=CENTER VALIGN=TOP WIDTH="20%"><font size=+0>Radio</font></td>
+
+<td VALIGN=TOP WIDTH="37%"><font size=+0>Source nationale</font></td>
+
+<td VALIGN=TOP WIDTH="23%">
+<center><font size=+0>RadioNat</font></center>
+</td>
+</tr>
+
+<tr>
+<td VALIGN=TOP WIDTH="20%"><font size=+0>/fret/radio/srcidf</font></td>
+
+<td>Source &icirc;le de France</td>
+
+<td ALIGN=CENTER VALIGN=TOP WIDTH="20%"><font size=+0>Radio</font></td>
+
+<td VALIGN=TOP WIDTH="37%"><font size=+0>Source nat + idf&nbsp;</font></td>
+
+<td VALIGN=TOP WIDTH="23%">
+<center><font size=+0>RadioIdf</font></center>
+</td>
+</tr>
+
+<tr>
+<td VALIGN=TOP WIDTH="20%"><font size=+0>/fret/radio/pigehebd</font></td>
+
+<td>Pige hebdomadaire</td>
+
+<td ALIGN=CENTER VALIGN=TOP WIDTH="20%"><font size=+0>Radio</font></td>
+
+<td VALIGN=TOP WIDTH="50%"><font size=+0>DataPige hebdomadaire</font></td>
+
+<td VALIGN=TOP WIDTH="23%">
+<center><font size=+0>Pige radio</font></center>
+</td>
+</tr>
+
+<tr>
+<td VALIGN=TOP WIDTH="20%"><font size=+0>/fret/radio/pigemens</font></td>
+
+<td>Pige mensuel</td>
+
+<td ALIGN=CENTER VALIGN=TOP WIDTH="20%"><font size=+0>Radio</font></td>
+
+<td VALIGN=TOP WIDTH="37%"><font size=+0>DataPige mensuelle</font></td>
+
+<td VALIGN=TOP WIDTH="23%">
+<center><font size=+0>Pige radio</font></center>
+</td>
+</tr>
+
+<tr>
+<td VALIGN=TOP WIDTH="20%"><font size=+0>/fret/radio/ptraffic</font></td>
+
+<td>Traffic</td>
+
+<td ALIGN=CENTER VALIGN=TOP WIDTH="20%"><font size=+0>Radio</font></td>
+
+<td VALIGN=TOP WIDTH="37%"><font size=+0>Patch</font></td>
+
+<td VALIGN=TOP WIDTH="23%">
+<center><font size=+0>Traffic</font></center>
+</td>
+</tr>
+
+<tr>
+<td VALIGN=TOP WIDTH="20%"><font size=+0>/fret/divers</font></td>
+
+<td>Divers</td>
+
+<td ALIGN=CENTER VALIGN=TOP WIDTH="20%"><font size=+0>Divers</font></td>
+
+<td VALIGN=TOP WIDTH="37%"><font size=+0>Divers</font></td>
+
+<td VALIGN=TOP WIDTH="23%">
+<center><font size=+0>TOUS</font></center>
+</td>
+</tr>
+</table></center>
+
+<hr WIDTH="50%">
+<center><table BORDER CELLSPACING=2 WIDTH="614" >
+<tr>
+<td VALIGN=CENTER COLSPAN="3" BGCOLOR="#408080">
+<center><a NAME="Les fichiers disposés dans chaque wagon"></a>Les fichiers
+dispos&eacute;s dans chaque wagon</center>
+</td>
+</tr>
+
+<tr>
+<td WIDTH="15%">
+<center><b>Type</b></center>
+</td>
+
+<td>
+<center><b>Description</b></center>
+</td>
+
+<td>
+<center><b>Exemple(*)</b></center>
+</td>
+</tr>
+
+<tr>
+<td>BAT</td>
+
+<td VALIGN=TOP>Fichier batch utilis&eacute; pour l'installation des fichiers,
+des mise &agrave; jour, etc.</td>
+
+<td>P213A9fr.exe %1 -d -o
+<br>exit</td>
+</tr>
+
+<tr>
+<td>MSG</td>
+
+<td>Message informatif qui apparait &agrave; la fin des op&eacute;rations
+DataFret.</td>
+
+<td VALIGN=TOP>"La version 2.13 - a9 est install&eacute;e."</td>
+</tr>
+
+<tr>
+<td>RUN</td>
+
+<td VALIGN=TOP>Fichier de commande FretScript.</td>
+
+<td>winexec SM imppat.pif @workdir.dat@</td>
+</tr>
+
+<tr>
+<td>DIR.NEX</td>
+
+<td>Contient le chemin du wagon suivant ou le sien si c'est le wagon-bouchon.</td>
+
+<td VALIGN=TOP>/fret/radio/patch/p12</td>
+</tr>
+
+<tr>
+<td>SUB.NEX</td>
+
+<td>Contient le r&eacute;pertoire du wagon suivant ou le sien si c'est
+le wagon-bouchon.</td>
+
+<td VALIGN=TOP>p12</td>
+</tr>
+
+<tr>
+<td>PIF</td>
+
+<td>Li&eacute; au fichier batch (BAT)</td>
+
+<td>&nbsp;</td>
+</tr>
+
+<tr>
+<td>SMF(**)</td>
+
+<td WIDTH="100%">Fichiers smf utilis&eacute; pour d&eacute;terminer le
+wagon-bouchon, ou les wagons ant&eacute;p&eacute;nulti&egrave;mes</td>
+
+<td>&nbsp;</td>
+</tr>
+
+<tr>
+<td COLSPAN="3">(*)%1=r&eacute;pertoire de d&eacute;compactage; -d=restore/recr&eacute;e
+les r&eacute;pertoires; -o=remplacement des fichiers d&eacute;ja existants
+<br>(**)continue.smf=pr&eacute;sent jusqu'au ant&eacute;p&eacute;nulti&egrave;me
+wagon; endpilot.smf=wagon-bouchon
+<br>[ant&eacute;p&eacute;nulti&egrave;me=avant-avant-dernier]</td>
+</tr>
+</table></center>
+
+<hr WIDTH="50%">
+<br>Pour d&eacute;clencher une mise &agrave; jour manuelle, le client dispose
+d'un raccourci pour chaque type de mise &agrave; jour.
+<br>Pour une mise &agrave; jour automatique, l'application se charge d'&eacute;x&eacute;cuter
+la mise &agrave; jour configur&eacute;e.
+<p>Voici la liste des fichiers install&eacute;s sur le poste client et/ou
+pilote :
+<center><table BORDER CELLSPACING=2 WIDTH="614" >
+<tr>
+<td ALIGN=CENTER VALIGN=TOP COLSPAN="6" WIDTH="99%" BGCOLOR="#008080" checked="false">
+<center><a NAME="Ce qui se cache sous l’icône : (fichier .sca)(le second est à utiliser en automatique)"></a>Ce
+qui se cache sous l’ic&ocirc;ne : (fichier .sca)(le second est &agrave;
+utiliser en automatique)</center>
+</td>
+</tr>
+
+<tr>
+<td ALIGN=CENTER VALIGN=TOP WIDTH="16%" checked="false">
+<center><b><font size=+0>Nom du tube</font></b></center>
+</td>
+
+<td VALIGN=TOP WIDTH="18%" checked="false">
+<center><b><font size=+0>Import niveau 1</font></b></center>
+</td>
+
+<td VALIGN=TOP WIDTH="15%" checked="false">
+<center><b><font size=+0>Import pilote</font></b></center>
+</td>
+
+<td VALIGN=TOP WIDTH="14%" checked="false">
+<center><b><font size=+0>Export niveau2</font></b></center>
+</td>
+
+<td VALIGN=TOP WIDTH="18%" checked="false">
+<center><b><font size=+0>Import niveau2</font></b></center>
+</td>
+
+<td VALIGN=TOP WIDTH="18%" checked="false">
+<center><b><font size=+0>mode niveau2</font></b></center>
+</td>
+</tr>
+
+<tr>
+<td ALIGN=CENTER VALIGN=TOP WIDTH="16%"><font size=+0>Tarif</font></td>
+
+<td ALIGN=LEFT VALIGN=TOP WIDTH="18%"><font size=+0>imptar/iaptar</font></td>
+
+<td ALIGN=LEFT VALIGN=TOP WIDTH="15%"><font size=+0>imptar</font></td>
+
+<td ALIGN=LEFT VALIGN=TOP WIDTH="14%"><font size=+0>exitar</font></td>
+
+<td ALIGN=LEFT VALIGN=TOP WIDTH="18%"><font size=+0>Ipitar/iaitar</font></td>
+
+<td ALIGN=LEFT VALIGN=TOP WIDTH="18%"><font size=+0>Image</font></td>
+</tr>
+
+<tr>
+<td ALIGN=CENTER VALIGN=TOP WIDTH="16%"><font size=+0>Source</font></td>
+
+<td ALIGN=LEFT VALIGN=TOP WIDTH="18%"><font size=+0>impsrc</font></td>
+
+<td ALIGN=LEFT VALIGN=TOP WIDTH="15%"><font size=+0>impsrc</font></td>
+
+<td ALIGN=LEFT VALIGN=TOP WIDTH="14%"><font size=+0>exisrc</font></td>
+
+<td ALIGN=LEFT VALIGN=TOP WIDTH="18%"><font size=+0>Ipisrc/iaisrc</font>
+<br><font size=+0>iaiuni(1)</font></td>
+
+<td ALIGN=LEFT VALIGN=TOP WIDTH="18%"><font size=+0>Image</font></td>
+</tr>
+
+<tr>
+<td ALIGN=CENTER VALIGN=TOP WIDTH="16%"><font size=+0>Source+loc</font></td>
+
+<td ALIGN=LEFT VALIGN=TOP WIDTH="18%"><font size=+0>impsrc</font></td>
+
+<td ALIGN=LEFT VALIGN=TOP WIDTH="15%"><font size=+0>impsrc</font></td>
+
+<td ALIGN=LEFT VALIGN=TOP WIDTH="14%">&nbsp;</td>
+
+<td ALIGN=LEFT VALIGN=TOP WIDTH="18%">&nbsp;</td>
+
+<td ALIGN=LEFT VALIGN=TOP WIDTH="18%"><font size=+0>Image</font></td>
+</tr>
+
+<tr>
+<td ALIGN=CENTER VALIGN=TOP WIDTH="16%"><font size=+0>Source</font></td>
+
+<td ALIGN=LEFT VALIGN=TOP WIDTH="18%">&nbsp;</td>
+
+<td ALIGN=LEFT VALIGN=TOP WIDTH="15%"><font size=+0>ippsrc</font></td>
+
+<td ALIGN=LEFT VALIGN=TOP WIDTH="14%"><font size=+0>expsrc</font></td>
+
+<td ALIGN=LEFT VALIGN=TOP WIDTH="18%"><font size=+0>Iplsrc/ialsrc</font></td>
+
+<td ALIGN=LEFT VALIGN=TOP WIDTH="18%"><font size=+0>Instance</font></td>
+</tr>
+
+<tr>
+<td ALIGN=CENTER VALIGN=TOP WIDTH="16%"><font size=+0>Version</font></td>
+
+<td ALIGN=LEFT VALIGN=TOP WIDTH="18%"><font size=+0>imppat</font></td>
+
+<td ALIGN=LEFT VALIGN=TOP WIDTH="15%"><font size=+0>ipppat</font></td>
+
+<td ALIGN=LEFT VALIGN=TOP WIDTH="14%"><font size=+0>exppat</font></td>
+
+<td ALIGN=LEFT VALIGN=TOP WIDTH="18%"><font size=+0>Iplpat/ialpat</font></td>
+
+<td ALIGN=LEFT VALIGN=TOP WIDTH="18%"><font size=+0>Instance</font></td>
+</tr>
+
+<tr>
+<td ALIGN=CENTER VALIGN=TOP WIDTH="16%"><font size=+0>Divers</font></td>
+
+<td ALIGN=LEFT VALIGN=TOP WIDTH="18%"><font size=+0>impdiv</font></td>
+
+<td ALIGN=LEFT VALIGN=TOP WIDTH="15%">&nbsp;</td>
+
+<td ALIGN=LEFT VALIGN=TOP WIDTH="14%">&nbsp;</td>
+
+<td ALIGN=LEFT VALIGN=TOP WIDTH="18%">&nbsp;</td>
+
+<td ALIGN=LEFT VALIGN=TOP WIDTH="18%">&nbsp;</td>
+</tr>
+
+<tr>
+<td ALIGN=CENTER VALIGN=TOP WIDTH="16%"><font size=+0>DataPige</font></td>
+
+<td ALIGN=LEFT VALIGN=TOP WIDTH="18%"><font size=+0>Impig</font></td>
+
+<td ALIGN=LEFT VALIGN=TOP WIDTH="15%">&nbsp;</td>
+
+<td ALIGN=LEFT VALIGN=TOP WIDTH="14%">&nbsp;</td>
+
+<td ALIGN=LEFT VALIGN=TOP WIDTH="18%">&nbsp;</td>
+
+<td ALIGN=LEFT VALIGN=TOP WIDTH="18%"><font size=+0>Image</font></td>
+</tr>
+
+<tr>
+<td VALIGN=TOP COLSPAN="6" WIDTH="99%">(1)=iaiuni est &agrave; utiliser
+lorsque le r&eacute;pertoire source est partag&eacute; sur le serveur.</td>
+</tr>
+</table></center>
+
+<hr WIDTH="50%">
+<center><table BORDER CELLSPACING=2 WIDTH="614" >
+<tr>
+<td VALIGN=TOP COLSPAN="3" WIDTH="100%" BGCOLOR="#008080">
+<center><a NAME="Dans le répertoire de travail"></a>Dans le r&eacute;pertoire
+de travail</center>
+</td>
+</tr>
+
+<tr>
+<td VALIGN=TOP WIDTH="23%">
+<center><b><font size=+0>Nom du fichier</font></b></center>
+</td>
+
+<td VALIGN=TOP WIDTH="47%">
+<center><b><font size=+0>Description</font></b></center>
+</td>
+
+<td VALIGN=TOP WIDTH="30%">
+<center><b><font size=+0>Exemple</font></b></center>
+</td>
+</tr>
+
+<tr>
+<td VALIGN=TOP WIDTH="23%"><font size=+0>NroFret.dat</font></td>
+
+<td VALIGN=TOP WIDTH="47%"><font size=+0>Nro IP du serveur FRET ou du proxy</font></td>
+
+<td VALIGN=TOP WIDTH="30%"><font size=+0>192.168.4.151</font></td>
+</tr>
+
+<tr>
+<td VALIGN=TOP WIDTH="23%"><font size=+0>Login.dat</font></td>
+
+<td VALIGN=TOP WIDTH="47%"><font size=+0>Login</font></td>
+
+<td VALIGN=TOP WIDTH="30%"><font size=+0>cmc99</font></td>
+</tr>
+
+<tr>
+<td VALIGN=TOP WIDTH="23%"><font size=+0>Proxy.dat</font></td>
+
+<td VALIGN=TOP WIDTH="47%"><font size=+0>Nro IP du serveur FRET SI proxy</font></td>
+
+<td VALIGN=TOP WIDTH="30%"><font size=+0>@192.168.4.151</font></td>
+</tr>
+
+<tr>
+<td VALIGN=TOP WIDTH="23%"><font size=+0>Passwd.dat</font></td>
+
+<td VALIGN=TOP WIDTH="47%"><font size=+0>Password</font></td>
+
+<td VALIGN=TOP WIDTH="30%"><font size=+0>Xfile</font></td>
+</tr>
+
+<tr>
+<td VALIGN=TOP WIDTH="23%"><font size=+0>FretDir.dat</font></td>
+
+<td VALIGN=TOP WIDTH="47%"><font size=+0>R&eacute;pertoire du FRET</font></td>
+
+<td VALIGN=TOP WIDTH="30%"><font size=+0>c :\artradio\fret</font></td>
+</tr>
+
+<tr>
+<td VALIGN=TOP WIDTH="23%"><font size=+0>WorkDir.dat</font></td>
+
+<td VALIGN=TOP WIDTH="47%"><font size=+0>R&eacute;pertoire de travail</font></td>
+
+<td VALIGN=TOP WIDTH="30%"><font size=+0>c :\artradio</font></td>
+</tr>
+
+<tr>
+<td VALIGN=TOP WIDTH="23%"><font size=+0>TempoDir.dat(p)</font></td>
+
+<td VALIGN=TOP WIDTH="47%"><font size=+0>R&eacute;pertoire tempo pour un
+pilote</font></td>
+
+<td VALIGN=TOP WIDTH="30%"><font size=+0>C:\artradio\fret</font></td>
+</tr>
+
+<tr>
+<td VALIGN=TOP WIDTH="23%"><font size=+0>ShareDir.dat(n2)</font></td>
+
+<td VALIGN=TOP WIDTH="47%"><font size=+0>R&eacute;pertoire partag&eacute;
+serveur image</font></td>
+
+<td VALIGN=TOP WIDTH="30%"><font size=+0>X:\jfc</font></td>
+</tr>
+
+<tr>
+<td VALIGN=TOP WIDTH="23%"><font size=+0>diskmin.dat</font></td>
+
+<td VALIGN=TOP WIDTH="47%"><font size=+0>Espace disque import image (niv2)</font></td>
+
+<td VALIGN=TOP WIDTH="30%"><font size=+0>15</font></td>
+</tr>
+
+<tr>
+<td VALIGN=TOP WIDTH="23%"><font size=+0>Pigeddir.dat</font></td>
+
+<td VALIGN=TOP WIDTH="47%"><font size=+0>R&eacute;pertoire destination
+donn&eacute;es pige</font></td>
+
+<td VALIGN=TOP WIDTH="30%"><font size=+0>c:\artradio\pigedata</font></td>
+</tr>
+
+<tr>
+<td VALIGN=TOP WIDTH="23%"><font size=+0>vcodedir.dat</font></td>
+
+<td VALIGN=TOP WIDTH="47%"><font size=+0>R&eacute;pertoire destination
+de vague.cod</font></td>
+
+<td VALIGN=TOP WIDTH="30%"><font size=+0>c:\artradio\source\sfr01</font></td>
+</tr>
+
+<tr>
+<td VALIGN=TOP COLSPAN="3" WIDTH="100%">(ni)=Niveau 2 et pilote;
+<br>(p)=Pilote.
+<br>Pour ces 2 r&eacute;pertoire, il faut cr&eacute;er &agrave; la main
+les sous-r&eacute;pertoires : PAT, SRC, SOURCE, ZONE, DATA, UNIVERS, TAR,
+DATAPIGE</td>
+</tr>
+</table></center>
+
+<hr WIDTH="50%">
+<center><table BORDER CELLSPACING=2 WIDTH="614" >
+<tr>
+<td VALIGN=TOP COLSPAN="4" WIDTH="100%" BGCOLOR="#008080">
+<center>Dans le r&eacute;pertoire FRET : &eacute;tat des tubes</center>
+</td>
+</tr>
+
+<tr>
+<td VALIGN=TOP WIDTH="21%">
+<center><b><font size=+0>Nom fic niv1</font></b></center>
+</td>
+
+<td VALIGN=TOP WIDTH="25%">
+<center><b><font size=+0>Lien&nbsp;</font></b></center>
+</td>
+
+<td VALIGN=TOP WIDTH="33%">
+<center><b><font size=+0>Exemple</font></b></center>
+</td>
+
+<td VALIGN=TOP WIDTH="22%">
+<center><b><font size=+0>Nom fic niv2</font></b></center>
+</td>
+</tr>
+
+<tr>
+<td VALIGN=TOP WIDTH="21%"><font size=+0>TarifDir.dat</font></td>
+
+<td VALIGN=TOP WIDTH="25%"><font size=+0>Tarifs</font></td>
+
+<td VALIGN=TOP WIDTH="33%"><font size=+0>/fret/radio/tarif/t1</font></td>
+
+<td VALIGN=TOP WIDTH="22%">&nbsp;</td>
+</tr>
+
+<tr>
+<td VALIGN=TOP WIDTH="21%"><font size=+0>SourcDir.dat</font></td>
+
+<td VALIGN=TOP WIDTH="25%"><font size=+0>Sources (&eacute;tudes)</font></td>
+
+<td VALIGN=TOP WIDTH="33%"><font size=+0>/fret/radio/srcnat/s1</font></td>
+
+<td VALIGN=TOP WIDTH="22%"><font size=+0>SourcSub.dat</font></td>
+</tr>
+
+<tr>
+<td VALIGN=TOP WIDTH="21%"><font size=+0>PatchDir.dat</font></td>
+
+<td VALIGN=TOP WIDTH="25%"><font size=+0>Patch des versions</font></td>
+
+<td VALIGN=TOP WIDTH="33%"><font size=+0>/fret/radio/patch/p1</font></td>
+
+<td VALIGN=TOP WIDTH="22%"><font size=+0>PatchSub.dat</font></td>
+</tr>
+
+<tr>
+<td VALIGN=TOP WIDTH="21%"><font size=+0>Pigedir.dat</font></td>
+
+<td VALIGN=TOP WIDTH="25%"><font size=+0>Donn&eacute;es pige</font></td>
+
+<td VALIGN=TOP WIDTH="33%"><font size=+0>/fret/radio/pigemens/m1</font></td>
+
+<td VALIGN=TOP WIDTH="22%">&nbsp;</td>
+</tr>
+</table></center>
+
+<hr WIDTH="50%">
+<center><table BORDER CELLSPACING=2 WIDTH="614" >
+<tr>
+<td VALIGN=TOP COLSPAN="3" WIDTH="100%" BGCOLOR="#008080">
+<center><a NAME="Ce que l’on peut trouver sur le répertoire partagé (sharedir.dat) ; P sont ceux du Pilote"></a>Ce
+que l’on peut trouver sur le r&eacute;pertoire partag&eacute; (sharedir.dat)
+; P sont ceux du Pilote</center>
+</td>
+</tr>
+
+<tr>
+<td VALIGN=TOP WIDTH="22%">
+<center><b><font size=+0>Nom</font></b></center>
+</td>
+
+<td VALIGN=TOP WIDTH="5%">
+<center><b><font size=+0>P</font></b></center>
+</td>
+
+<td VALIGN=TOP WIDTH="74%">
+<center><b><font size=+0>Utilisation</font></b></center>
+</td>
+</tr>
+
+<tr>
+<td VALIGN=TOP WIDTH="22%"><font size=+0>DATA</font></td>
+
+<td VALIGN=TOP WIDTH="5%">&nbsp;</td>
+
+<td VALIGN=TOP WIDTH="74%"><font size=+0>Image du r&eacute;pertoire data</font></td>
+</tr>
+
+<tr>
+<td VALIGN=TOP WIDTH="22%"><font size=+0>ZONE</font></td>
+
+<td VALIGN=TOP WIDTH="5%">&nbsp;</td>
+
+<td VALIGN=TOP WIDTH="74%"><font size=+0>Image du r&eacute;pertoire zone</font></td>
+</tr>
+
+<tr>
+<td VALIGN=TOP WIDTH="22%"><font size=+0>SOURCE</font></td>
+
+<td VALIGN=TOP WIDTH="5%">&nbsp;</td>
+
+<td VALIGN=TOP WIDTH="74%"><font size=+0>Image du r&eacute;pertoire source
+pour une utilisation partag&eacute;e</font></td>
+</tr>
+
+<tr>
+<td VALIGN=TOP WIDTH="22%"><font size=+0>UNIVERS</font></td>
+
+<td VALIGN=TOP WIDTH="5%">&nbsp;</td>
+
+<td VALIGN=TOP WIDTH="74%"><font size=+0>Image du r&eacute;pertoire univers
+pour copie des fichiers&nbsp;</font></td>
+</tr>
+
+<tr>
+<td VALIGN=TOP WIDTH="22%"><font size=+0>DATAPIGE</font></td>
+
+<td VALIGN=TOP WIDTH="5%">&nbsp;</td>
+
+<td VALIGN=TOP WIDTH="74%"><font size=+0>Image du r&eacute;pertoire datapige</font></td>
+</tr>
+
+<tr>
+<td VALIGN=TOP WIDTH="22%"><font size=+0>SRC</font></td>
+
+<td VALIGN=TOP WIDTH="5%"><font size=+0>X</font></td>
+
+<td VALIGN=TOP WIDTH="74%"><font size=+0>Instances du tube source</font></td>
+</tr>
+
+<tr>
+<td VALIGN=TOP WIDTH="22%"><font size=+0>PAT</font></td>
+
+<td VALIGN=TOP WIDTH="5%"><font size=+0>X</font></td>
+
+<td VALIGN=TOP WIDTH="74%"><font size=+0>Instances du tube Version</font></td>
+</tr>
+</table></center>
+
+<hr width="50%"></blockquote>
+
+<center><a href="fretwiz.htm"><img SRC="backline.jpg" ALT="backline.jpg (420 octets)" BORDER=0 height=15 width=15 align=LEFT></a><a NAME="Schéma de principe"></a><u><font size=+1>Sch&eacute;ma
+de principe</font></u></center>
+
+<blockquote>
+<center><img SRC="fretwi1.jpg" ALT="wpe2.jpg (47089 octets)" height=762 width=641></center>
+</blockquote>
+<a href="fretwiz.htm"><img SRC="backline.jpg" ALT="backline.jpg (420 octets)" BORDER=0 height=15 width=15 align=LEFT></a>
+<br>
+<hr><font size=-1>Cr&eacute;ation&nbsp; : Lundi 7 Juin 1999</font>
+<br><font size=-1>Derni&egrave;re modification : Mercredi 9 Juin 1999</font>
+<br><font size=-1>VLF</font>
+</body>
+</html>

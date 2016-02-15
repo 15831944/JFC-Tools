@@ -1,0 +1,58 @@
+; Table des station de la région zFR01 (Ile de France)
+; * et # et ; réservés:
+; *Nombre de station *n
+; #Début de la table
+; Options : P=NrUniqueSta : Station subtitution automatique au panel
+;	    C=[Nb(NrUniSta1,NrUniSta2...)] : les couplages
+;	1 ?U02{C=[3(222,233,251)]}:U03{C=[4(222,233,236,243)]} couplage optionelle
+
+;Ty: 0, 15, 30...
+
+*42
+
+;Nr Nom5c M T Ty Libellé long 30c. ..........-< NrT RégTe Ord LOGO         Fam DateDU DateAU Coeff Nb Options ...
+;*3 ****5 * * ** ****************************30 **3 ****5 *** **********12 *** ****** ****** ****5 *2 ***.....
+#
+206 NOSTA R G 30 Nostalgie                      106 ZFR00 004 NOLOGO.BMP   000 010180 311259 00000 01 B
+207 NRJ   R G 30 NRJ                            107 ZFR00 005 NOLOGO.BMP   000 010180 311259 00000 01 B
+208 EUR.2 R G 30 Europe 2                       108 ZFR00 001 NOLOGO.BMP   000 010180 311259 00000 01 S=2
+209 RFM   R G 30 RFM                            109 ZFR00 008 NOLOGO.BMP   000 010180 311259 00000 01 S=10
+210 SKY.R R G 30 Skyrock                        110 ZFR00 011 NOLOGO.BMP   000 010180 311259 00000 01 S=4
+211 FUN   R G 30 Fun Radio                      111 ZFR00 002 NOLOGO.BMP   000 010180 311259 00000 00
+212 CH.FM R G 30 Chérie FM                      112 ZFR00 000 NOLOGO.BMP   000 010180 311259 00000 01 B
+213 RTL2  R G 30 RTL2                           113 ZFR00 010 NOLOGO.BMP   000 010180 311259 00000 00
+221 CLASS R G 30 Radio Classique                000 $$$$$ 023 NOLOGO.BMP   000 010180 311200 00000 00
+222 MFM   R G 30 MFM                            121 ZFR00 003 NOLOGO.BMP   000 010180 311259 00000 00
+223 VOLTA R G 30 Voltage FM                     000 $$$$$ 040 NOLOGO.BMP   000 010180 311259 00000 00
+224 OUIFM R G 30 Oui FM                         000 $$$$$ 031 NOLOGO.BMP   000 010180 311259 00000 00
+225 NOVA  R G 30 Radio Nova                     000 $$$$$ 029 NOLOGO.BMP   000 010180 311259 00000 00
+226 CHANT R G 30 Chante France                  000 $$$$$ 022 NOLOGO.BMP   000 010180 311259 00000 00
+227 RFI   R G 30 RFI                            000 $$$$$ 034 NOLOGO.BMP   000 010180 311259 00000 00
+228 RI&CH R G 30 Rire & Chansons                122 ZFR00 009 NOLOGO.BMP   000 010180 311259 00000 01 B
+229 MTROP R G 30 Média Tropical                 000 $$$$$ 028 NOLOGO.BMP   000 010180 311259 45000 00
+230 SPOFM R G 30 SPORT O'FM                     000 $$$$$ 038 NOLOGO.BMP   000 010180 311259 00000 00
+231 BEUR  R G 30 Beur FM                        000 $$$$$ 021 NOLOGO.BMP   000 010180 311259 00000 00
+232 R.LAT R G 30 Radio Latina                   000 $$$$$ 035 NOLOGO.BMP   000 010180 311259 00000 00
+233 PARI1 R G 30 Les Paris.(avOUIFM)            000 $$$$$ 006 NOLOGO.BMP   000 010180 311259 00000 00
+234 TSF   R G 30 TSF                            000 $$$$$ 039 NOLOGO.BMP   000 010180 311000 00000 00
+235 ORIEN R G 30 Radio Orient                   000 $$$$$ 030 NOLOGO.BMP   000 010180 311259 00000 00
+236 ADOFM R G 30 Ado FM                         000 $$$$$ 018 NOLOGO.BMP   000 010197 311259 00000 01 P=233
+237 95.2  R G 30 95.2                           000 $$$$$ 017 NOLOGO.BMP   000 010597 311299 00000 00
+239 G88.2 R G 30 Générations 88.2               000 $$$$$ 027 NOLOGO.BMP   000 010798 311259 00000 00
+240 AF.N1 R G 30 Africa n°1                     000 $$$$$ 019 NOLOGO.BMP   000 010798 311259 00000 00
+241 EVAFM R G 30 Evasion FM                     000 $$$$$ 025 NOLOGO.BMP   000 010798 311259 00000 00
+242 R.ND  R G 30 Radio Notre-Dame               000 $$$$$ 037 NOLOGO.BMP   000 010798 311259 00000 00
+243 R.FG  R G 30 Radio FG                       000 $$$$$ 033 NOLOGO.BMP   000 010798 311259 00000 01 P=222
+244 ALFA  R G 30 Alfa                           000 $$$$$ 020 NOLOGO.BMP   000 010798 311259 00000 00
+245 R.COU R G 30 Radio Courtoisie               000 $$$$$ 032 NOLOGO.BMP   000 010798 311259 00000 00
+246 R.MAG R G 30 Radio Magrheb                  000 $$$$$ 036 NOLOGO.BMP   000 010798 311259 00000 00
+247 ESPFM R G 30 Epace FM                       000 $$$$$ 024 NOLOGO.BMP   000 010798 311259 00000 00
+248 FIP   R G 30 FIP Paris                      000 $$$$$ 026 NOLOGO.BMP   000 010798 311259 00000 00
+249 PARI+ R G 30 Les Parisiennes +              000 $$$$$ 016 NOLOGO.BMP   000 010798 311298 00000 01 C=[2(222,233)]
+250 FRAN1 R G 30 Les Franc.(avOUIFM)            000 $$$$$ 013 NOLOGO.BMP   000 230199 311259 00000 00
+251 CFRAN R G 30 Complém. Francil.              000 $$$$$ 041 NOLOGO.BMP   000 230199 311259 00000 02 A P=233
+252 ERIDF R G 30 Europe Régies IDF              000 $$$$$ 012 NOLOGO.BMP   000 010199 311259 00000 01 C=[3(208,209,210)]
+253 GRNRJ R G 30 Groupe NRJ IDF                 000 $$$$$ 015 NOLOGO.BMP   000 010199 311259 00000 01 C=[4(212,207,228,206)]
+254 PARI2 R G 30 Les Paris.(ssOUIFM)            000 $$$$$ 007 NOLOGO.BMP   000 010401 311259 00000 00
+255 FRAN2 R G 30 Les Franc.(ssOUIFM)            000 $$$$$ 014 NOLOGO.BMP   000 010401 311259 00000 00
+

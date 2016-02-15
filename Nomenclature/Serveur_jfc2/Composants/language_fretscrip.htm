@@ -1,0 +1,464 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta name="GENERATOR" content="Mozilla/4.5 [fr] (Win98; I) [Netscape]">
+   <title>Language fretscrip</title>
+</head>
+<body>
+<a href="fretwiz.htm"><img SRC="backline.jpg" ALT="backline.jpg (420 octets)" BORDER=0 height=15 width=15 align=LEFT></a>
+<p><img SRC="logobw1.jpg" ALT="logobw1.jpg (15333 octets)" height=78 width=50 align=RIGHT>
+<br>
+<hr>
+<center><table BORDER CELLPADDING=5 >
+<tr>
+<td><font size=+3>Language fretscrip</font></td>
+</tr>
+</table></center>
+<a href="#Liste des commandes">Liste des commandes</a>
+<br><a href="#Exemple de script : les tarifs">Exemple de script : les tarifs</a>
+<br>
+<hr>
+<center>
+<p><a NAME="Liste des commandes"></a><u><font size=+1>Liste des commandes</font></u></center>
+
+<blockquote>&nbsp;
+<center><table BORDER CELLSPACING=2 WIDTH="100%" >
+<tr>
+<td VALIGN=TOP WIDTH="15%"><b><font size=-1>Commande</font></b></td>
+
+<td VALIGN=TOP WIDTH="20%">
+<center><b><font size=-1>Arg 1</font></b></center>
+</td>
+
+<td VALIGN=TOP WIDTH="16%">
+<center><b><font size=-1>Arg 2</font></b></center>
+</td>
+
+<td VALIGN=TOP WIDTH="16%">
+<center><b><font size=-1>Arg 3</font></b></center>
+</td>
+
+<td VALIGN=TOP WIDTH="32%">
+<center><b><font size=-1>Description</font></b></center>
+</td>
+</tr>
+
+<tr>
+<td VALIGN=TOP><font size=-1>connect</font></td>
+
+<td VALIGN=TOP><font size=-1>Num&eacute;ro IP de la machine distante</font></td>
+
+<td VALIGN=TOP><font size=-1>Nom de l’utilisateur</font></td>
+
+<td VALIGN=TOP><font size=-1>Mot de passe</font></td>
+
+<td VALIGN=TOP><font size=-1>Etablie une connexion avec la machine indiqu&eacute;.</font></td>
+</tr>
+
+<tr>
+<td VALIGN=TOP WIDTH="15%"><font size=-1>debug</font></td>
+
+<td VALIGN=TOP WIDTH="20%"><font size=-1>ON ou OFF OFF2</font></td>
+
+<td VALIGN=TOP WIDTH="16%">&nbsp;</td>
+
+<td VALIGN=TOP>&nbsp;</td>
+
+<td VALIGN=TOP WIDTH="100%"><font size=-1>Arr&egrave;te l’execution &agrave;
+chaque commande si ON</font></td>
+</tr>
+
+<tr>
+<td VALIGN=TOP WIDTH="15%"><font size=-1>disconnect</font></td>
+
+<td VALIGN=TOP WIDTH="20%">&nbsp;</td>
+
+<td VALIGN=TOP WIDTH="16%">&nbsp;</td>
+
+<td VALIGN=TOP WIDTH="16%">&nbsp;</td>
+
+<td VALIGN=TOP WIDTH="32%"><font size=-1>Ferme la connexion</font></td>
+</tr>
+
+<tr>
+<td VALIGN=TOP WIDTH="15%"><font size=-1>exec</font></td>
+
+<td VALIGN=TOP WIDTH="20%"><font size=-1>commande (remote)</font></td>
+
+<td VALIGN=TOP WIDTH="16%">&nbsp;</td>
+
+<td VALIGN=TOP WIDTH="16%">&nbsp;</td>
+
+<td VALIGN=TOP WIDTH="32%"><font size=-1>Execute le commande dans le machine
+distante</font></td>
+</tr>
+
+<tr>
+<td VALIGN=TOP WIDTH="15%"><font size=-1>fileexec</font></td>
+
+<td VALIGN=TOP WIDTH="20%"><font size=-1>fic.sca</font></td>
+
+<td VALIGN=TOP WIDTH="16%">&nbsp;</td>
+
+<td VALIGN=TOP WIDTH="16%">&nbsp;</td>
+
+<td VALIGN=TOP WIDTH="32%"><font size=-1>Le fichier fic.sca est lu et execut&eacute;
+comme un fichier de commandes</font></td>
+</tr>
+
+<tr>
+<td VALIGN=TOP WIDTH="15%"><font size=-1>geta</font></td>
+
+<td VALIGN=TOP WIDTH="20%"><font size=-1>Fichier source (remote)</font></td>
+
+<td VALIGN=TOP WIDTH="16%"><font size=-1>Fichier destination (local)</font></td>
+
+<td VALIGN=TOP WIDTH="16%">&nbsp;</td>
+
+<td VALIGN=TOP WIDTH="32%"><font size=-1>R&eacute;cup&egrave;re le fichier
+indiqu&eacute; en mode TEXT</font></td>
+</tr>
+
+<tr>
+<td VALIGN=TOP WIDTH="15%"><font size=-1>geti</font></td>
+
+<td VALIGN=TOP WIDTH="20%"><font size=-1>Fichier source (remote)</font></td>
+
+<td VALIGN=TOP WIDTH="16%"><font size=-1>Fichier destination (local)</font></td>
+
+<td VALIGN=TOP WIDTH="16%">&nbsp;</td>
+
+<td VALIGN=TOP WIDTH="32%"><font size=-1>R&eacute;cup&egrave;re le fichier
+indiqu&eacute; en mode BINARY</font></td>
+</tr>
+
+<tr>
+<td VALIGN=TOP WIDTH="15%"><font size=-1>getam</font></td>
+
+<td VALIGN=TOP WIDTH="20%"><font size=-1>Masque remote</font></td>
+
+<td VALIGN=TOP WIDTH="16%"><font size=-1>Rep&egrave;rtoire local</font></td>
+
+<td VALIGN=TOP WIDTH="16%">&nbsp;</td>
+
+<td VALIGN=TOP WIDTH="32%"><font size=-1>Re&ccedil;oi les fichiers qui
+correspondent au masque remote dans le rep&egrave;rtoire locale indiqu&eacute;
+dans le mode TEXTE</font></td>
+</tr>
+
+<tr>
+<td VALIGN=TOP WIDTH="15%"><font size=-1>getim</font></td>
+
+<td VALIGN=TOP WIDTH="20%"><font size=-1>Masque remote</font></td>
+
+<td VALIGN=TOP WIDTH="16%"><font size=-1>Rep&egrave;rtoire local</font></td>
+
+<td VALIGN=TOP WIDTH="16%">&nbsp;</td>
+
+<td VALIGN=TOP WIDTH="32%"><font size=-1>Re&ccedil;oit les fichiers qui
+correspondent au masque remote dans le rep&eacute;rtoire locale indiqu&eacute;
+dans le mode BINARY</font></td>
+</tr>
+
+<tr>
+<td VALIGN=TOP WIDTH="15%"><font size=-1>goto</font></td>
+
+<td VALIGN=TOP WIDTH="20%"><font size=-1>Libell&eacute;_du_label</font></td>
+
+<td VALIGN=TOP WIDTH="16%">&nbsp;</td>
+
+<td VALIGN=TOP WIDTH="16%">&nbsp;</td>
+
+<td VALIGN=TOP WIDTH="32%"><font size=-1>No comment</font></td>
+</tr>
+
+<tr>
+<td VALIGN=TOP WIDTH="15%"><font size=-1>ifexist</font></td>
+
+<td VALIGN=TOP WIDTH="20%"><font size=-1>nomfic</font></td>
+
+<td VALIGN=TOP WIDTH="16%"><font size=-1>Lib_du_label</font></td>
+
+<td VALIGN=TOP WIDTH="16%">&nbsp;</td>
+
+<td VALIGN=TOP WIDTH="32%"><font size=-1>Goto conditionnel if file exist</font></td>
+</tr>
+
+<tr>
+<td VALIGN=TOP WIDTH="15%"><font size=-1>Ifnot</font></td>
+
+<td VALIGN=TOP WIDTH="20%"><font size=-1>nomfic</font></td>
+
+<td VALIGN=TOP WIDTH="16%"><font size=-1>Lib_du_label</font></td>
+
+<td VALIGN=TOP WIDTH="16%">&nbsp;</td>
+
+<td VALIGN=TOP WIDTH="32%"><font size=-1>Goto conditionnel if file not
+exist</font></td>
+</tr>
+
+<tr>
+<td VALIGN=TOP WIDTH="15%"><font size=-1>label</font></td>
+
+<td VALIGN=TOP WIDTH="20%"><font size=-1>Libell&eacute;_du_label</font></td>
+
+<td VALIGN=TOP WIDTH="16%">&nbsp;</td>
+
+<td VALIGN=TOP WIDTH="16%">&nbsp;</td>
+
+<td VALIGN=TOP WIDTH="32%"><font size=-1>Positionne un label</font></td>
+</tr>
+
+<tr>
+<td VALIGN=TOP WIDTH="15%"><font size=-1>lcd</font></td>
+
+<td VALIGN=TOP WIDTH="20%"><font size=-1>Nom du r&eacute;pertoire local</font></td>
+
+<td VALIGN=TOP WIDTH="16%">&nbsp;</td>
+
+<td VALIGN=TOP WIDTH="16%">&nbsp;</td>
+
+<td VALIGN=TOP WIDTH="32%"><font size=-1>Change le r&eacute;pertoire local</font></td>
+</tr>
+
+<tr>
+<td VALIGN=TOP WIDTH="15%"><font size=-1>Message</font></td>
+
+<td VALIGN=TOP WIDTH="20%"><font size=-1>" Cha&icirc;ne de caract&egrave;res
+"</font>
+<br><font size=-1>ou ‘’ pour rien</font></td>
+
+<td VALIGN=TOP WIDTH="16%">&nbsp;</td>
+
+<td VALIGN=TOP WIDTH="16%">&nbsp;</td>
+
+<td VALIGN=TOP WIDTH="32%"><font size=-1>Remplace le message a la fin par
+la cha&icirc;ne de caract&egrave;res fournit.</font></td>
+</tr>
+
+<tr>
+<td VALIGN=TOP WIDTH="15%"><font size=-1>Question</font></td>
+
+<td VALIGN=TOP WIDTH="20%"><font size=-1>" Cha&icirc;ne de caract&egrave;res
+"</font></td>
+
+<td VALIGN=TOP WIDTH="16%">&nbsp;</td>
+
+<td VALIGN=TOP WIDTH="16%">&nbsp;</td>
+
+<td VALIGN=TOP WIDTH="32%"><font size=-1>pose une question.</font>
+<br><font size=-1>Si r&eacute;ponse NON->fin</font></td>
+</tr>
+
+<tr>
+<td VALIGN=TOP WIDTH="15%"><font size=-1>rcd</font></td>
+
+<td VALIGN=TOP WIDTH="20%"><font size=-1>Nom du rep&eacute;rtoire distant</font></td>
+
+<td VALIGN=TOP WIDTH="16%">&nbsp;</td>
+
+<td VALIGN=TOP WIDTH="16%">&nbsp;</td>
+
+<td VALIGN=TOP WIDTH="32%"><font size=-1>Change le r&eacute;pertoire distant</font></td>
+</tr>
+
+<tr>
+<td VALIGN=TOP WIDTH="15%"><font size=-1>senda</font></td>
+
+<td VALIGN=TOP WIDTH="20%"><font size=-1>Fichier source (local)</font></td>
+
+<td VALIGN=TOP WIDTH="16%"><font size=-1>Fichier destination (remote)</font></td>
+
+<td VALIGN=TOP WIDTH="16%">&nbsp;</td>
+
+<td VALIGN=TOP WIDTH="32%"><font size=-1>Envoie le fichier source en mode
+TEXT</font></td>
+</tr>
+
+<tr>
+<td VALIGN=TOP WIDTH="15%"><font size=-1>sendi</font></td>
+
+<td VALIGN=TOP WIDTH="20%"><font size=-1>Fichier binaire source (local)</font></td>
+
+<td VALIGN=TOP WIDTH="16%"><font size=-1>Fichier binaire destination (remote)</font></td>
+
+<td VALIGN=TOP WIDTH="16%">&nbsp;</td>
+
+<td VALIGN=TOP WIDTH="32%"><font size=-1>Envoi le fichier source en mode
+BINARY</font></td>
+</tr>
+
+<tr>
+<td VALIGN=TOP WIDTH="15%"><font size=-1>sendam</font></td>
+
+<td VALIGN=TOP WIDTH="20%"><font size=-1>Masque locale</font></td>
+
+<td VALIGN=TOP WIDTH="16%"><font size=-1>Rep&eacute;rtoire distant</font></td>
+
+<td VALIGN=TOP WIDTH="16%"><font size=-1>Majuscules/Minuscules</font></td>
+
+<td VALIGN=TOP WIDTH="32%"><font size=-1>Envoie les fichiers que correspondent
+au masque locale dans le rep&eacute;rtoire distant en mode TEXTE. Si l’argument
+‘Majuscules’ est pr&eacute;sent, les noms ne sont PAS traduits. Sinon,
+il seront traduits en minuscules</font></td>
+</tr>
+
+<tr>
+<td VALIGN=TOP WIDTH="15%"><font size=-1>sendim</font></td>
+
+<td VALIGN=TOP WIDTH="20%"><font size=-1>Masque locale</font></td>
+
+<td VALIGN=TOP WIDTH="16%"><font size=-1>Rep&eacute;rtoire distant</font></td>
+
+<td VALIGN=TOP WIDTH="16%"><font size=-1>Majuscules/Minuscules</font></td>
+
+<td VALIGN=TOP WIDTH="32%"><font size=-1>Envoie les fichiers que correspondent
+au masque locale dans le rep&eacute;rtoire distant en mode TEXTE. Si l’argument
+‘Majuscules’ est pr&eacute;sent, les noms ne sont PAS traduits. Sinon,
+il seront traduits en minuscules</font></td>
+</tr>
+
+<tr>
+<td VALIGN=TOP WIDTH="15%"><font size=-1>TestClass</font></td>
+
+<td VALIGN=TOP WIDTH="20%"><font size=-1>NomClasse</font></td>
+
+<td VALIGN=TOP WIDTH="16%"><font size=-1>Message</font></td>
+
+<td VALIGN=TOP WIDTH="16%">&nbsp;</td>
+
+<td VALIGN=TOP WIDTH="32%"><font size=-1>Si la classe indiqu&eacute; poss&egrave;de
+au moins une fen&ecirc;tre, sfret affiche " Message " et quitte.</font></td>
+</tr>
+
+<tr>
+<td VALIGN=TOP WIDTH="15%"><font size=-1>TestDFree</font></td>
+
+<td VALIGN=TOP WIDTH="20%"><font size=-1>R&eacute;pertoire</font></td>
+
+<td VALIGN=TOP WIDTH="16%"><font size=-1>Nb de Mo minimum</font></td>
+
+<td VALIGN=TOP WIDTH="16%">&nbsp;</td>
+
+<td VALIGN=TOP WIDTH="32%"><font size=-1>test l’espace disque disponible.</font></td>
+</tr>
+
+<tr>
+<td VALIGN=TOP WIDTH="15%"><font size=-1>texte</font></td>
+
+<td VALIGN=TOP WIDTH="20%"><font size=-1>"blabla"</font></td>
+
+<td VALIGN=TOP WIDTH="16%">&nbsp;</td>
+
+<td VALIGN=TOP WIDTH="16%">&nbsp;</td>
+
+<td VALIGN=TOP WIDTH="32%"><font size=-1>Texte qui s'affiche dans action</font></td>
+</tr>
+
+<tr>
+<td VALIGN=TOP WIDTH="15%"><font size=-1>Titre</font></td>
+
+<td VALIGN=TOP WIDTH="20%"><font size=-1>" titre "</font></td>
+
+<td VALIGN=TOP WIDTH="16%">&nbsp;</td>
+
+<td VALIGN=TOP WIDTH="16%">&nbsp;</td>
+
+<td VALIGN=TOP WIDTH="32%"><font size=-1>La fen&ecirc;tre du fret change
+le titre par le titre indiqu&eacute;</font></td>
+</tr>
+
+<tr>
+<td VALIGN=TOP WIDTH="15%"><font size=-1>winexec</font></td>
+
+<td VALIGN=TOP WIDTH="20%"><font size=-1>SA et NMH</font></td>
+
+<td VALIGN=TOP WIDTH="16%"><font size=-1>toto.exe</font></td>
+
+<td VALIGN=TOP WIDTH="16%">&nbsp;</td>
+
+<td VALIGN=TOP WIDTH="32%"><font size=-1>S=synchrone</font>
+<br><font size=-1>A=asynchrone</font>
+<br><font size=-1>N=normal</font>
+<br><font size=-1>M=minimise</font>
+<br><font size=-1>H=cach&eacute;</font></td>
+</tr>
+</table></center>
+</blockquote>
+
+<blockquote><font size=+0>*Dans TOUTES les lignes, une sequence du style
+: $nomfic.fic$ est comprise comme une macro. Le fichier ‘nomfic.fic’ est
+lu, et sa premiere ligne remplace la macro.</font>
+<br><font size=+0>*Si le nom est &eacute;crit : @nomfic.dat@ ceci implique
+que le fret cherche dans le r&eacute;pertoire de d&eacute;marrage le fichier
+nomm&eacute;.</font>
+<br><font size=+0>*&ntilde; permet de sauter une ligne</font>
+<br>
+<hr width="50%"></blockquote>
+
+<center><a href="fretwiz.htm"><img SRC="backline.jpg" ALT="backline.jpg (420 octets)" BORDER=0 height=15 width=15 align=LEFT></a><a NAME="Exemple de script : les tarifs"></a><u><font size=+1>Exemple
+de script : les tarifs</font></u></center>
+
+<blockquote>&nbsp;
+<center><table BORDER CELLPADDING=5 WIDTH="903" >
+<tr>
+<td WIDTH="462">;Importations des tarifs
+<br>debug OFF
+<br>;debug ON
+<p>titre "Import des tarifs"
+<p>label debut
+<br>texte "Connexion..."
+<br>testclass AtelierTVClass "Fermez l'application &eacute;tude puis relancez
+l'import"
+<br>lcd @fretdir.dat@
+<br>winexec SM menage.pif
+<br>connect @nrofret.dat@ @login.dat@@proxy.dat@ @Passwd.dat@
+<p>texte "V&eacute;rification de l'espace disque"
+<br>rcd $tarifdir.dat$
+<br>geti diskmin.DAT diskmin.dat
+<br>testdfree @workdir.dat@ $diskmin.dat$
+<p>texte "T&eacute;l&eacute;chargement..."
+<br>getim *.* @fretdir.dat@
+<br>geti tarifdir.NEX tarifdir.dat
+<p>disconnect
+<p>texte "D&eacute;compactage..."
+<br>filexec imptar.run
+<p>ifexist continue.smf debut
+<br>texte "Fin des traitements"
+<br>message $imptar.msg$</td>
+
+<td WIDTH="413">Commentaire&nbsp;
+<br>Mode debug OFF
+<br>Commentaire
+<p>Titre de la boite de dialogue
+<p>Etiquette pour revenir au d&eacute;but
+<br>Message informatif du programme Fret
+<br>Test si Application est en cours d'utilisation
+<br>Changement de r&eacute;pertoire en local poste client (r&eacute;pertoire
+Fret)
+<br>Execution du fichier batch menage(efface les exe, tmp, dat, msg, ...)
+<br>Connexion au serveur FTP JFC
+<p>Message informatif du programme Fret
+<br>Changement de r&eacute;pertoire distant serveur FTP (bon wagon)
+<br>R&eacute;cup&eacute;ration du fichier diskmin.dat
+<br>Test pour espace disque
+<p>Message informatif du programme Fret
+<br>R&eacute;cup&eacute;ration de tous les fichiers du wagon dans Fret
+<br>R&eacute;cup&eacute;ration du fichier qui est renomm&eacute;
+<p>D&eacute;connexion du Serveur FTP JFC
+<p>Message informatif du programme Fret
+<br>Execution du d&eacute;compactage des fichiers d'installation
+<p>Si ce le wagon bouchon n'est pas atteind on continue
+<br>Message informatif du programme Fret
+<br>Message informatif apparaissant dans la boite de dialogue de fin.</td>
+</tr>
+</table></center>
+</blockquote>
+<a href="fretwiz.htm"><img SRC="backline.jpg" ALT="backline.jpg (420 octets)" BORDER=0 height=15 width=15 align=LEFT></a>
+<br>
+<hr><font size=-1>Cr&eacute;ation&nbsp; : Lundi 7 Juin 1999</font>
+<br><font size=-1>Derni&egrave;re modification : Mercredi 9 Juin 1999</font>
+<br><font size=-1>VLF</font>
+</body>
+</html>

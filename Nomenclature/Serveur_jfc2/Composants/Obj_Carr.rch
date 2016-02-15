@@ -1,0 +1,12 @@
+
+// on vérifie que le fichier n'a pas déjà été inclu
+#ifndef OBJ_CARR_RCH
+
+// on définit la macro pour éviter les inclusions multiples
+#define OBJ_CARR_RCH
+
+// Resource Ids
+#define IDI_CARR_ICO1 32030
+
+// fin de l'inclusion conditionnelle
+#endif

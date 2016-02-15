@@ -1,0 +1,159 @@
+<html>
+<body>
+<pre>
+<h1>Build Log</h1>
+<h3>
+--------------------Configuration: Tomeval - Win32 Debug Russie--------------------
+</h3>
+<h3>Command Lines</h3>
+Creating command line "rc.exe /l 0x40c /fo"Tomeval___Win32_Debug_Russie/Tomeval.res" /d "_DEBUG" "C:\devSylvain\NewTomeval\Tomeval.rc"" 
+Creating temporary file "C:\DOCUME~1\vol\LOCALS~1\Temp\RSP3E48.tmp" with contents
+[
+/nologo /MTd /W3 /Gm /GX /ZI /Od /I "." /I "../composants" /I "../composants/tomy" /I "../" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /D "OPTION_JFC" /D "OPTION_RUSSIE" /D "OPTION_DUREEECOUTE" /FR"Tomeval___Win32_Debug_Russie/" /Fp"Tomeval___Win32_Debug_Russie/Tomeval.pch" /Yu"stdafx.h" /Fo"Tomeval___Win32_Debug_Russie/" /Fd"Tomeval___Win32_Debug_Russie/" /FD /GZ /c 
+"C:\devSylvain\NewTomeval\BetaBinomial.cpp"
+"C:\devSylvain\NewTomeval\Cibjob.cpp"
+"C:\devSylvain\composants\Tomy\DistributionCroisee.cpp"
+"C:\devSylvain\composants\Tomy\DistributionCroiseeEx.cpp"
+"C:\devSylvain\composants\Tomy\EcouteSupport.cpp"
+"C:\devSylvain\composants\Tomy\FicAEJ.cpp"
+"C:\devSylvain\composants\Tomy\FicAQJ.cpp"
+"C:\devSylvain\NewTomeval\FicLBX.cpp"
+"C:\devSylvain\composants\Tomy\FicProba.cpp"
+"C:\devSylvain\composants\FicTbl.cpp"
+"C:\devSylvain\composants\JFCFileException.cpp"
+"C:\devSylvain\composants\Tomy\LiaisonChaineTeleFrance.cpp"
+"C:\devSylvain\composants\Tomy\Lien.cpp"
+"C:\devSylvain\composants\Tomy\PanelLoader.cpp"
+"C:\devSylvain\composants\Tomy\ProbaSupport.cpp"
+"C:\devSylvain\NewTomeval\Restom.cpp"
+"C:\devSylvain\NewTomeval\ResultatJour.cpp"
+"C:\devSylvain\composants\Tomy\TableConsomationTotalTV.cpp"
+"C:\devSylvain\composants\Tomy\TablePopulationEtalon.cpp"
+"C:\devSylvain\NewTomeval\TomEval.cpp"
+"C:\devSylvain\NewTomeval\TomevalApp.cpp"
+"C:\devSylvain\NewTomeval\TomevalDlg.cpp"
+"C:\devSylvain\NewTomeval\Tomjob.cpp"
+"C:\devSylvain\composants\Tomy\Tomy.cpp"
+"C:\devSylvain\composants\Tomy\TomyCIMBelge.cpp"
+"C:\devSylvain\NewTomeval\TomyCIMRusse.cpp"
+"C:\devSylvain\NewTomeval\TomyRussie.cpp"
+]
+Creating command line "cl.exe @C:\DOCUME~1\vol\LOCALS~1\Temp\RSP3E48.tmp" 
+Creating temporary file "C:\DOCUME~1\vol\LOCALS~1\Temp\RSP3E49.tmp" with contents
+[
+/nologo /MTd /W3 /Gm /GX /ZI /Od /I "." /I "../composants" /I "../composants/tomy" /I "../" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /D "OPTION_JFC" /D "OPTION_RUSSIE" /D "OPTION_DUREEECOUTE" /FR"Tomeval___Win32_Debug_Russie/" /Fp"Tomeval___Win32_Debug_Russie/Tomeval.pch" /Yc"stdafx.h" /Fo"Tomeval___Win32_Debug_Russie/" /Fd"Tomeval___Win32_Debug_Russie/" /FD /GZ /c 
+"C:\devSylvain\NewTomeval\StdAfx.cpp"
+]
+Creating command line "cl.exe @C:\DOCUME~1\vol\LOCALS~1\Temp\RSP3E49.tmp" 
+Creating temporary file "C:\DOCUME~1\vol\LOCALS~1\Temp\RSP3E4A.tmp" with contents
+[
+/nologo /subsystem:windows /incremental:yes /pdb:"Tomeval___Win32_Debug_Russie/TomevalRU.pdb" /debug /machine:I386 /out:"Tomeval___Win32_Debug_Russie/TomevalRU.exe" /pdbtype:sept 
+.\Tomeval___Win32_Debug_Russie\BetaBinomial.obj
+.\Tomeval___Win32_Debug_Russie\Cibjob.obj
+.\Tomeval___Win32_Debug_Russie\DistributionCroisee.obj
+.\Tomeval___Win32_Debug_Russie\DistributionCroiseeEx.obj
+.\Tomeval___Win32_Debug_Russie\EcouteSupport.obj
+.\Tomeval___Win32_Debug_Russie\FicAEJ.obj
+.\Tomeval___Win32_Debug_Russie\FicAQJ.obj
+.\Tomeval___Win32_Debug_Russie\FicLBX.obj
+.\Tomeval___Win32_Debug_Russie\FicProba.obj
+.\Tomeval___Win32_Debug_Russie\FicTbl.obj
+.\Tomeval___Win32_Debug_Russie\JFCFileException.obj
+.\Tomeval___Win32_Debug_Russie\LiaisonChaineTeleFrance.obj
+.\Tomeval___Win32_Debug_Russie\Lien.obj
+.\Tomeval___Win32_Debug_Russie\PanelLoader.obj
+.\Tomeval___Win32_Debug_Russie\ProbaSupport.obj
+.\Tomeval___Win32_Debug_Russie\Restom.obj
+.\Tomeval___Win32_Debug_Russie\ResultatJour.obj
+.\Tomeval___Win32_Debug_Russie\StdAfx.obj
+.\Tomeval___Win32_Debug_Russie\TableConsomationTotalTV.obj
+.\Tomeval___Win32_Debug_Russie\TablePopulationEtalon.obj
+.\Tomeval___Win32_Debug_Russie\TomEval.obj
+.\Tomeval___Win32_Debug_Russie\TomevalApp.obj
+.\Tomeval___Win32_Debug_Russie\TomevalDlg.obj
+.\Tomeval___Win32_Debug_Russie\Tomjob.obj
+.\Tomeval___Win32_Debug_Russie\Tomy.obj
+.\Tomeval___Win32_Debug_Russie\TomyCIMBelge.obj
+.\Tomeval___Win32_Debug_Russie\TomyCIMRusse.obj
+.\Tomeval___Win32_Debug_Russie\TomyRussie.obj
+.\Tomeval___Win32_Debug_Russie\Tomeval.res
+]
+Creating command line "link.exe @C:\DOCUME~1\vol\LOCALS~1\Temp\RSP3E4A.tmp"
+<h3>Output Window</h3>
+Compiling resources...
+Compiling...
+StdAfx.cpp
+Compiling...
+BetaBinomial.cpp
+Cibjob.cpp
+DistributionCroisee.cpp
+DistributionCroiseeEx.cpp
+EcouteSupport.cpp
+FicAEJ.cpp
+FicAQJ.cpp
+FicLBX.cpp
+FicProba.cpp
+FicTbl.cpp
+JFCFileException.cpp
+LiaisonChaineTeleFrance.cpp
+Lien.cpp
+PanelLoader.cpp
+ProbaSupport.cpp
+Restom.cpp
+ResultatJour.cpp
+TableConsomationTotalTV.cpp
+TablePopulationEtalon.cpp
+TomEval.cpp
+Generating Code...
+Compiling...
+TomevalApp.cpp
+TomevalDlg.cpp
+Tomjob.cpp
+Tomy.cpp
+TomyCIMBelge.cpp
+TomyCIMRusse.cpp
+TomyRussie.cpp
+Generating Code...
+Linking...
+Creating temporary file "C:\DOCUME~1\vol\LOCALS~1\Temp\RSP3E4C.tmp" with contents
+[
+/nologo /o"Tomeval___Win32_Debug_Russie/Tomeval.bsc" 
+.\Tomeval___Win32_Debug_Russie\StdAfx.sbr
+.\Tomeval___Win32_Debug_Russie\BetaBinomial.sbr
+.\Tomeval___Win32_Debug_Russie\Cibjob.sbr
+.\Tomeval___Win32_Debug_Russie\DistributionCroisee.sbr
+.\Tomeval___Win32_Debug_Russie\DistributionCroiseeEx.sbr
+.\Tomeval___Win32_Debug_Russie\EcouteSupport.sbr
+.\Tomeval___Win32_Debug_Russie\FicAEJ.sbr
+.\Tomeval___Win32_Debug_Russie\FicAQJ.sbr
+.\Tomeval___Win32_Debug_Russie\FicLBX.sbr
+.\Tomeval___Win32_Debug_Russie\FicProba.sbr
+.\Tomeval___Win32_Debug_Russie\FicTbl.sbr
+.\Tomeval___Win32_Debug_Russie\JFCFileException.sbr
+.\Tomeval___Win32_Debug_Russie\LiaisonChaineTeleFrance.sbr
+.\Tomeval___Win32_Debug_Russie\Lien.sbr
+.\Tomeval___Win32_Debug_Russie\PanelLoader.sbr
+.\Tomeval___Win32_Debug_Russie\ProbaSupport.sbr
+.\Tomeval___Win32_Debug_Russie\Restom.sbr
+.\Tomeval___Win32_Debug_Russie\ResultatJour.sbr
+.\Tomeval___Win32_Debug_Russie\TableConsomationTotalTV.sbr
+.\Tomeval___Win32_Debug_Russie\TablePopulationEtalon.sbr
+.\Tomeval___Win32_Debug_Russie\TomEval.sbr
+.\Tomeval___Win32_Debug_Russie\TomevalApp.sbr
+.\Tomeval___Win32_Debug_Russie\TomevalDlg.sbr
+.\Tomeval___Win32_Debug_Russie\Tomjob.sbr
+.\Tomeval___Win32_Debug_Russie\Tomy.sbr
+.\Tomeval___Win32_Debug_Russie\TomyCIMBelge.sbr
+.\Tomeval___Win32_Debug_Russie\TomyCIMRusse.sbr
+.\Tomeval___Win32_Debug_Russie\TomyRussie.sbr]
+Creating command line "bscmake.exe @C:\DOCUME~1\vol\LOCALS~1\Temp\RSP3E4C.tmp"
+Creating browse info file...
+<h3>Output Window</h3>
+
+
+
+<h3>Results</h3>
+TomevalRU.exe - 0 error(s), 0 warning(s)
+</pre>
+</body>
+</html>

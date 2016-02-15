@@ -1,0 +1,725 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type"
+content="text/html; charset=iso-8859-1">
+<meta name="Author" content="jfc">
+<meta name="GENERATOR" content="Microsoft FrontPage Express 2.0">
+<title>Aide de l'Objet Grille</title>
+</head>
+
+<body>
+
+<p><font size="6">CObj_Gril</font><img src="Obj_Gril.JPG"
+align="right" hspace="0" width="262" height="272"> </p>
+
+<p>La classe <b>CObj_Gril</b> dérive de la classe CStatic.
+L'objet <b>CObj_Gril </b>crée une grille de visualisation, et
+peut être associé à l'objet <a href="obj_cal.htm">Calendrier</a>.
+</p>
+
+<p><font size="4"><b>Implantation</b></font> </p>
+
+<p>Il faut inclure dans le projet : </p>
+
+<ul>
+    <li>le fichier d'en-tête OBJ_GRIL.H</li>
+    <li>le fichier source OBJ_GRIL.CPP</li>
+</ul>
+
+<p>Il faut inclure dans le fichier d'en-tête appellant l'objet :
+</p>
+
+<ul>
+    <li>#include &lt;OBJ_GRIL.H&gt;</li>
+    <li>Modifier le type Static du control static en CObj_Gril</li>
+</ul>
+
+<hr size="3" align="left">
+
+<p><font size="5">Membres de la class CObj_Gril</font> </p>
+
+<p><b>Initialisation</b> &nbsp; </p>
+
+<table border="0" width="695">
+    <tr>
+        <td width="131"><a href="#CObj_Gril::Initialise">Initialise</a></td>
+        <td width="556">Initialise les paramètres généraux de
+        l'objet.</td>
+    </tr>
+    <tr>
+        <td width="131"><a href="#CObj_Gril::InitScrollBar">InitScrollBar</a></td>
+        <td width="556">Initialise le scrollbar vertical et
+        horizontal.</td>
+    </tr>
+</table>
+
+<p><b>Position</b> &nbsp; </p>
+
+<table border="0" width="693">
+    <tr>
+        <td width="131"><a href="#CObj_Gril::SetPosition">SetPosition</a></td>
+        <td width="554">Met à jour l'affichage de la grille en
+        fonction de la position de l'ascensceur horizontal.</td>
+    </tr>
+    <tr>
+        <td width="131"><a href="#CObj_Gril::SetPositionV">SetPositionV</a></td>
+        <td width="554">Met à jour l'affichage de la grille en
+        fonction de la position de l'ascensceur vertical.</td>
+    </tr>
+    <tr>
+        <td><a href="#CObj_Gril::SetNbRows"><font size="3">SetNbRows</font></a></td>
+        <td>Réinitialise le nombre de colonnes de la grille.</td>
+    </tr>
+    <tr>
+        <td width="131"><a href="#CObj_Gril::SetNbLines">SetNbLignes</a></td>
+        <td width="554">Réinitialise le nombre de lignes de la
+        grille.</td>
+    </tr>
+    <tr>
+        <td width="131"><a href="#CObj_Gril::SetCoupureCalend">SetCoupureCalend</a></td>
+        <td width="554">Initialise les coupures verticales de la
+        grille.</td>
+    </tr>
+    <tr>
+        <td width="131"><a href="#CObj_Gril::SetSelectionCalend">SetSelectionCalend</a></td>
+        <td width="554">Indique la sélection de l'objet
+        calendrier à l'objet grille.</td>
+    </tr>
+</table>
+
+<p><b>Curseur</b> &nbsp; </p>
+
+<table border="0" width="691">
+    <tr>
+        <td width="132"><a href="#CObj_Gril::SetCurseur">SetCurseur</a></td>
+        <td width="551">Insère un nouveau curseur.</td>
+    </tr>
+    <tr>
+        <td width="132"><a href="#CObj_Gril::SetPosCurseur">SetPosCurseur</a></td>
+        <td width="551">Déplace un curseur à une position
+        donnée.</td>
+    </tr>
+</table>
+
+<p><b>Ascenseur</b> &nbsp; </p>
+
+<table border="0" width="690">
+    <tr>
+        <td width="133"><a href="#CObj_Gril::MAJPosScrollH">MAJPosScrollH</a></td>
+        <td width="549">Mise à jour de la position de la grille
+        suivant la position de l'ascenceur horizontal.</td>
+    </tr>
+    <tr>
+        <td width="133"><a href="#CObj_Gril::MAJPosScrollV">MAJPosScrollV</a></td>
+        <td width="549">Mise à jour de la position de la grille
+        suivant la position de l'ascenceur vertical.</td>
+    </tr>
+</table>
+
+<p><b>Printer</b> &nbsp; </p>
+
+<table border="0" width="99%">
+    <tr>
+        <td width="20%"><a href="#CObj_Cal::PaintToPrinter">PaintToPrinter</a></td>
+        <td width="80%">Signal à l'objet que le device context
+        est maintenant celui de l'imprimante.</td>
+    </tr>
+</table>
+
+<p><b>Surdéfinition de fonction</b> &nbsp; </p>
+
+<table border="0" width="687">
+    <tr>
+        <td width="134"><a href="#CObj_Gril::DessineFond">DessineFond</a></td>
+        <td width="545">Dessine le fond de la grille.</td>
+    </tr>
+    <tr>
+        <td><a href="#CObj_Gril::DessineFondInutilise">DessineFondInutilise</a></td>
+        <td>Dessine le fond de la grille inutilisée.</td>
+    </tr>
+    <tr>
+        <td width="134"><a href="#CObj_Gril::DessineContenu">DessineContenu</a></td>
+        <td width="545">Dessine le contenu de la grille.</td>
+    </tr>
+    <tr>
+        <td width="134"><a href="#CObj_Gril::DessineCellule">DessineCellule</a></td>
+        <td width="545">Dessine une cellule.</td>
+    </tr>
+    <tr>
+        <td width="134">&nbsp;</td>
+        <td width="545">&nbsp;</td>
+    </tr>
+    <tr>
+        <td width="134"><a href="#CObj_Gril::LeftClick">OnLeftClick</a></td>
+        <td width="545">Signal un clic gauche de la souris dans
+        la grille.</td>
+    </tr>
+    <tr>
+        <td width="134"><a href="#CObj_Gril::RightClick">OnRightClick</a></td>
+        <td width="545">Signal un clic droit de la souris dans la
+        grille.</td>
+    </tr>
+    <tr>
+        <td width="134"><a href="#CObj_Gril::MousePosition">OnMousePosition</a></td>
+        <td width="545">Indique la position du curseur dans la
+        grille.</td>
+    </tr>
+    <tr>
+        <td width="134">&nbsp;</td>
+        <td width="545">&nbsp;</td>
+    </tr>
+    <tr>
+        <td width="134"><a href="#CObj_Cal::OnCurseurMoved">OnCurseurMoved</a></td>
+        <td width="545">Signal qu'un curseur a été déplacé.</td>
+    </tr>
+    <tr>
+        <td width="134"><a href="#CObj_Cal::OnSelectionChanged">OnSelectionChanged</a></td>
+        <td width="545">Signal que la sélection a changé.</td>
+    </tr>
+</table>
+
+<hr size="3" align="left">
+
+<p><a name="CObj_Gril::Initialise"></a><font size="5">CObj_Gril::Initialise</font>
+<br>
+<b>short Initialise</b>(<b>short</b> <i>Style</i>, <b>short</b> <i>NbCelluleX</i>,
+<b>short</b><i>NbCelluleY</i>, <b>short</b> <i>UTHorizontal</i>, <b>short</b><i>UTVertical</i>,
+<b>short</b><i>PosDefX</i>=0, <b>short</b> <i>PosDefY</i>=0, <b>CRect</b>
+* <i>pR_Print</i>=NULL); </p>
+
+<p><b>Paramètres</b> </p>
+
+<p><i>Style&nbsp;&nbsp;&nbsp; </i>Spécifie le style générale
+de l'objet </p>
+
+<ul>
+    <li>STYLE_GRIL_DEFAUT</li>
+    <li>STYLE_GRIL_PIGE</li>
+</ul>
+
+<blockquote>
+    <p>Des options peuvent accompagner le style : </p>
+    <ul>
+        <li>OPTION_GRIL_PRINTER</li>
+        <li>OPTION_GRIL_NO_LIGNE</li>
+        <li>OPTION_GRIL_NO_COLONNE</li>
+        <li>OPTION_GRIL_NO_CONTOUR</li>
+        <li>OPTION_GRIL_RETAILLABLE</li>
+        <li>OPTION_GRIL_TRAITSGRIS</li>
+    </ul>
+</blockquote>
+
+<p><i>NbCelluleX&nbsp;&nbsp;&nbsp; </i>Variable qui indique le
+nombre de cellules en abscisse </p>
+
+<p><i>NbCelluleY&nbsp;&nbsp;&nbsp; </i>Variable qui indique le
+nombre de cellules en ordonnée </p>
+
+<p><i>UTHorizontal&nbsp;&nbsp;&nbsp; </i>Unité horizontale en
+pixel d'une cellule </p>
+
+<p><i>UTVertical&nbsp;&nbsp;&nbsp; </i>Unité verticale en pixel
+d'une cellule </p>
+
+<p><i>PosDefX&nbsp;&nbsp;&nbsp; </i>Indique la position de début
+en abscisse (0 par défaut) </p>
+
+<p><i>PosDefY&nbsp;&nbsp;&nbsp; </i>Indique la position de début
+en ordonnée (0 par défaut) </p>
+
+<p><i>pR_Print&nbsp;&nbsp;&nbsp; </i>Coordonnée du rectangle ou
+va être dessiné la grille dans la feuille. </p>
+
+<p><b>Remarque</b> </p>
+
+<p>Cette fonction initialise les paramètres généraux de
+l'objet. </p>
+
+<hr size="3" align="left">
+
+<p><a name="CObj_Gril::InitScrollBar"></a><font size="5">CObj_Gril::InitScrollBar</font>
+<br>
+<b>short InitScrollBar</b>(<b>CScrollBar</b> * <i>ScrollX</i>=NULL,
+<b>CScrollBar</b> * <i>ScrollY</i>=NULL); </p>
+
+<p><b>Paramètres</b> </p>
+
+<p><i>ScrollX&nbsp;&nbsp;&nbsp; </i>Pointeur du scrollbar
+horizontal lié à la grille </p>
+
+<p><i>ScrollY&nbsp;&nbsp;&nbsp; </i>Pointeur du scrollbar
+vertival lié à la grille </p>
+
+<p><b>Remarque</b> </p>
+
+<p>Cette fonction passe les pointeurs des scrollbars lié à
+l'objet ou NULL si le scrollbar est géré via un autre objet (cf
+calendrier). </p>
+
+<hr size="3" align="left">
+
+<p><a name="CObj_Gril::SetPosition"></a><font size="5">CObj_Gril::SetPosition</font>
+<br>
+<b>short SetPosition</b>(<b>short</b> <i>PosX</i>, <b>bool</b> <i>flag</i>=false);
+</p>
+
+<p><b>Paramètre</b> </p>
+
+<p><i>PosX&nbsp;&nbsp;&nbsp; </i>Nouvelle position horizontale à
+mettre à jour dans la grille. </p>
+
+<p><i>flag&nbsp;&nbsp;&nbsp; </i>Met à jour l'affichage si true.
+</p>
+
+<p><b>Remarque</b> </p>
+
+<p>Cette fonction public est appelé depuis la fonction externe <a
+href="onhscroll.htm">OnHScroll</a> pour mettre à jour
+l'affichage de la grille en fonction de la position de
+l'ascensceur horizontal. </p>
+
+<hr size="3" align="left">
+
+<p><a name="CObj_Gril::SetPositionV"></a><font size="5">CObj_Gril::SetPositionV</font>
+<br>
+<b>short</b> <b>SetPositionV</b>(<b>short</b> <i>PosY</i><b>,
+bool</b><i>flag</i>=false); </p>
+
+<p><b>Paramètre</b> </p>
+
+<p><i>PosY&nbsp;&nbsp;&nbsp; </i>Nouvelle position verticale à
+mettre à jour dans la grille. </p>
+
+<p><i>flag&nbsp;&nbsp;&nbsp; </i>Met à jour l'affichage si true.
+</p>
+
+<p><b>Remarque</b> </p>
+
+<p>Cette fonction public est appelé depuis la fonction externe <a
+href="onvscroll.htm">OnVScroll</a> pour mettre à jour
+l'affichage de la grille en fonction de la position de
+l'ascensceur vertical. </p>
+
+<hr size="3" align="left">
+
+<p><a name="CObj_Gril::SetCurseur"></a><font size="5">CObj_Gril::SetCurseur</font>
+<br>
+<b>short SetCurseur</b>(<b>short</b> <i>NumCurs</i>, <b>short</b>
+<i>Pos</i>, <b>COLORREF</b><i>Color</i>); </p>
+
+<p><b>Paramètres</b> </p>
+
+<p><i>NumCurs&nbsp;&nbsp;&nbsp; </i>Numéro de curseur. Random. </p>
+
+<p><i>Pos&nbsp;&nbsp;&nbsp; </i>Position du curseur dans la
+grille </p>
+
+<p><i>Color&nbsp;&nbsp;&nbsp; </i>Couleur du curseur de type RBG </p>
+
+<p><b>Remarques</b> </p>
+
+<p>Insère un nouveau curseur dans la grille à l'emplacement
+indiqué par <i>Pos.</i> </p>
+
+<hr size="3" align="left">
+
+<p><a name="CObj_Gril::SetPosCurseur"></a><font size="5">CObj_Gril::SetPosCurseur</font>
+<br>
+<b>short SetPosCurseur</b>(<b>short</b> <i>NumCurs</i>, <b>short</b><i>Pos</i>);
+</p>
+
+<p><b>Valeur de retour</b> </p>
+
+<p>1 si la nouvelle position est installé; sinon 0. </p>
+
+<p><b>Paramètres</b> </p>
+
+<p><i>NumCurs&nbsp;&nbsp;&nbsp; </i>Numéro du curseur à
+déplacer. </p>
+
+<p><i>Pos&nbsp;&nbsp;&nbsp; </i>Nouvelle position du curseur. </p>
+
+<p><b>Remarque</b> </p>
+
+<p>Déplace un curseur à une position donnée. </p>
+
+<hr size="3" align="left">
+
+<p><a name="CObj_Gril::DessineFond"></a><font size="5">CObj_Gril::DessineFond</font>
+<br>
+<b>virtual void DessineFond</b>(<b>CDC</b> * <i>dc</i>, <b>CRect</b><i>RectObj</i>);
+</p>
+
+<p><b>Paramètres</b> </p>
+
+<p><i>dc&nbsp;&nbsp;&nbsp; </i>Pointeur du DC de l'objet </p>
+
+<p><i>RectObj&nbsp;&nbsp;&nbsp; </i>Rectangle de l'objet </p>
+
+<p><b>Remarque</b> </p>
+
+<p>Cette fonction doit être surdéfini par une classe
+héritière. Elle permet de dessiner le fond de la grille. </p>
+
+<hr>
+
+<p><a name="CObj_Gril::DessineFondInutilise"><font size="5">CObj_Gril::DessineFondInutilise</font></a><font
+size="5"><br>
+</font><strong>virtual void DessineFondInutilise</strong>(<strong>CDC</strong>
+<em>*dc</em>, <strong>CRect</strong> <em>RectObj</em>);</p>
+
+<p><b>Paramètres</b> </p>
+
+<p><i>dc&nbsp;&nbsp;&nbsp; </i>Pointeur du DC de l'objet </p>
+
+<p><i>RectObj&nbsp;&nbsp;&nbsp; </i>Rectangle de l'objet </p>
+
+<p><b>Remarque</b> </p>
+
+<p>Cette fonction doit être surdéfini par une classe
+héritière. Elle permet de dessiner le fond inutilisé de la
+grille. </p>
+
+<hr size="3" align="left">
+
+<p><a name="CObj_Gril::DessineContenu"></a><font size="5">CObj_Gril::DessineContenu</font>
+<br>
+<b>virtual void DessineContenu</b>(<b>CDC</b> * <i>dc</i>, <b>CRect</b><i>RectObj</i>);
+</p>
+
+<p><b>Paramètres</b> </p>
+
+<p><i>dc&nbsp;&nbsp;&nbsp; </i>Pointeur du DC de l'objet </p>
+
+<p><i>RectObj&nbsp;&nbsp;&nbsp; </i>Rectangle de l'objet </p>
+
+<p><b>Remarque</b> </p>
+
+<p>Cette fonction doit être surdéfini par une classe
+héritière. Elle permet de dessiner le contenu de la grille. </p>
+
+<hr size="3" align="left">
+
+<p><a name="CObj_Gril::DessineCellule"></a><font size="5">CObj_Gril::DessineCellule</font>
+<br>
+<b>virtual void DessineCellule</b>(<b>CDC</b> * <i>dc</i>, <b>CRect</b><i>RectCel</i>,
+<b>short</b><i>X</i>, <b>short</b> <i>Y</i>, <b>short</b><i>PosX</i>,
+<b>short</b> <i>PosY</i>); </p>
+
+<p><b>Paramètres</b> </p>
+
+<p><i>dc&nbsp;&nbsp;&nbsp; </i>Pointeur du DC de l'objet </p>
+
+<p><i>RectCel&nbsp;&nbsp;&nbsp; </i>Rectangle de la cellule à
+dessiner </p>
+
+<p><i>X&nbsp;&nbsp;&nbsp; </i>Indique la cellule X (0 &lt; X
+&lt;= <i>NbCelluleX</i>) </p>
+
+<p><i>Y&nbsp;&nbsp;&nbsp; </i>Indique la cellule Y (0 &lt; Y
+&lt;= <i>NbCelluleY</i>) </p>
+
+<p><i>PosX&nbsp;&nbsp;&nbsp; </i>Indique la position x de la
+cellule sélectionnée dans la grille. </p>
+
+<p><i>PosY&nbsp;&nbsp;&nbsp; </i>Indique la position y de la
+cellule sélectionnée dans la grille. </p>
+
+<p><b>Remarque</b> </p>
+
+<p>Cette fonction doit être surdéfini par une classe
+héritière. Elle permet de dessiner une cellule. </p>
+
+<hr size="3" align="left">
+
+<p><a name="CObj_Gril::LeftClick"></a><font size="5">CObj_Gril::OnLeftClick</font>
+<br>
+<b>virtual BOOL OnLeftClick</b>(<b>short</b> <i>X</i>, <b>short</b><i>Y</i>,
+<b>short</b><i>PosX</i>, <b>short</b> <i>PosY</i>, <strong>Point</strong><i>
+pos</i>); </p>
+
+<p><b>Paramètres</b> </p>
+
+<p><i>X&nbsp;&nbsp;&nbsp; </i>Indique la cellule X (0 &lt; X
+&lt;= <i>NbCelluleX</i>) </p>
+
+<p><i>Y&nbsp;&nbsp;&nbsp; </i>Indique la cellule Y (0 &lt; Y
+&lt;= <i>NbCelluleY</i>) </p>
+
+<p><i>PosX&nbsp;&nbsp;&nbsp; </i>Indique la position x de la
+cellule sélectionnée dans la grille. </p>
+
+<p><i>PosY&nbsp;&nbsp;&nbsp; </i>Indique la position y de la
+cellule sélectionnée dans la grille. </p>
+
+<p><i>pos </i>Indique la position x et y de la souris. Utilisée
+pour le redimensionnement de la grille.</p>
+
+<p><b>Remarque</b> </p>
+
+<p>Cette fonction signal un click gauche de la souris à la
+classe héritière. </p>
+
+<hr size="3" align="left">
+
+<p><a name="CObj_Gril::RightClick"></a><font size="5">CObj_Gril::OnRightClick</font>
+<br>
+<b>virtual BOOL OnRightClick</b>(<b>short</b> <i>X</i>, <b>short</b><i>Y</i>,
+<b>short</b><i>PosX</i>, <b>short</b> <i>PosY</i>, <strong>Point</strong><i>
+pos</i>); </p>
+
+<p><b>Paramètres</b> </p>
+
+<p><i>X&nbsp;&nbsp;&nbsp; </i>Indique la cellule X (0 &lt; X
+&lt;= <i>NbCelluleX</i>) </p>
+
+<p><i>Y&nbsp;&nbsp;&nbsp; </i>Indique la cellule Y (0 &lt; Y
+&lt;= <i>NbCelluleY</i>) </p>
+
+<p><i>PosX&nbsp;&nbsp;&nbsp; </i>Indique la position x de la
+cellule sélectionnée dans la grille. </p>
+
+<p><i>PosY&nbsp;&nbsp;&nbsp; </i>Indique la position y de la
+cellule sélectionnée dans la grille. </p>
+
+<p><i>pos </i>Indique la position x et y de la souris. Utilisée
+pour le redimensionnement de la grille.</p>
+
+<p><b>Remarque</b> </p>
+
+<p>Cette fonction signal un click droit de la souris à la classe
+héritière. </p>
+
+<hr size="3" align="left">
+
+<p><a name="CObj_Gril::MousePosition"></a><font size="5">CObj_Gril::OnMousePosition</font>
+<br>
+<b>virtual BOOL OnMousePosition</b>(<b>short</b> <i>X</i>, <b>short</b><i>Y</i>,
+<b>short</b><i>PosX</i>, <b>short</b> <i>PosY</i>, <strong>Point</strong><i>
+pos</i>); </p>
+
+<p><b>Paramètres</b> </p>
+
+<p><i>X&nbsp;&nbsp;&nbsp; </i>Indique la cellule X (0 &lt; X
+&lt;= <i>NbCelluleX</i>) </p>
+
+<p><i>Y&nbsp;&nbsp;&nbsp; </i>Indique la cellule Y (0 &lt; Y
+&lt;= <i>NbCelluleY</i>) </p>
+
+<p><i>PosX&nbsp;&nbsp;&nbsp; </i>Indique la position x de la
+cellule sélectionnée dans la grille. </p>
+
+<p><i>PosY&nbsp;&nbsp;&nbsp; </i>Indique la position y de la
+cellule sélectionnée dans la grille. </p>
+
+<p><i>pos </i>Indique la position x et y de la souris. Utilisée
+pour le redimensionnement de la grille.</p>
+
+<p><b>Remarque</b> </p>
+
+<p>Cette fonction indique la cellule pointé par la souris. </p>
+
+<hr size="3" align="left">
+
+<p><a name="CObj_Gril::SetNbLines"></a><font size="5">CObj_Gril::SetNbLines</font>
+<br>
+<b>short SetNbLines</b>(<b>short</b> <i>NbLines</i>, <strong>bool</strong>
+<em>fUpdate</em>=false); </p>
+
+<p><b>Valeur de retour</b> </p>
+
+<p>0 si NbLines est inférieur ou égale à 0; sinon 1; </p>
+
+<p><b>Paramètres</b> </p>
+
+<p><i>NbLines&nbsp;&nbsp;&nbsp; </i>Indique le nouveau nombre de
+lignes de la grille; </p>
+
+<p><em>fUpdate </em>Flag déterminant le raffraichissement
+immédiat à l'écran du changement du nombre de lignes (true) ou
+pas de rafraichissement (false).</p>
+
+<p><b>Remarque</b> </p>
+
+<p>Réinitialise le nombre de lignes de la grille. </p>
+
+<hr>
+
+<p><a name="CObj_Gril::SetNbRows"><font size="5">CObj_Gril::SetNbRows</font></a><font
+size="5"><br>
+</font><strong>short SetNbRows</strong>(<strong>short</strong> <em>NbRows</em>,
+<strong>bool</strong> <em>fUpdate</em>=false)</p>
+
+<p><b>Valeur de retour</b> </p>
+
+<p>0 si NbRows est inférieur ou égale à 0; sinon 1; </p>
+
+<p><b>Paramètres</b> </p>
+
+<p><i>NbRows&nbsp;&nbsp;&nbsp; </i>Indique le nouveau nombre de
+lignes de la grille; </p>
+
+<p><em>fUpdate </em>Flag déterminant le raffraichissement
+immédiat à l'écran du changement du nombre de colonnes (true)
+ou pas de rafraichissement (false).</p>
+
+<p><b>Remarque</b> </p>
+
+<p>Réinitialise le nombre de lignes de la grille.</p>
+
+<hr>
+
+<p><a name="CObj_Gril::MAJPosScrollH"></a><font size="5">CObj_Gril::MAJPosScrollH</font>
+<br>
+<b>short MAJPosScrollH</b>(<b>UINT</b> <i>nSBCode</i>, <b>UINT</b><i>nPos</i>,
+<b>short</b><i>flag</i>); </p>
+
+<p><b>Valeur de retour</b> </p>
+
+<p>La nouvelle position de l'ascenseur; -1 si pas bougé. </p>
+
+<p><b>Paramètres</b> </p>
+
+<p>nSBCode&nbsp;&nbsp;&nbsp; Valeur de la fonction OnHScroll. </p>
+
+<p>nPos&nbsp;&nbsp;&nbsp; Valeur de la fonction OnHScroll. </p>
+
+<p>flag&nbsp;&nbsp;&nbsp; Spécifie à l'objet de mettre à jour
+la nouvelle position (1). Sinon, le programme devra s'en occupé
+(0). </p>
+
+<p><b>Remarque</b> </p>
+
+<p>Appelée dans la fonction OnHScroll(), elle sert à mettre à
+jour la position de la grille lorsque l'ascenseur horizontal à
+bougé. </p>
+
+<hr size="3" align="left">
+
+<p><a name="CObj_Gril::MAJPosScrollV"></a><font size="5">CObj_Gril::MAJPosScrollV</font>
+<br>
+<b>short MAJPosScrollV</b>(<b>UINT</b> <i>nSBCode</i>, <b>UINT</b><i>nPos</i>,
+<b>short</b><i>flag</i>); </p>
+
+<p><b>Valeur de retour</b> </p>
+
+<p>La nouvelle position de l'acsenceur; -1 si pas bougé. </p>
+
+<p><b>Paramètres</b> </p>
+
+<p>nSBCode&nbsp;&nbsp;&nbsp; Valeur de la fonction OnVScroll. </p>
+
+<p>nPos&nbsp;&nbsp;&nbsp; Valeur de la fonction OnVScroll. </p>
+
+<p>flag&nbsp;&nbsp;&nbsp; Spécifie à l'objet de mettre à jour
+la nouvelle position (1). Sinon, le programme devra s'en occupé
+(0). </p>
+
+<p><b>Remarque</b> </p>
+
+<p>Appelée dans la fonction OnVScroll(), elle sert à mettre à
+jour la position de la grille lorsque l'ascenseur horizontal à
+bougé. </p>
+
+<hr size="3" align="left">
+
+<p><a name="CObj_Gril::SetCoupureCalend"></a><font size="5">CObj_Gril::SetCoupureCalend</font>
+<br>
+<b>void SetCoupureCalend(char * </b><i>TabCoupures</i><b>);</b> </p>
+
+<p><b>Paramètres</b> </p>
+
+<p><i>TabCoupures&nbsp;&nbsp;&nbsp; </i>Tableau contenant la
+disposition des coupures dans l'objet <a href="obj_cal.htm">Calendrier</a>.
+</p>
+
+<p><b>Remarque</b> </p>
+
+<p>Initialise les coupures verticales de la grille pour aligner
+les semaines en noir avec celle du calendrier. Les jours sont en
+gris si STYLE_GRIL_PIGE. </p>
+
+<hr size="3" align="left">
+
+<p><a name="CObj_Gril::SetSelectionCalend"></a><font size="5">CObj_Gril::SetSelectionCalend</font>
+<br>
+<b>void SetSelectionCalend</b>(<b>CByteArray</b> * <i>Selections</i>);
+</p>
+
+<p><b>Paramètres</b> </p>
+
+<p><i>Selections&nbsp;&nbsp;&nbsp; </i>Tableau contenant les
+valeurs (0 ou positif) de la sélection dans l'objet <a
+href="obj_cal.htm">Calendrier</a>. </p>
+
+<p><b>Remarque</b> </p>
+
+<p>Indique la sélection de l'objet calendrier à l'objet grille.
+</p>
+
+<hr size="3" align="left">
+
+<p><a name="CObj_Cal::PaintToPrinter"></a><font size="5">CObj_Gril::PaintToPrinter</font>
+<br>
+<b>void</b> <i>PaintToPrinter</i>(<b>CDC</b> * <i>pDC</i>, <b>CFont</b>
+* <i>pFont</i>=NULL); </p>
+
+<p><b>Paramètres</b> </p>
+
+<p><i>pDC&nbsp;&nbsp;&nbsp; </i>Device context de l'imprimante. </p>
+
+<p><i>pFont&nbsp;&nbsp;&nbsp; </i>Font utilisé pour les libellé
+de la grille. </p>
+
+<p><b>Remarque</b> </p>
+
+<p>Cette fonction est a appelé après l'initialisation de
+l'objet. Il faut fournir un CRect dans la fonction <b>Initialisation</b>.
+Elle informe l'objet que le device context est maintenant celui
+de l'imprimante. </p>
+
+<hr size="3" align="left">
+
+<p><a name="CObj_Cal::OnCurseurMoved"></a><font size="5">CObj_Gril::OnCurseurMoved</font>
+<br>
+<b>virtual BOOL OnCurseurMoved</b>(<b>short</b> <i>NumCurs</i>, <b>short</b><i>Pos</i>);
+</p>
+
+<p><b>Paramètres</b> </p>
+
+<p><i>NumCurs&nbsp;&nbsp;&nbsp; </i>Identifie le numéro du
+curseur </p>
+
+<p><i>Pos&nbsp;&nbsp;&nbsp; </i>Indique la nouvelle position du
+curseur </p>
+
+<p><b>Remarque</b> </p>
+
+<p>Appelé lorsqu'un curseur se déplace ou a été déplacé. </p>
+
+<hr size="3" align="left">
+
+<p><a name="CObj_Cal::OnSelectionChanged"></a><font size="5">CObj_Gril::OnSelectionChanged</font>
+<br>
+<b>virtual BOOL OnSelectionChanged</b>(<b>CByteArray</b> * <i>Selections</i>);
+</p>
+
+<p><b>Paramètres</b> </p>
+
+<p><i>Selections&nbsp;&nbsp;&nbsp; </i>Tableau de <i>NbCases </i>contenant
+la sélection click gauche sous la forme de &gt;=1 (sélection)
+et de 0 (pas de sélection); NULL si inchangée. </p>
+
+<p><b>Remarque</b> </p>
+
+<p>Appelé lorsque l'une des sélections a changé. </p>
+
+<hr>
+
+<p><font size="2">Création&nbsp; : Jeudi 28 mai 1998</font> <br>
+<font size="2">Dernière modification : Mercredi 24 novembre 1999</font>
+<br>
+<font size="2">VLF</font> </p>
+</body>
+</html>
