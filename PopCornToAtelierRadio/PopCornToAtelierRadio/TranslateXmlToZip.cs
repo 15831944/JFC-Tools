@@ -7,19 +7,35 @@ using System.IO.Packaging;
 using System.IO;
 using System.Xml.Serialization;
 using System.Xml;
+using System.Windows.Forms;
 
 namespace PopCornToAtelierRadio
 {
     class TranslateXmlToZip
     {
+        // Recup Nom du plan Modif ALAIN
+        public string GetNameFilePlanXml(string NamePlan, short NoPlan, short Etat)
+        {
+            string NameFileXml = "T" + Etat.ToString() + "No" + NoPlan + "_" + NamePlan.Replace('/', '-').Replace(':', '_') + ".xml";
+
+            return NameFileXml;
+        }
+
+        // Recup Name RelationShip Modif ALAIN
+        public string GetNameRelationShip(string Name)
+        {
+            return System.Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(Name)).Replace('+', '-').Replace('/', '_').Trim('=');
+        }
+
         public TranslateXmlToZip (String _filePath, Study _study)
         {
             // il n'y a  pas de correspondance directe entre les objets provenant de la version Accenture et la version nouveau format
 
-            
-            Package l_package = ZipPackage.Open(_filePath, FileMode.Create);
- 
+            // Passe en mode Fichier Zip (etd ou cmp)
+            String _filePathEtd = _filePath.Replace(".xml", ".etd");
 
+            Package l_package = ZipPackage.Open(_filePathEtd, FileMode.Create);
+ 
             //********** cartouche **************//
             Cartouche l_cartouche = this.ConvertCartouche(_study.Root_Cartouche);
 
@@ -32,15 +48,31 @@ namespace PopCornToAtelierRadio
 
             if (_study.Root_Plans.Plan != null)
             {
-                String l_filePlan = GestionXmlAtelierRadio.PlanFileNameProvider.Provide(_study.Root_Plans.Plan.Occupe, _study.Root_Plans.Plan.NrPlan);
+                // Construction du nom fichier plan avec n° plan
+                // String l_filePlan = GestionXmlAtelierRadio.PlanFileNameProvider.Provide(_study.Root_Plans.Plan.Occupe, _study.Root_Plans.Plan.NrPlan);
+                String NamePlan = _study.Root_Plans.Plan.Nom; // "P1";
+                String l_filePlan = GetNameFilePlanXml(NamePlan, _study.Root_Plans.Plan.NrPlan, _study.Root_Plans.Plan.Occupe);
+                
+                // Le nom de plan n'a pas d'importance, il y en a toujours qu'un seul
+                //String l_filePlan = "P1.xml";
+
+                // Modif ALAIN
+                // Nom pour RelationShip (convertit tous les caracteres interdits Xml , juste pour la relationship)
+                string NameRelationShip = GetNameRelationShip(l_filePlan);
+
                 Uri zipPartUriPlan = PackUriHelper.CreatePartUri(new Uri(l_filePlan, UriKind.Relative));
+
+                l_package.CreateRelationship(zipPartUriPlan, TargetMode.Internal, "plan", NameRelationShip);
+
+
                 PackagePart planpart = l_package.CreatePart(zipPartUriPlan, System.Net.Mime.MediaTypeNames.Text.Xml, CompressionOption.Normal);
 
-                PlansPlan l_plan = this.ConvertPlan(_study.Root_Plans.Plan);
+                PlansPlan l_plan = this.ConvertPlan(_study.Root_Cartouche.Information, _study.Root_Plans.Plan);
 
                 XmlSerializer serializerPlan = new XmlSerializer(typeof(PlansPlan));
                 serializerPlan.Serialize(planpart.GetStream(), l_plan);
-                l_package.CreateRelationship(cartouchePart.Uri, TargetMode.Internal, "plan", l_filePlan);
+
+                // l_package.CreateRelationship(cartouchePart.Uri, TargetMode.Internal, "plan", l_filePlan);
 
 
 
@@ -54,8 +86,10 @@ namespace PopCornToAtelierRadio
          
         }
 
-        private PlansPlan ConvertPlan(StudyRoot_PlansPlan _plan)
+        private PlansPlan ConvertPlan(StudyRoot_CartoucheInformation _cartoucheinfo, StudyRoot_PlansPlan _plan)
         {
+            Int32 NbSpotNonConvertis = 0;
+
             PlansPlan l_plan = new PlansPlan();
             l_plan.NrEtude = _plan.NrEtude;
             l_plan.NrPlan = _plan.NrPlan;
@@ -127,29 +161,45 @@ namespace PopCornToAtelierRadio
 
              for (int i = 0; i < l_nbSpot; ++i)
              {
-                 l_plan.Data.blocSpots.Spots[i] = new PlansPlanDataBlocSpotsSP();
-                 l_plan.Data.blocSpots.Spots[i].Reg = _plan.Data.blocSpots.SpotsPresents[i].Reg;
-                 l_plan.Data.blocSpots.Spots[i].Sta = _plan.Data.blocSpots.SpotsPresents[i].Sta;
-                 l_plan.Data.blocSpots.Spots[i].No = (ushort)_plan.Data.blocSpots.SpotsPresents[i].Num;
-                 l_plan.Data.blocSpots.Spots[i].Hor = _plan.Data.blocSpots.SpotsPresents[i].Hor;
-                 l_plan.Data.blocSpots.Spots[i].Jr = _plan.Data.blocSpots.SpotsPresents[i].Jr;
-                 l_plan.Data.blocSpots.Spots[i].NoStr = _plan.Data.blocSpots.SpotsPresents[i].NoStr;
-                 l_plan.Data.blocSpots.Spots[i].NoFor = _plan.Data.blocSpots.SpotsPresents[i].NoFor;
-                 l_plan.Data.blocSpots.Spots[i].ValAtt = _plan.Data.blocSpots.SpotsPresents[i].ValAtt;
-                 l_plan.Data.blocSpots.Spots[i].Attr = _plan.Data.blocSpots.SpotsPresents[i].Attr;
+                 // Modif ALAIN
+                 if (_plan.Data.blocSpots.SpotsPresents[i] != null)
+                 {
+                     l_plan.Data.blocSpots.Spots[i] = new PlansPlanDataBlocSpotsSP();
+                     l_plan.Data.blocSpots.Spots[i].Reg = _plan.Data.blocSpots.SpotsPresents[i].Reg;
+                     l_plan.Data.blocSpots.Spots[i].Sta = _plan.Data.blocSpots.SpotsPresents[i].Sta;
+                     l_plan.Data.blocSpots.Spots[i].No = (ushort)_plan.Data.blocSpots.SpotsPresents[i].Num;
+                     l_plan.Data.blocSpots.Spots[i].Hor = _plan.Data.blocSpots.SpotsPresents[i].Hor;
+                     l_plan.Data.blocSpots.Spots[i].Jr = _plan.Data.blocSpots.SpotsPresents[i].Jr;
+                     l_plan.Data.blocSpots.Spots[i].NoStr = _plan.Data.blocSpots.SpotsPresents[i].NoStr;
+                     l_plan.Data.blocSpots.Spots[i].NoFor = _plan.Data.blocSpots.SpotsPresents[i].NoFor;
+                     l_plan.Data.blocSpots.Spots[i].ValAtt = _plan.Data.blocSpots.SpotsPresents[i].ValAtt;
+                     l_plan.Data.blocSpots.Spots[i].Attr = _plan.Data.blocSpots.SpotsPresents[i].Attr;
+
+                     // Ajout des prix nets CO/FO
+                     l_plan.Data.blocSpots.Spots[i].PrixCONetGB = 0;
+                     l_plan.Data.blocSpots.Spots[i].PrixCONetGBSpecified = true;
+
+                     l_plan.Data.blocSpots.Spots[i].PrixFONetGB = 0;
+                     l_plan.Data.blocSpots.Spots[i].PrixFONetGBSpecified = true;
+                 }
+                 else
+                 {
+                     // Modif ALAIN
+                     /*
+                     string ErrSpot = "Spot non converti : no " + (i+1); 
+                     MessageBox.Show(ErrSpot);
+                     */
+                     NbSpotNonConvertis++;
+                 }
              }
 
+             if (NbSpotNonConvertis > 0)
+             {
+                 string ErrSpot = "Fichier : " + _cartoucheinfo.Nom + ".xml (" + NbSpotNonConvertis + " spots non convertis)";
+                 MessageBox.Show(ErrSpot);
+             }
 
-            
-            
-
-
-
-
-
-
-                return l_plan;
-
+             return l_plan;
         }
 
         private Cartouche ConvertCartouche(StudyRoot_Cartouche _cart)
@@ -175,7 +225,9 @@ namespace PopCornToAtelierRadio
 
             l_cartouche.Ech = new CartoucheEch();
             l_cartouche.Ech.Devise = _cart.Echange.Devise;
-            l_cartouche.Ech.TauxEchange = (System.Decimal)6.55956983566284;
+
+            // l_cartouche.Ech.TauxEchange = (System.Decimal)6.55956983566284;
+            l_cartouche.Ech.TauxEchange = (double)6.55956983566284;
 
             l_cartouche.Div = new CartoucheDiv();
             l_cartouche.Div.NrMaillage = _cart.Divers.NrMaillage;
@@ -268,6 +320,21 @@ namespace PopCornToAtelierRadio
             l_cartouche.blocEtuOpt.OptEdit.fPleinEcran = _cart.blocEtudeOption.OptionEdition.fPleinEcran;
             l_cartouche.blocEtuOpt.OptEdit.fCoeffMemo = _cart.blocEtudeOption.OptionEdition.fCoeffMemo;
 
+            // Ajout Bloc Campagne pour Reference
+            // Création objet bloc Campagne
+	        l_cartouche.blocCamp = new CartoucheBlocCamp();
+
+	        // Informations générales campagne
+	        //
+	        // Créer objet Reference Campagne
+	        l_cartouche.blocCamp.RefCamp = new CartoucheBlocCampRefCamp();
+	        l_cartouche.blocCamp.RefCamp.Libelle =  "REF POPCORN";
+	
+	        // Créer objet reference Origine Campagne
+	        l_cartouche.blocCamp.RefOrgCamp = new CartoucheBlocCampRefOrgCamp();
+            l_cartouche.blocCamp.RefOrgCamp.Libelle = "REFORG POPCORN";
+
+            // Infomations Tarif
             l_cartouche.blocTar = new CartoucheBlocTar();
             l_cartouche.blocTar.BaseFormat = _cart.blocTarification.BaseFormat;
             l_cartouche.blocTar.AssietteHon = 0; //non traité  dans les versions que l'on converti

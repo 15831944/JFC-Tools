@@ -45,6 +45,7 @@
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.m_journal = new System.Windows.Forms.ListBox();
             this.journal = new System.Windows.Forms.Label();
+            this.BtnRazSel = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
@@ -118,6 +119,7 @@
             // groupBox2
             // 
             resources.ApplyResources(this.groupBox2, "groupBox2");
+            this.groupBox2.Controls.Add(this.BtnRazSel);
             this.groupBox2.Controls.Add(this.listFilePop);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.TabStop = false;
@@ -139,6 +141,7 @@
             // progressBar1
             // 
             resources.ApplyResources(this.progressBar1, "progressBar1");
+            this.progressBar1.BackColor = System.Drawing.Color.White;
             this.progressBar1.Name = "progressBar1";
             // 
             // m_journal
@@ -151,6 +154,13 @@
             // 
             resources.ApplyResources(this.journal, "journal");
             this.journal.Name = "journal";
+            // 
+            // BtnRazSel
+            // 
+            resources.ApplyResources(this.BtnRazSel, "BtnRazSel");
+            this.BtnRazSel.Name = "BtnRazSel";
+            this.BtnRazSel.UseVisualStyleBackColor = true;
+            this.BtnRazSel.Click += new System.EventHandler(this.BtnRazSel_Click);
             // 
             // Form1
             // 
@@ -182,7 +192,7 @@
         private System.Windows.Forms.TextBox textOut;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TextBox pathAR;
+        public System.Windows.Forms.TextBox pathAR;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.ListBox listFilePop;
@@ -190,6 +200,7 @@
         private System.Windows.Forms.ProgressBar progressBar1;
         private System.Windows.Forms.ListBox m_journal;
         private System.Windows.Forms.Label journal;
+        private System.Windows.Forms.Button BtnRazSel;
 
     }
 }

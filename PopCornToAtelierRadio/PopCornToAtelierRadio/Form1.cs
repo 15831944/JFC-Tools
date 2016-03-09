@@ -160,5 +160,10 @@ namespace PopCornToAtelierRadio
         }
 
         private Config m_config;
+
+        private void BtnRazSel_Click(object sender, EventArgs e)
+        {
+            listFilePop.ClearSelected();
+        }
     }
 }

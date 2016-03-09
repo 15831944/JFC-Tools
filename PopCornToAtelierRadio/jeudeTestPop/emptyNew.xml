@@ -1,0 +1,60 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Study FileVersion="1.0">
+  <Root_Cartouche>
+    <Information Nom="emptyNew" NumeroEtu="4226" Etape="1" />
+    <Date DateDebut="-1" DateFin="-1" DateDebut010180="0" DateFin010180="0" DateEtudeValide="12028" DateHeureExtraitConsolide="0" />
+    <Periode DateDebutPeriodeA="12026" NbSemainePeriodeA="5" />
+    <Echange TauxEchange="6,55957" Devise="1" />
+    <Divers NrMaillage="0" AgrJours="31326400000" PlageHoraire="1000000010000000100000000000100000001000000000000000100000001000000000000000100000000000000000001" />
+    <blocCoches EtatSel="6626666666000000000000000" />
+    <blocVagues>
+      <VagueUtil />
+      <VagueRefSource>
+        <Vague Code="15" />
+      </VagueRefSource>
+    </blocVagues>
+    <blocStations>
+      <GroupeStation Nom="A" NumeroMaillage="1">
+        <Stations CodeReg="0">
+          <Station Code="107" />
+        </Stations>
+        <LienTarifs CodeReg="0">
+          <RegStaTarif TypeEvolutif="0" Date="0" NumeroTarif="0" CodeTarif="NSTRD" TxMGaranti="0" />
+        </LienTarifs>
+      </GroupeStation>
+    </blocStations>
+    <blocListeStaPasHeure />
+    <blocListeStaPasEcran />
+    <blocListeCorGrp />
+    <blocFormats BaseFormat="0">
+      <Format Index="0" Duree="30" NbFois="1" />
+    </blocFormats>
+    <blocFormatsSpecifs />
+    <blocStrates>
+      <Strate Index="0" Numero="0" NbFois="1" />
+    </blocStrates>
+    <blocEtudeOption>
+      <OptionClassement fClasMixte="0" />
+      <OptionPoids PoidsPui="100" PoidsEco="100" PoidsAff="0" />
+      <OptionAffinite NrCibleBaseAff="-1" fAffIndice="1" />
+      <OptionTarif PTarifFacial="1" />
+      <OptionCalcul fMoyenneGRP="2" fPenetration="0" ValueMoyenneGRP="0000000000000000000000000000000000000000000000000" />
+      <OptionEdition fLigneGrisee="1" fPleinEcran="0" fCoeffMemo="0" />
+    </blocEtudeOption>
+    <blocCampagne>
+      <RefCampagne Libelle="" />
+      <RefOrgCampagne Libelle="" />
+      <InfoCampagne />
+      <BlocCampagneCentrale />
+      <BlocCampagneRegie />
+      <BlocCampagneStation />
+      <BlocOffreProduit />
+      <Frontiere FrontiereDebut="0" FrontiereFin="0" />
+    </blocCampagne>
+    <blocTarification BaseFormat="0">
+      <blocPrixBiem />
+    </blocTarification>
+    <blocTitrePerso LgTitPersonalise="0" TitPersonalise="" />
+    <blocSpecifYacast NivNomenTar="0" IdNomenTar="0" />
+  </Root_Cartouche>
+</Study>

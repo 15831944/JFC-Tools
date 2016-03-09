@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Ar>C:\Data\source\ARAD2005.RIB-risque\AT_R_Debug</Ar>
+  <In>C:\Data\specs\popcorn</In>
+  <Out>C:\Data\specs\out</Out>
+</Config>

@@ -309,7 +309,7 @@ public partial class StudyRoot_CartoucheInformation {
     
     private string nomField;
     
-    private ushort numeroEtuField;
+    private long numeroEtuField;
     
     private byte etapeField;
     
@@ -326,7 +326,7 @@ public partial class StudyRoot_CartoucheInformation {
     
     /// <remarks/>
     [System.Xml.Serialization.XmlAttributeAttribute()]
-    public ushort NumeroEtu {
+    public long NumeroEtu {
         get {
             return this.numeroEtuField;
         }
@@ -1679,7 +1679,7 @@ public partial class StudyRoot_PlansPlan {
     
     private object parametresField;
     
-    private ushort nrEtudeField;
+    private long nrEtudeField;
     
     private byte nrPlanField;
     
@@ -1755,7 +1755,7 @@ public partial class StudyRoot_PlansPlan {
     
     /// <remarks/>
     [System.Xml.Serialization.XmlAttributeAttribute()]
-    public ushort NrEtude {
+    public long NrEtude {
         get {
             return this.nrEtudeField;
         }

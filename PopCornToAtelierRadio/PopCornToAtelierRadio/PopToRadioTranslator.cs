@@ -44,7 +44,7 @@ namespace PopCornToAtelierRadio
             campagne eltPop = this.GetPopFile(_nameFile);
             if (eltPop != null)
             {
-                this.FillStudyAccordingtoPopFile(l_nameEtu,eltPop);
+                this.FillStudyAccordingtoPopFile(_path, l_nameEtu, eltPop);
 
                 String l_nameFile;
                 XmlSerializer serializer = new XmlSerializer(m_study.GetType());
@@ -110,9 +110,9 @@ namespace PopCornToAtelierRadio
             }
 
         }
-        private void FillStudyAccordingtoPopFile(String _nameEtu ,campagne eltPop)
+        private void FillStudyAccordingtoPopFile(String _pathRadio, String _nameEtu, campagne eltPop)
         {
-            this.CreateEmptyStudy(_nameEtu);
+            this.CreateEmptyStudy(_pathRadio, _nameEtu);
 
             m_study.Root_Cartouche.Date.DateEtudeValide = this.GetDate(this.UintToDateTime(eltPop.start));
             m_study.Root_Cartouche.Periode.DateDebutPeriodeA = this.GetDate(this.GetMonday(this.UintToDateTime(eltPop.start)));
@@ -143,29 +143,44 @@ namespace PopCornToAtelierRadio
             }
             //stations
             int nbStation = eltPop.version.periode.station.Count();
+            int l_nbStationValide = 0;
+            // index pop | index de boucle AR
+            Dictionary<int, int> l_indexValidPop = new Dictionary<int, int>();
+            for (int i = 0; i < nbStation; ++i)
+            {
+                if (m_correspIndexStations.ContainsKey(eltPop.version.periode.station[i].code))
+                {
+                    l_indexValidPop.Add(i, l_nbStationValide);
+                    ++l_nbStationValide;
+                }
+                // this.AddStation(m_study,);
+            }
+
+
             m_study.Root_Cartouche.blocStations.GroupeStation.Stations = new StudyRoot_CartoucheBlocStationsGroupeStationStations[1];
             m_study.Root_Cartouche.blocStations.GroupeStation.Stations[0] = new StudyRoot_CartoucheBlocStationsGroupeStationStations();
             m_study.Root_Cartouche.blocStations.GroupeStation.Stations[0].CodeReg = 0;
-            m_study.Root_Cartouche.blocStations.GroupeStation.Stations[0].Station = new StudyRoot_CartoucheBlocStationsGroupeStationStationsStation[nbStation];
+            m_study.Root_Cartouche.blocStations.GroupeStation.Stations[0].Station = new StudyRoot_CartoucheBlocStationsGroupeStationStationsStation[l_nbStationValide];
 
             m_study.Root_Plans.Plan.Data.blocRegions.Region = new StudyRoot_PlansPlanDataBlocRegionsRegion(); // a changer
-            m_study.Root_Plans.Plan.Data.blocRegions.Region.Station = new StudyRoot_PlansPlanDataBlocRegionsRegionStation[nbStation];
+            m_study.Root_Plans.Plan.Data.blocRegions.Region.Station = new StudyRoot_PlansPlanDataBlocRegionsRegionStation[l_nbStationValide];
 
 
             //tarif liés à la station
             m_study.Root_Cartouche.blocStations.GroupeStation.LienTarifs = new StudyRoot_CartoucheBlocStationsGroupeStationLienTarifs[1];
             m_study.Root_Cartouche.blocStations.GroupeStation.LienTarifs[0] = new StudyRoot_CartoucheBlocStationsGroupeStationLienTarifs();
             m_study.Root_Cartouche.blocStations.GroupeStation.LienTarifs[0].CodeReg = 0;
-            m_study.Root_Cartouche.blocStations.GroupeStation.LienTarifs[0].RegStaTarif = new StudyRoot_CartoucheBlocStationsGroupeStationLienTarifsRegStaTarif[nbStation];
-
+            m_study.Root_Cartouche.blocStations.GroupeStation.LienTarifs[0].RegStaTarif = new StudyRoot_CartoucheBlocStationsGroupeStationLienTarifsRegStaTarif[l_nbStationValide];
             for (int i = 0; i < nbStation; ++i)
             {
                 if (m_correspIndexStations.ContainsKey(eltPop.version.periode.station[i].code))
                 {
-                    this.AddStation(m_correspIndexStations[eltPop.version.periode.station[i].code], i, eltPop.version.periode.station[i].code);
+                    this.AddStation(m_correspIndexStations[eltPop.version.periode.station[i].code], l_indexValidPop[i], eltPop.version.periode.station[i].code);
+   
                 }
                 // this.AddStation(m_study,);
             }
+            
 
             int nbSpots = eltPop.version.spot.Count();
             m_study.Root_Plans.Plan.Data.blocSpots.SpotsPresents = new StudyRoot_PlansPlanDataBlocSpotsSP[nbSpots];
@@ -420,7 +435,10 @@ namespace PopCornToAtelierRadio
             m_study.Root_Plans.Plan = new StudyRoot_PlansPlan();
 
             m_study.Root_Plans.Plan.NrEtude = m_study.Root_Cartouche.Information.NumeroEtu;
-            m_study.Root_Plans.Plan.Occupe = 1;
+
+            // Modif Alain  (on chargera le plan directement dans le creuset) 
+            // m_study.Root_Plans.Plan.Occupe = 1;
+            m_study.Root_Plans.Plan.Occupe = 0;
             m_study.Root_Plans.Plan.NrPlan = 1;
 
             m_study.Root_Plans.Plan.Nom = _namePlan;
@@ -455,7 +473,7 @@ namespace PopCornToAtelierRadio
         }
 
 
-         private void CreateEmptyStudy(String l_nameEtu)
+         private void CreateEmptyStudy(String _pathRadio, String l_nameEtu)
          {
              m_study = new Study();
 
@@ -465,7 +483,32 @@ namespace PopCornToAtelierRadio
 
              l_cartouche.Information = new StudyRoot_CartoucheInformation();
              l_cartouche.Information.Nom = Path.GetFileNameWithoutExtension(l_nameEtu);
-             l_cartouche.Information.NumeroEtu = 0; //a changer
+
+             // Modif ALAIN (lecture Compteur en cours et récup dernier n° étude dispo)
+             String m_nameCompteur = _pathRadio + "\\USER\\UFR02\\Compteur.etu"; //"C:\\ARTRADIO\\USER\\UFR02\\Compteur.etu";
+
+             //String m_nameCompteur = 
+
+             using (var streamCpt = new FileStream(m_nameCompteur, FileMode.Open, FileAccess.Read))
+             {
+                 using (var readerCpt = new BinaryReader(streamCpt))
+                 {
+                     l_cartouche.Information.NumeroEtu = readerCpt.ReadInt32();
+                 }
+             }
+             // l_cartouche.Information.NumeroEtu = 0; //a changer
+
+             // Ecriture nouveau n° etude max Modif ALAIN
+             using (FileStream stream = new FileStream(m_nameCompteur, FileMode.Create))
+             {
+                 using (var l_writ = new BinaryWriter(stream))
+                 {
+                     l_writ.Write(l_cartouche.Information.NumeroEtu + 1);
+                     l_writ.Close();
+                 }
+             }
+
+
              l_cartouche.Information.Etape = 1; //1 etude
 
              l_cartouche.Date = new StudyRoot_CartoucheDate();
