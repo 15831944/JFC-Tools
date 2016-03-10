@@ -487,27 +487,33 @@ namespace PopCornToAtelierRadio
              // Modif ALAIN (lecture Compteur en cours et récup dernier n° étude dispo)
              String m_nameCompteur = _pathRadio + "\\USER\\UFR02\\Compteur.etu"; //"C:\\ARTRADIO\\USER\\UFR02\\Compteur.etu";
 
-             //String m_nameCompteur = 
-
-             using (var streamCpt = new FileStream(m_nameCompteur, FileMode.Open, FileAccess.Read))
+             if (File.Exists(m_nameCompteur))
              {
-                 using (var readerCpt = new BinaryReader(streamCpt))
+                 using (var streamCpt = new FileStream(m_nameCompteur, FileMode.Open, FileAccess.Read))
                  {
-                     l_cartouche.Information.NumeroEtu = readerCpt.ReadInt32();
+                     using (var readerCpt = new BinaryReader(streamCpt))
+                     {
+                         l_cartouche.Information.NumeroEtu = readerCpt.ReadInt32();
+                     }
+                 }
+                 // l_cartouche.Information.NumeroEtu = 0; //a changer
+
+                 // Ecriture nouveau n° etude max Modif ALAIN
+                 using (FileStream stream = new FileStream(m_nameCompteur, FileMode.Create))
+                 {
+                     using (var l_writ = new BinaryWriter(stream))
+                     {
+                         l_writ.Write(l_cartouche.Information.NumeroEtu + 1);
+                         l_writ.Close();
+                     }
                  }
              }
-             // l_cartouche.Information.NumeroEtu = 0; //a changer
-
-             // Ecriture nouveau n° etude max Modif ALAIN
-             using (FileStream stream = new FileStream(m_nameCompteur, FileMode.Create))
+             else
              {
-                 using (var l_writ = new BinaryWriter(stream))
-                 {
-                     l_writ.Write(l_cartouche.Information.NumeroEtu + 1);
-                     l_writ.Close();
-                 }
+                 // Fichier compteur non trouvé --> Init à 0
+                 l_cartouche.Information.NumeroEtu = 0;
              }
-
+                
 
              l_cartouche.Information.Etape = 1; //1 etude
 
