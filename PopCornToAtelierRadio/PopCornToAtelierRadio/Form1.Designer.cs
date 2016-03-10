@@ -40,12 +40,12 @@
             this.button1 = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.BtnRazSel = new System.Windows.Forms.Button();
             this.listFilePop = new System.Windows.Forms.ListBox();
             this.button4 = new System.Windows.Forms.Button();
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.m_journal = new System.Windows.Forms.ListBox();
             this.journal = new System.Windows.Forms.Label();
-            this.BtnRazSel = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
@@ -124,6 +124,13 @@
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.TabStop = false;
             // 
+            // BtnRazSel
+            // 
+            resources.ApplyResources(this.BtnRazSel, "BtnRazSel");
+            this.BtnRazSel.Name = "BtnRazSel";
+            this.BtnRazSel.UseVisualStyleBackColor = true;
+            this.BtnRazSel.Click += new System.EventHandler(this.BtnRazSel_Click);
+            // 
             // listFilePop
             // 
             resources.ApplyResources(this.listFilePop, "listFilePop");
@@ -154,13 +161,6 @@
             // 
             resources.ApplyResources(this.journal, "journal");
             this.journal.Name = "journal";
-            // 
-            // BtnRazSel
-            // 
-            resources.ApplyResources(this.BtnRazSel, "BtnRazSel");
-            this.BtnRazSel.Name = "BtnRazSel";
-            this.BtnRazSel.UseVisualStyleBackColor = true;
-            this.BtnRazSel.Click += new System.EventHandler(this.BtnRazSel_Click);
             // 
             // Form1
             // 

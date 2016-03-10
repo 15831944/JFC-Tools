@@ -489,6 +489,7 @@ namespace PopCornToAtelierRadio
 
              if (File.Exists(m_nameCompteur))
              {
+                 // Lecture n° étude disponible en cours
                  using (var streamCpt = new FileStream(m_nameCompteur, FileMode.Open, FileAccess.Read))
                  {
                      using (var readerCpt = new BinaryReader(streamCpt))
@@ -496,8 +497,7 @@ namespace PopCornToAtelierRadio
                          l_cartouche.Information.NumeroEtu = readerCpt.ReadInt32();
                      }
                  }
-                 // l_cartouche.Information.NumeroEtu = 0; //a changer
-
+                 
                  // Ecriture nouveau n° etude max Modif ALAIN
                  using (FileStream stream = new FileStream(m_nameCompteur, FileMode.Create))
                  {
@@ -514,7 +514,7 @@ namespace PopCornToAtelierRadio
                  l_cartouche.Information.NumeroEtu = 0;
              }
                 
-
+             // Par défaut c'est une étude
              l_cartouche.Information.Etape = 1; //1 etude
 
              l_cartouche.Date = new StudyRoot_CartoucheDate();

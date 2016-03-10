@@ -161,9 +161,19 @@ namespace PopCornToAtelierRadio
 
         private Config m_config;
 
+        // Vide ou réinitailise la sélection des fichiers à convertir
         private void BtnRazSel_Click(object sender, EventArgs e)
         {
-            listFilePop.ClearSelected();
+            if (listFilePop.SelectedItems.Count > 0)
+            {
+                // Vire toute la sélection en cours
+                listFilePop.ClearSelected();
+            }
+            else
+            {
+                // On sélectionne la totalité des fichiers
+                UpdateListBox();
+            }
         }
     }
 }
