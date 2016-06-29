@@ -282,7 +282,7 @@ short CTomjob::LierSource()
 							for(int c=0;c<FicAux->m_NbCas[s][j][p];c++){
 								if(FicAux->m_TabProba[s][j][p][c].Proba<=0 ||
 									FicAux->m_TabProba[s][j][p][c].Proba>1000){
-									AfxMessageBox("Erreur dans le fichier AUX: une proba est fausse");
+									AfficheErreur("Erreur dans le fichier AUX: une proba est fausse");
 								}
 								else {
 									V[FicAux->m_TabProba[s][j][p][c].NrIndiv]=1;
@@ -295,7 +295,7 @@ short CTomjob::LierSource()
 					touche=0;
 					for(i=0;i<NbIndiv;i++)if(V[i])touche+=T->CoeffExCible[Src][i];
 					txt.Format("station: %d\nAsymptote sur la cible: %.2f",FicAux->m_NrStation[s],100*touche/total);
-					AfxMessageBox(txt);
+					AfficheErreur(txt);
 				}	
 				tele=radio=touche=0;
 				for(i=0;i<NbIndiv;i++){
@@ -304,7 +304,7 @@ short CTomjob::LierSource()
 					if(Vradio[i])radio+=T->CoeffExCible[Src][i];
 				}
 				txt.Format("Asymptote radio: %.2f\nAsymptote tele: %.2f\nAsymptote radio+tele: %.2f",100*radio/total,100*tele/total,100*touche/total);
-				AfxMessageBox(txt);
+				AfficheErreur(txt);
 
 
 				delete [] V;
@@ -373,7 +373,7 @@ short CTomjob::LierSource()
 		}
 	}
 	LoadDefaultProba();
-	if(fMessage)AfxMessageBox("PB dans le calcul:\nAu moins un support n'est pas trouvé dans le Panel");
+	if(fMessage)AfficheErreur("PB dans le calcul:\nAu moins un support n'est pas trouvé dans le Panel");
 
 	return(0);
 #endif
@@ -495,7 +495,7 @@ AvantApresTrouve:
 		// ici ça bug si on bosse en multi-source...
 		// pour l'instant on n'a pas le cas
 #ifdef _DEBUG   
-		if(T->NbSource>1)AfxMessageBox("Big Problème dans la fc:\nFindSupportOriginel()");
+		if(T->NbSource>1)AfficheErreur("Big Problème dans la fc:\nFindSupportOriginel()");
 #endif
 
 		GRP=T->PopCibleGRP[0]*GRP/100;
@@ -685,7 +685,7 @@ short CTomjob::ChargerSup0(SLISTESUPPORT *Supports)
 			NbStations++;		// D'origine 1
 			if(NbStations>=NBSTATIONMAX)
 			{
-				AfxMessageBox("Erreur dans la lecture du support: le nombre de station est trop grand !!!");
+				AfficheErreur("Erreur dans la lecture du support: le nombre de station est trop grand !!!");
 				AfxThrowUserException();
 				ASSERT(0);
 				break;

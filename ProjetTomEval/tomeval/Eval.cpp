@@ -39,7 +39,7 @@ CEval::~CEval()
 	m_Tom.LibererSource();
 }
 
-short CEval::LanceEval(HWND hWnd,HWND hWndMaitre,LPCSTR TOMJOB,LPCSTR RESTOM)
+short CEval::LanceEval(HWND hWnd,HWND hWndMaitre,LPCSTR TOMJOB, LPCSTR CIBJOB,LPCSTR RESTOM)
 {
 	if(!CheckDate())return(0);		// Autorisation d'acces
 
@@ -48,20 +48,20 @@ short CEval::LanceEval(HWND hWnd,HWND hWndMaitre,LPCSTR TOMJOB,LPCSTR RESTOM)
 	// vérification de l'état...
 	if(m_EtatTom){
 		if(hWndMaitre>0)::PostMessage(hWndMaitre,MSGTOM_RESTOM_READY,m_EtatTom,0L);
-		else {
-			switch(m_EtatTom){
-				case 1: AfxMessageBox("Le chargement de la vague est en cours ...");	break;
-				case 2: AfxMessageBox("Un calcul est en cours ...");	break;
-				default:AfxMessageBox("m_EtatTom inconnue");	break;
-			}
-		}
+		//else {
+			/*switch(m_EtatTom){
+				case 1: AfficheErreur("Le chargement de la vague est en cours ...");	break;
+				case 2: AfficheErreur("Un calcul est en cours ...");	break;
+				default:AfficheErreur("m_EtatTom inconnue");	break;*/
+			//}
+		//}
 		return(1);
 	}
 
 	m_Tom.m_fBreakDetected=0;
 	m_EtatTom=1; // chargement des sources
 	m_Tom.AlloueStructTomjob();
-	m_Tom.LectureTomjob(TOMJOB,RESTOM,hWndMaitre?hWndMaitre:hWnd);
+	m_Tom.LectureTomjob(TOMJOB, CIBJOB,RESTOM,hWndMaitre?hWndMaitre:hWnd);
 	m_Tom.LierSource();
 	m_EtatTom=2; // calcul des couvertures
 
@@ -70,7 +70,7 @@ short CEval::LanceEval(HWND hWnd,HWND hWndMaitre,LPCSTR TOMJOB,LPCSTR RESTOM)
 	m_Tom.LibereStructTomjob();
 
 	if(m_Tom.m_fBreakDetected){
-		if(hWndMaitre==0)AfxMessageBox("Evaluation BREAKED !");	
+		//if(hWndMaitre==0)AfficheErreur("Evaluation BREAKED !");	
 	}
 	else {
 		if(hWndMaitre>0){
@@ -81,7 +81,7 @@ short CEval::LanceEval(HWND hWnd,HWND hWndMaitre,LPCSTR TOMJOB,LPCSTR RESTOM)
 //			txt.Format("MSGTOM_RESTOM_READY->%d",hWndMaitre);
 //			AfficheMessage(txt);
 		}
-		else AfxMessageBox("L'évaluation est terminée !!!!!");	
+		//else AfficheErreur("L'évaluation est terminée !!!!!");	
 	}
 	if(m_Tom.m_fBreakDetected==2)PostMessage(hWnd,MSGTOM_AUREVOIR,0,0L);
 	m_Tom.m_fBreakDetected=0;
@@ -169,7 +169,7 @@ void CEval::VerifieLeLien(short NrLien)
 	for(i=0;i<m_NrLienAffected.GetSize();i++){
 		if(m_NrLienAffected[i]==NrLien)	return;
 	}
-	//AfxMessageBox("Lien non trouvé");
+	//AfficheErreur("Lien non trouvé");
 	m_NrLienAffected.Add(NrLien);
 }
 
@@ -197,7 +197,7 @@ short CEval::LanceEvalMarginal(short NrLien,HWND hWndMaitre,LPCSTR TOMJOB,LPCSTR
 //	Tom->m_TraceFile.WriteString("AlloueStructTomjob...\n");
 	Tom->AlloueStructTomjob(1,Option==1);
 //	Tom->m_TraceFile.WriteString("AlloueStructTomjob:OK\n");
-	Tom->LectureTomjob(TOMJOB,RESTOM,hWndMaitre,1);
+	Tom->LectureTomjob(TOMJOB,"CIBJOB",RESTOM,hWndMaitre,1);
 //	Tom->m_TraceFile.WriteString("LectureTomjob:OK\n");
 	Tom->LierSource();
 //	Tom->m_TraceFile.WriteString("LierSource:OK\n");
@@ -238,7 +238,7 @@ short CEval::TermineEvalMarginal(short NrLien)
 	Tom=DeleteTomCDZ(NrLien);
 	DeleteLien(NrLien);
 	if(Tom==NULL){
-//		AfxMessageBox("Erreur:Le job de ce lien n'est pas trouvé !");
+//		AfficheErreur("Erreur:Le job de ce lien n'est pas trouvé !");
 		ReplyMessage(0);
 		return(1);
 	}

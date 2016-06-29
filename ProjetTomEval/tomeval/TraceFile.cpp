@@ -34,7 +34,7 @@ void CTraceFile::Open(LPCSTR nomfic)
 	{
 		CString MsgErr;
 		MsgErr.Format("Erreur à l'ouverture du fichier %s ",nomfic);
-		AfxMessageBox(MsgErr);
+		AfficheErreur(MsgErr);
 		return;
 	}
 

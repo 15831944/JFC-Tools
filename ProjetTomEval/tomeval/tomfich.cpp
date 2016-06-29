@@ -45,7 +45,7 @@ void CTomjob::AlloueStructTomjob(char fMarginal,bool fCouverture)
 
 #include <share.h>
 
-short CTomjob::LectureTomjob(LPCSTR NomFicTOMJOB,LPCSTR NomFicRESTOM,HWND hWndMaitre,char fCalculMarginal){
+short CTomjob::LectureTomjob(LPCSTR NomFicTOMJOB,LPCSTR NomFichCIBJOB, LPCSTR NomFicRESTOM, HWND hWndMaitre,char fCalculMarginal){
 
 	AnnuleMemoZoom();
 
@@ -57,6 +57,7 @@ short CTomjob::LectureTomjob(LPCSTR NomFicTOMJOB,LPCSTR NomFicRESTOM,HWND hWndMa
 	m_fCorrigeCoeffEx=0;
 	m_NomFicRESTOM=NomFicRESTOM;
 	m_NomFicTOMJOB=NomFicTOMJOB;
+	m_NomFicCIBJOB = NomFichCIBJOB;
 	m_hWndMaitre=hWndMaitre;
 #ifdef OPTION_CARAT
 	if(fCalculMarginal){
@@ -73,7 +74,7 @@ short CTomjob::LectureTomjob(LPCSTR NomFicTOMJOB,LPCSTR NomFicRESTOM,HWND hWndMa
 #endif
 
 #ifdef OPTION_JFC
-	if(m_NomFicTOMJOB=="TOMJOB"){
+	/*if(m_NomFicTOMJOB=="TOMJOB"){
 		if(fCalculMarginal){
 			m_NomFicTOMJOB.Format("TOMJOB%02d",m_NrLien);
 			m_NomFicRESTOM.Format("RESTOM%02d",m_NrLien);
@@ -84,7 +85,7 @@ short CTomjob::LectureTomjob(LPCSTR NomFicTOMJOB,LPCSTR NomFicRESTOM,HWND hWndMa
 			m_NomFicRESTOM="RESTOM";
 			m_NomFicCIBJOB="CIBJOB";
 		}
-	}
+	}*/
 #endif
 
 #ifdef OPTION_MEDIACONSULT
@@ -105,7 +106,7 @@ char fEcraseResrom=1;
 		if (NULL==(fp_Restom=_fsopen(m_NomFicRESTOM,"wb",_SH_DENYNO))) {
 			CString Error;
 			Error.Format("Effacement du fichier de résultats impossible\nerrno: %d %s",errno,strerror(errno));
-			AfxMessageBox(Error);
+			AfficheErreur(Error);
 		}
 		else fclose(fp_Restom);
 	}
@@ -671,7 +672,7 @@ short CTomjob::LectureTomjobMarginal(char fZoom){
 	if (NULL==(fp_Restom=_fsopen(m_NomFicRESTOM,"wb",_SH_DENYNO))) {
 		CString Error;
 		Error.Format("Effacement du fichier de résultats impossible\nerrno: %d %s",errno,strerror(errno));
-		 AfxMessageBox(Error);
+		 AfficheErreur(Error);
 	}
 	else fclose(fp_Restom);
 
@@ -985,7 +986,7 @@ long CTomjob::EcritureRestom(char fZoom)
 
 	if(m_fQuickJob){
 		if((!T->fJobMarginal) || fZoom){
-			AfxMessageBox("Ce cas n'est pas encore prévu.");
+			AfficheErreur("Ce cas n'est pas encore prévu.");
 			return(1);
 		}
 		float f=(float)(100.0*T->NbIndivT[0]/T->PopCibTotalGRP);
@@ -1006,7 +1007,7 @@ char fEcraseResrom=1;
 	if (NULL==fp_Restom) {
 		CString Error;
 		Error.Format("La création du fichier de résultat est impossible\nerrno: %d %s",errno,strerror(errno));
-		 AfxMessageBox(Error);
+		 AfficheErreur(Error);
 		return(0);
 	}
 
@@ -1133,7 +1134,7 @@ long CTomjob::EcritureRestom_MediaConsultant(char fZoom)
 	if (NULL==fp_Restom) {
 		CString Error;
 		Error.Format("La création du fichier de résultat est impossible\nerrno: %d %s",errno,strerror(errno));
-		 AfxMessageBox(Error);
+		 AfficheErreur(Error);
 		return(0);
 	}
 
@@ -1254,7 +1255,7 @@ long CTomjob::EcritureRestom_Carat(char fZoom)
 #else
 		CString Error;
 		Error.Format("La création du fichier de résultat est impossible\nerrno: %ld",e.m_cause);
-		AfxMessageBox(Error);
+		AfficheErreur(Error);
 #endif   
 		return(0);
 	}
@@ -1718,7 +1719,7 @@ long CTomjob::EcritureRestom_Mediatop(char fZoom)
 #else
 		CString Error;
 		Error.Format("La création du fichier de résultat est impossible\nerrno: %ld",e.m_cause);
-		AfxMessageBox(Error);
+		AfficheErreur(Error);
 #endif   
 		return(0);
 	}

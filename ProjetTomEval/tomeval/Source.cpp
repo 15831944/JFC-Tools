@@ -5,6 +5,9 @@
 #include "stdafx.h"
 //#include "tomeval.h"
 #include "Source.h"
+#include <iostream>
+#include <fstream>
+ 
 
 #ifdef _DEBUG
 #undef THIS_FILE
@@ -36,7 +39,7 @@ short CSource::LoadSource(LPCSTR NomRepSource)
 {
 	if(m_fSourceLoaded){
 		if(m_NomRepSource==NomRepSource)return(0);
-		AfxMessageBox("BUG: Objet CSource MONOSOURCE pour l'instand !");
+		AfficheErreur("BUG: Objet CSource MONOSOURCE pour l'instand !");
 		FreeSource();
 	}
 	

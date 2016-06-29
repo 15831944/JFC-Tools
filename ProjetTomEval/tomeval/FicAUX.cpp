@@ -39,7 +39,7 @@ short CFicAUX::LoadVague(LPCSTR pCheminVague,LPCSTR pCodeVague,HWND hWndMaitre)
 	if(!FicAUX.Open(NomFic,CFile::modeRead  | CFile::typeBinary, &e ) )
 	{
 		MsgErr.Format("Erreur à l'ouverture du fichier %s ",NomFic);
-		AfxMessageBox(MsgErr);
+		AfficheErreur(MsgErr);
 		return(1);
 	}
 
@@ -114,7 +114,7 @@ short CFicAUX::LoadVague(LPCSTR NomFic,HWND hWndMaitre)
 	if(!FicAUX.Open(NomFic,CFile::modeRead  | CFile::typeBinary, &e ) )
 	{
 		MsgErr.Format("Erreur à l'ouverture du fichier %s ",NomFic);
-		AfxMessageBox(MsgErr);
+		AfficheErreur(MsgErr);
 		return(1);
 	}
 
@@ -239,7 +239,7 @@ short CFicAUX::TrouveProbas(short NrStation,short CodeHoraire,short HorairePassa
 		if(m_NrStation[s]==NrStation)break;
 	}
 	if(s>=m_NbStation){
-		AfxMessageBox("ERREUR: Station non trouvée");
+		AfficheErreur("ERREUR: Station non trouvée");
 		ASSERT(0);
 		return(1);
 	}
@@ -253,7 +253,7 @@ short CFicAUX::TrouveProbas(short NrStation,short CodeHoraire,short HorairePassa
 #endif
 	}
 	if(j>=m_NbJour[s]){
-		AfxMessageBox("ERREUR: Jour non trouvé");
+		AfficheErreur("ERREUR: Jour non trouvé");
 		return(1);
 	}
 
@@ -272,7 +272,7 @@ short CFicAUX::TrouveProbas(short NrStation,short CodeHoraire,short HorairePassa
 	}
 	
 	if(p>=m_NbPlage[s][j]){
-		AfxMessageBox("ERREUR: Plage horaire non trouvée");
+		AfficheErreur("ERREUR: Plage horaire non trouvée");
 		return(1);
 	}
 

@@ -33,7 +33,7 @@ short CFicTbl::OpenFile(LPCSTR aNomFic,char aMode)
 {
 
 	if(m_fFileOpened!=0){
-		AfxMessageBox("OpenFile() sur un fichier déjà ouvert ???");
+		AfficheErreur("OpenFile() sur un fichier déjà ouvert ???");
 		return(1);
 	}
 
@@ -53,7 +53,7 @@ short CFicTbl::OpenFile(LPCSTR aNomFic,char aMode)
 
 	if(!r){
 		MsgErr.Format("Erreur à l'ouverture du fichier %s ",aNomFic);
-		AfxMessageBox(MsgErr);
+		AfficheErreur(MsgErr);
 		return(1);
 	}
 
@@ -76,7 +76,7 @@ short CFicTbl::FindStar()
 	do{
 		if(!m_FicTbl.ReadString(m_BuffLine,TAILLEBUFFLINE)){
 			MsgErr.Format("Erreur à la recherche de * dans %s ",m_NomFic);
-			AfxMessageBox(MsgErr);
+			AfficheErreur(MsgErr);
 			return(0);
 		}
 		m_NroLigne++;
@@ -93,7 +93,7 @@ short CFicTbl::FindHash()
 	do{
 		if(!m_FicTbl.ReadString(m_BuffLine,TAILLEBUFFLINE)){
 			MsgErr.Format("Erreur à la recherche de * dans %s ",m_NomFic);
-			AfxMessageBox(MsgErr);
+			AfficheErreur(MsgErr);
 			return(0);
 		}
 		m_NroLigne++;
@@ -152,7 +152,7 @@ short CFicTbl::SetLineFormat(short Nb0,short Nb1,short Nb2,short Nb3,short Nb4,s
 	if(m_NbField!=0) delete [] m_Pos;
 
 	if(Nb0==0){
-		AfxMessageBox("Erreur dans la commande CFicTbl::SetLineFormat");
+		AfficheErreur("Erreur dans la commande CFicTbl::SetLineFormat");
 		return(1);
 	}
 	if(Nb1==0)m_NbField=1;
@@ -184,13 +184,13 @@ short CFicTbl::ReadLine(void)
 	CString MsgErr;
 	
 	if(m_NbField==0){
-		AfxMessageBox("SetFormatLine() indispensable dans fc CFicTbl::ReadLine");
+		AfficheErreur("SetFormatLine() indispensable dans fc CFicTbl::ReadLine");
 		return(1);
 	}
 	memset(m_BuffLine, 0, TAILLEBUFFLINE);
 	if(!m_FicTbl.ReadString(m_BuffLine,TAILLEBUFFLINE)){
 		MsgErr.Format("Impossible de lire la ligne %d",m_NroLigne);
-		AfxMessageBox(MsgErr);
+		AfficheErreur(MsgErr);
 		return(1);
 	}
 	m_NroLigne++;

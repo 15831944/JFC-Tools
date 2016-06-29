@@ -39,7 +39,7 @@ short CFicIND::LoadVague(LPCSTR NomFic,int NbIndiv)
 	{
 		CString MsgErr;
 		MsgErr.Format("Erreur à l'ouverture du fichier %s ",NomFic);
-		AfxMessageBox(MsgErr);
+		AfficheErreur(MsgErr);
 		return(1);
 	}
 	

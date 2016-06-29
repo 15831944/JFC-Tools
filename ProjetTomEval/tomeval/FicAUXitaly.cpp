@@ -38,7 +38,7 @@ short CFicAUXitaly::LoadVague(LPCSTR NomFic ,HWND hWndMaitre,CDWordArray * NrRub
 	{
 		CString MsgErr;
 		MsgErr.Format("Erreur à l'ouverture du fichier %s ",NomFic);
-		AfxMessageBox(MsgErr);
+		AfficheErreur(MsgErr);
 		return(1);
 	}
 	
@@ -102,7 +102,7 @@ short CFicAUXitaly::LoadVague(LPCSTR NomFic ,HWND hWndMaitre,CDWordArray * NrRub
 
 	if(pb)
 	{
-		AfxMessageBox("pb dans CFicAUXitaly::LoadVague");
+		AfficheErreur("pb dans CFicAUXitaly::LoadVague");
 		ASSERT(0);
 	}
 

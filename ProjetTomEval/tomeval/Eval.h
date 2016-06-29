@@ -24,7 +24,8 @@ public:
 	int GetNbLienAffecte();
 	CEval();
 	virtual ~CEval();
-	short LanceEval(HWND hWnd,HWND hWndMaitre,LPCSTR TOMJOB,LPCSTR RESTOM);
+
+	short LanceEval(HWND hWnd,HWND hWndMaitre,LPCSTR TOMJOB, LPCSTR CIBJOB, LPCSTR RESTOM);
 	short LanceEvalMarginal(short NrLien,HWND hWndMaitre,LPCSTR TOMJOB,LPCSTR RESTOM,long Option);
 	short LanceEvalMarginal(CTomjob * Tom,bool fCalculMonoSource=0);
 	short TermineEvalMarginal(short NrLien);

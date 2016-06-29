@@ -172,12 +172,12 @@ long CFicVague::GetNbIndiv(short NrIndexVague)
 
 	NbRec=m_Vague.GetSize();
 	if(NrIndexVague>=NbRec){
-		AfxMessageBox("Erreur dans le numéro de la vague");
+		AfficheErreur("Erreur dans le numéro de la vague");
 		return(0);
 	}
 	R=(Record *)m_Vague[NrIndexVague];
 	if(!R->Occupe){
-		AfxMessageBox("Cette vague n'est pas autorisée");
+		AfficheErreur("Cette vague n'est pas autorisée");
 		return(0);
 	}
 	return(R->NbIndividu);
@@ -191,12 +191,12 @@ LPCSTR CFicVague::GetCodeVague(short NrIndexVague)
 
 	NbRec=m_Vague.GetSize();
 	if(NrIndexVague>=NbRec){
-		AfxMessageBox("Erreur dans le numéro de la vague");
+		AfficheErreur("Erreur dans le numéro de la vague");
 		return(0);
 	}
 	R=(Record *)m_Vague[NrIndexVague];
 	if(!R->Occupe){
-		AfxMessageBox("Cette vague n'est pas autorisée");
+		AfficheErreur("Cette vague n'est pas autorisée");
 		return(0);
 	}
 	return(R->Code);

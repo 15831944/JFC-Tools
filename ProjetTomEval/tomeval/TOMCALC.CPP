@@ -124,7 +124,7 @@ void CTomjob::EvaluerMonteCarlo(short p,char fZoom)
 			if(RubricaMainFrame==0)
 			{
 				ASSERT(0);
-				AfxMessageBox("Il manque des Rubricas dans le fichier .COD");
+				AfficheErreur("Il manque des Rubricas dans le fichier .COD");
 				return;
 			}
 
@@ -135,7 +135,7 @@ void CTomjob::EvaluerMonteCarlo(short p,char fZoom)
 			if(!m_FicAuxItaly->m_MapRubrica.Lookup(RubricaMainFrame,idxrub))
 			{
 				ASSERT(0);
-				AfxMessageBox("Il manque des Rubricas dans le fichier .COD");
+				AfficheErreur("Il manque des Rubricas dans le fichier .COD");
 				return;
 			}
 
@@ -323,7 +323,7 @@ void CTomjob::EvaluerMonteCarlo(short p,char fZoom)
 	if(pbrubrica)
 	{
 		ASSERT(0);
-		AfxMessageBox("Il manque des Rubricas dans le fichier .COD");
+		AfficheErreur("Il manque des Rubricas dans le fichier .COD");
 	}
 }
 
@@ -1705,8 +1705,8 @@ void CTomjob::EvaluerSousPlan(short sp,short src,char fCalculMarginal,char fZoom
 							for(ub=0;ub<=T->NbFoisToucheMax;ub++){
 								u=ux+ub;
 								if(u>T->NbFoisToucheMax)u=T->NbFoisToucheMax;
-								//if(VBx[ux]<0)AfxMessageBox("VBx[ux]");
-								//if(B[ub]<0)AfxMessageBox("B[ub]");
+								//if(VBx[ux]<0)AfficheErreur("VBx[ux]");
+								//if(B[ub]<0)AfficheErreur("B[ub]");
 								VBmacro[u]+=VBx[ux]*B[ub];
 							}
 						}
@@ -1802,8 +1802,8 @@ void CTomjob::EvaluerSousPlan(short sp,short src,char fCalculMarginal,char fZoom
 							for(ub=0;ub<=T->NbFoisToucheMax;ub++){
 								u=ux+ub;
 								if(u>T->NbFoisToucheMax)u=T->NbFoisToucheMax;
-								//if(VBx[ux]<0)AfxMessageBox("VBx[ux]");
-								//if(B[ub]<0)AfxMessageBox("B[ub]");
+								//if(VBx[ux]<0)AfficheErreur("VBx[ux]");
+								//if(B[ub]<0)AfficheErreur("B[ub]");
 								VBmacro[u]+=VBx[ux]*B[ub];
 							}
 						}

@@ -137,14 +137,16 @@
     <PlatformToolset>v140</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseOfMfc>Static</UseOfMfc>
     <PlatformToolset>v100</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
-    <UseOfMfc>Static</UseOfMfc>
+    <UseOfMfc>false</UseOfMfc>
     <PlatformToolset>v100</PlatformToolset>
+    <CharacterSet>
+    </CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release Pologne|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -1153,8 +1155,8 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
-      <OutputFile>..\bin\tomeval.exe</OutputFile>
-      <TargetMachine>MachineX64</TargetMachine>
+      <OutputFile>..\bin\tomeval.dll</OutputFile>
+      <TargetMachine>MachineX86</TargetMachine>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -1197,7 +1199,8 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
-      <OutputFile>..\bin\tomeval.exe</OutputFile>
+      <OutputFile>
+      </OutputFile>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release Mediatop|Win32'">
@@ -1527,6 +1530,7 @@
     <ClCompile Include="tomfich.cpp" />
     <ClCompile Include="tomsourc.cpp" />
     <ClCompile Include="TraceFile.cpp" />
+    <ClCompile Include="WrapperEval.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="tomeval.rc" />
@@ -1554,6 +1558,7 @@
     <ClInclude Include="tomevalDlg.h" />
     <ClInclude Include="tomprot.h" />
     <ClInclude Include="TraceFile.h" />
+    <ClInclude Include="WrapperEval.h" />
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="res\tomeval.ico" />

@@ -91,7 +91,7 @@ short CFicVagueCIB::LoadPoidsCible(short NrCible,long * &CoeffEx)
 	short i;
 	for(i=0;i<m_NbCible;i++)if(m_NrCible[i]==NrCible)break;
 	if(i>=m_NbCible){
-		AfxMessageBox("Numéro de cible inconnue");
+		AfficheErreur("Numéro de cible inconnue");
 		return(1);
 	}
 
@@ -100,7 +100,7 @@ short CFicVagueCIB::LoadPoidsCible(short NrCible,long * &CoeffEx)
 	{
 		CString MsgErr;
 		MsgErr.Format("Erreur à l'ouverture du fichier %s ",m_NomFicPDX);
-		AfxMessageBox(MsgErr);
+		AfficheErreur(MsgErr);
 		return(1);
 	}
 
@@ -117,7 +117,7 @@ short CFicVagueCIB::LoadPoidsCibleIdx(short NrIndex,long * &CoeffEx)
 	{
 		CString MsgErr;
 		MsgErr.Format("Erreur à l'ouverture du fichier %s ",m_NomFicPDX);
-		AfxMessageBox(MsgErr);
+		AfficheErreur(MsgErr);
 		return(1);
 	}
 

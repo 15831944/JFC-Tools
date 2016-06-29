@@ -188,14 +188,14 @@ short CFicLBX::GetNrModaliteIndiv(short NrCritere,char * NrClasseVent,short NbIn
 
 	idx=GetNrIndex(NrCritere);
 	if(idx<0){
-		AfxMessageBox("Erreur: Index du critère invalide");
+		AfficheErreur("Erreur: Index du critère invalide");
 		return(1);
 	}
 	
 	if(!FicCRC.Open(m_NomFicCRC,CFile::modeRead  | CFile::typeBinary, &e ) )
 	{
 		MsgErr.Format("Erreur à l'ouverture du fichier %s ",m_NomFicCRC);
-		AfxMessageBox(MsgErr);
+		AfficheErreur(MsgErr);
 		return(1);
 	}
 	

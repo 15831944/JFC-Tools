@@ -581,7 +581,7 @@ public:
 	 ~CTomjob();
 	 CTomjob();
 	short LierSource();
-	short LectureTomjob(LPCSTR NomFicTOMJOB,LPCSTR NomFicRESTOM,HWND hWndMaitre=0,char fCalculMarginal=0);
+	short LectureTomjob(LPCSTR NomFicTOMJOB, LPCSTR NomFicCibJob,LPCSTR NomFicRESTOM,HWND hWndMaitre=0,char fCalculMarginal=0);
 	long EcritureRestom(char fZoom=0);
 
 	void AlloueStructTomjob(char fMarginal=0,bool fCouverture=0);

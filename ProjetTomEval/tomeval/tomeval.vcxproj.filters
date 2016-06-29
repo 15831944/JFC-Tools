@@ -76,6 +76,9 @@
     <ClCompile Include="TraceFile.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="WrapperEval.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="tomeval.rc">
@@ -147,6 +150,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="TraceFile.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="WrapperEval.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

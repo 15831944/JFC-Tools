@@ -226,7 +226,7 @@ void CTomevalDlg::OnPaint()
 UINT LanceJobBackround( LPVOID pParam )
 {
 	CTomevalDlg	*pDlg=(CTomevalDlg *)pParam;
-	pDlg->m_Eval.LanceEval(pDlg->m_hWnd,theApp.m_hWndMaitre,theApp.m_NomFicTOMJOB,theApp.m_NomFicRESTOM);
+	pDlg->m_Eval.LanceEval(pDlg->m_hWnd,theApp.m_hWndMaitre,theApp.m_NomFicTOMJOB,"CIBJOB",theApp.m_NomFicRESTOM);
     return 0;    // thread completed successfully
 }
 
@@ -373,7 +373,7 @@ void CTomevalDlg::OnBouton_TomCDZReady()
 	long l=0;
 	if(m_fQuickJob)l=1;
 	SendMessage(MSGTOM_TOMCDZ_READY,m_NrLien,l);
-	AfxMessageBox("yo");
+	AfficheErreur("yo");
 	
 }
 
@@ -394,7 +394,7 @@ void CTomevalDlg::OnBouton_Addspot()
 {
 	UpdateData(1);
 	SendMessage(MSGTOM_ADDSPOT,m_NrLien,0L);
-	AfxMessageBox("yo");
+	AfficheErreur("yo");
 }
 
 
@@ -402,7 +402,7 @@ void CTomevalDlg::OnBouton_AddZoom()
 {
 	UpdateData(1);
 	SendMessage(MSGTOM_ADDZOOM,m_NrLien,0L);
-	AfxMessageBox("yo");
+	AfficheErreur("yo");
 }
 
 void CTomevalDlg::OnBouton_GetNrLien() 
@@ -422,7 +422,7 @@ BOOL CTomevalDlg::PreCreateWindow(CREATESTRUCT& cs)
 
 void CTomevalDlg::OnBoutonEvaluation() 
 {
-	MessageBox("Lancement de l'évaluation....");	
+//	MessageBox("Lancement de l'évaluation....");	
 	PostMessage(MSGTOM_TOMJOB_READY,0,0L);
 }
 

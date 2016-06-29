@@ -75,7 +75,7 @@ int CConvert::GetNrCible(LPCSTR Lib)
 	for(int i=0;i<m_Data.GetSize();i++){
 		if(!strcmp(m_Data[i].m_Libelle,Lib))return(m_Data[i].m_Convert);
 	}
-	AfxMessageBox("Le numéro de la cible n'est pas trouvé dans la table de convertion.");
+	AfficheErreur("Le numéro de la cible n'est pas trouvé dans la table de convertion.");
 	return(1);
 }
 
@@ -85,6 +85,6 @@ int CConvert::GetNrCible(int NrCible)
 	for(int i=0;i<m_Data.GetSize();i++){
 		if(m_Data[i].m_Numero==NrCible)return(m_Data[i].m_Convert);
 	}
-	AfxMessageBox("Le numéro de la cible n'est pas trouvé dans la table de convertion.");
+	AfficheErreur("Le numéro de la cible n'est pas trouvé dans la table de convertion.");
 	return(1);
 }
