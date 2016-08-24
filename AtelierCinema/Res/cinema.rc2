@@ -1,0 +1,17 @@
+//
+// CINEMA.RC2 - resources Microsoft Visual C++ does not edit directly
+//
+
+#ifdef APSTUDIO_INVOKED
+	#error this file is not editable by Microsoft Visual C++
+#endif //APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+// Add manually edited resources here...
+// Ruse pour ajouter l'icone de visu du pgrm
+AAA ICON DISCARDABLE "res\\cinema.ico"
+// Ruse pour ajouter l'icone de visu du pgrm
+#include "OBJ_BTN.RCO" 
+
+/////////////////////////////////////////////////////////////////////////////

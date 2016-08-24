@@ -1,0 +1,121 @@
+differences 32/16 bits
+
+Cette fonction plus;
+
+De plus les durées et les binômes sont en dur dans le programme
+
+BOOL LitCritereGeofractionnaire(void)
+{
+	FILE			*Fic;
+	short b,c;
+
+	if((Fic=fopen("SOURCE\\VAGUE.GEO","rt"))==NULL){
+		AfficheErreur("PB ouverture fichier VAGUE.GEO");
+	    return(TRUE);
+	}
+	fgets(buffer,BUFFERSIZE,Fic);// commentaire
+	fgets(buffer,BUFFERSIZE,Fic);// critère géof.
+	EpplucheBuffer();
+	NrCritereGeo=atoi(cellule[0]);
+	fgets(buffer,BUFFERSIZE,Fic);// commentaire
+	fgets(buffer,BUFFERSIZE,Fic);// Nb classe géo
+	EpplucheBuffer();
+	NbClasseGeo=atoi(cellule[0]);
+
+	allocation(NbClasseGeoSupp,sizeof(short)*NBSUPPORT);
+	allocation(NrClasseGeoSupp,sizeof(short*)*NBSUPPORT);
+	for(b=0;b<NBSUPPORT;b++){
+		fgets(buffer,BUFFERSIZE,Fic);// commentaire
+		fgets(buffer,BUFFERSIZE,Fic);// Nb classe
+		EpplucheBuffer();
+		NbClasseGeoSupp[b]=atoi(cellule[0]);
+		allocation(NrClasseGeoSupp[b],sizeof(short)*NbClasseGeoSupp[b]);
+		fgets(buffer,BUFFERSIZE,Fic);// Nr classe géo
+		EpplucheBuffer();
+		for(c=0;c<NbClasseGeoSupp[b];c++){
+			NrClasseGeoSupp[b][c]=atoi(cellule[c]);
+		}
+	}
+	fclose(Fic);
+	return(0); //pas d'erreur
+}
+
+
+v3.1 le 23/08/00
+-----
+Modification de libellés (binôme->Cine park)
+Intégration des tarifs (en euros) et des saisonalités 2001
+Prise en compte du calendrier commercial 2001
+Prise en compte de l'Euro (menu paramètre/Unité monétaire/FB ou Euro)
+Correction des décimales dans le print
+Base Nationa/Régional dans le print
+Nouveau logo RMB dans le print
+Modification de la fonction de calcul des couvertures lors d'utilisation de saisonalités
+Amélioration de l'attente pendant optimisation:
+	- barre de progression
+	- bouton Stopper 
+
+v3.1b (le 4/9/2000)
+-------------------
+Correction d'un bug aléatoire cause variable mal initialisée
+
+v3.1c (le 5/9/2000)
+-------------------
+Unité monétaire est remplacé par Devise
+cines parks est remplacé par cine parks
+Correction du bug qui perdait 0.01 euro dans certains tarifs
+Correction du bug qui perdait 0.01 dans certains coefficients de saisonnalité
+Intégration de nouveaux tarifs
+Ajout de "(estimations RMB)" dans le cartouche lorsque la saisonnalité est active
+Correction de libellés dans la boîte optimisation
+Utilisation du symbole euro (€)
+"Semi-alter" devient "Semi-alternatif"
+
+v3.1d (le 11/9/2000)
+--------------------
+Verision client sans tarifs 2001 et sans moteur
+
+v3.1e (le 26/10/2000)
+---------------------
+CIM 1999-2000
+nouveaux tarifs 20001
+optimisation plus rapide, sans la couverture mémorisée
+
+v3.1f (7/12/00)
+---------------
+Correction bug fc export
+
+v3.1g (13/12/00)
+----------------
+Libellé Cible et Cible 2 dans la boite de résultat performances_2_cibles 
+Correction bug mémorisation cible
+CIM 99-00 dans le print
+
+v3.1h (19/12/00)
+----------------
+Libellé des cibles dans les performances
+
+v3.1i (11/05/01)
+----------------
+bug corrigé: GRP faux avec la saisonalité active
+
+v3.1j (13/09/01)
+----------------
+Intégration du CIM 2000-2001
+Intégartion des tarifs et des modalités 2002
+Purge de la base des années 1997 à 2000 (inclus avec accord véronique brotcorne)
+Modification de la table des binômes:
+Il n'y a que 7 supports à la place de 9 (localités NL et FR sont maintenant livré sous & seul support à la place de é avant)
+L'étude change le critère age et intègre le 12-14 ans donc le dictionnaire est incompatible et les cibles le sont aussi.
+Utilisation des cibles en double flottant à la place de l'entier
+
+
+v3.1k (26/09/01)
+----------------
+Intégration du calendrier commercial
+Euros par défaut pour 2002
+Correction de libellés
+
+
+
+

@@ -1,0 +1,605 @@
+Sexe                          
+Homme                         
+Femme                         
+
+Age de l'interviewé           
+6 ans                         
+7 ans                         
+8 ans                         
+9 ans                         
+10 ans                        
+11 ans                        
+12 ans                        
+13 ans                        
+14 ans                        
+15 ans                        
+16 ans                        
+17 ans                        
+18 ans                        
+19 ans                        
+20 ans                        
+21 ans                        
+22 ans                        
+23 ans                        
+24 ans                        
+25 ans                        
+26 ans                        
+27 ans                        
+28 ans                        
+29 ans                        
+30 ans                        
+31 ans                        
+32 ans                        
+33 ans                        
+34 ans                        
+35 ans                        
+36 ans                        
+37 ans                        
+38 ans                        
+39 ans                        
+40 ans                        
+41 ans                        
+42 ans                        
+43 ans                        
+44 ans                        
+45 ans                        
+46 ans                        
+47 ans                        
+48 ans                        
+49 ans                        
+50 ans                        
+51 ans                        
+52 ans                        
+53 ans                        
+54 ans                        
+55 ans                        
+56 ans                        
+57 ans                        
+58 ans                        
+59 ans                        
+60 ans                        
+61 ans                        
+62 ans                        
+63 ans                        
+64 ans                        
+65 ans                        
+66 ans                        
+67 ans                        
+68 ans                        
+69 ans                        
+70 ans                        
+71 ans                        
+72 ans                        
+73 ans                        
+74 ans                        
+75 ans                        
+76 ans                        
+77 ans                        
+78 ans                        
+79 ans                        
+80 ans                        
+81 ans                        
+82 ans                        
+83 ans                        
+84 ans                        
+85 ans                        
+86 ans                        
+87 ans                        
+88 ans                        
+89 ans                        
+90 ans                        
+91 ans                        
+92 ans                        
+93 ans                        
+94 ans                        
+95 ans                        
+96 ans                        
+97 ans                        
+98 ans                        
+99 ans                        
+
+Ménagères                     
+Oui                           
+Non                           
+
+Responsable des achats        
+Oui                           
+Non                           
+
+Profession de l'interviewé    
+Agriculteurs                  
+Artisans,commerçants,Petits pa
+Affaires,Cadres,Professions li
+Professions intermédiaires    
+Employés                      
+Ouvriers                      
+Etudiants                     
+Inactifs                      
+Retraités                     
+
+Departement                   
+Ain                           
+Aisne                         
+Allier                        
+Alpes de Haute Provence       
+Alpes Hautes                  
+Alpes Maritimes               
+Ardèche                       
+Ardennes                      
+Ariège                        
+Aube                          
+Aude                          
+Aveyron                       
+Bouches du Rhône              
+Calvados                      
+Cantal                        
+Charente                      
+Charente Maritime             
+Cher                          
+Corrèze                       
+Corse                         
+Côte d'Or                     
+Côtes du Nord                 
+Creuse                        
+Dordogne                      
+Doubs                         
+Drôme                         
+Eure                          
+Eure et Loir                  
+Finistère                     
+Gard                          
+Garonne Haute                 
+Gers                          
+Gironde                       
+Hérault                       
+Ille et Vilaine               
+Indre                         
+Indre et Loire                
+Isère                         
+Jura                          
+Landes                        
+Loir et Cher                  
+Loire                         
+Loire Haute                   
+Loire Atlantique              
+Loiret                        
+Lot                           
+Lot et Garonne                
+Lozère                        
+Maine et Loire                
+Manche                        
+Marne                         
+Marne Haute                   
+Mayenne                       
+Meurthe et Moselle            
+Meuse                         
+Morbihan                      
+Moselle                       
+Nièvre                        
+Nord                          
+Oise                          
+Orne                          
+Pas de Calais                 
+Puy de dôme                   
+Pyrénées Atlantiques          
+Pyrénées Hautes               
+Pyrénées Orientales           
+Rhin Bas                      
+Rhin Haut                     
+Rhône                         
+Saône Haute                   
+Saône et Loire                
+Sarthe                        
+Savoie                        
+Savoie Haute                  
+Seine                         
+Seine Maritime                
+Seine et Marne                
+Yvelines                      
+Sèvres Deux                   
+Somme                         
+Tarn                          
+Tarn et Garonne               
+Var                           
+Vaucluse                      
+Vendée                        
+Vienne                        
+Vienne Haute                  
+Vosges                        
+Yonne                         
+Territoire de Belfort         
+Essonne                       
+Hauts de Seine                
+Seine Saint Denis             
+Val de Marne                  
+Val d'Oise                    
+
+Region Insee                  
+Ile de France                 
+Champagne-Ardennes            
+Picardie                      
+Haute-Normandie               
+Centre                        
+Nord-Pas de Calais            
+Lorraine                      
+Alsace                        
+Franche-Comté                 
+Basse-Normandie               
+Pays de la Loire              
+Bretagne                      
+Limousin                      
+Auvergne                      
+Poitou-Charentes              
+Aquitaine                     
+Midi-Pyrénées                 
+Bourgogne                     
+Rhône-Alpes                   
+Languedoc-Roussillon          
+Provence-Alpes Côte d'Azur    
+Corse                         
+
+Region Uda                    
+Ile de France                 
+Nord                          
+Est                           
+Bassin Parisien Est           
+Bassin Parisien Ouest         
+Ouest                         
+Sud Ouest                     
+Sud Est                       
+Méditerranée                  
+
+Region Nielsen                
+I - Région Parisienne         
+II - Nord                     
+II - Est                      
+III - Nord                    
+III - Sud                     
+IV - Centre                   
+IV - Est                      
+V - Est                       
+V - Ouest                     
+NSP                           
+
+Habitat                       
+Communes rurales              
+- 20000 habitants             
+20 à 50000 habitants          
+50 à 100000 habitants         
+100 à 200000 habitants        
++100000 sauf Agglo de Paris   
+Agglo de Paris                
+
+Métropoles universitaires     
+Non                           
+Oui                           
+NSP                           
+
+Métropoles régionales         
+Non                           
+Oui                           
+NSP                           
+
+Nombre personnes dans le foyer
+1 personne                    
+2 personnes                   
+3 personnes                   
+4 personnes                   
+5 personnes et plus           
+
+Nombre enfants de - de 15 ans 
+1 enfant                      
+2 enfants                     
+3 enfants                     
+4 enfants                     
+5 enfants                     
+Aucun enfant                  
+
+Nombre d'enfants de - de 6 ans
+1 enfant                      
+2 enfants                     
+3 enfants                     
+4 enfants                     
+5 enfants                     
+Aucun enfant                  
+
+Nombre d'enfants de 6 à 8 ans 
+1 enfant                      
+2 enfants                     
+3 enfants                     
+4 enfants                     
+5 enfants                     
+Aucun enfant                  
+
+Nombre d'enfants de 9 à 10 ans
+1 enfant                      
+2 enfants                     
+3 enfants                     
+4 enfants                     
+5 enfants                     
+Aucun enfant                  
+
+Nombre enfants de 11 à 14 ans 
+1 enfant                      
+2 enfants                     
+3 enfants                     
+4 enfants                     
+5 enfants                     
+Aucun enfant                  
+
+Type d'appel Téléphonique     
+Fixes                         
+Exclusifs mobiles             
+
+Profession du chef de famille 
+Agriculteurs                  
+Artisans,commerçants,Petits pa
+Affaires,Cadres,Professions li
+Professions intermédiaires    
+Employés                      
+Ouvriers                      
+Etudiants                     
+Inactifs                      
+Retraités                     
+
+Equipement TV                 
+Non équipé                    
+Mono équipé                   
+Multi équipé                  
+
+Abonnement Canal+             
+Oui                           
+Non                           
+Nsp                           
+
+Reception TV par cable        
+Oui                           
+Non                           
+
+Possession Micro-Ordinateur   
+Oui                           
+Non                           
+
+Abonné au câble               
+Oui                           
+Non                           
+
+Equipés PVR                   
+Oui                           
+Non                           
+
+Fréq. cinéma 12 derniers mois 
+Oui                           
+Non                           
+Nsp                           
+
+Fréq. cinéma 30 derniers jours
+Oui                           
+Non                           
+Nsp                           
+NSP                           
+
+Fréq. cinéma 7 derniers jours 
+Oui                           
+Non                           
+NSP                           
+
+Nb fréq. cinéma 7 derniers jrs
+1 fois                        
+2 fois                        
+3 fois                        
+4 fois                        
+5 fois                        
+6 fois                        
+7 fois                        
+NSP                           
+
+Agglomération de fréquentation
+Commune rurale                
+Agglo de - de 20000 habitants 
+Agglo De 20 à 50000 habitants 
+Agglo De 50 à 100000 habitants
+Agglo De 100 à 200000 habitant
+Agglo  de plus de 200000 habit
+Agglomération parisienne      
+Nsp                           
+NSP                           
+
+Habitude fréquentation cinéma 
+Plusieurs fois par semaine    
+Une fois par semaine          
+Deux trois fois par semaine   
+Une fois par mois             
+Une fois tous les 2 à 3 mois  
+Une fois tous les 6 mois      
+Une fois par an               
+Moins souvent                 
+NSP                           
+
+Habitude de Fréq. Cinéma UGC  
++fois par semaine dans un UGC 
+1fois par semaine dans un UGC 
+2 à 3fois par mois dans un UGC
+Une fois par mois dans un UGC 
+1fois tous les2-3 mois ds 1UGC
+1fois tous les 6mois ds un UGC
+Une fois par an dans un UGC   
+Moins souvent dans un UGC     
+Jamais dans un cinéma UGC     
+NSP                           
+Autre                         
+NSP                           
+
+Fréquentation cinéma UGC 12DM 
+Oui                           
+Non                           
+Nsp                           
+NSP                           
+
+Fréquentation réseau 7DJ      
+Oui                           
+Non                           
+NSP                           
+
+PMG Total TV                  
+6 à 14 ans                    
+Sans écoute                   
+Petit consommateur            
+Moyen consommateur            
+Gros consommateur             
+
+PMG TF1                       
+6 à 14 ans                    
+Sans écoute                   
+Petit consommateur            
+Moyen consommateur            
+Gros consommateur             
+
+PMG France 2                  
+6 à 14 ans                    
+Sans écoute                   
+Petit consommateur            
+Moyen consommateur            
+Gros consommateur             
+
+PMG France 3                  
+6 à 14 ans                    
+Sans écoute                   
+Petit consommateur            
+Moyen consommateur            
+Gros consommateur             
+
+PMG Canal +                   
+6 à 14 ans                    
+Sans écoute                   
+Petit consommateur            
+Moyen consommateur            
+Gros consommateur             
+
+PMG M6                        
+6 à 14 ans                    
+Sans écoute                   
+Petit consommateur            
+Moyen consommateur            
+Gros consommateur             
+
+PMG Arte                      
+6 à 14 ans                    
+Sans écoute                   
+Petit consommateur            
+Moyen consommateur            
+Gros consommateur             
+
+PMG France 5 (ex La 5e)       
+6 à 14 ans                    
+Sans écoute                   
+Petit consommateur            
+Moyen consommateur            
+Gros consommateur             
+
+PMG TMC / Monte Carlo TMC     
+6 à 14 ans                    
+Sans écoute                   
+Petit consommateur            
+Moyen consommateur            
+Gros consommateur             
+
+PMG France 4                  
+6 à 14 ans                    
+Sans écoute                   
+Petit consommateur            
+Moyen consommateur            
+Gros consommateur             
+
+PMG W9                        
+6 à 14 ans                    
+Sans écoute                   
+Petit consommateur            
+Moyen consommateur            
+Gros consommateur             
+
+PMG Direct 8                  
+6 à 14 ans                    
+Sans écoute                   
+Petit consommateur            
+Moyen consommateur            
+Gros consommateur             
+
+PMG NRJ 12                    
+6 à 14 ans                    
+Sans écoute                   
+Petit consommateur            
+Moyen consommateur            
+Gros consommateur             
+
+PMG NT1                       
+6 à 14 ans                    
+Sans écoute                   
+Petit consommateur            
+Moyen consommateur            
+Gros consommateur             
+
+PMG Gulli                     
+6 à 14 ans                    
+Sans écoute                   
+Petit consommateur            
+Moyen consommateur            
+Gros consommateur             
+
+PMG D17 (ex DIRECT STAR)      
+6 à 14 ans                    
+Sans écoute                   
+Petit consommateur            
+Moyen consommateur            
+Gros consommateur             
+
+PMG HD1                       
+6 à 14 ans                    
+Sans écoute                   
+Petit consommateur            
+Moyen consommateur            
+Gros consommateur             
+
+PMG 6Ter                      
+6 à 14 ans                    
+Sans écoute                   
+Petit consommateur            
+Moyen consommateur            
+Gros consommateur             
+
+PMG RMC découverte HD         
+6 à 14 ans                    
+Sans écoute                   
+Petit consommateur            
+Moyen consommateur            
+Gros consommateur             
+
+PMG Numéro 23                 
+6 à 14 ans                    
+Sans écoute                   
+Petit consommateur            
+Moyen consommateur            
+Gros consommateur             
+
+PMG Autres TV                 
+6 à 14 ans                    
+Sans écoute                   
+Petit consommateur            
+Moyen consommateur            
+Gros consommateur             
+NSP                           
+
+Accès Internet Domicile       
+Oui                           
+Non                           
+
+Fréq. de Connexion Internet   
+Tous les jours                
+Presque tous les jours        
+1 à 2 fois par semaine        
+1 à 3 fois par mois           
+Moins souvent                 
+jamais                        
+Nsp/Refus                     
+NSP                           
+

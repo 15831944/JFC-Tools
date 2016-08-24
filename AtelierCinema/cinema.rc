@@ -1,0 +1,1817 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+#include "secres.h"
+#include "gxresrc.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// French (France) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_FRA)
+#ifdef _WIN32
+LANGUAGE LANG_FRENCH, SUBLANG_FRENCH
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "#include ""secres.h""\r\n"
+    "#include ""gxresrc.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "//#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_FRA)\r\n"
+    "#ifdef _WIN32\r\n"
+    "LANGUAGE 12, 1\r\n"
+    "#pragma code_page(1252)\r\n"
+    "#endif //_WIN32\r\n"
+    "#include ""res\\cinema.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""l.fra\\afxres.rc""          // Standard components\r\n"
+    "#include ""l.fra\\afxprint.rc""        // printing/print preview resources\r\n"
+    "#endif\r\n"
+    "\r\n"
+    "#include ""secres.rc""  //Toolkit ressources\r\n"
+    "#include ""gxres.rc""  //Grid resources \r\n"
+    "\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON    DISCARDABLE     "res\\cinema.ico"
+IDR_CINEMATYPE          ICON    DISCARDABLE     "res\\cinemaDoc.ico"
+IDI_FLECHE              ICON    DISCARDABLE     "res\\Fleche2.ico"
+IDI_FLECHE2             ICON    DISCARDABLE     "res\\Fleche.ico"
+IDI_CIBLE               ICON    DISCARDABLE     "res\\Cible.ico"
+IDI_ICON1               ICON    DISCARDABLE     "res\\icon1.ico"
+IDR_MAINFRAME1          ICON    DISCARDABLE     "res\\idr_main.ico"
+IDI_ICON2               ICON    DISCARDABLE     "res\\icon2.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDR_MAINFRAME           BITMAP  MOVEABLE PURE   "res\\Toolbar.bmp"
+IDB_PATTERN1            BITMAP  DISCARDABLE     "res\\bitmap1.bmp"
+IDR_OUTILS              BITMAP  DISCARDABLE     "res\\toolbar1.bmp"
+IDB_PATTERN2            BITMAP  DISCARDABLE     "res\\pattern2.bmp"
+IDB_PATTERN3            BITMAP  DISCARDABLE     "res\\pattern3.bmp"
+IDB_PATTERN4            BITMAP  DISCARDABLE     "res\\pattern4.bmp"
+IDB_PATTERN5            BITMAP  DISCARDABLE     "res\\pattern5.bmp"
+IDB_PATTERN6            BITMAP  DISCARDABLE     "res\\pattern6.bmp"
+IDB_TOM                 BITMAP  DISCARDABLE     "res\\Tom.bmp"
+IDR_TOOLBARNOTUSED      BITMAP  DISCARDABLE     "res\\toolbarn.bmp"
+IDB_PATTERN7            BITMAP  DISCARDABLE     "res\\pattern7.bmp"
+IDB_PATTERN8            BITMAP  DISCARDABLE     "res\\pattern8.bmp"
+IDB_SPLASH              BITMAP  DISCARDABLE     "res\\Splash Cinéma.bmp"
+IDB_LOGOJFC             BITMAP  DISCARDABLE     "Res\\Logo.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Toolbar
+//
+
+IDR_MAINFRAME TOOLBAR DISCARDABLE  16, 15
+BEGIN
+    BUTTON      ID_FILE_NEW
+    BUTTON      ID_FILE_OPEN
+    BUTTON      ID_FILE_SAVE
+    SEPARATOR
+    BUTTON      IDC_ACTION_COPIER
+    BUTTON      ID_ACTION_COLLER
+    SEPARATOR
+    BUTTON      ID_AFFICHAGE_RPERTOIREDECIBLES
+    SEPARATOR
+    BUTTON      ID_FILE_PRINT2
+    BUTTON      ID_FILE_PRINT_PREVIEW
+    BUTTON      ID_CAMPAGNE_EXPORTER
+    SEPARATOR
+    BUTTON      ID_APP_ABOUT
+END
+
+IDR_OUTILS TOOLBAR DISCARDABLE  16, 15
+BEGIN
+    BUTTON      ID_OUTILS_AJOUTERSUPPRIMER
+    BUTTON      ID_OUTILS_GLISSER
+    SEPARATOR
+    BUTTON      ID_OUTILS_TEMPO
+    BUTTON      ID_OUTILS_GOMMER
+    SEPARATOR
+    BUTTON      ID_OUTILS_DURE
+END
+
+IDR_TOOLBARNOTUSED TOOLBAR DISCARDABLE  16, 15
+BEGIN
+    BUTTON      ID_WINDOW_CASCADE
+    BUTTON      ID_WINDOW_TILE_HORZ
+    BUTTON      ID_PARAMTRES_EXERCICE
+    BUTTON      ID_PARAMTRES_BTA
+    BUTTON      ID_PARAMTRES_DURE
+    BUTTON      ID_PARAMTRES_CIBLE1
+    BUTTON      ID_PARAMTRES_CIBLE2
+    BUTTON      ID_PARAMTRES_BUDGETNET
+    BUTTON      ID_MAINTENANCE_VISUALISATION
+    BUTTON      ID_MAINTENANCE_INTEGRATION
+    BUTTON      ID_PARAMTRES_UNITEMONTAIRE
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDR_MAINFRAME MENU PRELOAD DISCARDABLE 
+BEGIN
+    POPUP "&Campagne"
+    BEGIN
+        MENUITEM "&Nouvelle\tCtrl+N",           ID_FILE_NEW
+        MENUITEM "&Ouvrir...\tCtrl+O",          ID_FILE_OPEN
+        MENUITEM SEPARATOR
+        MENUITEM "C&onfiguration de l'impression...", ID_FILE_PRINT_SETUP
+        MENUITEM SEPARATOR
+        MENUITEM "Fichier récent",              ID_FILE_MRU_FILE1, GRAYED
+        MENUITEM SEPARATOR
+        MENUITEM "&Quitter",                    ID_APP_EXIT
+        MENUITEM SEPARATOR
+    END
+    POPUP "&Affichage"
+    BEGIN
+        MENUITEM "&Barre d'outils standard",    ID_VIEW_TOOLBAR
+        MENUITEM "&Barre d'outils action",      ID_AFFICHAGE_BARREDOUTILSSOURIS
+
+        MENUITEM "&Répertoire de cibles",       ID_AFFICHAGE_RPERTOIREDECIBLES
+
+    END
+    POPUP "&?"
+    BEGIN
+        MENUITEM "&A propos de ...",            ID_APP_ABOUT
+    END
+END
+
+IDR_CINEMATYPE MENU PRELOAD DISCARDABLE 
+BEGIN
+    POPUP "&Campagne"
+    BEGIN
+        MENUITEM "&Nouvelle\tCtrl+N",           ID_FILE_NEW
+        MENUITEM "&Ouvrir...\tCtrl+O",          ID_FILE_OPEN
+        MENUITEM "&Fermer",                     ID_FILE_CLOSE
+        MENUITEM "&Enregistrer\tCtrl+S",        ID_FILE_SAVE
+        MENUITEM "En&registrer sous...",        ID_FILE_SAVE_AS
+        MENUITEM SEPARATOR
+        MENUITEM "&Imprimer...\tCtrl+P",        ID_FILE_PRINT2
+        MENUITEM "Aperçu a&vant impression",    ID_FILE_PRINT_PREVIEW
+        MENUITEM "C&onfiguration de l'impression...", ID_FILE_PRINT_SETUP
+        MENUITEM SEPARATOR
+        MENUITEM "&Exporter",                   ID_CAMPAGNE_EXPORTER
+        MENUITEM "Export &Médiavision",         ID_EXPORT_MEDIAVISION
+        MENUITEM "Export &Screenvision",        ID_EXPORT_SCREENVISION
+        MENUITEM SEPARATOR
+        MENUITEM "Fichier récent",              ID_FILE_MRU_FILE1, GRAYED
+        MENUITEM SEPARATOR
+        MENUITEM "&Quitter",                    ID_APP_EXIT
+    END
+    POPUP "&Paramètres"
+    BEGIN
+        MENUITEM "Exercice",                    ID_PARAMTRES_EXERCICE
+        MENUITEM "Format",                      ID_PARAMTRES_FORMAT
+        MENUITEM "Cible de base",               ID_PARAMTRES_CIBLE1
+        MENUITEM "Béta",                        ID_PARAMTRES_BTA
+        MENUITEM "Budget net",                  ID_PARAMTRES_BUDGETNET
+        MENUITEM "Cine park",                   ID_PARAMTRES_BINME
+        MENUITEM "Option de calcul",            ID_PARAMTRES_OPTIONDECALCUL
+    END
+    POPUP "Outils"
+    BEGIN
+        MENUITEM "Ajouter/Supprimer",           ID_OUTILS_AJOUTERSUPPRIMER
+        MENUITEM "Glisser",                     ID_OUTILS_GLISSER
+        MENUITEM "Tempo",                       ID_OUTILS_TEMPO
+        MENUITEM "Gommer",                      ID_OUTILS_GOMMER
+        MENUITEM "Durée",                       ID_OUTILS_DURE
+    END
+    POPUP "&Action"
+    BEGIN
+        MENUITEM "Copier depuis l'hypothèse active", IDC_ACTION_COPIER
+        MENUITEM "Coller dans l'hypothèse active", ID_ACTION_COLLER
+        POPUP "Recopier dans l'hypothèse active"
+        BEGIN
+            MENUITEM "l'hypothèse 1",               ID_ACTION_RECOPIERDANSLHYPOTHESEACTIVE_LHYPOTHSE1
+
+            MENUITEM "l'hypothèse 2",               ID_ACTION_RECOPIERDANSLHYPOTHESEACTIVE_LHYPOTHSE2
+
+            MENUITEM "l'hypothèse 3",               ID_ACTION_RECOPIERDANSLHYPOTHESEACTIVE_LHYPOTHSE3
+
+            MENUITEM "l'hypothèse 4",               ID_ACTION_RECOPIERDANSLHYPOTHESEACTIVE_LHYPOTHSE4
+
+            MENUITEM "l'hypothèse 5",               ID_ACTION_RECOPIERDANSLHYPOTHESEACTIVE_LHYPOTHSE5
+
+        END
+        MENUITEM SEPARATOR
+        MENUITEM "Valider l'hypothèse active",  IDC_ACTION_VALIDER
+    END
+    POPUP "&Affichage"
+    BEGIN
+        MENUITEM "&Barre d'outils standard",    ID_VIEW_TOOLBAR
+        MENUITEM "&Barre d'outils action",      ID_AFFICHAGE_BARREDOUTILSSOURIS
+
+        MENUITEM "&Répertoire de cibles",       ID_AFFICHAGE_RPERTOIREDECIBLES
+
+    END
+    POPUP "Fe&nêtre"
+    BEGIN
+        MENUITEM "&Cascade",                    ID_WINDOW_CASCADE
+        MENUITEM "&Mosaïque",                   ID_WINDOW_TILE_HORZ
+        MENUITEM "&Réorganiser les icônes",     ID_WINDOW_ARRANGE
+    END
+    POPUP "&?"
+    BEGIN
+        MENUITEM "&A propos de ...",            ID_APP_ABOUT
+    END
+END
+
+IDR_CIBLE MENU DISCARDABLE 
+BEGIN
+    POPUP "&Cible"
+    BEGIN
+        MENUITEM "&Nouvelle",                   ID_CIBLE_NOUVELLE
+        MENUITEM "&Charger",                    ID_CIBLE_CHARGER
+        MENUITEM "&Mémoriser",                  ID_CIBLE_MMORISER
+        MENUITEM "Mémoriser &sous",             ID_CIBLE_MEMOSOUS
+        MENUITEM "&Renommer",                   ID_CIBLE_RENOMER
+        MENUITEM "&supprimer",                  ID_CIBLE_SUPPRIMER
+        MENUITEM SEPARATOR
+        MENUITEM "&Fermer",                     ID_CIBLE_FERMER
+    END
+END
+
+IDR_FILMTYPE MENU PRELOAD DISCARDABLE 
+BEGIN
+    POPUP "&Campagne"
+    BEGIN
+        MENUITEM "&Nouvelle\tCtrl+N",           ID_FILE_NEW
+        MENUITEM "&Ouvrir...\tCtrl+O",          ID_FILE_OPEN
+        MENUITEM "&Fermer",                     ID_FILE_CLOSE
+        MENUITEM "&Enregistrer\tCtrl+S",        ID_FILE_SAVE
+        MENUITEM "En&registrer sous...",        ID_FILE_SAVE_AS
+        MENUITEM SEPARATOR
+        MENUITEM "&Imprimer...\tCtrl+P",        ID_FILE_PRINT2
+        MENUITEM "Aperçu a&vant impression",    ID_FILE_PRINT_PREVIEW
+        MENUITEM "C&onfiguration de l'impression...", ID_FILE_PRINT_SETUP
+        MENUITEM SEPARATOR
+        MENUITEM "&Exporter",                   ID_CAMPAGNE_EXPORTER
+        MENUITEM SEPARATOR
+        MENUITEM "Fichier récent",              ID_FILE_MRU_FILE1, GRAYED
+        MENUITEM SEPARATOR
+        MENUITEM "&Quitter",                    ID_APP_EXIT
+    END
+    POPUP "&Paramètres"
+    BEGIN
+        MENUITEM "Exercice",                    ID_PARAMTRES_EXERCICE
+        MENUITEM "Cible de base",               ID_PARAMTRES_CIBLE1
+        MENUITEM "Béta",                        ID_PARAMTRES_BTA
+        MENUITEM "Budget net",                  ID_PARAMTRES_BUDGETNET
+        MENUITEM "Options de calcul",           ID_PARAMTRES_OPTIONDECALCULMEMO
+
+    END
+    POPUP "&Affichage"
+    BEGIN
+        MENUITEM "&Barre d'outils standard",    ID_VIEW_TOOLBAR
+        MENUITEM "&Répertoire de cibles",       ID_AFFICHAGE_RPERTOIREDECIBLES
+
+    END
+    POPUP "Fe&nêtre"
+    BEGIN
+        MENUITEM "&Cascade",                    ID_WINDOW_CASCADE
+        MENUITEM "&Mosaïque",                   ID_WINDOW_TILE_HORZ
+        MENUITEM "&Réorganiser les icônes",     ID_WINDOW_ARRANGE
+    END
+    POPUP "&?"
+    BEGIN
+        MENUITEM "&A propos de ...",            ID_APP_ABOUT
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Accelerator
+//
+
+IDR_MAINFRAME ACCELERATORS PRELOAD MOVEABLE PURE 
+BEGIN
+    "N",            ID_FILE_NEW,            VIRTKEY, CONTROL
+    "O",            ID_FILE_OPEN,           VIRTKEY, CONTROL
+    "S",            ID_FILE_SAVE,           VIRTKEY, CONTROL
+    "P",            ID_FILE_PRINT,          VIRTKEY, CONTROL
+    "Z",            ID_EDIT_UNDO,           VIRTKEY, CONTROL
+    "X",            ID_EDIT_CUT,            VIRTKEY, CONTROL
+    "C",            ID_EDIT_COPY,           VIRTKEY, CONTROL
+    "V",            ID_EDIT_PASTE,          VIRTKEY, CONTROL
+    VK_BACK,        ID_EDIT_UNDO,           VIRTKEY, ALT
+    VK_DELETE,      ID_EDIT_CUT,            VIRTKEY, SHIFT
+    VK_INSERT,      ID_EDIT_COPY,           VIRTKEY, CONTROL
+    VK_INSERT,      ID_EDIT_PASTE,          VIRTKEY, SHIFT
+    VK_F6,          ID_NEXT_PANE,           VIRTKEY 
+    VK_F6,          ID_PREV_PANE,           VIRTKEY, SHIFT
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_ABOUTBOX DIALOG DISCARDABLE  0, 0, 300, 250
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "A propos de cinema"
+FONT 8, "MS Sans Serif"
+BEGIN
+    ICON            IDR_MAINFRAME,IDC_STATIC,11,11,20,20
+    LTEXT           "Atelier Cinéma version 3.7",IDC_STATIC,42,9,211,8,
+                    SS_NOPREFIX
+    LTEXT           "Copyright (C) JFC 2000-2014",IDC_STATIC,42,24,119,8
+    DEFPUSHBUTTON   "OK",IDOK,260,7,33,14,WS_GROUP
+    CONTROL         103,IDC_STATIC,"Static",SS_BITMAP | SS_SUNKEN | 
+                    WS_BORDER,7,39,287,204
+END
+
+IDD_CINEMA_FORM DIALOGEX 0, 0, 541, 335
+STYLE WS_CHILD | WS_CAPTION | WS_THICKFRAME
+FONT 8, "MS Sans Serif"
+BEGIN
+    CONTROL         "",IDC_CADRE,"Static",SS_BLACKFRAME,79,7,453,321,
+                    WS_EX_CLIENTEDGE | WS_EX_STATICEDGE
+    LTEXT           "",IDC_STATIC,84,54,101,214,NOT WS_GROUP
+    PUSHBUTTON      "Button1",IDC_CALENDRIER,233,13,286,24
+    PUSHBUTTON      "Button1",IDC_GRILLE,235,39,284,278
+    PUSHBUTTON      "Button1",IDC_BINOME,82,39,137,287
+    PUSHBUTTON      "Actif - Inactif",IDC_BUTTON4,82,13,69,24
+    PUSHBUTTON      "Button1",IDC_NBPASSAGES,220,39,14,287,WS_DISABLED
+    SCROLLBAR       IDC_HSCROLL,235,317,285,9
+    SCROLLBAR       IDC_SCROLLBAR1,520,38,10,279,SBS_VERT
+    CONTROL         "",IDC_STATIC,"Static",SS_BLACKFRAME,81,12,449,314
+    CONTROL         "",IDC_STATIC,"Static",SS_BLACKFRAME,234,12,2,313
+    CONTROL         "",IDC_STATIC,"Static",SS_BLACKFRAME,82,36,448,2
+    CONTROL         "",IDC_STATIC,"Static",SS_BLACKFRAME,519,12,11,314
+    CONTROL         "",IDC_CADRE1,"Static",SS_BLACKFRAME,6,62,62,80,
+                    WS_EX_CLIENTEDGE | WS_EX_STATICEDGE
+    PUSHBUTTON      "Hypothèse1",IDC_HYPOTHESE1,11,78,51,11
+    PUSHBUTTON      "Hypothese2",IDC_HYPOTHESE2,11,90,51,11
+    PUSHBUTTON      "Hypothese3",IDC_HYPOTHESE3,11,102,51,11
+    PUSHBUTTON      "Hypothese4",IDC_HYPOTHESE4,11,114,51,11
+    PUSHBUTTON      "Hypothese5",IDC_HYPOTHESE5,11,126,51,11
+    CTEXT           "Hypoth.",IDC_STATIC,12,66,49,8
+    CONTROL         "",IDC_STATIC,"Static",SS_BLACKFRAME | SS_SUNKEN,11,75,
+                    51,1
+    CONTROL         "",IDC_CADRE2,"Static",SS_BLACKFRAME,6,150,62,80,
+                    WS_EX_CLIENTEDGE | WS_EX_STATICEDGE
+    PUSHBUTTON      "",IDC_DUREE1,11,166,51,11
+    PUSHBUTTON      "",IDC_DUREE2,11,178,51,11
+    PUSHBUTTON      "",IDC_DUREE3,11,190,51,11
+    PUSHBUTTON      "",IDC_DUREE4,11,202,51,11
+    PUSHBUTTON      "",IDC_DUREE5,11,214,51,11
+    CTEXT           "Durée",IDC_STATIC,11,154,51,8
+    CONTROL         "",IDC_STATIC,"Static",SS_BLACKFRAME | SS_SUNKEN,11,163,
+                    51,1
+    PUSHBUTTON      "Effacer",IDC_EFFACER,6,315,62,13
+    PUSHBUTTON      "Performances",IDC_PERF,6,248,62,13
+    PUSHBUTTON      "Graphe",IDC_GRAPHE,6,234,62,13
+    CONTROL         "",IDC_STATIC,"Static",SS_BLACKFRAME,219,12,15,313
+    PUSHBUTTON      "Choix des lignes",IDC_BUTTONCHOIX,151,13,69,24
+    CONTROL         198,IDC_STATIC,"Static",SS_BITMAP,7,7,61,44
+    PUSHBUTTON      "Agglomérations",IDC_PERFAGGLO,6,263,62,13
+END
+
+IDD_CHANGER_PERIODE DIALOGEX 0, 0, 235, 65
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_CLIENTEDGE
+CAPTION "Définir l'exercice"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    CONTROL         "",IDC_CADRE,"Static",SS_BLACKFRAME,7,7,162,52,
+                    WS_EX_CLIENTEDGE
+    DEFPUSHBUTTON   "OK",IDOK,178,7,50,14
+    PUSHBUTTON      "Annuler",IDCANCEL,178,24,50,14
+    LTEXT           "Début de la campagne :",IDC_STATIC,17,27,77,10
+    LTEXT           "Durée en semaines :",IDC_STATIC,17,43,77,10
+    EDITTEXT        IDC_EDIT_DUREE,121,42,28,12,ES_AUTOHSCROLL
+    CONTROL         "Spin1",IDC_SPIN_DUREE,"msctls_updown32",UDS_ARROWKEYS,
+                    149,42,10,12
+    CONTROL         "DateTimePicker1",IDC_DATE_DEBUT,"SysDateTimePick32",
+                    DTS_RIGHTALIGN | WS_TABSTOP,98,26,62,13
+    CTEXT           "Exercice",IDC_STATIC,14,11,149,8
+    CONTROL         "",IDC_STATIC,"Static",SS_BLACKFRAME | SS_SUNKEN,16,21,
+                    144,1
+END
+
+IDD_CIBLE DIALOGEX 0, 0, 249, 184
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_CLIENTEDGE
+CAPTION "Répertoire des cibles"
+MENU IDR_CIBLE
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    CONTROL         "",IDC_CADRE1,"Static",SS_BLACKFRAME,6,6,154,173,
+                    WS_EX_CLIENTEDGE
+    CONTROL         "",IDC_CADRE4,"Static",SS_BLACKFRAME,166,6,76,75,
+                    WS_EX_CLIENTEDGE
+    CONTROL         "",IDC_CADRE5,"Static",SS_BLACKFRAME,166,85,76,75,
+                    WS_EX_CLIENTEDGE
+    PUSHBUTTON      "",IDC_BUTTON1,14,12,25,6
+    CTEXT           "Segment 1",IDC_TITRESEGMENT,46,10,76,8
+    PUSHBUTTON      "",IDC_BUTTON2,128,11,25,6
+    LISTBOX         IDC_LIST1,14,21,139,36,LBS_NOINTEGRALHEIGHT | WS_VSCROLL | 
+                    WS_TABSTOP
+    PUSHBUTTON      "Effacer",IDC_BUTTON3,167,167,76,12
+    LISTBOX         IDC_LIST2,14,59,139,51,LBS_NOINTEGRALHEIGHT | WS_VSCROLL | 
+                    WS_TABSTOP
+    LISTBOX         IDC_LIST3,14,113,139,60,LBS_MULTIPLESEL | 
+                    LBS_OWNERDRAWFIXED | LBS_HASSTRINGS | 
+                    LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
+    CTEXT           "Effectif cible",IDC_STATIC,172,9,64,8
+    CONTROL         "",IDC_STATIC,"Static",SS_BLACKFRAME | SS_SUNKEN,174,19,
+                    59,1
+    LTEXT           "Ph.",IDC_STATIC,174,25,12,10
+    EDITTEXT        IDC_EDIT1,190,23,44,12,ES_RIGHT | ES_AUTOHSCROLL
+    LTEXT           "Po.",IDC_STATIC,174,40,12,10
+    EDITTEXT        IDC_EDIT2,190,37,44,12,ES_RIGHT | ES_AUTOHSCROLL
+    LTEXT           "% univ.",IDC_STATIC,174,53,26,10
+    EDITTEXT        IDC_EDIT3,207,51,27,12,ES_RIGHT | ES_AUTOHSCROLL
+    LTEXT           "Nb cas",IDC_STATIC,174,67,26,10
+    EDITTEXT        IDC_EDIT4,207,65,27,12,ES_RIGHT | ES_AUTOHSCROLL
+    CTEXT           "Effectif segment",IDC_STATIC,172,88,64,8
+    CONTROL         "",IDC_STATIC,"Static",SS_BLACKFRAME | SS_SUNKEN,174,98,
+                    59,1
+    LTEXT           "Ph.",IDC_STATIC,174,104,12,10
+    EDITTEXT        IDC_EDIT5,190,102,44,12,ES_RIGHT | ES_AUTOHSCROLL
+    LTEXT           "Po.",IDC_STATIC,174,120,12,10
+    EDITTEXT        IDC_EDIT6,190,117,44,12,ES_RIGHT | ES_AUTOHSCROLL
+    LTEXT           "% univ.",IDC_STATIC,174,133,26,10
+    EDITTEXT        IDC_EDIT7,207,131,27,12,ES_RIGHT | ES_AUTOHSCROLL
+    LTEXT           "Nb cas",IDC_STATIC,174,147,26,10
+    EDITTEXT        IDC_EDIT8,207,144,27,12,ES_RIGHT | ES_AUTOHSCROLL
+END
+
+IDD_FONCTIONCIBLE DIALOGEX 0, 0, 273, 102
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_CLIENTEDGE
+CAPTION "Charger/Mémoriser/Renomer/Supprimer une cible"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    CONTROL         "",IDC_CADRE1,"Static",SS_BLACKFRAME,7,7,202,90,
+                    WS_EX_CLIENTEDGE
+    EDITTEXT        IDC_EDIT1,15,25,185,12,ES_AUTOHSCROLL
+    DEFPUSHBUTTON   "OK",IDOK,216,7,50,14
+    PUSHBUTTON      "Annuler",IDCANCEL,216,24,50,14
+    LISTBOX         IDC_LIST1,15,40,185,51,LBS_SORT | LBS_NOINTEGRALHEIGHT | 
+                    WS_VSCROLL | WS_TABSTOP
+    CTEXT           "Libellé",IDC_STATIC,13,11,191,9
+    CONTROL         "",IDC_STATIC,"Static",SS_BLACKFRAME | SS_SUNKEN,16,21,
+                    184,1
+    PUSHBUTTON      "Décharger",IDC_DECHARGER,216,83,50,14,NOT WS_VISIBLE
+END
+
+IDD_PERFORMANCES DIALOGEX 0, 0, 223, 202
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_TOOLWINDOW | WS_EX_CLIENTEDGE
+CAPTION "Performances de la campagne"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    CONTROL         "",IDC_CADRE,"Static",SS_BLACKFRAME,6,6,210,190,
+                    WS_EX_CLIENTEDGE
+    LTEXT           "",IDC_STATIC,7,7,209,188,NOT WS_GROUP
+    CONTROL         "",IDC_STATIC,"Static",SS_BLACKFRAME,14,13,194,177
+    LTEXT           "Static",IDC_OB,75,38,132,151,0,WS_EX_CLIENTEDGE
+    CTEXT           "Caractéristiques",IDC_STATIC,20,21,51,9
+    CTEXT           "Hyp. valide",IDC_STATIC,79,27,44,9
+    CTEXT           "Hyp. active",IDC_STATIC,146,27,44,9
+    LTEXT           "Budget brut",IDC_STATIC,17,40,55,8
+    LTEXT           "Budget net",IDC_STATIC,17,49,55,8
+    LTEXT           "Nb contacts",IDC_STATIC,17,61,55,8
+    LTEXT           "GRP",IDC_STATIC,17,70,55,8
+    LTEXT           "CPM brut",IDC_STATIC,17,79,55,8
+    LTEXT           "CPM net",IDC_STATIC,17,88,55,8
+    LTEXT           "Effectif cible",IDC_STATIC,17,100,55,8
+    CONTROL         "",IDC_STATIC,"Static",SS_BLACKFRAME | SS_SUNKEN,15,58,
+                    59,1
+    CONTROL         "",IDC_STATIC,"Static",SS_BLACKFRAME | SS_SUNKEN,15,97,
+                    59,1
+    LTEXT           "Nb ind. touchés",IDC_STATIC,17,109,55,8
+    LTEXT           "C% cumulée",IDC_STATIC,17,118,55,8
+    LTEXT           "Répétition",IDC_STATIC,17,127,55,8
+    CONTROL         "",IDC_STATIC,"Static",SS_BLACKFRAME | SS_SUNKEN,15,137,
+                    59,1
+    LTEXT           "Nb ind. mémo 1+",IDC_STATIC,17,140,55,8
+    LTEXT           "C% mémo moy.",IDC_STATIC,17,149,55,8
+    LTEXT           "C% mémo +x sem.",IDC_STATIC,17,159,55,8
+    LTEXT           "Points de mémo",IDC_STATIC,17,168,55,8
+    LTEXT           "Ratio de mémo",IDC_STATIC,17,178,55,8
+    CONTROL         "",IDC_STATIC,"Static",SS_BLACKFRAME | SS_SUNKEN,15,38,
+                    59,1
+    CONTROL         "",IDC_STATIC,"Static",SS_BLACKFRAME | SS_SUNKEN,74,13,1,
+                    25
+    CONTROL         "",IDC_STATIC,"Static",SS_BLACKFRAME | SS_SUNKEN,140,25,
+                    1,13
+    LTEXT           "",IDC_COULHYPVALIDE,126,27,8,8,WS_BORDER
+    LTEXT           "",IDC_COULHYPACTIVE,191,27,8,8,WS_BORDER
+    CTEXT           "Cible 1",IDC_CIBLE1,84,15,115,8
+    CONTROL         "",IDC_STATIC,"Static",SS_BLACKFRAME | SS_SUNKEN,76,24,
+                    130,1
+END
+
+IDD_OPTIONCALCUL DIALOGEX 0, 0, 211, 235
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_CLIENTEDGE
+CAPTION "Définir les paramètres de calcul"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,154,7,50,14
+    PUSHBUTTON      "Annuler",IDCANCEL,154,24,50,14
+    CONTROL         "",IDC_CADRE4,"Static",SS_BLACKFRAME,7,58,95,45,
+                    WS_EX_CLIENTEDGE
+    CTEXT           "Démémorisation",IDC_STATIC,14,62,81,10
+    CONTROL         "",IDC_STATIC,"Static",SS_BLACKFRAME | SS_SUNKEN,17,73,
+                    77,1
+    CONTROL         "Active",IDC_RADIODEMEMORISATION,"Button",
+                    BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,18,78,75,8
+    CONTROL         "Inactive",IDC_RADIO4,"Button",BS_AUTORADIOBUTTON,18,89,
+                    75,8
+    CONTROL         "",IDC_CADRE5,"Static",SS_BLACKFRAME,7,7,95,45,
+                    WS_EX_CLIENTEDGE
+    CTEXT           "Saisonnalité",IDC_STATIC,14,12,81,10
+    CONTROL         "",IDC_STATIC,"Static",SS_BLACKFRAME | SS_SUNKEN,17,23,
+                    77,1
+    CONTROL         "Active",IDC_RADIOSAISONNALITE,"Button",
+                    BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,18,28,75,8
+    CONTROL         "Inactive",IDC_RADIO6,"Button",BS_AUTORADIOBUTTON,18,39,
+                    75,8
+    CONTROL         "",IDC_CADRE6,"Static",SS_BLACKFRAME,110,58,95,45,
+                    WS_EX_CLIENTEDGE
+    CTEXT           "Calcul des durées",IDC_STATIC,117,63,81,10
+    CONTROL         "",IDC_STATIC,"Static",SS_BLACKFRAME | SS_SUNKEN,120,74,
+                    77,1
+    CONTROL         "Toutes",IDC_RADIODUREE,"Button",BS_AUTORADIOBUTTON | 
+                    WS_GROUP | WS_TABSTOP,121,79,75,8
+    CONTROL         "Actives",IDC_RADIO7,"Button",BS_AUTORADIOBUTTON,121,90,
+                    75,8
+    CONTROL         "",IDC_CADRE8,"Static",SS_BLACKFRAME,7,109,95,45,
+                    WS_EX_CLIENTEDGE
+    CTEXT           "Redressement CNC",IDC_STATIC,14,113,81,10
+    CONTROL         "Actif",IDC_RADIOCNCA,"Button",BS_AUTORADIOBUTTON | 
+                    WS_GROUP | WS_TABSTOP,18,129,75,8
+    CONTROL         "Inactif",IDC_RADIOCNCP,"Button",BS_AUTORADIOBUTTON,17,
+                    141,75,8
+    CONTROL         "",IDC_STATIC,"Static",SS_BLACKFRAME | SS_SUNKEN,17,124,
+                    77,1
+    CONTROL         "",IDC_CADRE9,"Static",SS_BLACKFRAME,110,109,95,45,
+                    WS_EX_CLIENTEDGE
+    CTEXT           "Base de calcul",IDC_STATIC,116,113,81,10
+    CONTROL         "Nationale",IDC_RADIOBASEN,"Button",BS_AUTORADIOBUTTON | 
+                    WS_GROUP | WS_TABSTOP,119,129,75,8
+    CONTROL         "Régionale (BAC actif)",IDC_RADIOBASER,"Button",
+                    BS_AUTORADIOBUTTON,119,141,81,8
+    CONTROL         "",IDC_STATIC,"Static",SS_BLACKFRAME | SS_SUNKEN,120,124,
+                    77,1
+    CONTROL         "",IDC_CADRE12,"Static",SS_BLACKFRAME,7,159,197,69,
+                    WS_EX_CLIENTEDGE
+    CTEXT           "Strates sous cible agglomérations",IDC_STATIC,14,163,
+                    190,10
+    CONTROL         "",IDC_STATIC,"Static",SS_BLACKFRAME | SS_SUNKEN,17,175,
+                    178,1
+    CONTROL         "Agglomérations 50000 habitants et plus",IDC_RADIOAGGLO,
+                    "Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,22,
+                    180,158,10
+    CONTROL         "Agglomérations 100000 habitants et plus",IDC_RADIO2,
+                    "Button",BS_AUTORADIOBUTTON,22,192,158,10
+    CONTROL         "Agglomérations 200000 habitants et plus",IDC_RADIO5,
+                    "Button",BS_AUTORADIOBUTTON,22,203,158,10
+    CONTROL         "Agglomération de Paris",IDC_RADIO8,"Button",
+                    BS_AUTORADIOBUTTON,22,215,158,10
+END
+
+IDD_BUDGETNET DIALOGEX 0, 0, 187, 53
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_CLIENTEDGE
+CAPTION "Saisir le budget net"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    CONTROL         "",IDC_CADRE,"Static",SS_BLACKFRAME,7,7,115,40,
+                    WS_EX_CLIENTEDGE
+    EDITTEXT        IDC_EDIT1,54,26,56,12,ES_AUTOHSCROLL
+    DEFPUSHBUTTON   "OK",IDOK,130,7,50,14
+    PUSHBUTTON      "Annuler",IDCANCEL,130,24,50,14
+    CTEXT           "Budget net",IDC_STATIC,13,11,104,10
+    CONTROL         "",IDC_STATIC,"Static",SS_BLACKFRAME | SS_SUNKEN,16,21,
+                    99,1
+    LTEXT           "Montant :",IDC_STATIC,16,28,31,9
+END
+
+IDD_BETA DIALOGEX 0, 0, 187, 53
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_CLIENTEDGE
+CAPTION "Saisir le béta"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    CONTROL         "",IDC_CADRE,"Static",SS_BLACKFRAME,7,7,115,40,
+                    WS_EX_CLIENTEDGE
+    EDITTEXT        IDC_EDIT1,54,26,56,12,ES_AUTOHSCROLL
+    DEFPUSHBUTTON   "OK",IDOK,130,7,50,14
+    PUSHBUTTON      "Annuler",IDCANCEL,130,24,50,14
+    CTEXT           "Béta",IDC_STATIC,13,11,104,10
+    CONTROL         "",IDC_STATIC,"Static",SS_BLACKFRAME | SS_SUNKEN,16,21,
+                    99,1
+    LTEXT           "Valeur :",IDC_STATIC,16,28,31,9
+END
+
+IDD_DUREE DIALOGEX 0, 0, 133, 149
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_CLIENTEDGE
+CAPTION "Choisir les durées"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,76,7,50,14
+    PUSHBUTTON      "Annuler",IDCANCEL,76,24,50,14
+    CONTROL         "",IDC_CADRE,"Static",SS_BLACKFRAME,7,7,63,136,
+                    WS_EX_CLIENTEDGE
+    CTEXT           "Durée",-1,13,11,51,10
+    CONTROL         "",-1,"Static",SS_BLACKFRAME | SS_SUNKEN,15,21,46,1
+    LISTBOX         IDC_LIST1,15,26,46,34,LBS_SORT | LBS_NOINTEGRALHEIGHT | 
+                    WS_VSCROLL | WS_TABSTOP
+    LISTBOX         IDC_LIST2,15,64,46,71,LBS_SORT | LBS_NOINTEGRALHEIGHT | 
+                    WS_VSCROLL | WS_TABSTOP
+END
+
+IDD_GRAPHE DIALOGEX 0, 0, 271, 183
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_TOOLWINDOW | WS_EX_CLIENTEDGE
+CAPTION "Courbe mémo-démémo"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    CONTROL         "",IDC_CADRE,"Static",SS_BLACKFRAME,7,7,258,171,
+                    WS_EX_CLIENTEDGE
+    LTEXT           "Static",IDC_GRILLE2,56,14,202,126,WS_BORDER
+    LTEXT           "Static",IDC_GRILLE1,13,14,42,126,WS_BORDER
+    LTEXT           "Static",IDC_GRILLE3,13,141,42,32,WS_BORDER
+    LTEXT           "Static",IDC_GRILLE4,56,141,202,22,WS_BORDER
+    SCROLLBAR       IDC_SCROLLBAR1,56,163,202,9
+    CONTROL         "",IDC_STATIC,"Static",SS_BLACKFRAME,13,14,245,158
+END
+
+IDD_CHOIXTEMPO DIALOGEX 0, 0, 141, 95
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_CLIENTEDGE
+CAPTION "Choisir un tempo"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,84,7,50,14
+    PUSHBUTTON      "Annuler",IDCANCEL,84,24,50,14
+    CONTROL         "",IDC_CADRE,"Static",SS_BLACKFRAME,7,7,69,81,
+                    WS_EX_CLIENTEDGE
+    CTEXT           "Tempo",IDC_STATIC,16,10,51,9
+    COMBOBOX        IDC_COMBO1,16,26,51,58,CBS_SIMPLE | WS_VSCROLL | 
+                    WS_TABSTOP
+    CONTROL         "",IDC_STATIC,"Static",SS_BLACKFRAME,16,20,51,1,
+                    WS_EX_STATICEDGE
+END
+
+IDD_ATTENTE DIALOGEX 0, 0, 231, 151
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION
+CAPTION "Optimisation en cours..."
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    PUSHBUTTON      "Annuler",IDCANCEL,64,132,50,13
+    CONTROL         "",IDC_CADRE,"Static",SS_BLACKFRAME,7,7,217,45,
+                    WS_EX_CLIENTEDGE
+    CONTROL         170,IDC_STATIC,"Static",SS_BITMAP,14,17,37,25
+    LTEXT           "Une optimisation est en cours de traitement.\nCelle-ci peut durer relativement longtemps si les paramètres du plan à optimiser le justifient.\nMerci de patienter...",
+                    IDC_STATIC,56,13,160,34
+    CONTROL         "",IDC_CADRE7,"Static",SS_BLACKFRAME,7,57,217,71,
+                    WS_EX_CLIENTEDGE
+    CTEXT           "Statistiques",IDC_STATIC,13,62,205,8
+    CONTROL         "",IDC_STATIC,"Static",SS_BLACKFRAME | SS_SUNKEN,17,72,
+                    197,1
+    LTEXT           "Nombre de plans testés :",IDC_STATIC,17,79,122,9
+    EDITTEXT        IDC_NBPLAN1,156,77,58,12,ES_AUTOHSCROLL
+    LTEXT           "Nombre de plans évalués :",IDC_STATIC,17,94,122,9
+    EDITTEXT        IDC_NBPLAN2,156,92,58,12,ES_AUTOHSCROLL
+    LTEXT           "Progression :",IDC_STATIC,17,109,44,9
+    CONTROL         "Progress1",IDC_PROGRESS1,"msctls_progress32",WS_BORDER,
+                    66,108,148,12
+    PUSHBUTTON      "Stopper",IDSTOPPER,120,132,50,13
+END
+
+IDD_PARAMPRINT DIALOGEX 0, 0, 327, 77
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_CLIENTEDGE
+CAPTION "Définir le type d'édition"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,268,7,52,14
+    PUSHBUTTON      "Annuler",IDCANCEL,268,24,52,14
+    CONTROL         "",IDC_CADRELIBELLE,"Static",SS_BLACKFRAME,95,7,166,64,
+                    WS_EX_CLIENTEDGE
+    CONTROL         "",IDC_CADRE,"Static",SS_BLACKFRAME,7,7,81,64,
+                    WS_EX_CLIENTEDGE
+    LTEXT           "Campagne :",LABEL_CAMPAGNE,101,12,39,11,WS_TABSTOP
+    LTEXT           "Annonceur :",LABEL_ANNONCEUR,101,26,45,11
+    LTEXT           "Centrale :",LABEL_CENTRAL,101,41,32,11
+    LTEXT           "Description :",LABEL_PRODUIT,101,55,42,11
+    EDITTEXT        IDC_NOMCAMPAGNE,153,11,103,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_NOMANNONCEUR,153,25,103,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_NOMCENTRALE,153,40,103,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_NOMPRODUIT,153,54,103,12,ES_AUTOHSCROLL
+    CTEXT           "Editer",IDC_STATIC,17,10,61,9
+    CONTROL         "",IDC_STATIC,"Static",SS_BLACKFRAME | SS_SUNKEN,17,20,
+                    64,2
+    PUSHBUTTON      "Cibles",IDCIBLES,268,56,52,14
+    CONTROL         "Calendrier",IDC_CALENDRIER,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,17,24,62,10
+    CONTROL         "Graphe",IDC_GRAPHE,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,17,35,62,10
+    CONTROL         "Performances",IDC_PERFORMANCES,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,17,46,62,10
+    CONTROL         "Agglomérations",IDC_PERFAGGLO,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,17,57,62,10
+END
+
+IDD_MAINTENANCE DIALOGEX 0, 0, 387, 199
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_CLIENTEDGE
+CAPTION "Visualiser des données"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    CONTROL         "Custom1",IDC_GRID,"GXWND",WS_BORDER | WS_VSCROLL | 
+                    WS_HSCROLL | WS_TABSTOP,7,75,373,117
+    CONTROL         "",IDC_CADRE,"Static",SS_BLACKFRAME,7,7,210,61,
+                    WS_EX_CLIENTEDGE
+    CONTROL         "Tarifs",IDC_RADIO1,"Button",BS_AUTORADIOBUTTON | 
+                    WS_GROUP | WS_TABSTOP,55,28,67,11
+    CONTROL         "Saisonalités",IDC_RADIO2,"Button",BS_AUTORADIOBUTTON,55,
+                    39,67,11
+    CONTROL         "Durées",IDC_RADIO3,"Button",BS_AUTORADIOBUTTON,55,50,67,
+                    11
+    CTEXT           "Paramètres",IDC_STATIC,13,11,200,9
+    CONTROL         "",IDC_STATIC,"Static",SS_BLACKFRAME | SS_SUNKEN,17,22,
+                    191,1
+    LTEXT           "Type :",IDC_STATIC,19,28,29,11
+    LTEXT           "Année :",IDC_STATIC,125,29,31,11
+    COMBOBOX        IDC_COMBOANNEE,161,27,48,63,CBS_DROPDOWNLIST | CBS_SORT | 
+                    WS_VSCROLL | WS_GROUP | WS_TABSTOP
+END
+
+IDD_MULTICIBLE DIALOGEX 0, 0, 273, 119
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_CLIENTEDGE
+CAPTION "Sélection de plusieurs cibles pour l'impression"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    CONTROL         "",IDC_CADRE1,"Static",SS_BLACKFRAME,7,7,202,107,
+                    WS_EX_CLIENTEDGE
+    DEFPUSHBUTTON   "OK",IDOK,216,7,50,14
+    PUSHBUTTON      "Annuler",IDCANCEL,216,24,50,14
+    CTEXT           "Sélection",IDC_SELECTION,13,11,191,9
+    CONTROL         "",-1,"Static",SS_BLACKFRAME | SS_SUNKEN,16,21,184,1
+    COMBOBOX        IDC_CIBLE1,16,26,184,86,CBS_DROPDOWNLIST | CBS_SORT | 
+                    WS_DISABLED | WS_VSCROLL | WS_GROUP | WS_TABSTOP
+    COMBOBOX        IDC_CIBLE2,16,43,184,90,CBS_DROPDOWNLIST | CBS_SORT | 
+                    WS_VSCROLL | WS_GROUP | WS_TABSTOP
+    COMBOBOX        IDC_CIBLE3,16,60,184,90,CBS_DROPDOWNLIST | CBS_SORT | 
+                    WS_VSCROLL | WS_GROUP | WS_TABSTOP
+    COMBOBOX        IDC_CIBLE4,16,78,184,90,CBS_DROPDOWNLIST | CBS_SORT | 
+                    WS_VSCROLL | WS_GROUP | WS_TABSTOP
+    COMBOBOX        IDC_CIBLE5,16,96,184,90,CBS_DROPDOWNLIST | CBS_SORT | 
+                    WS_VSCROLL | WS_GROUP | WS_TABSTOP
+END
+
+IDD_SELECTION DIALOGEX 0, 0, 283, 231
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_CLIENTEDGE
+CAPTION "Construction d'une sélection"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "OK",IDC_OK,213,5,63,14
+    PUSHBUTTON      "Annuler",IDC_ANNULER,213,22,63,14
+    CONTROL         "",IDC_CADRE2,"Static",SS_BLACKFRAME,213,83,63,83,
+                    WS_EX_CLIENTEDGE
+    CTEXT           "Ajouter",IDC_AJOUTER,220,89,46,9
+    CONTROL         "",IDC_STATIC,"Static",SS_BLACKFRAME | SS_SUNKEN,220,102,
+                    46,1
+    PUSHBUTTON      "Complexe",IDC_AJOUTCOMPLX,220,108,46,14
+    PUSHBUTTON      "B.A.C",IDC_AJOUTBAC,220,126,46,14
+    PUSHBUTTON      "Produit",IDC_AJOUTPRODUIT,220,144,46,14
+    DEFPUSHBUTTON   "Supprimer",IDC_SUPP,213,174,63,14
+    DEFPUSHBUTTON   "Monter",IDC_MONTER,213,192,63,14
+    DEFPUSHBUTTON   "Descendre",IDC_DESCENDRE,213,210,63,14
+    CONTROL         "",IDC_CADRE,"Static",SS_BLACKFRAME,5,4,199,220,
+                    WS_EX_CLIENTEDGE
+    CTEXT           "Lignes sélectionnées",IDC_SELECTION,15,8,179,8
+    LISTBOX         IDC_LISTSELECT,13,35,183,182,LBS_OWNERDRAWFIXED | 
+                    LBS_HASSTRINGS | LBS_NOINTEGRALHEIGHT | LBS_EXTENDEDSEL | 
+                    WS_VSCROLL | WS_TABSTOP
+    CONTROL         "",IDC_STATIC,"Static",SS_BLACKFRAME | SS_SUNKEN,13,18,
+                    183,1
+    CTEXT           "Type",IDC_TYPE,14,22,33,11,SS_SUNKEN
+    CTEXT           "Libellé",IDC_LIBELLE,50,22,146,11,SS_SUNKEN
+END
+
+IDD_SELPRODBACCOMPLEXE DIALOGEX 0, 0, 297, 305
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION
+EXSTYLE WS_EX_CLIENTEDGE
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    CONTROL         "",IDC_CADRE,"Static",SS_BLACKFRAME,7,6,189,184,
+                    WS_EX_CLIENTEDGE
+    CTEXT           "Choix Bacs",IDC_STATIC,15,10,173,9,SS_CENTERIMAGE
+    LISTBOX         IDC_LIST,15,25,173,158,LBS_SORT | LBS_OWNERDRAWFIXED | 
+                    LBS_HASSTRINGS | LBS_NOINTEGRALHEIGHT | LBS_EXTENDEDSEL | 
+                    WS_VSCROLL | WS_TABSTOP
+    CONTROL         "",IDC_STATIC,"Static",SS_BLACKFRAME | SS_SUNKEN,15,20,
+                    173,1
+    CONTROL         "",IDC_CADRE2,"Static",SS_BLACKFRAME,204,152,85,38,
+                    WS_EX_CLIENTEDGE
+    CONTROL         "",IDC_BARRE,"Static",SS_BLACKFRAME | SS_SUNKEN,209,164,
+                    75,1
+    CTEXT           "Régie",IDC_REGIE,209,154,75,8,SS_CENTERIMAGE
+    COMBOBOX        IDC_COMBOREGIE,209,170,76,63,CBS_DROPDOWNLIST | 
+                    WS_VSCROLL | WS_TABSTOP
+    DEFPUSHBUTTON   "OK",IDC_OK,214,6,67,14
+    PUSHBUTTON      "Annuler",IDC_ANNULER,214,23,67,14
+    PUSHBUTTON      "Sélectionner tout",IDC_SELTOUT2,214,114,67,14
+    PUSHBUTTON      "Inverser",IDC_INVERSER2,214,131,67,14
+    CONTROL         "",IDC_CADRE7,"Static",SS_BLACKFRAME,7,197,189,104,
+                    WS_EX_CLIENTEDGE
+    CTEXT           "Choix Groupe de Bacs",IDC_STATIC,15,200,173,9,
+                    SS_CENTERIMAGE
+    LISTBOX         IDC_LIST_GRP_BACS,15,216,173,79,LBS_SORT | 
+                    LBS_OWNERDRAWFIXED | LBS_HASSTRINGS | 
+                    LBS_NOINTEGRALHEIGHT | LBS_EXTENDEDSEL | WS_VSCROLL | 
+                    WS_TABSTOP
+    CONTROL         "",IDC_STATIC,"Static",SS_BLACKFRAME | SS_SUNKEN,16,211,
+                    173,1
+END
+
+IDD_SELCOMPLEXE DIALOGEX 0, 0, 417, 398
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION
+EXSTYLE WS_EX_CLIENTEDGE
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "OK",IDC_OK,333,8,67,14
+    PUSHBUTTON      "Annuler",IDC_ANNULER,333,26,67,14
+    CONTROL         "",IDC_CADRE,"Static",SS_BLACKFRAME,7,8,308,240,
+                    WS_EX_CLIENTEDGE
+    CTEXT           "Choix",IDC_STATIC,75,12,173,9,SS_CENTERIMAGE
+    LISTBOX         IDC_LIST,18,39,289,201,LBS_SORT | LBS_OWNERDRAWFIXED | 
+                    LBS_HASSTRINGS | LBS_NOINTEGRALHEIGHT | LBS_EXTENDEDSEL | 
+                    WS_VSCROLL | WS_TABSTOP
+    CTEXT           "R.",IDC_STATIC,155,26,18,11,SS_SUNKEN
+    CTEXT           "B.A.C",IDC_STATIC,175,26,132,11,SS_SUNKEN
+    CONTROL         "",IDC_STATIC,"Static",SS_BLACKFRAME | SS_SUNKEN,18,23,
+                    289,1
+    CONTROL         "",IDC_OPTION,"Static",SS_BLACKFRAME,324,205,85,42,
+                    WS_EX_CLIENTEDGE
+    CTEXT           "Complexe",IDC_NOMCOMPLEXE,18,26,135,11,SS_SUNKEN
+    COMBOBOX        IDC_COMBOREGIE2,329,227,76,66,CBS_DROPDOWNLIST | 
+                    WS_VSCROLL | WS_TABSTOP
+    CTEXT           "Régie",IDC_REGIE2,329,211,75,8,SS_CENTERIMAGE
+    CONTROL         "",IDC_BARRE3,"Static",SS_BLACKFRAME | SS_SUNKEN,329,221,
+                    75,1
+    PUSHBUTTON      "Sélectionner tout",IDC_SELTOUT2,333,167,67,14
+    PUSHBUTTON      "Inverser",IDC_INVERSER2,333,185,67,14
+    CONTROL         "",IDC_CADRE7,"Static",SS_BLACKFRAME,7,254,308,140,
+                    WS_EX_CLIENTEDGE
+    CTEXT           "Choix Groupe de Complexes",IDC_STATIC,75,258,173,9,
+                    SS_CENTERIMAGE
+    LISTBOX         IDC_LIST_GRP_CMPLX,17,275,289,112,LBS_SORT | 
+                    LBS_OWNERDRAWFIXED | LBS_HASSTRINGS | 
+                    LBS_NOINTEGRALHEIGHT | LBS_EXTENDEDSEL | WS_VSCROLL | 
+                    WS_TABSTOP
+    CONTROL         "",IDC_STATIC,"Static",SS_BLACKFRAME | SS_SUNKEN,17,268,
+                    289,1
+END
+
+IDD_SELECTIONPRODUIT DIALOGEX 0, 0, 279, 236
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Sélection des produits"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    LISTBOX         IDC_LISTSELECT,13,37,183,182,LBS_OWNERDRAWFIXED | 
+                    LBS_HASSTRINGS | LBS_NOINTEGRALHEIGHT | LBS_EXTENDEDSEL | 
+                    WS_VSCROLL | WS_TABSTOP
+    DEFPUSHBUTTON   "OK",IDOK,213,7,58,14
+    PUSHBUTTON      "Annuler",IDCANCEL,213,24,58,14
+    CONTROL         "",IDC_CADRE10,"Static",SS_BLACKFRAME,5,7,199,223,
+                    WS_EX_CLIENTEDGE
+    CTEXT           "Lignes sélectionnées",IDC_SELECTION,15,10,179,8
+    CONTROL         "",IDC_STATIC,"Static",SS_BLACKFRAME | SS_SUNKEN,13,20,
+                    183,1
+    CTEXT           "Type",IDC_TYPE,14,24,33,11,SS_SUNKEN
+    CTEXT           "Libellé",IDC_LIBELLE,50,24,146,11,SS_SUNKEN
+    CONTROL         "",IDC_CADRE11,"Static",SS_BLACKFRAME,214,169,58,60,
+                    WS_EX_CLIENTEDGE
+    CTEXT           "Produit",IDC_AJOUTER,220,175,46,9
+    CONTROL         "",IDC_STATIC,"Static",SS_BLACKFRAME | SS_SUNKEN,220,185,
+                    46,1
+    DEFPUSHBUTTON   "Supprimer",IDC_SUPP,222,209,41,14
+    DEFPUSHBUTTON   "Ajouter",IDC_AJOUT,222,190,41,14
+END
+
+IDD_ANALYSE_FILM DIALOGEX 0, 0, 520, 295
+STYLE WS_CHILD | WS_BORDER
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    CONTROL         "",IDC_CADRE1,"Static",SS_BLACKFRAME,73,58,438,225,
+                    WS_EX_CLIENTEDGE
+    CONTROL         "Custom2",IDC_GRID_FILM,"GXWND",WS_BORDER | WS_VSCROLL | 
+                    WS_HSCROLL | WS_TABSTOP,79,64,426,213
+    CONTROL         "",IDC_CADRE0,"Static",SS_BLACKFRAME,73,7,438,47,
+                    WS_EX_CLIENTEDGE
+    LTEXT           "Période de travail : ",IDC_STATIC,96,35,61,9
+    LTEXT           "Cible de base :",IDC_STATIC,329,35,48,8
+    CONTROL         198,IDC_STATIC,"Static",SS_BITMAP,7,7,59,44
+    CONTROL         "",IDC_STATIC,"Static",SS_GRAYFRAME,164,27,329,1,
+                    WS_EX_STATICEDGE
+    EDITTEXT        IDC_PERIODE,164,34,87,12,ES_CENTER | ES_AUTOHSCROLL | 
+                    ES_READONLY
+    EDITTEXT        IDC_CIBLEBASE,384,34,109,12,ES_CENTER | ES_AUTOHSCROLL | 
+                    ES_READONLY
+    CTEXT           "INFORMATIONS GENERALES CAMPAGNE PRODUIT FILMS",
+                    IDC_CAMPAGNEFILM,169,14,269,9
+    PUSHBUTTON      "Performances",IDC_PERF,7,269,58,13
+    PUSHBUTTON      "Graphe",IDC_GRAPHE,7,251,58,13
+    PUSHBUTTON      "Mise à jour Films",IDC_MAJFILM,7,59,59,13
+END
+
+IDD_FORMULAIRE_FILM DIALOGEX 0, 0, 374, 310
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Formulaire de paramétrage produit film"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,317,7,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,317,24,50,14,NOT WS_VISIBLE
+    CONTROL         "",IDC_CADRE1,"Static",SS_BLACKFRAME,7,7,302,96,
+                    WS_EX_CLIENTEDGE
+    CONTROL         "",IDC_CADRE2,"Static",SS_BLACKFRAME,7,105,301,84,
+                    WS_EX_CLIENTEDGE
+    CONTROL         "",IDC_CADRE3,"Static",SS_BLACKFRAME,7,192,301,110,
+                    WS_EX_CLIENTEDGE
+    PUSHBUTTON      "<<",IDC_PREC_FILM,317,268,20,15
+    PUSHBUTTON      ">>",IDC_SUIV_FILM,347,268,20,15
+    CTEXT           "Informations générales",IDC_STATIC,55,11,204,10
+    CONTROL         "",IDC_STATIC,"Static",SS_GRAYFRAME | SS_SUNKEN,22,23,
+                    272,1,WS_EX_CLIENTEDGE
+    LTEXT           "Titre du film :",IDC_STATIC,21,31,46,9
+    EDITTEXT        IDC_EDIT_TITRE,92,29,201,12,ES_AUTOHSCROLL
+    COMBOBOX        IDC_COMBO_RESEAUDISTR,92,44,202,57,CBS_DROPDOWNLIST | 
+                    CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Réseau distribution :",IDC_STATIC,22,46,65,8
+    LTEXT           "Tarif :",IDC_STATIC,23,63,40,8
+    EDITTEXT        IDC_EDIT_TARIF,92,61,61,12,ES_RIGHT | ES_AUTOHSCROLL | 
+                    ES_NUMBER
+    LTEXT           "Date début :",IDC_STATIC,24,78,40,8
+    LTEXT           "Durée en semaines :",IDC_STATIC,177,78,67,8
+    CTEXT           "Evolution des entrées films",IDC_STATIC,11,111,293,10
+    CONTROL         "",IDC_STATIC,"Static",SS_GRAYFRAME | SS_SUNKEN,23,122,
+                    272,1,WS_EX_CLIENTEDGE
+    LTEXT           "Nombre d'entrées (1ère semaine) :",IDC_STATIC,22,131,
+                    108,9
+    EDITTEXT        IDC_EDIT_ENTREECNC,134,129,50,12,ES_RIGHT | 
+                    ES_AUTOHSCROLL | ES_NUMBER
+    CONTROL         "Coefficients Usure",IDC_GRID_COEFFUSURE,"GXWND",
+                    WS_BORDER | WS_VSCROLL | WS_HSCROLL | WS_TABSTOP,22,146,
+                    272,34
+    LTEXT           "Coefficient critère :",IDC_STATIC,22,199,62,10
+    CONTROL         "",IDC_STATIC,"Static",SS_GRAYFRAME | SS_SUNKEN,22,212,
+                    272,1,WS_EX_CLIENTEDGE
+    CONTROL         "Custom1",IDC_GRID_COEFFMODA,"GXWND",WS_BORDER | 
+                    WS_VSCROLL | WS_HSCROLL | WS_TABSTOP,22,219,272,74
+    CONTROL         "DateTimePicker1",IDC_DATETIME,"SysDateTimePick32",
+                    DTS_RIGHTALIGN | WS_TABSTOP,92,77,62,14
+    EDITTEXT        IDC_EDIT_NBSEM,255,77,28,13,ES_AUTOHSCROLL
+    CONTROL         "Spin1",IDC_SPIN_NBSEM,"msctls_updown32",UDS_ARROWKEYS,
+                    283,77,11,13
+    PUSHBUTTON      "Supprimer",IDC_SUPPFILM,318,287,49,14
+    CTEXT           "1/1",IDC_NOFILM,262,11,31,10,0,WS_EX_STATICEDGE
+    COMBOBOX        IDC_COMBO_CRITERE,113,196,181,96,CBS_DROPDOWNLIST | 
+                    WS_VSCROLL | WS_TABSTOP
+END
+
+IDD_CRITERE DIALOGEX 0, 0, 278, 154
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Sélection d'un critère"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,221,7,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,221,24,50,14
+    CONTROL         "",IDC_CADRE1,"Static",SS_BLACKFRAME,7,7,206,140,
+                    WS_EX_CLIENTEDGE
+    EDITTEXT        IDC_CRITEREBASE,15,25,185,12,ES_AUTOHSCROLL
+    LISTBOX         IDC_LISTCRITERE,15,40,185,98,LBS_NOINTEGRALHEIGHT | 
+                    WS_VSCROLL | WS_TABSTOP
+    CTEXT           "Choix du critère de base",IDC_STATIC,13,11,191,9
+    CONTROL         "",IDC_STATIC,"Static",SS_BLACKFRAME | SS_SUNKEN,16,21,
+                    184,1
+END
+
+IDD_GRAPHEFILM DIALOGEX 0, 0, 272, 185
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Courbe mémo-démémo"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    CONTROL         "",IDC_CADRE,"Static",SS_BLACKFRAME,7,7,258,173,
+                    WS_EX_CLIENTEDGE
+    LTEXT           "Static",IDC_GRILLEF2,56,14,202,126,WS_BORDER
+    LTEXT           "Static",IDC_GRILLEF1,13,14,42,126,WS_BORDER
+    LTEXT           "Static",IDC_GRILLEF3,13,141,42,32,WS_BORDER
+    LTEXT           "Static",IDC_GRILLEF4,56,141,202,22,WS_BORDER
+    SCROLLBAR       IDC_SCROLLBAR1,56,163,202,9
+END
+
+IDD_PERFORMANCESFILM DIALOGEX 0, 0, 221, 202
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Performances de la campagne film"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    CONTROL         "",IDC_CADRE,"Static",SS_BLACKFRAME,6,6,210,190,
+                    WS_EX_CLIENTEDGE
+    LTEXT           "",IDC_STATIC,7,7,209,188,NOT WS_GROUP
+    CONTROL         "",IDC_STATIC,"Static",SS_BLACKFRAME,14,13,194,177
+    LTEXT           "Static",IDC_OB,75,38,132,151,0,WS_EX_CLIENTEDGE
+    CTEXT           "Caractéristiques",IDC_STATIC,20,21,51,9
+    CONTROL         "",IDC_STATIC,"Static",SS_BLACKFRAME | SS_SUNKEN,74,13,1,
+                    25
+    CTEXT           "Cible 1",IDC_CIBLE1,84,21,115,8
+    CONTROL         "",IDC_STATIC,"Static",SS_BLACKFRAME | SS_SUNKEN,15,38,
+                    59,1
+    LTEXT           "Budget brut",IDC_STATIC,17,40,55,8
+    LTEXT           "Budget net",IDC_STATIC,17,49,55,8
+    CONTROL         "",IDC_STATIC,"Static",SS_BLACKFRAME | SS_SUNKEN,15,58,
+                    59,1
+    LTEXT           "GRP",IDC_STATIC,17,70,55,8
+    LTEXT           "CPM brut",IDC_STATIC,17,79,55,8
+    LTEXT           "CPM net",IDC_STATIC,17,88,55,8
+    LTEXT           "Effectif cible",IDC_STATIC,17,100,55,8
+    LTEXT           "C% cumulée",IDC_STATIC,17,118,55,8
+    LTEXT           "Répétition",IDC_STATIC,17,127,55,8
+    CONTROL         "",IDC_STATIC,"Static",SS_BLACKFRAME | SS_SUNKEN,15,137,
+                    59,1
+    LTEXT           "Nb ind. mémo 1+",IDC_STATIC,17,140,55,8
+    LTEXT           "C% mémo moy.",IDC_STATIC,17,149,55,8
+    LTEXT           "C% mémo +x sem.",IDC_STATIC,17,159,55,8
+    LTEXT           "Points de mémo",IDC_STATIC,17,168,55,8
+    LTEXT           "Ratio de mémo",IDC_STATIC,17,178,55,8
+    LTEXT           "Nb contacts",IDC_STATIC,17,61,55,8
+    CONTROL         "",IDC_STATIC,"Static",SS_BLACKFRAME | SS_SUNKEN,15,97,
+                    59,1
+    LTEXT           "Nb ind. touchés",IDC_STATIC,17,109,55,8
+END
+
+IDD_OPTIONCALCULFILM DIALOGEX 0, 0, 187, 60
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Définir les paramètres de calcul"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,130,7,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,130,24,50,14
+    CONTROL         "",IDC_CADRE4,"Static",SS_BLACKFRAME,7,7,95,45,
+                    WS_EX_CLIENTEDGE
+    CTEXT           "Démémorisation",IDC_STATIC,14,11,81,10
+    CONTROL         "Active",IDC_RADIODEMEMORISATION,"Button",
+                    BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,18,27,75,8
+    CONTROL         "Inactive",IDC_RADIO4,"Button",BS_AUTORADIOBUTTON,18,38,
+                    75,8
+    CONTROL         "",IDC_STATIC,"Static",SS_BLACKFRAME | SS_SUNKEN,17,22,
+                    77,1
+END
+
+IDD_OPTIONCALCULMEMO DIALOGEX 0, 0, 240, 222
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Option de calcul"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,182,7,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,182,24,50,14
+    CONTROL         "",IDC_CADRE,"Static",SS_BLACKFRAME,8,62,168,57,
+                    WS_EX_CLIENTEDGE
+    EDITTEXT        IDC_EDIT1,110,83,56,12,ES_AUTOHSCROLL
+    CTEXT           "Points de mémo",IDC_STATIC,39,66,104,10
+    LTEXT           "Numéro de semaine début :",IDC_STATIC,17,83,89,9
+    EDITTEXT        IDC_EDIT2,110,99,56,12,ES_AUTOHSCROLL
+    LTEXT           "Numéro de semaine fin :",IDC_STATIC,17,102,89,9
+    CONTROL         "",IDC_STATIC,"Static",SS_BLACKFRAME | SS_SUNKEN,16,76,
+                    150,1
+    CONTROL         "",IDC_CADRE7,"Static",SS_BLACKFRAME,8,122,168,44,
+                    WS_EX_CLIENTEDGE
+    CTEXT           "Mémo semaine X",IDC_STATIC,39,126,104,10
+    CONTROL         "",IDC_STATIC,"Static",SS_BLACKFRAME | SS_SUNKEN,16,138,
+                    150,1
+    EDITTEXT        IDC_EDIT3,111,145,56,12,ES_AUTOHSCROLL
+    LTEXT           "Numéro de semaine X :",IDC_STATIC,16,146,89,9
+    CONTROL         "",IDC_CADRE4,"Static",SS_BLACKFRAME,8,169,168,45,
+                    WS_EX_CLIENTEDGE
+    CTEXT           "Démémorisation",IDC_STATIC,40,173,104,10
+    CONTROL         "Active",IDC_RADIODEMEMORISATION,"Button",
+                    BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,18,189,75,8
+    CONTROL         "Inactive",IDC_RADIO4,"Button",BS_AUTORADIOBUTTON,18,200,
+                    75,8
+    CONTROL         "",IDC_STATIC,"Static",SS_BLACKFRAME | SS_SUNKEN,16,184,
+                    150,1
+    CONTROL         "",IDC_CADRE9,"Static",SS_BLACKFRAME,8,7,168,52,
+                    WS_EX_CLIENTEDGE
+    CTEXT           "Base de calcul",IDC_STATIC,51,14,81,10
+    CONTROL         "Nationale",IDC_FILMRADIOBASEN,"Button",
+                    BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,16,30,75,8
+    CONTROL         "Régionale (BAC actif)",IDC_FILMRADIOBASER,"Button",
+                    BS_AUTORADIOBUTTON,16,42,81,8
+    CONTROL         "",IDC_STATIC,"Static",SS_BLACKFRAME | SS_SUNKEN,17,25,
+                    149,1
+END
+
+IDD_PERFAGLO DIALOGEX 0, 0, 283, 203
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_TOOLWINDOW | WS_EX_CLIENTEDGE
+CAPTION "Performances sur les agglomérations"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    CONTROL         "",IDC_CADRE,"Static",SS_BLACKFRAME,6,6,270,190,
+                    WS_EX_CLIENTEDGE
+    CONTROL         "",IDC_STATIC,"Static",SS_BLACKFRAME,14,13,254,177
+    LTEXT           "Static",IDC_OB,75,38,189,151,0,WS_EX_CLIENTEDGE
+    CTEXT           "Caractéristiques",IDC_STATIC,20,21,51,9
+    CTEXT           "BAC",IDC_STATIC,79,21,58,9
+    CTEXT           "AGGLO",IDC_STATIC,146,21,58,9
+    LTEXT           "Budget brut",IDC_STATIC,17,40,55,8
+    LTEXT           "Budget net",IDC_STATIC,17,49,55,8
+    LTEXT           "Nb contacts",IDC_STATIC,17,61,55,8
+    LTEXT           "GRP",IDC_STATIC,17,70,55,8
+    LTEXT           "CPM brut",IDC_STATIC,17,79,55,8
+    LTEXT           "CPM net",IDC_STATIC,17,88,55,8
+    LTEXT           "Effectif cible",IDC_STATIC,17,100,55,8
+    CONTROL         "",IDC_STATIC,"Static",SS_BLACKFRAME | SS_SUNKEN,15,58,
+                    59,1
+    CONTROL         "",IDC_STATIC,"Static",SS_BLACKFRAME | SS_SUNKEN,15,97,
+                    59,1
+    LTEXT           "Nb ind. touchés",IDC_STATIC,17,109,55,8
+    LTEXT           "C% cumulée",IDC_STATIC,17,118,55,8
+    LTEXT           "Répétition",IDC_STATIC,17,127,55,8
+    CONTROL         "",IDC_STATIC,"Static",SS_BLACKFRAME | SS_SUNKEN,15,137,
+                    59,1
+    LTEXT           "Nb ind. mémo 1+",IDC_STATIC,17,140,55,8
+    LTEXT           "C% mémo moy.",IDC_STATIC,17,149,55,8
+    LTEXT           "C% mémo +x sem.",IDC_STATIC,17,159,55,8
+    LTEXT           "Points de mémo",IDC_STATIC,17,168,55,8
+    LTEXT           "Ratio de mémo",IDC_STATIC,17,178,55,8
+    CONTROL         "",IDC_STATIC,"Static",SS_BLACKFRAME | SS_SUNKEN,15,38,
+                    59,1
+    CONTROL         "",IDC_STATIC,"Static",SS_BLACKFRAME | SS_SUNKEN,74,13,1,
+                    25
+    CONTROL         "",IDC_STATIC,"Static",SS_BLACKFRAME | SS_SUNKEN,141,15,
+                    1,23
+    CTEXT           "Migrés",IDC_STATIC,211,21,52,9
+    CONTROL         "",IDC_STATIC,"Static",SS_BLACKFRAME | SS_SUNKEN,208,15,
+                    1,23
+END
+
+IDD_EXPORT_MEDIAVISION DIALOGEX 0, 0, 275, 201
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Informations Export Médiavision"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,218,7,50,14
+    PUSHBUTTON      "Annuler",IDCANCEL,218,24,50,14
+    CONTROL         "",IDC_CADRE,"Static",SS_BLACKFRAME,5,6,205,59,
+                    WS_EX_CLIENTEDGE
+    LTEXT           "Titre :",LABEL_TITRE,11,13,31,11,WS_TABSTOP
+    EDITTEXT        IDC_NOMTITRE,56,11,146,12,ES_AUTOHSCROLL
+    LTEXT           "Sous-Titre :",LABEL_SSTITRE,11,30,40,11,WS_TABSTOP
+    EDITTEXT        IDC_NOMSSTITRE,56,28,146,12,ES_AUTOHSCROLL
+    LTEXT           "Date début :",LABEL_DATEDEBUT,11,48,41,11,WS_TABSTOP
+    EDITTEXT        IDC_DATEDEBUT,56,46,48,12,ES_AUTOHSCROLL | WS_DISABLED
+    LTEXT           "Date début :",LABEL_DATEDEBUT2,110,48,41,11,WS_TABSTOP
+    EDITTEXT        IDC_DATEFIN,154,46,48,12,ES_AUTOHSCROLL | WS_DISABLED
+    CONTROL         "",IDC_CADRE7,"Static",SS_BLACKFRAME,5,68,205,127,
+                    WS_EX_CLIENTEDGE
+    LISTBOX         IDC_LISTCIBLES,13,84,92,105,LBS_SORT | 
+                    LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
+    LISTBOX         IDC_LISTSELCIBLES,109,84,92,105,LBS_NOINTEGRALHEIGHT | 
+                    WS_VSCROLL | WS_TABSTOP
+    CTEXT           "Sélection des cibles",IDC_STATIC,32,71,147,9
+    CONTROL         "",IDC_STATIC,"Static",SS_BLACKFRAME | SS_SUNKEN,16,80,
+                    184,1
+END
+
+IDD_TESTUGRID DIALOG DISCARDABLE  0, 0, 488, 282
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Dialog"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,431,7,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,431,24,50,14
+    COMBOBOX        IDC_CIBLES,116,13,220,85,CBS_DROPDOWN | CBS_SORT | 
+                    WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Cible",IDC_STATIC,89,14,25,11
+END
+
+IDD_EXPORT_SCREENVISION DIALOGEX 0, 0, 325, 242
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Informations Export Screenvision"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,268,7,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,268,24,50,14
+    CONTROL         "",IDC_CADRE,"Static",SS_BLACKFRAME,6,7,255,59,
+                    WS_EX_CLIENTEDGE
+    LTEXT           "Agence / Agence média :",LABEL_TITRE,12,14,87,11,
+                    WS_TABSTOP
+    EDITTEXT        IDC_NOMTITRE,107,12,145,12,ES_AUTOHSCROLL
+    LTEXT           "Produit :",LABEL_SSTITRE,12,31,40,11,WS_TABSTOP
+    EDITTEXT        IDC_NOMSSTITRE,57,29,195,12,ES_AUTOHSCROLL
+    LTEXT           "Date début :",LABEL_DATEDEBUT,12,49,41,11,WS_TABSTOP
+    EDITTEXT        IDC_DATEDEBUT,57,47,60,12,ES_AUTOHSCROLL | WS_DISABLED
+    LTEXT           "Date début :",LABEL_DATEDEBUT2,127,49,41,11,WS_TABSTOP
+    EDITTEXT        IDC_DATEFIN,171,47,60,12,ES_AUTOHSCROLL | WS_DISABLED
+    CONTROL         "",IDC_CADRE7,"Static",SS_BLACKFRAME,6,70,255,165,
+                    WS_EX_CLIENTEDGE
+    LISTBOX         IDC_LISTCIBLES,14,98,115,116,LBS_SORT | 
+                    LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
+    LISTBOX         IDC_LISTSELCIBLES,136,98,115,86,LBS_NOINTEGRALHEIGHT | 
+                    WS_VSCROLL | WS_TABSTOP
+    CTEXT           "Sélection des cibles ",IDC_STATIC,15,74,236,9
+    CONTROL         "",IDC_STATIC,"Static",SS_BLACKFRAME | SS_SUNKEN,16,84,
+                    234,1
+    CTEXT           "Cibles disponibles",IDC_STATIC,17,88,110,10
+    CTEXT           "Cibles sélectionnées",IDC_STATIC,138,88,112,10
+    LTEXT           "*** Choisir 1 cible dans cibles sélectionnées pour perfomances par semaines",
+                    IDC_STATIC,13,221,241,13
+    LTEXT           "",IDC_CIBLE_PERF_SEM,136,201,115,13,SS_SUNKEN
+    CTEXT           "Cible / Performance Semaines",IDC_STATIC,138,188,113,10
+END
+
+
+#ifndef _MAC
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 3,6,2,0
+ PRODUCTVERSION 3,6,2,0
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040c04b0"
+        BEGIN
+            VALUE "Comments", "Version 3.6.2\1"
+            VALUE "CompanyName", "\0"
+            VALUE "FileDescription", "Version 3.6.2\1"
+            VALUE "FileVersion", "3, 6, 2, 0\0"
+            VALUE "InternalName", "cinema\0"
+            VALUE "LegalCopyright", "Copyright (C) 2000\0"
+            VALUE "LegalTrademarks", "\0"
+            VALUE "OriginalFilename", "cinema.EXE\0"
+            VALUE "PrivateBuild", "\0"
+            VALUE "ProductName", "Application cinema\0"
+            VALUE "ProductVersion", "3, 6, 2, 0\0"
+            VALUE "SpecialBuild", "\0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x40c, 1200
+    END
+END
+
+#endif    // !_MAC
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_ABOUTBOX, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 293
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 243
+    END
+
+    IDD_CINEMA_FORM, DIALOG
+    BEGIN
+        LEFTMARGIN, 6
+        RIGHTMARGIN, 534
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 328
+    END
+
+    IDD_CHANGER_PERIODE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 228
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 58
+    END
+
+    IDD_CIBLE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 242
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 177
+    END
+
+    IDD_FONCTIONCIBLE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 266
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 95
+    END
+
+    IDD_PERFORMANCES, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 216
+        TOPMARGIN, 8
+        BOTTOMMARGIN, 195
+    END
+
+    IDD_OPTIONCALCUL, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 204
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 228
+    END
+
+    IDD_BUDGETNET, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 180
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 46
+    END
+
+    IDD_BETA, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 180
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 46
+    END
+
+    IDD_DUREE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 126
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 142
+    END
+
+    IDD_GRAPHE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 264
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 176
+    END
+
+    IDD_CHOIXTEMPO, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 134
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 88
+    END
+
+    IDD_ATTENTE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 224
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 144
+    END
+
+    IDD_PARAMPRINT, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 320
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 70
+    END
+
+    IDD_MAINTENANCE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 380
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 192
+    END
+
+    IDD_MULTICIBLE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 266
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 112
+    END
+
+    IDD_SELECTION, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 276
+        TOPMARGIN, 6
+        BOTTOMMARGIN, 226
+    END
+
+    IDD_SELPRODBACCOMPLEXE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 290
+        TOPMARGIN, 6
+        BOTTOMMARGIN, 300
+    END
+
+    IDD_SELCOMPLEXE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 408
+        TOPMARGIN, 6
+        BOTTOMMARGIN, 394
+    END
+
+    IDD_SELECTIONPRODUIT, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 272
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 229
+    END
+
+    IDD_ANALYSE_FILM, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 513
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 288
+    END
+
+    IDD_FORMULAIRE_FILM, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 367
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 303
+    END
+
+    IDD_CRITERE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 271
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 147
+    END
+
+    IDD_GRAPHEFILM, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 265
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 178
+    END
+
+    IDD_PERFORMANCESFILM, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 214
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 195
+    END
+
+    IDD_OPTIONCALCULFILM, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 180
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 53
+    END
+
+    IDD_OPTIONCALCULMEMO, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 233
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 215
+    END
+
+    IDD_PERFAGLO, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 276
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 196
+    END
+
+    IDD_EXPORT_MEDIAVISION, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 268
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 194
+    END
+
+    IDD_TESTUGRID, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 481
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 275
+    END
+
+    IDD_EXPORT_SCREENVISION, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 318
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 235
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Cursor
+//
+
+IDC_AJOUTSUPP           CURSOR  DISCARDABLE     "res\\Ajoutsup.cur"
+IDC_BLOCCHANGE          CURSOR  DISCARDABLE     "res\\Blocchan.cur"
+IDC_BLOCCOPIERCOLLER    CURSOR  DISCARDABLE     "res\\Bloccopi.cur"
+IDC_BLOCDEPLACEMENT     CURSOR  DISCARDABLE     "res\\Blocdepl.cur"
+IDC_BLOCEFFACE          CURSOR  DISCARDABLE     "res\\Bloceffa.cur"
+IDC_BLOCMOVE            CURSOR  DISCARDABLE     "res\\Blocmove.cur"
+IDC_BLOCTEMPO           CURSOR  DISCARDABLE     "res\\Bloctemp.cur"
+IDC_DEPLACEMENTTRAIT    CURSOR  DISCARDABLE     "res\\Deplacem.cur"
+IDC_GLISSEMENT          CURSOR  DISCARDABLE     "res\\Glisseme.cur"
+IDC_INTERDIT            CURSOR  DISCARDABLE     "res\\Interdit.cur"
+IDC_PASSAGE             CURSOR  DISCARDABLE     "res\\Passage.cur"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog Info
+//
+
+IDD_MULTICIBLE DLGINIT
+BEGIN
+    IDC_CIBLE1, 0x403, 1, 0
+"\000" 
+    0
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE PRELOAD DISCARDABLE 
+BEGIN
+    IDR_MAINFRAME           "Atelier Cinéma France v3.6"
+    IDR_CINEMATYPE          "\nCampagne\nCampagne\nCampagne Atelier Cinéma\n.CampagneCinéma\nCinema.Document\nDocument Atelier Cinéma"
+    IDR_FILMTYPE            "\nCampagne Films\nCampagne Films\nCampagne Films Atelier Cinéma\n.CampagneFilmCinéma\nFilm.Document\nDocument Atelier Cinéma Films"
+END
+
+STRINGTABLE PRELOAD DISCARDABLE 
+BEGIN
+    AFX_IDS_APP_TITLE       "Atelier Cinéma France"
+    AFX_IDS_IDLEMESSAGE     "Prêt"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_INDICATOR_EXT        "EXT"
+    ID_INDICATOR_CAPS       "MAJ"
+    ID_INDICATOR_NUM        "NUM"
+    ID_INDICATOR_SCRL       "DEF"
+    ID_INDICATOR_OVR        "ECR"
+    ID_INDICATOR_REC        "ENR"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_FILE_NEW             "Crée un nouveau document\nNouvelle campagne"
+    ID_FILE_OPEN            "Ouvre un document existant\nOuvrir une campagne"
+    ID_FILE_CLOSE           "Ferme le document actif\nFermer"
+    ID_FILE_SAVE            "Enregistre le document actif\nEnregistrer la campagne"
+    ID_FILE_SAVE_AS         "Enregistre le document actif sous un nouveau nom\nEnregistrer sous"
+    ID_FILE_PAGE_SETUP      "Change les options d'impression\nMise en page"
+    ID_FILE_PRINT_SETUP     "Change les options d'imprimante et d'impression\nConfiguration de l'impression"
+    ID_FILE_PRINT           "Imprime le document actif\nImprimer"
+    ID_FILE_PRINT_PREVIEW   "Affiche des pages entières\nAperçu avant impression"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_APP_ABOUT            "Affiche des informations sur le programme, le numéro de version et le copyright\nA propos de"
+    ID_APP_EXIT             "Ferme l'application ; propose d'enregistrer les documents\nQuitter"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_FILE_MRU_FILE1       "Ouvre ce document"
+    ID_FILE_MRU_FILE2       "Ouvre ce document"
+    ID_FILE_MRU_FILE3       "Ouvre ce document"
+    ID_FILE_MRU_FILE4       "Ouvre ce document"
+    ID_FILE_MRU_FILE5       "Ouvre ce document"
+    ID_FILE_MRU_FILE6       "Ouvre ce document"
+    ID_FILE_MRU_FILE7       "Ouvre ce document"
+    ID_FILE_MRU_FILE8       "Ouvre ce document"
+    ID_FILE_MRU_FILE9       "Ouvre ce document"
+    ID_FILE_MRU_FILE10      "Ouvre ce document"
+    ID_FILE_MRU_FILE11      "Ouvre ce document"
+    ID_FILE_MRU_FILE12      "Ouvre ce document"
+    ID_FILE_MRU_FILE13      "Ouvre ce document"
+    ID_FILE_MRU_FILE14      "Ouvre ce document"
+    ID_FILE_MRU_FILE15      "Ouvre ce document"
+    ID_FILE_MRU_FILE16      "Ouvre ce document"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_NEXT_PANE            "Passe au volet de fenêtre suivant\nVolet suivant"
+    ID_PREV_PANE            "Revient au volet précédent\nVolet précédent"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_WINDOW_NEW           "Ouvre une nouvelle fenêtre pour le document actif\nNouvelle fenêtre"
+    ID_WINDOW_ARRANGE       "Réorganise les icônes en bas de la fenêtre\nRéorganise les icônes"
+    ID_WINDOW_CASCADE       "Réorganise les fenêtres en cascade\nCascade"
+    ID_WINDOW_TILE_HORZ     "Réorganise les fenêtres en une mosaïque\nMosaïque"
+    ID_WINDOW_TILE_VERT     "Réorganise les fenêtres en une mosaïque\nMosaïque"
+    ID_WINDOW_SPLIT         "Réorganise les fenêtres en une mosaïque\nMosaïque"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_EDIT_CLEAR           "Efface la sélection\nEffacer"
+    ID_EDIT_CLEAR_ALL       "Efface tout\nEffacer tout"
+    ID_EDIT_COPY            "Copie la sélection et la place dans le Presse-papiers\nCopier"
+    ID_EDIT_CUT             "Supprime la sélection et la place dans le Presse-papiers\nCouper"
+    ID_EDIT_FIND            "Recherche le texte spécifié\nRechercher"
+    ID_EDIT_PASTE           "Insère le contenu du Presse-papiers\nColler"
+    ID_EDIT_REPEAT          "Répète la dernière action\nRépéter"
+    ID_EDIT_REPLACE         "Remplace le texte spécifique par un texte différent\nRemplacer"
+    ID_EDIT_SELECT_ALL      "Sélectionne le document entier\nSélectionner tout"
+    ID_EDIT_UNDO            "Annule la dernière action\nAnnuler"
+    ID_EDIT_REDO            "Rétablit l'action précédemment annulée\nRétablir"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_VIEW_TOOLBAR         "Affiche ou masque la barre d'outils\nBarre d'outils"
+    ID_VIEW_STATUS_BAR      "Affiche ou masque la barre d'état\nBarre d'état"
+    ID_PIEDPAGE1_POPNAT     "La population cible est exprimée sur l'ensemble pop. nat."
+    ID_PIEDPAGE1_BAC_COUVERTS 
+                            "La population cible est exprimée sur l'ensemble des BAC couverts."
+    ID_PIEDPAGE2            "- Sources : Entrée cinéma sources interprofessionnelles 2012 / Médiamétrie janvier-décembre 2012. "
+    ID_PIEDPAGE3            "- JFC, Atelier Cinéma     "
+    ID_PIEDPAGE_PRINTFILM   "Résultats Atelier Cinéma/JFC calculés sur la base de prévisions de fréquentations et de profils estimées par l'utilisateur."
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    AFX_IDS_SCSIZE          "Change la taille de la fenêtre"
+    AFX_IDS_SCMOVE          "Change la position de la fenêtre"
+    AFX_IDS_SCMINIMIZE      "Réduit la fenêtre en icône"
+    AFX_IDS_SCMAXIMIZE      "Agrandit la fenêtre au format de l'écran"
+    AFX_IDS_SCNEXTWINDOW    "Passe à la fenêtre de document suivante"
+    AFX_IDS_SCPREVWINDOW    "Passe à la fenêtre de document précédente"
+    AFX_IDS_SCCLOSE         "Ferme la fenêtre active et propose l'enregistrement des documents"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    AFX_IDS_SCRESTORE       "Restaure la fenêtre à sa taille d'origine"
+    AFX_IDS_SCTASKLIST      "Active la liste des tâches"
+    AFX_IDS_MDICHILD        "Active cette fenêtre"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    AFX_IDS_PREVIEW_CLOSE   "Ferme le mode d'aperçu avant impression\nFermer l'aperçu"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_OUTILS_AJOUTERSUPPRIMER 
+                            "Ajouter/Supprimer un passage\nAjouter/Supprimer un passage"
+    ID_OUTILS_GLISSER       "Glisser un passage\nGlisser un passage"
+    ID_OUTILS_TEMPO         "Construire un tempo\nConstruire un tempo"
+    ID_OUTILS_GOMMER        "Gommer"
+    ID_OUTILS_DURE          "Changer le format\nChanger le format"
+    ID_OUTILS_COUPER        "Couper-Coller\nCouper-Coller"
+    ID_OUTILS_COPIERCOLLER  "Copier-Coller\nCopier-Coller"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_AFFICHAGE_RPERTOIREDECIBLES 
+                            "Répertoire de cibles\nRépertoire de cibles"
+    IDC_ACTION_COPIER       "Copier depuis l'hypothèse active\nCopier depuis l'hypothèse active"
+    ID_ACTION_COLLER        "Coller dans l'hypothèse active\nColler dans l'hypothèse active"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_CAMPAGNE_EXPORTER    "Exporter la campagne\nExporter la campagne"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_FILE_PRINT2          "Imprime le document actif\nImprimer"
+END
+
+#endif    // French (France) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+//#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_FRA)
+#ifdef _WIN32
+LANGUAGE 12, 1
+#pragma code_page(1252)
+#endif //_WIN32
+#include "res\cinema.rc2"  // non-Microsoft Visual C++ edited resources
+#include "l.fra\afxres.rc"          // Standard components
+#include "l.fra\afxprint.rc"        // printing/print preview resources
+#endif
+
+#include "secres.rc"  //Toolkit ressources
+#include "gxres.rc"  //Grid resources 
+
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

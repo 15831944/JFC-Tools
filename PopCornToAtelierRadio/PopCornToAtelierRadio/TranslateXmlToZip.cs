@@ -46,41 +46,43 @@ namespace PopCornToAtelierRadio
             serializer.Serialize(cartouchePart.GetStream(), l_cartouche);
             l_package.CreateRelationship(cartouchePart.Uri, TargetMode.Internal, "cartouche", "cartouche");
 
-            if (_study.Root_Plans.Plan != null)
+            if (_study.Root_Plans != null)
             {
-                // Construction du nom fichier plan avec n° plan
-                // String l_filePlan = GestionXmlAtelierRadio.PlanFileNameProvider.Provide(_study.Root_Plans.Plan.Occupe, _study.Root_Plans.Plan.NrPlan);
-                String NamePlan = _study.Root_Plans.Plan.Nom; // "P1";
-                String l_filePlan = GetNameFilePlanXml(NamePlan, _study.Root_Plans.Plan.NrPlan, _study.Root_Plans.Plan.Occupe);
-                
-                // Le nom de plan n'a pas d'importance, il y en a toujours qu'un seul
-                //String l_filePlan = "P1.xml";
+                if (_study.Root_Plans.Plan != null)
+                {
+                    // Construction du nom fichier plan avec n° plan
+                    // String l_filePlan = GestionXmlAtelierRadio.PlanFileNameProvider.Provide(_study.Root_Plans.Plan.Occupe, _study.Root_Plans.Plan.NrPlan);
+                    String NamePlan = _study.Root_Plans.Plan.Nom; // "P1";
+                    String l_filePlan = GetNameFilePlanXml(NamePlan, _study.Root_Plans.Plan.NrPlan, _study.Root_Plans.Plan.Occupe);
 
-                // Modif ALAIN
-                // Nom pour RelationShip (convertit tous les caracteres interdits Xml , juste pour la relationship)
-                string NameRelationShip = GetNameRelationShip(l_filePlan);
+                    // Le nom de plan n'a pas d'importance, il y en a toujours qu'un seul
+                    //String l_filePlan = "P1.xml";
 
-                Uri zipPartUriPlan = PackUriHelper.CreatePartUri(new Uri(l_filePlan, UriKind.Relative));
+                    // Modif ALAIN
+                    // Nom pour RelationShip (convertit tous les caracteres interdits Xml , juste pour la relationship)
+                    string NameRelationShip = GetNameRelationShip(l_filePlan);
 
-                l_package.CreateRelationship(zipPartUriPlan, TargetMode.Internal, "plan", NameRelationShip);
+                    Uri zipPartUriPlan = PackUriHelper.CreatePartUri(new Uri(l_filePlan, UriKind.Relative));
 
-
-                PackagePart planpart = l_package.CreatePart(zipPartUriPlan, System.Net.Mime.MediaTypeNames.Text.Xml, CompressionOption.Normal);
-
-                PlansPlan l_plan = this.ConvertPlan(_study.Root_Cartouche.Information, _study.Root_Plans.Plan);
-
-                XmlSerializer serializerPlan = new XmlSerializer(typeof(PlansPlan));
-                serializerPlan.Serialize(planpart.GetStream(), l_plan);
-
-                // l_package.CreateRelationship(cartouchePart.Uri, TargetMode.Internal, "plan", l_filePlan);
+                    l_package.CreateRelationship(zipPartUriPlan, TargetMode.Internal, "plan", NameRelationShip);
 
 
+                    PackagePart planpart = l_package.CreatePart(zipPartUriPlan, System.Net.Mime.MediaTypeNames.Text.Xml, CompressionOption.Normal);
 
+                    PlansPlan l_plan = this.ConvertPlan(_study.Root_Cartouche.Information, _study.Root_Plans.Plan);
+
+                    XmlSerializer serializerPlan = new XmlSerializer(typeof(PlansPlan));
+                    serializerPlan.Serialize(planpart.GetStream(), l_plan);
+
+                    // l_package.CreateRelationship(cartouchePart.Uri, TargetMode.Internal, "plan", l_filePlan);
+
+
+
+
+                }
+                // _study.Root_Plans.
 
             }
-           // _study.Root_Plans.
-
-
             l_package.Close();
 
          
@@ -92,29 +94,29 @@ namespace PopCornToAtelierRadio
 
             PlansPlan l_plan = new PlansPlan();
             l_plan.NrEtude = _plan.NrEtude;
-            l_plan.NrPlan = _plan.NrPlan;
-            l_plan.Version = _plan.Version;
+            l_plan.NrPlan = (ulong)_plan.NrPlan;
+            l_plan.Version = (byte)_plan.Version;
             l_plan.Nom = _plan.Nom;
-            l_plan.RefPlan = _plan.RefPlan;
-            l_plan.Occupe = _plan.Occupe;
-            l_plan.NoSas = _plan.NoSas;
+            l_plan.RefPlan = (byte)_plan.RefPlan;
+            l_plan.Occupe = (byte)_plan.Occupe;
+            l_plan.NoSas = (byte)_plan.NoSas;
             l_plan.DateDebut = _plan.DateDebut;
             l_plan.DateFin = _plan.DateFin;
             l_plan.NoCib = _plan.NumCible;
             l_plan.NomCib = _plan.NomCible;
-            l_plan.NumVague = _plan.NumVague;
+            l_plan.NumVague = (ushort)_plan.NumVague;
             l_plan.NomVague = _plan.NomVague;
             l_plan.DateHeureMemo = _plan.DateHeureMemo;
-            l_plan.NbSemainePA = _plan.NbSemainePA;
+            l_plan.NbSemainePA = (ushort)_plan.NbSemainePA;
             l_plan.DateFinPA = _plan.DateFinPA;
             l_plan.DateDebutPA = _plan.DateDebutPA;
             l_plan.Open = 0;
 
             l_plan.Data = new PlansPlanData();
             l_plan.Data.blocRegs = new PlansPlanDataBlocRegs();
-            l_plan.Data.blocRegs.CurRegion = _plan.Data.blocRegions.CurRegion;
-            l_plan.Data.blocRegs.CurStation = _plan.Data.blocRegions.CurStation;
-            l_plan.Data.blocRegs.CurNiveau = _plan.Data.blocRegions.CurNiveau;
+            l_plan.Data.blocRegs.CurRegion = (ushort)_plan.Data.blocRegions.CurRegion;
+            l_plan.Data.blocRegs.CurStation = (ushort)_plan.Data.blocRegions.CurStation;
+            l_plan.Data.blocRegs.CurNiveau = (ushort)_plan.Data.blocRegions.CurNiveau;
 
             l_plan.Data.blocRegs.Reg = new PlansPlanDataBlocRegsReg[1];//une seule region traitée pour le moment
             l_plan.Data.blocRegs.Reg[0] = new PlansPlanDataBlocRegsReg();
@@ -126,8 +128,8 @@ namespace PopCornToAtelierRadio
             for (int i = 0; i < l_nbsStation; ++i )
             {
                 l_plan.Data.blocRegs.Reg[0].Sta[i] = new PlansPlanDataBlocRegsRegSta();
-                l_plan.Data.blocRegs.Reg[0].Sta[i].No = _plan.Data.blocRegions.Region.Station[i].Sta;
-                l_plan.Data.blocRegs.Reg[0].Sta[i].Lock = _plan.Data.blocRegions.Region.Station[i].Lock;
+                l_plan.Data.blocRegs.Reg[0].Sta[i].No = (ushort)_plan.Data.blocRegions.Region.Station[i].Sta;
+                l_plan.Data.blocRegs.Reg[0].Sta[i].Lock = (ushort)_plan.Data.blocRegions.Region.Station[i].Lock;
             }
 
             l_plan.Data.blocTaux = new PlansPlanDataBlocTaux();
@@ -149,9 +151,9 @@ namespace PopCornToAtelierRadio
             for (int i = 0; i < l_nbFormat; ++i)
             {
                 l_plan.Data.blocFors.For[i] = new PlansPlanDataBlocForsFor();
-                l_plan.Data.blocFors.For[i].Mode = _plan.Data.blocFormats.Format[i].Mode;
+                l_plan.Data.blocFors.For[i].Mode = (byte)_plan.Data.blocFormats.Format[i].Mode;
                 l_plan.Data.blocFors.For[i].Nom = _plan.Data.blocFormats.Format[i].Nom.ToString();
-                l_plan.Data.blocFors.For[i].No = _plan.Data.blocFormats.Format[i].No;
+                l_plan.Data.blocFors.For[i].No = (ushort)_plan.Data.blocFormats.Format[i].No;
             }
             l_plan.Data.blocSpots = new PlansPlanDataBlocSpots();
 
@@ -165,14 +167,14 @@ namespace PopCornToAtelierRadio
                  if (_plan.Data.blocSpots.SpotsPresents[i] != null)
                  {
                      l_plan.Data.blocSpots.Spots[i] = new PlansPlanDataBlocSpotsSP();
-                     l_plan.Data.blocSpots.Spots[i].Reg = _plan.Data.blocSpots.SpotsPresents[i].Reg;
-                     l_plan.Data.blocSpots.Spots[i].Sta = _plan.Data.blocSpots.SpotsPresents[i].Sta;
+                     l_plan.Data.blocSpots.Spots[i].Reg = (ushort)_plan.Data.blocSpots.SpotsPresents[i].Reg;
+                     l_plan.Data.blocSpots.Spots[i].Sta = (ushort)_plan.Data.blocSpots.SpotsPresents[i].Sta;
                      l_plan.Data.blocSpots.Spots[i].No = (ushort)_plan.Data.blocSpots.SpotsPresents[i].Num;
                      l_plan.Data.blocSpots.Spots[i].Hor = _plan.Data.blocSpots.SpotsPresents[i].Hor;
-                     l_plan.Data.blocSpots.Spots[i].Jr = _plan.Data.blocSpots.SpotsPresents[i].Jr;
-                     l_plan.Data.blocSpots.Spots[i].NoStr = _plan.Data.blocSpots.SpotsPresents[i].NoStr;
-                     l_plan.Data.blocSpots.Spots[i].NoFor = _plan.Data.blocSpots.SpotsPresents[i].NoFor;
-                     l_plan.Data.blocSpots.Spots[i].ValAtt = _plan.Data.blocSpots.SpotsPresents[i].ValAtt;
+                     l_plan.Data.blocSpots.Spots[i].Jr = (ushort)_plan.Data.blocSpots.SpotsPresents[i].Jr;
+                     l_plan.Data.blocSpots.Spots[i].NoStr = (ushort)_plan.Data.blocSpots.SpotsPresents[i].NoStr;
+                     l_plan.Data.blocSpots.Spots[i].NoFor = (ushort)_plan.Data.blocSpots.SpotsPresents[i].NoFor;
+                     l_plan.Data.blocSpots.Spots[i].ValAtt = (ushort)_plan.Data.blocSpots.SpotsPresents[i].ValAtt;
                      l_plan.Data.blocSpots.Spots[i].Attr = _plan.Data.blocSpots.SpotsPresents[i].Attr;
 
                      // Ajout des prix nets CO/FO
@@ -224,13 +226,13 @@ namespace PopCornToAtelierRadio
             l_cartouche.Per.NbSemainePeriodeA = _cart.Periode.NbSemainePeriodeA;
 
             l_cartouche.Ech = new CartoucheEch();
-            l_cartouche.Ech.Devise = _cart.Echange.Devise;
+            l_cartouche.Ech.Devise = (byte)_cart.Echange.Devise;
 
             // l_cartouche.Ech.TauxEchange = (System.Decimal)6.55956983566284;
             l_cartouche.Ech.TauxEchange = (double)6.55956983566284;
 
             l_cartouche.Div = new CartoucheDiv();
-            l_cartouche.Div.NrMaillage = _cart.Divers.NrMaillage;
+            l_cartouche.Div.NrMaillage = (byte)_cart.Divers.NrMaillage;
             l_cartouche.Div.AgrJours = _cart.Divers.AgrJours;
             l_cartouche.Div.PlageHoraire = _cart.Divers.PlageHoraire;
 
@@ -249,7 +251,7 @@ namespace PopCornToAtelierRadio
             l_cartouche.blocStas[0] = new CartoucheGrpSta();
 
             l_cartouche.blocStas[0].Nom = _cart.blocStations.GroupeStation.Nom;
-            l_cartouche.blocStas[0].NoMaillage = _cart.blocStations.GroupeStation.NumeroMaillage;
+            l_cartouche.blocStas[0].NoMaillage = (byte)_cart.blocStations.GroupeStation.NumeroMaillage;
           
             //ici nous ne prendrons en compte qu'une seule region la 0 (dans le cadre de la concersion pop to ar)
             l_cartouche.blocStas[0].Stations = new CartoucheGrpStaStations[1];
@@ -271,7 +273,7 @@ namespace PopCornToAtelierRadio
                 l_cartouche.blocStas[0].Stations[0].Sta[i].Code=(ushort)_cart.blocStations.GroupeStation.Stations[0].Station[i].Code;
 
                 l_cartouche.blocStas[0].LienTars[0].RegStaTar[i] = new CartoucheGrpStaLienTarsRegStaTar();
-                l_cartouche.blocStas[0].LienTars[0].RegStaTar[i].TypeEvolutif = _cart.blocStations.GroupeStation.LienTarifs[0].RegStaTarif[i].TypeEvolutif;
+                l_cartouche.blocStas[0].LienTars[0].RegStaTar[i].TypeEvolutif = (byte)_cart.blocStations.GroupeStation.LienTarifs[0].RegStaTarif[i].TypeEvolutif;
                 l_cartouche.blocStas[0].LienTars[0].RegStaTar[i].Date = _cart.blocStations.GroupeStation.LienTarifs[0].RegStaTarif[i].Date;
                 l_cartouche.blocStas[0].LienTars[0].RegStaTar[i].NoTar = _cart.blocStations.GroupeStation.LienTarifs[0].RegStaTarif[i].NumeroTarif;
                 l_cartouche.blocStas[0].LienTars[0].RegStaTar[i].CodeTar = _cart.blocStations.GroupeStation.LienTarifs[0].RegStaTarif[i].CodeTarif;
@@ -279,7 +281,7 @@ namespace PopCornToAtelierRadio
             }
 
             l_cartouche.blocFors = new CartoucheBlocFors();
-            l_cartouche.blocFors.BaseFormat = _cart.blocFormats.BaseFormat;
+            l_cartouche.blocFors.BaseFormat = (byte)_cart.blocFormats.BaseFormat;
 
             Int32 nbFormat = _cart.blocFormats.Format.Count();
             l_cartouche.blocFors.Format = new CartoucheBlocForsFormat[nbFormat];
@@ -287,38 +289,38 @@ namespace PopCornToAtelierRadio
             for (int i = 0; i < nbFormat; ++i )
             {
                 l_cartouche.blocFors.Format[i] = new CartoucheBlocForsFormat();
-                l_cartouche.blocFors.Format[i].Index = _cart.blocFormats.Format[i].Index;
+                l_cartouche.blocFors.Format[i].Index = (byte)_cart.blocFormats.Format[i].Index;
                 l_cartouche.blocFors.Format[i].Duree = _cart.blocFormats.Format[i].Duree.ToString();
-                l_cartouche.blocFors.Format[i].NbFois = _cart.blocFormats.Format[i].NbFois;
+                l_cartouche.blocFors.Format[i].NbFois = (ushort)_cart.blocFormats.Format[i].NbFois;
             }
 
             //une seule strate pour la conversion
             l_cartouche.blocStrs = new CartoucheStr[1];
             l_cartouche.blocStrs[0] = new CartoucheStr();
 
-            l_cartouche.blocStrs[0].Index = _cart.blocStrates.Strate.Index;
-            l_cartouche.blocStrs[0].NbFois = _cart.blocStrates.Strate.NbFois;
-            l_cartouche.blocStrs[0].No = _cart.blocStrates.Strate.Numero;
+            l_cartouche.blocStrs[0].Index = (byte)_cart.blocStrates.Strate.Index;
+            l_cartouche.blocStrs[0].NbFois = (ushort)_cart.blocStrates.Strate.NbFois;
+            l_cartouche.blocStrs[0].No = (byte)_cart.blocStrates.Strate.Numero;
 
             l_cartouche.blocEtuOpt = new CartoucheBlocEtuOpt();
             l_cartouche.blocEtuOpt.OptClass = new CartoucheBlocEtuOptOptClass();
-            l_cartouche.blocEtuOpt.OptClass.fClasMixte = _cart.blocEtudeOption.OptionClassement.fClasMixte;
+            l_cartouche.blocEtuOpt.OptClass.fClasMixte = (byte)_cart.blocEtudeOption.OptionClassement.fClasMixte;
             l_cartouche.blocEtuOpt.OptPds = new CartoucheBlocEtuOptOptPds();
-            l_cartouche.blocEtuOpt.OptPds.PoidsPui = _cart.blocEtudeOption.OptionPoids.PoidsPui;
-            l_cartouche.blocEtuOpt.OptPds.PoidsEco = _cart.blocEtudeOption.OptionPoids.PoidsEco;
-            l_cartouche.blocEtuOpt.OptPds.PoidsAff = _cart.blocEtudeOption.OptionPoids.PoidsAff;
+            l_cartouche.blocEtuOpt.OptPds.PoidsPui = (ushort)_cart.blocEtudeOption.OptionPoids.PoidsPui;
+            l_cartouche.blocEtuOpt.OptPds.PoidsEco = (ushort)_cart.blocEtudeOption.OptionPoids.PoidsEco;
+            l_cartouche.blocEtuOpt.OptPds.PoidsAff = (ushort)_cart.blocEtudeOption.OptionPoids.PoidsAff;
             l_cartouche.blocEtuOpt.OptAff = new CartoucheBlocEtuOptOptAff();
             l_cartouche.blocEtuOpt.OptAff.NrCibleBaseAff = _cart.blocEtudeOption.OptionAffinite.NrCibleBaseAff;
-            l_cartouche.blocEtuOpt.OptAff.fAffIndice = _cart.blocEtudeOption.OptionAffinite.fAffIndice;
+            l_cartouche.blocEtuOpt.OptAff.fAffIndice = (ushort)_cart.blocEtudeOption.OptionAffinite.fAffIndice;
             l_cartouche.blocEtuOpt.OptTar = new CartoucheBlocEtuOptOptTar();
-            l_cartouche.blocEtuOpt.OptTar.PTarFacial = _cart.blocEtudeOption.OptionTarif.PTarifFacial;
+            l_cartouche.blocEtuOpt.OptTar.PTarFacial = (byte)_cart.blocEtudeOption.OptionTarif.PTarifFacial;
             l_cartouche.blocEtuOpt.OptCalc = new CartoucheBlocEtuOptOptCalc();
-            l_cartouche.blocEtuOpt.OptCalc.fMoyenneGRP = _cart.blocEtudeOption.OptionCalcul.fMoyenneGRP;
-            l_cartouche.blocEtuOpt.OptCalc.fPenetration = _cart.blocEtudeOption.OptionCalcul.fPenetration;
+            l_cartouche.blocEtuOpt.OptCalc.fMoyenneGRP = (byte)_cart.blocEtudeOption.OptionCalcul.fMoyenneGRP;
+            l_cartouche.blocEtuOpt.OptCalc.fPenetration = (byte)_cart.blocEtudeOption.OptionCalcul.fPenetration;
             l_cartouche.blocEtuOpt.OptEdit = new CartoucheBlocEtuOptOptEdit();
-            l_cartouche.blocEtuOpt.OptEdit.fLigneGrisee = _cart.blocEtudeOption.OptionEdition.fLigneGrisee;
-            l_cartouche.blocEtuOpt.OptEdit.fPleinEcran = _cart.blocEtudeOption.OptionEdition.fPleinEcran;
-            l_cartouche.blocEtuOpt.OptEdit.fCoeffMemo = _cart.blocEtudeOption.OptionEdition.fCoeffMemo;
+            l_cartouche.blocEtuOpt.OptEdit.fLigneGrisee = (byte)_cart.blocEtudeOption.OptionEdition.fLigneGrisee;
+            l_cartouche.blocEtuOpt.OptEdit.fPleinEcran = (byte)_cart.blocEtudeOption.OptionEdition.fPleinEcran;
+            l_cartouche.blocEtuOpt.OptEdit.fCoeffMemo = (byte)_cart.blocEtudeOption.OptionEdition.fCoeffMemo;
 
             // Ajout Bloc Campagne pour Reference
             // Création objet bloc Campagne
@@ -336,7 +338,7 @@ namespace PopCornToAtelierRadio
 
             // Infomations Tarif
             l_cartouche.blocTar = new CartoucheBlocTar();
-            l_cartouche.blocTar.BaseFormat = _cart.blocTarification.BaseFormat;
+            l_cartouche.blocTar.BaseFormat = (byte)_cart.blocTarification.BaseFormat;
             l_cartouche.blocTar.AssietteHon = 0; //non traité  dans les versions que l'on converti
             l_cartouche.blocTar.TauxHon = 0;
 

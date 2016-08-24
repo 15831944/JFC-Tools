@@ -1,0 +1,6 @@
+Modification de la position et de la taille d'une fenetre MDI fille : CMDIChildFrame
+Il suffit de modifier les menbres de la structure CREATESTRUCT passée en paramètre à la 
+méthode PreCreateWindow de la classe dérivée de CMDIChildFrame.
+exemple: Pour que toutes les fenetres MDI s'affiche à l'origine de la frame parente
+cs.x = 0;
+cs.y = 0;

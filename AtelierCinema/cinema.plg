@@ -1,0 +1,400 @@
+<html>
+<body>
+<pre>
+<h1>Build Log</h1>
+<h3>
+--------------------Configuration: cinema - Win32 Release--------------------
+</h3>
+<h3>Command Lines</h3>
+Creating command line "rc.exe /l 0x40c /fo"Release/cinema.res" /i "..\composants" /d "NDEBUG" "C:\Projects\Atelier Cinema\AtelierCinemaFrance\cinema.rc"" 
+Creating temporary file "C:\DOCUME~1\CHAMBA~1\LOCALS~1\Temp\RSP336.tmp" with contents
+[
+/nologo /G5 /MT /W3 /GR /GX /O2 /I "..\composants" /I "UltimateGrid\Include" /D "..\composants" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /FR"Release/" /Fp"Release/cinema.pch" /Yu"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\BaseCinema.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\CalculMemoDememo.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\CalculProduitFilm.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\CAlendrierHebdoCinema.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\Campagne.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\CampagneAgglo.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\CampagneFilm.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\CampagneGenerique.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\CarreCouleur.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\CFichierCinema.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\ChildFilm.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\ChildFrm.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\Cible.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\cinema.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\cinemaDoc.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\cinemaView.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\Couleur.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\DlgBeta.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\DlgBudgetNet.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\DlgChangerPeriode.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\DlgChoix.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\DlgChxTempo.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\DlgCritere.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\DlgExportMediavision.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\DlgExportScreenvision.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\DlgFonctionCible.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\DlgFormat.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\DlgGraphe.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\DlgGrapheFilm.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\DlgMulticible.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\DlgOptionCalcul.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\DlgOptionCalculFilm.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\DlgOptionCalculMemo.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\DlgParamPrint.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\DlgPerfAgglo.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\DlgPerformanceFilm.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\DlgPerformances.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\DlgProduitFilm.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\DlgRepCible.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\DlgSelComplexe.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\DlgSelection.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\DlgSelectionProduit.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\FilmDoc.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\FilmView.cpp"
+"C:\Projects\Atelier Cinema\Composants\Other\GradientProgressCtrl.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\GridCoeffModa.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\GridCoeffUsure.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\GridVisuFilm.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\Grille.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\Grille_Graphe.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\Grille_PerfAgglo.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\Grille_Performances.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\GrilleFilm_Graphe.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\GrilleFilm_Performances.cpp"
+"C:\Projects\Atelier Cinema\Composants\JFCBitmap.cpp"
+"C:\Projects\Atelier Cinema\Composants\JFCFileException.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\ListBox_Complexe.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\ListBoxSelect.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\MainFrm.cpp"
+"C:\Projects\Atelier Cinema\Composants\MoveManager.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\MyCUG.cpp"
+"C:\Projects\Atelier Cinema\Composants\Obj_Btn.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\Obj_Edit.cpp"
+"C:\Projects\Atelier Cinema\Composants\Obj_Gray.cpp"
+"C:\Projects\Atelier Cinema\Composants\Obj_LBox.cpp"
+"C:\Projects\Atelier Cinema\Composants\Obj_Printer.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\Print.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\PrintFilm.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\ProduitFilm.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\ResultatPerformance.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\Saisonnalite.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\Selection.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\SelectionProduit.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\Splash.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\TableBAC.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\TableComplexe.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\TableFormat.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\TableGroupeBAC.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\TableGroupeComplexe.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\TableNbEntreeComplexe.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\TableProduit.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\TableProduitFilm.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\TableTempo.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\Tarif.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\Testgrid.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\UltimateGrid\Source\UGCBType.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\UltimateGrid\Source\UGCell.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\UltimateGrid\Source\UGCelTyp.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\UltimateGrid\Source\UGCnrBtn.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\UltimateGrid\Source\UGCTarrw.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\UltimateGrid\Source\UGCtrl.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\UltimateGrid\Source\UGDLType.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\UltimateGrid\Source\UGDrgDrp.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\UltimateGrid\Source\UGDrwHnt.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\UltimateGrid\Source\UGDtaSrc.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\UltimateGrid\Source\UGEdit.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\UltimateGrid\Source\UGEditBase.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\UltimateGrid\Source\ugformat.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\UltimateGrid\Source\uggdinfo.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\UltimateGrid\Source\UGGrid.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\UltimateGrid\Source\UGHint.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\UltimateGrid\Source\ughscrol.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\UltimateGrid\Source\ugLstBox.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\UltimateGrid\Source\UGMEdit.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\UltimateGrid\Source\UGMemMan.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\UltimateGrid\Source\UGMultiS.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\UltimateGrid\Source\ugprint.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\UltimateGrid\Source\ugptrlst.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\UltimateGrid\Source\ugsidehd.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\UltimateGrid\Source\UGStrOp.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\UltimateGrid\Source\ugtab.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\UltimateGrid\Source\UGTopHdg.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\UltimateGrid\Source\ugvscrol.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\UltimateGrid\Source\UGXPThemes.cpp"
+]
+Creating command line "cl.exe @C:\DOCUME~1\CHAMBA~1\LOCALS~1\Temp\RSP336.tmp" 
+Creating temporary file "C:\DOCUME~1\CHAMBA~1\LOCALS~1\Temp\RSP337.tmp" with contents
+[
+/nologo /G5 /MT /W3 /GR /GX /O2 /I "..\composants" /I "UltimateGrid\Include" /D "..\composants" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /FR"Release/" /Fp"Release/cinema.pch" /Yc"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\StdAfx.cpp"
+]
+Creating command line "cl.exe @C:\DOCUME~1\CHAMBA~1\LOCALS~1\Temp\RSP337.tmp" 
+Creating temporary file "C:\DOCUME~1\CHAMBA~1\LOCALS~1\Temp\RSP338.tmp" with contents
+[
+/nologo /subsystem:windows /incremental:no /pdb:"Release/cinema.pdb" /machine:I386 /out:"Release/cinema.exe" 
+".\Release\BaseCinema.obj"
+".\Release\CalculMemoDememo.obj"
+".\Release\CalculProduitFilm.obj"
+".\Release\CAlendrierHebdoCinema.obj"
+".\Release\Campagne.obj"
+".\Release\CampagneAgglo.obj"
+".\Release\CampagneFilm.obj"
+".\Release\CampagneGenerique.obj"
+".\Release\CarreCouleur.obj"
+".\Release\CFichierCinema.obj"
+".\Release\ChildFilm.obj"
+".\Release\ChildFrm.obj"
+".\Release\Cible.obj"
+".\Release\cinema.obj"
+".\Release\cinemaDoc.obj"
+".\Release\cinemaView.obj"
+".\Release\Couleur.obj"
+".\Release\DlgBeta.obj"
+".\Release\DlgBudgetNet.obj"
+".\Release\DlgChangerPeriode.obj"
+".\Release\DlgChoix.obj"
+".\Release\DlgChxTempo.obj"
+".\Release\DlgCritere.obj"
+".\Release\DlgExportMediavision.obj"
+".\Release\DlgExportScreenvision.obj"
+".\Release\DlgFonctionCible.obj"
+".\Release\DlgFormat.obj"
+".\Release\DlgGraphe.obj"
+".\Release\DlgGrapheFilm.obj"
+".\Release\DlgMulticible.obj"
+".\Release\DlgOptionCalcul.obj"
+".\Release\DlgOptionCalculFilm.obj"
+".\Release\DlgOptionCalculMemo.obj"
+".\Release\DlgParamPrint.obj"
+".\Release\DlgPerfAgglo.obj"
+".\Release\DlgPerformanceFilm.obj"
+".\Release\DlgPerformances.obj"
+".\Release\DlgProduitFilm.obj"
+".\Release\DlgRepCible.obj"
+".\Release\DlgSelComplexe.obj"
+".\Release\DlgSelection.obj"
+".\Release\DlgSelectionProduit.obj"
+".\Release\FilmDoc.obj"
+".\Release\FilmView.obj"
+".\Release\GradientProgressCtrl.obj"
+".\Release\GridCoeffModa.obj"
+".\Release\GridCoeffUsure.obj"
+".\Release\GridVisuFilm.obj"
+".\Release\Grille.obj"
+".\Release\Grille_Graphe.obj"
+".\Release\Grille_PerfAgglo.obj"
+".\Release\Grille_Performances.obj"
+".\Release\GrilleFilm_Graphe.obj"
+".\Release\GrilleFilm_Performances.obj"
+".\Release\JFCBitmap.obj"
+".\Release\JFCFileException.obj"
+".\Release\ListBox_Complexe.obj"
+".\Release\ListBoxSelect.obj"
+".\Release\MainFrm.obj"
+".\Release\MoveManager.obj"
+".\Release\MyCUG.obj"
+".\Release\Obj_Btn.obj"
+".\Release\Obj_Edit.obj"
+".\Release\Obj_Gray.obj"
+".\Release\Obj_LBox.obj"
+".\Release\Obj_Printer.obj"
+".\Release\Print.obj"
+".\Release\PrintFilm.obj"
+".\Release\ProduitFilm.obj"
+".\Release\ResultatPerformance.obj"
+".\Release\Saisonnalite.obj"
+".\Release\Selection.obj"
+".\Release\SelectionProduit.obj"
+".\Release\Splash.obj"
+".\Release\StdAfx.obj"
+".\Release\TableBAC.obj"
+".\Release\TableComplexe.obj"
+".\Release\TableFormat.obj"
+".\Release\TableGroupeBAC.obj"
+".\Release\TableGroupeComplexe.obj"
+".\Release\TableNbEntreeComplexe.obj"
+".\Release\TableProduit.obj"
+".\Release\TableProduitFilm.obj"
+".\Release\TableTempo.obj"
+".\Release\Tarif.obj"
+".\Release\Testgrid.obj"
+".\Release\UGCBType.obj"
+".\Release\UGCell.obj"
+".\Release\UGCelTyp.obj"
+".\Release\UGCnrBtn.obj"
+".\Release\UGCTarrw.obj"
+".\Release\UGCtrl.obj"
+".\Release\UGDLType.obj"
+".\Release\UGDrgDrp.obj"
+".\Release\UGDrwHnt.obj"
+".\Release\UGDtaSrc.obj"
+".\Release\UGEdit.obj"
+".\Release\UGEditBase.obj"
+".\Release\ugformat.obj"
+".\Release\uggdinfo.obj"
+".\Release\UGGrid.obj"
+".\Release\UGHint.obj"
+".\Release\ughscrol.obj"
+".\Release\ugLstBox.obj"
+".\Release\UGMEdit.obj"
+".\Release\UGMemMan.obj"
+".\Release\UGMultiS.obj"
+".\Release\ugprint.obj"
+".\Release\ugptrlst.obj"
+".\Release\ugsidehd.obj"
+".\Release\UGStrOp.obj"
+".\Release\ugtab.obj"
+".\Release\UGTopHdg.obj"
+".\Release\ugvscrol.obj"
+".\Release\UGXPThemes.obj"
+".\Release\cinema.res"
+]
+Creating command line "link.exe @C:\DOCUME~1\CHAMBA~1\LOCALS~1\Temp\RSP338.tmp"
+<h3>Output Window</h3>
+Compiling resources...
+Compiling...
+StdAfx.cpp
+Objective Studio will automatically link with OSC61.lib
+Objective Toolkit will automatically link with OT602.lib
+Objective Grid will automatically link with og701.lib
+Compiling...
+BaseCinema.cpp
+CalculMemoDememo.cpp
+CalculProduitFilm.cpp
+CAlendrierHebdoCinema.cpp
+Campagne.cpp
+CampagneAgglo.cpp
+CampagneFilm.cpp
+CampagneGenerique.cpp
+CarreCouleur.cpp
+CFichierCinema.cpp
+ChildFilm.cpp
+ChildFrm.cpp
+Cible.cpp
+cinema.cpp
+cinemaDoc.cpp
+cinemaView.cpp
+Couleur.cpp
+DlgBeta.cpp
+DlgBudgetNet.cpp
+DlgChangerPeriode.cpp
+Generating Code...
+Compiling...
+DlgChoix.cpp
+DlgChxTempo.cpp
+DlgCritere.cpp
+DlgExportMediavision.cpp
+DlgExportScreenvision.cpp
+DlgFonctionCible.cpp
+DlgFormat.cpp
+DlgGraphe.cpp
+DlgGrapheFilm.cpp
+DlgMulticible.cpp
+DlgOptionCalcul.cpp
+DlgOptionCalculFilm.cpp
+DlgOptionCalculMemo.cpp
+DlgParamPrint.cpp
+DlgPerfAgglo.cpp
+DlgPerformanceFilm.cpp
+DlgPerformances.cpp
+DlgProduitFilm.cpp
+DlgRepCible.cpp
+DlgSelComplexe.cpp
+Generating Code...
+Compiling...
+DlgSelection.cpp
+DlgSelectionProduit.cpp
+FilmDoc.cpp
+FilmView.cpp
+GradientProgressCtrl.cpp
+GridCoeffModa.cpp
+GridCoeffUsure.cpp
+GridVisuFilm.cpp
+Grille.cpp
+Grille_Graphe.cpp
+Grille_PerfAgglo.cpp
+Grille_Performances.cpp
+GrilleFilm_Graphe.cpp
+GrilleFilm_Performances.cpp
+JFCBitmap.cpp
+JFCFileException.cpp
+ListBox_Complexe.cpp
+ListBoxSelect.cpp
+MainFrm.cpp
+MoveManager.cpp
+Generating Code...
+Compiling...
+MyCUG.cpp
+Obj_Btn.cpp
+Obj_Edit.cpp
+Obj_Gray.cpp
+Obj_LBox.cpp
+Obj_Printer.cpp
+Print.cpp
+PrintFilm.cpp
+ProduitFilm.cpp
+ResultatPerformance.cpp
+Saisonnalite.cpp
+Selection.cpp
+SelectionProduit.cpp
+Splash.cpp
+TableBAC.cpp
+TableComplexe.cpp
+TableFormat.cpp
+TableGroupeBAC.cpp
+C:\Projects\Atelier Cinema\AtelierCinemaFrance\TableGroupeBAC.cpp(173) : warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
+TableGroupeComplexe.cpp
+C:\Projects\Atelier Cinema\AtelierCinemaFrance\TableGroupeComplexe.cpp(164) : warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
+TableNbEntreeComplexe.cpp
+Generating Code...
+C:\Projects\Atelier Cinema\AtelierCinemaFrance\TableBAC.cpp(240) : warning C4715: 'CTableBAC::GetBac' : not all control paths return a value
+Compiling...
+TableProduit.cpp
+TableProduitFilm.cpp
+TableTempo.cpp
+Tarif.cpp
+Testgrid.cpp
+UGCBType.cpp
+UGCell.cpp
+UGCelTyp.cpp
+UGCnrBtn.cpp
+UGCTarrw.cpp
+UGCtrl.cpp
+UGDLType.cpp
+UGDrgDrp.cpp
+UGDrwHnt.cpp
+UGDtaSrc.cpp
+UGEdit.cpp
+UGEditBase.cpp
+ugformat.cpp
+uggdinfo.cpp
+UGGrid.cpp
+Generating Code...
+Compiling...
+UGHint.cpp
+ughscrol.cpp
+ugLstBox.cpp
+UGMEdit.cpp
+UGMemMan.cpp
+UGMultiS.cpp
+ugprint.cpp
+ugptrlst.cpp
+ugsidehd.cpp
+UGStrOp.cpp
+ugtab.cpp
+UGTopHdg.cpp
+ugvscrol.cpp
+UGXPThemes.cpp
+Generating Code...
+Linking...
+
+
+
+<h3>Results</h3>
+cinema.exe - 0 error(s), 3 warning(s)
+</pre>
+</body>
+</html>

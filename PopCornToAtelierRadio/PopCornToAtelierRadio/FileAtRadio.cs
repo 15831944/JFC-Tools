@@ -311,7 +311,7 @@ public partial class StudyRoot_CartoucheInformation {
     
     private long numeroEtuField;
     
-    private byte etapeField;
+    private short etapeField;
     
     /// <remarks/>
     [System.Xml.Serialization.XmlAttributeAttribute()]
@@ -337,7 +337,7 @@ public partial class StudyRoot_CartoucheInformation {
     
     /// <remarks/>
     [System.Xml.Serialization.XmlAttributeAttribute()]
-    public byte Etape {
+    public short Etape {
         get {
             return this.etapeField;
         }
@@ -359,13 +359,13 @@ public partial class StudyRoot_CartoucheDate {
     
     private short dateFinField;
     
-    private byte dateDebut010180Field;
+    private short dateDebut010180Field;
     
-    private byte dateFin010180Field;
+    private short dateFin010180Field;
     
     private int dateEtudeValideField;
     
-    private byte dateHeureExtraitConsolideField;
+    private short dateHeureExtraitConsolideField;
     
     /// <remarks/>
     [System.Xml.Serialization.XmlAttributeAttribute()]
@@ -391,7 +391,7 @@ public partial class StudyRoot_CartoucheDate {
     
     /// <remarks/>
     [System.Xml.Serialization.XmlAttributeAttribute()]
-    public byte DateDebut010180 {
+    public short DateDebut010180 {
         get {
             return this.dateDebut010180Field;
         }
@@ -402,7 +402,7 @@ public partial class StudyRoot_CartoucheDate {
     
     /// <remarks/>
     [System.Xml.Serialization.XmlAttributeAttribute()]
-    public byte DateFin010180 {
+    public short DateFin010180 {
         get {
             return this.dateFin010180Field;
         }
@@ -424,7 +424,7 @@ public partial class StudyRoot_CartoucheDate {
     
     /// <remarks/>
     [System.Xml.Serialization.XmlAttributeAttribute()]
-    public byte DateHeureExtraitConsolide {
+    public short DateHeureExtraitConsolide {
         get {
             return this.dateHeureExtraitConsolideField;
         }
@@ -479,7 +479,7 @@ public partial class StudyRoot_CartoucheEchange {
     
     private string tauxEchangeField;
     
-    private byte deviseField;
+    private short deviseField;
     
     /// <remarks/>
     [System.Xml.Serialization.XmlAttributeAttribute()]
@@ -494,7 +494,7 @@ public partial class StudyRoot_CartoucheEchange {
     
     /// <remarks/>
     [System.Xml.Serialization.XmlAttributeAttribute()]
-    public byte Devise {
+    public short Devise {
         get {
             return this.deviseField;
         }
@@ -512,7 +512,7 @@ public partial class StudyRoot_CartoucheEchange {
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true)]
 public partial class StudyRoot_CartoucheDivers {
     
-    private byte nrMaillageField;
+    private short nrMaillageField;
     
     private string agrJoursField;
     
@@ -520,7 +520,7 @@ public partial class StudyRoot_CartoucheDivers {
     
     /// <remarks/>
     [System.Xml.Serialization.XmlAttributeAttribute()]
-    public byte NrMaillage {
+    public short NrMaillage {
         get {
             return this.nrMaillageField;
         }
@@ -636,11 +636,11 @@ public partial class StudyRoot_CartoucheBlocVaguesVagueRefSource {
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true)]
 public partial class StudyRoot_CartoucheBlocVaguesVagueRefSourceVague {
     
-    private byte codeField;
+    private short codeField;
     
     /// <remarks/>
     [System.Xml.Serialization.XmlAttributeAttribute()]
-    public byte Code {
+    public short Code {
         get {
             return this.codeField;
         }
@@ -685,7 +685,7 @@ public partial class StudyRoot_CartoucheBlocStationsGroupeStation {
     
     private string nomField;
     
-    private byte numeroMaillageField;
+    private short numeroMaillageField;
     
     /// <remarks/>
     [System.Xml.Serialization.XmlElementAttribute("Stations")]
@@ -722,7 +722,7 @@ public partial class StudyRoot_CartoucheBlocStationsGroupeStation {
     
     /// <remarks/>
     [System.Xml.Serialization.XmlAttributeAttribute()]
-    public byte NumeroMaillage {
+    public short NumeroMaillage {
         get {
             return this.numeroMaillageField;
         }
@@ -742,7 +742,7 @@ public partial class StudyRoot_CartoucheBlocStationsGroupeStationStations {
     
     private StudyRoot_CartoucheBlocStationsGroupeStationStationsStation[] stationField;
     
-    private byte codeRegField;
+    private short codeRegField;
     
     /// <remarks/>
     [System.Xml.Serialization.XmlElementAttribute("Station")]
@@ -757,7 +757,7 @@ public partial class StudyRoot_CartoucheBlocStationsGroupeStationStations {
     
     /// <remarks/>
     [System.Xml.Serialization.XmlAttributeAttribute()]
-    public byte CodeReg {
+    public short CodeReg {
         get {
             return this.codeRegField;
         }
@@ -799,7 +799,7 @@ public partial class StudyRoot_CartoucheBlocStationsGroupeStationLienTarifs {
     
     private StudyRoot_CartoucheBlocStationsGroupeStationLienTarifsRegStaTarif[] regStaTarifField;
     
-    private byte codeRegField;
+    private short codeRegField;
     
     /// <remarks/>
     [System.Xml.Serialization.XmlElementAttribute("RegStaTarif")]
@@ -814,7 +814,7 @@ public partial class StudyRoot_CartoucheBlocStationsGroupeStationLienTarifs {
     
     /// <remarks/>
     [System.Xml.Serialization.XmlAttributeAttribute()]
-    public byte CodeReg {
+    public short CodeReg {
         get {
             return this.codeRegField;
         }
@@ -832,19 +832,19 @@ public partial class StudyRoot_CartoucheBlocStationsGroupeStationLienTarifs {
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true)]
 public partial class StudyRoot_CartoucheBlocStationsGroupeStationLienTarifsRegStaTarif {
     
-    private byte typeEvolutifField;
+    private short typeEvolutifField;
     
     private short dateField;
     
-    private byte numeroTarifField;
+    private short numeroTarifField;
     
     private string codeTarifField;
     
-    private byte txMGarantiField;
+    private short txMGarantiField;
     
     /// <remarks/>
     [System.Xml.Serialization.XmlAttributeAttribute()]
-    public byte TypeEvolutif {
+    public short TypeEvolutif {
         get {
             return this.typeEvolutifField;
         }
@@ -866,7 +866,7 @@ public partial class StudyRoot_CartoucheBlocStationsGroupeStationLienTarifsRegSt
     
     /// <remarks/>
     [System.Xml.Serialization.XmlAttributeAttribute()]
-    public byte NumeroTarif {
+    public short NumeroTarif {
         get {
             return this.numeroTarifField;
         }
@@ -888,7 +888,7 @@ public partial class StudyRoot_CartoucheBlocStationsGroupeStationLienTarifsRegSt
     
     /// <remarks/>
     [System.Xml.Serialization.XmlAttributeAttribute()]
-    public byte TxMGaranti {
+    public short TxMGaranti {
         get {
             return this.txMGarantiField;
         }
@@ -908,7 +908,7 @@ public partial class StudyRoot_CartoucheBlocFormats {
     
     private StudyRoot_CartoucheBlocFormatsFormat[] formatField;
     
-    private byte baseFormatField;
+    private short baseFormatField;
     
     /// <remarks/>
     [System.Xml.Serialization.XmlElementAttribute("Format")]
@@ -923,7 +923,7 @@ public partial class StudyRoot_CartoucheBlocFormats {
     
     /// <remarks/>
     [System.Xml.Serialization.XmlAttributeAttribute()]
-    public byte BaseFormat {
+    public short BaseFormat {
         get {
             return this.baseFormatField;
         }
@@ -941,15 +941,15 @@ public partial class StudyRoot_CartoucheBlocFormats {
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true)]
 public partial class StudyRoot_CartoucheBlocFormatsFormat {
     
-    private byte indexField;
+    private short indexField;
     
-    private byte dureeField;
+    private short dureeField;
     
-    private byte nbFoisField;
+    private short nbFoisField;
     
     /// <remarks/>
     [System.Xml.Serialization.XmlAttributeAttribute()]
-    public byte Index {
+    public short Index {
         get {
             return this.indexField;
         }
@@ -960,7 +960,7 @@ public partial class StudyRoot_CartoucheBlocFormatsFormat {
     
     /// <remarks/>
     [System.Xml.Serialization.XmlAttributeAttribute()]
-    public byte Duree {
+    public short Duree {
         get {
             return this.dureeField;
         }
@@ -971,7 +971,7 @@ public partial class StudyRoot_CartoucheBlocFormatsFormat {
     
     /// <remarks/>
     [System.Xml.Serialization.XmlAttributeAttribute()]
-    public byte NbFois {
+    public short NbFois {
         get {
             return this.nbFoisField;
         }
@@ -1010,15 +1010,15 @@ public partial class StudyRoot_CartoucheBlocStrates {
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true)]
 public partial class StudyRoot_CartoucheBlocStratesStrate {
     
-    private byte indexField;
+    private short indexField;
     
-    private byte numeroField;
+    private short numeroField;
     
-    private byte nbFoisField;
+    private short nbFoisField;
     
     /// <remarks/>
     [System.Xml.Serialization.XmlAttributeAttribute()]
-    public byte Index {
+    public short Index {
         get {
             return this.indexField;
         }
@@ -1029,7 +1029,7 @@ public partial class StudyRoot_CartoucheBlocStratesStrate {
     
     /// <remarks/>
     [System.Xml.Serialization.XmlAttributeAttribute()]
-    public byte Numero {
+    public short Numero {
         get {
             return this.numeroField;
         }
@@ -1040,7 +1040,7 @@ public partial class StudyRoot_CartoucheBlocStratesStrate {
     
     /// <remarks/>
     [System.Xml.Serialization.XmlAttributeAttribute()]
-    public byte NbFois {
+    public short NbFois {
         get {
             return this.nbFoisField;
         }
@@ -1139,11 +1139,11 @@ public partial class StudyRoot_CartoucheBlocEtudeOption {
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true)]
 public partial class StudyRoot_CartoucheBlocEtudeOptionOptionClassement {
     
-    private byte fClasMixteField;
+    private short fClasMixteField;
     
     /// <remarks/>
     [System.Xml.Serialization.XmlAttributeAttribute()]
-    public byte fClasMixte {
+    public short fClasMixte {
         get {
             return this.fClasMixteField;
         }
@@ -1161,15 +1161,15 @@ public partial class StudyRoot_CartoucheBlocEtudeOptionOptionClassement {
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true)]
 public partial class StudyRoot_CartoucheBlocEtudeOptionOptionPoids {
     
-    private byte poidsPuiField;
+    private short poidsPuiField;
     
-    private byte poidsEcoField;
+    private short poidsEcoField;
     
-    private byte poidsAffField;
+    private short poidsAffField;
     
     /// <remarks/>
     [System.Xml.Serialization.XmlAttributeAttribute()]
-    public byte PoidsPui {
+    public short PoidsPui {
         get {
             return this.poidsPuiField;
         }
@@ -1180,7 +1180,7 @@ public partial class StudyRoot_CartoucheBlocEtudeOptionOptionPoids {
     
     /// <remarks/>
     [System.Xml.Serialization.XmlAttributeAttribute()]
-    public byte PoidsEco {
+    public short PoidsEco {
         get {
             return this.poidsEcoField;
         }
@@ -1191,7 +1191,7 @@ public partial class StudyRoot_CartoucheBlocEtudeOptionOptionPoids {
     
     /// <remarks/>
     [System.Xml.Serialization.XmlAttributeAttribute()]
-    public byte PoidsAff {
+    public short PoidsAff {
         get {
             return this.poidsAffField;
         }
@@ -1209,13 +1209,13 @@ public partial class StudyRoot_CartoucheBlocEtudeOptionOptionPoids {
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true)]
 public partial class StudyRoot_CartoucheBlocEtudeOptionOptionAffinite {
     
-    private sbyte nrCibleBaseAffField;
+    private short nrCibleBaseAffField;
     
-    private byte fAffIndiceField;
+    private short fAffIndiceField;
     
     /// <remarks/>
     [System.Xml.Serialization.XmlAttributeAttribute()]
-    public sbyte NrCibleBaseAff {
+    public short NrCibleBaseAff {
         get {
             return this.nrCibleBaseAffField;
         }
@@ -1226,7 +1226,7 @@ public partial class StudyRoot_CartoucheBlocEtudeOptionOptionAffinite {
     
     /// <remarks/>
     [System.Xml.Serialization.XmlAttributeAttribute()]
-    public byte fAffIndice {
+    public short fAffIndice {
         get {
             return this.fAffIndiceField;
         }
@@ -1244,11 +1244,11 @@ public partial class StudyRoot_CartoucheBlocEtudeOptionOptionAffinite {
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true)]
 public partial class StudyRoot_CartoucheBlocEtudeOptionOptionTarif {
     
-    private byte pTarifFacialField;
+    private short pTarifFacialField;
     
     /// <remarks/>
     [System.Xml.Serialization.XmlAttributeAttribute()]
-    public byte PTarifFacial {
+    public short PTarifFacial {
         get {
             return this.pTarifFacialField;
         }
@@ -1266,15 +1266,15 @@ public partial class StudyRoot_CartoucheBlocEtudeOptionOptionTarif {
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true)]
 public partial class StudyRoot_CartoucheBlocEtudeOptionOptionCalcul {
     
-    private byte fMoyenneGRPField;
+    private short fMoyenneGRPField;
     
-    private byte fPenetrationField;
+    private short fPenetrationField;
     
-    private byte valueMoyenneGRPField;
+    private short valueMoyenneGRPField;
     
     /// <remarks/>
     [System.Xml.Serialization.XmlAttributeAttribute()]
-    public byte fMoyenneGRP {
+    public short fMoyenneGRP {
         get {
             return this.fMoyenneGRPField;
         }
@@ -1285,7 +1285,7 @@ public partial class StudyRoot_CartoucheBlocEtudeOptionOptionCalcul {
     
     /// <remarks/>
     [System.Xml.Serialization.XmlAttributeAttribute()]
-    public byte fPenetration {
+    public short fPenetration {
         get {
             return this.fPenetrationField;
         }
@@ -1296,7 +1296,7 @@ public partial class StudyRoot_CartoucheBlocEtudeOptionOptionCalcul {
     
     /// <remarks/>
     [System.Xml.Serialization.XmlAttributeAttribute()]
-    public byte ValueMoyenneGRP {
+    public short ValueMoyenneGRP {
         get {
             return this.valueMoyenneGRPField;
         }
@@ -1314,15 +1314,15 @@ public partial class StudyRoot_CartoucheBlocEtudeOptionOptionCalcul {
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true)]
 public partial class StudyRoot_CartoucheBlocEtudeOptionOptionEdition {
     
-    private byte fLigneGriseeField;
+    private short fLigneGriseeField;
     
-    private byte fPleinEcranField;
+    private short fPleinEcranField;
     
-    private byte fCoeffMemoField;
+    private short fCoeffMemoField;
     
     /// <remarks/>
     [System.Xml.Serialization.XmlAttributeAttribute()]
-    public byte fLigneGrisee {
+    public short fLigneGrisee {
         get {
             return this.fLigneGriseeField;
         }
@@ -1333,7 +1333,7 @@ public partial class StudyRoot_CartoucheBlocEtudeOptionOptionEdition {
     
     /// <remarks/>
     [System.Xml.Serialization.XmlAttributeAttribute()]
-    public byte fPleinEcran {
+    public short fPleinEcran {
         get {
             return this.fPleinEcranField;
         }
@@ -1344,7 +1344,7 @@ public partial class StudyRoot_CartoucheBlocEtudeOptionOptionEdition {
     
     /// <remarks/>
     [System.Xml.Serialization.XmlAttributeAttribute()]
-    public byte fCoeffMemo {
+    public short fCoeffMemo {
         get {
             return this.fCoeffMemoField;
         }
@@ -1511,13 +1511,13 @@ public partial class StudyRoot_CartoucheBlocCampagneRefOrgCampagne {
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true)]
 public partial class StudyRoot_CartoucheBlocCampagneFrontiere {
     
-    private byte frontiereDebutField;
+    private short frontiereDebutField;
     
-    private byte frontiereFinField;
+    private short frontiereFinField;
     
     /// <remarks/>
     [System.Xml.Serialization.XmlAttributeAttribute()]
-    public byte FrontiereDebut {
+    public short FrontiereDebut {
         get {
             return this.frontiereDebutField;
         }
@@ -1528,7 +1528,7 @@ public partial class StudyRoot_CartoucheBlocCampagneFrontiere {
     
     /// <remarks/>
     [System.Xml.Serialization.XmlAttributeAttribute()]
-    public byte FrontiereFin {
+    public short FrontiereFin {
         get {
             return this.frontiereFinField;
         }
@@ -1548,7 +1548,7 @@ public partial class StudyRoot_CartoucheBlocTarification {
     
     private object blocPrixBiemField;
     
-    private byte baseFormatField;
+    private short baseFormatField;
     
     /// <remarks/>
     public object blocPrixBiem {
@@ -1562,7 +1562,7 @@ public partial class StudyRoot_CartoucheBlocTarification {
     
     /// <remarks/>
     [System.Xml.Serialization.XmlAttributeAttribute()]
-    public byte BaseFormat {
+    public short BaseFormat {
         get {
             return this.baseFormatField;
         }
@@ -1580,13 +1580,13 @@ public partial class StudyRoot_CartoucheBlocTarification {
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true)]
 public partial class StudyRoot_CartoucheBlocTitrePerso {
     
-    private byte lgTitPersonaliseField;
+    private short lgTitPersonaliseField;
     
     private string titPersonaliseField;
     
     /// <remarks/>
     [System.Xml.Serialization.XmlAttributeAttribute()]
-    public byte LgTitPersonalise {
+    public short LgTitPersonalise {
         get {
             return this.lgTitPersonaliseField;
         }
@@ -1615,13 +1615,13 @@ public partial class StudyRoot_CartoucheBlocTitrePerso {
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true)]
 public partial class StudyRoot_CartoucheBlocSpecifYacast {
     
-    private byte nivNomenTarField;
+    private short nivNomenTarField;
     
-    private byte idNomenTarField;
+    private short idNomenTarField;
     
     /// <remarks/>
     [System.Xml.Serialization.XmlAttributeAttribute()]
-    public byte NivNomenTar {
+    public short NivNomenTar {
         get {
             return this.nivNomenTarField;
         }
@@ -1632,7 +1632,7 @@ public partial class StudyRoot_CartoucheBlocSpecifYacast {
     
     /// <remarks/>
     [System.Xml.Serialization.XmlAttributeAttribute()]
-    public byte IdNomenTar {
+    public short IdNomenTar {
         get {
             return this.idNomenTarField;
         }
@@ -1681,33 +1681,33 @@ public partial class StudyRoot_PlansPlan {
     
     private long nrEtudeField;
     
-    private byte nrPlanField;
+    private short nrPlanField;
     
-    private byte versionField;
+    private short versionField;
     
     private string nomField;
     
-    private byte refPlanField;
+    private short refPlanField;
     
-    private byte occupeField;
+    private short occupeField;
     
-    private byte noSasField;
+    private short noSasField;
     
     private ushort dateDebutField;
     
     private ushort dateFinField;
     
-    private sbyte numCibleField;
+    private short numCibleField;
     
     private string nomCibleField;
     
-    private byte numVagueField;
+    private short numVagueField;
     
     private string nomVagueField;
     
     private uint dateHeureMemoField;
     
-    private byte nbSemainePAField;
+    private short nbSemainePAField;
     
     private ushort dateFinPAField;
     
@@ -1766,7 +1766,7 @@ public partial class StudyRoot_PlansPlan {
     
     /// <remarks/>
     [System.Xml.Serialization.XmlAttributeAttribute()]
-    public byte NrPlan {
+    public short NrPlan {
         get {
             return this.nrPlanField;
         }
@@ -1777,7 +1777,7 @@ public partial class StudyRoot_PlansPlan {
     
     /// <remarks/>
     [System.Xml.Serialization.XmlAttributeAttribute()]
-    public byte Version {
+    public short Version {
         get {
             return this.versionField;
         }
@@ -1799,7 +1799,7 @@ public partial class StudyRoot_PlansPlan {
     
     /// <remarks/>
     [System.Xml.Serialization.XmlAttributeAttribute()]
-    public byte RefPlan {
+    public short RefPlan {
         get {
             return this.refPlanField;
         }
@@ -1810,7 +1810,7 @@ public partial class StudyRoot_PlansPlan {
     
     /// <remarks/>
     [System.Xml.Serialization.XmlAttributeAttribute()]
-    public byte Occupe {
+    public short Occupe {
         get {
             return this.occupeField;
         }
@@ -1821,7 +1821,7 @@ public partial class StudyRoot_PlansPlan {
     
     /// <remarks/>
     [System.Xml.Serialization.XmlAttributeAttribute()]
-    public byte NoSas {
+    public short NoSas {
         get {
             return this.noSasField;
         }
@@ -1854,7 +1854,7 @@ public partial class StudyRoot_PlansPlan {
     
     /// <remarks/>
     [System.Xml.Serialization.XmlAttributeAttribute()]
-    public sbyte NumCible {
+    public short NumCible {
         get {
             return this.numCibleField;
         }
@@ -1876,7 +1876,7 @@ public partial class StudyRoot_PlansPlan {
     
     /// <remarks/>
     [System.Xml.Serialization.XmlAttributeAttribute()]
-    public byte NumVague {
+    public short NumVague {
         get {
             return this.numVagueField;
         }
@@ -1909,7 +1909,7 @@ public partial class StudyRoot_PlansPlan {
     
     /// <remarks/>
     [System.Xml.Serialization.XmlAttributeAttribute()]
-    public byte NbSemainePA {
+    public short NbSemainePA {
         get {
             return this.nbSemainePAField;
         }
@@ -1972,7 +1972,7 @@ public partial class StudyRoot_PlansPlanFenetreBlocFenetres {
     
     private StudyRoot_PlansPlanFenetreBlocFenetresFenPlan fenPlanField;
     
-    private byte iconicField;
+    private short iconicField;
     
     private ushort leftField;
     
@@ -1994,7 +1994,7 @@ public partial class StudyRoot_PlansPlanFenetreBlocFenetres {
     
     /// <remarks/>
     [System.Xml.Serialization.XmlAttributeAttribute()]
-    public byte Iconic {
+    public short Iconic {
         get {
             return this.iconicField;
         }
@@ -2066,7 +2066,7 @@ public partial class StudyRoot_PlansPlanFenetreBlocFenetresFenPlan {
     
     private StudyRoot_PlansPlanFenetreBlocFenetresFenPlanSemAct[] blocSemActivesField;
     
-    private byte iconicField;
+    private short iconicField;
     
     private ushort leftField;
     
@@ -2076,17 +2076,17 @@ public partial class StudyRoot_PlansPlanFenetreBlocFenetresFenPlan {
     
     private ushort bottomField;
     
-    private byte noGrilleField;
+    private short noGrilleField;
     
-    private byte dateDebutField;
+    private short dateDebutField;
     
-    private byte dateFinField;
+    private short dateFinField;
     
-    private sbyte numCibleField;
+    private short numCibleField;
     
     private string nomCibleField;
     
-    private byte nrVagueField;
+    private short nrVagueField;
     
     /// <remarks/>
     public StudyRoot_PlansPlanFenetreBlocFenetresFenPlanBlocStrates blocStrates {
@@ -2142,7 +2142,7 @@ public partial class StudyRoot_PlansPlanFenetreBlocFenetresFenPlan {
     
     /// <remarks/>
     [System.Xml.Serialization.XmlAttributeAttribute()]
-    public byte Iconic {
+    public short Iconic {
         get {
             return this.iconicField;
         }
@@ -2197,7 +2197,7 @@ public partial class StudyRoot_PlansPlanFenetreBlocFenetresFenPlan {
     
     /// <remarks/>
     [System.Xml.Serialization.XmlAttributeAttribute()]
-    public byte NoGrille {
+    public short NoGrille {
         get {
             return this.noGrilleField;
         }
@@ -2208,7 +2208,7 @@ public partial class StudyRoot_PlansPlanFenetreBlocFenetresFenPlan {
     
     /// <remarks/>
     [System.Xml.Serialization.XmlAttributeAttribute()]
-    public byte DateDebut {
+    public short DateDebut {
         get {
             return this.dateDebutField;
         }
@@ -2219,7 +2219,7 @@ public partial class StudyRoot_PlansPlanFenetreBlocFenetresFenPlan {
     
     /// <remarks/>
     [System.Xml.Serialization.XmlAttributeAttribute()]
-    public byte DateFin {
+    public short DateFin {
         get {
             return this.dateFinField;
         }
@@ -2230,7 +2230,7 @@ public partial class StudyRoot_PlansPlanFenetreBlocFenetresFenPlan {
     
     /// <remarks/>
     [System.Xml.Serialization.XmlAttributeAttribute()]
-    public sbyte NumCible {
+    public short NumCible {
         get {
             return this.numCibleField;
         }
@@ -2252,7 +2252,7 @@ public partial class StudyRoot_PlansPlanFenetreBlocFenetresFenPlan {
     
     /// <remarks/>
     [System.Xml.Serialization.XmlAttributeAttribute()]
-    public byte NrVague {
+    public short NrVague {
         get {
             return this.nrVagueField;
         }
@@ -2291,11 +2291,11 @@ public partial class StudyRoot_PlansPlanFenetreBlocFenetresFenPlanBlocStrates {
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true)]
 public partial class StudyRoot_PlansPlanFenetreBlocFenetresFenPlanBlocStratesStrate {
     
-    private byte nrStrateField;
+    private short nrStrateField;
     
     /// <remarks/>
     [System.Xml.Serialization.XmlAttributeAttribute()]
-    public byte NrStrate {
+    public short NrStrate {
         get {
             return this.nrStrateField;
         }
@@ -2334,11 +2334,11 @@ public partial class StudyRoot_PlansPlanFenetreBlocFenetresFenPlanBlocFormats {
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true)]
 public partial class StudyRoot_PlansPlanFenetreBlocFenetresFenPlanBlocFormatsFormat {
     
-    private byte nrFormatField;
+    private short nrFormatField;
     
     /// <remarks/>
     [System.Xml.Serialization.XmlAttributeAttribute()]
-    public byte NrFormat {
+    public short NrFormat {
         get {
             return this.nrFormatField;
         }
@@ -2356,11 +2356,11 @@ public partial class StudyRoot_PlansPlanFenetreBlocFenetresFenPlanBlocFormatsFor
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true)]
 public partial class StudyRoot_PlansPlanFenetreBlocFenetresFenPlanPlgHor {
     
-    private byte validField;
+    private short validField;
     
     /// <remarks/>
     [System.Xml.Serialization.XmlAttributeAttribute()]
-    public byte Valid {
+    public short Valid {
         get {
             return this.validField;
         }
@@ -2401,7 +2401,7 @@ public partial class StudyRoot_PlansPlanFenetreBlocFenetresFenPlanBlocRegionsReg
     
     private StudyRoot_PlansPlanFenetreBlocFenetresFenPlanBlocRegionsRegionStation[] stationField;
     
-    private byte noRegField;
+    private short noRegField;
     
     /// <remarks/>
     [System.Xml.Serialization.XmlElementAttribute("Station")]
@@ -2416,7 +2416,7 @@ public partial class StudyRoot_PlansPlanFenetreBlocFenetresFenPlanBlocRegionsReg
     
     /// <remarks/>
     [System.Xml.Serialization.XmlAttributeAttribute()]
-    public byte NoReg {
+    public short NoReg {
         get {
             return this.noRegField;
         }
@@ -2434,11 +2434,11 @@ public partial class StudyRoot_PlansPlanFenetreBlocFenetresFenPlanBlocRegionsReg
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true)]
 public partial class StudyRoot_PlansPlanFenetreBlocFenetresFenPlanBlocRegionsRegionStation {
     
-    private byte noStaField;
+    private short noStaField;
     
     /// <remarks/>
     [System.Xml.Serialization.XmlAttributeAttribute()]
-    public byte NoSta {
+    public short NoSta {
         get {
             return this.noStaField;
         }
@@ -2456,11 +2456,11 @@ public partial class StudyRoot_PlansPlanFenetreBlocFenetresFenPlanBlocRegionsReg
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true)]
 public partial class StudyRoot_PlansPlanFenetreBlocFenetresFenPlanSemAct {
     
-    private byte actifField;
+    private short actifField;
     
     /// <remarks/>
     [System.Xml.Serialization.XmlAttributeAttribute()]
-    public byte Actif {
+    public short Actif {
         get {
             return this.actifField;
         }
@@ -2561,11 +2561,11 @@ public partial class StudyRoot_PlansPlanDataBlocRegions {
     
     private StudyRoot_PlansPlanDataBlocRegionsRegion regionField;
     
-    private byte curRegionField;
+    private short curRegionField;
     
-    private byte curStationField;
+    private short curStationField;
     
-    private byte curNiveauField;
+    private short curNiveauField;
     
     /// <remarks/>
     public StudyRoot_PlansPlanDataBlocRegionsRegion Region {
@@ -2579,7 +2579,7 @@ public partial class StudyRoot_PlansPlanDataBlocRegions {
     
     /// <remarks/>
     [System.Xml.Serialization.XmlAttributeAttribute()]
-    public byte CurRegion {
+    public short CurRegion {
         get {
             return this.curRegionField;
         }
@@ -2590,7 +2590,7 @@ public partial class StudyRoot_PlansPlanDataBlocRegions {
     
     /// <remarks/>
     [System.Xml.Serialization.XmlAttributeAttribute()]
-    public byte CurStation {
+    public short CurStation {
         get {
             return this.curStationField;
         }
@@ -2601,7 +2601,7 @@ public partial class StudyRoot_PlansPlanDataBlocRegions {
     
     /// <remarks/>
     [System.Xml.Serialization.XmlAttributeAttribute()]
-    public byte CurNiveau {
+    public short CurNiveau {
         get {
             return this.curNiveauField;
         }
@@ -2621,7 +2621,7 @@ public partial class StudyRoot_PlansPlanDataBlocRegionsRegion {
     
     private StudyRoot_PlansPlanDataBlocRegionsRegionStation[] stationField;
     
-    private byte noField;
+    private short noField;
     
     /// <remarks/>
     [System.Xml.Serialization.XmlElementAttribute("Station")]
@@ -2636,7 +2636,7 @@ public partial class StudyRoot_PlansPlanDataBlocRegionsRegion {
     
     /// <remarks/>
     [System.Xml.Serialization.XmlAttributeAttribute()]
-    public byte No {
+    public short No {
         get {
             return this.noField;
         }
@@ -2654,13 +2654,13 @@ public partial class StudyRoot_PlansPlanDataBlocRegionsRegion {
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true)]
 public partial class StudyRoot_PlansPlanDataBlocRegionsRegionStation {
     
-    private byte staField;
+    private short staField;
     
-    private byte lockField;
+    private short lockField;
     
     /// <remarks/>
     [System.Xml.Serialization.XmlAttributeAttribute()]
-    public byte Sta {
+    public short Sta {
         get {
             return this.staField;
         }
@@ -2671,7 +2671,7 @@ public partial class StudyRoot_PlansPlanDataBlocRegionsRegionStation {
     
     /// <remarks/>
     [System.Xml.Serialization.XmlAttributeAttribute()]
-    public byte Lock {
+    public short Lock {
         get {
             return this.lockField;
         }
@@ -2691,7 +2691,7 @@ public partial class StudyRoot_PlansPlanDataBlocStrates {
     
     private StudyRoot_PlansPlanDataBlocStratesStrate strateField;
     
-    private byte curStrateField;
+    private short curStrateField;
     
     /// <remarks/>
     public StudyRoot_PlansPlanDataBlocStratesStrate Strate {
@@ -2705,7 +2705,7 @@ public partial class StudyRoot_PlansPlanDataBlocStrates {
     
     /// <remarks/>
     [System.Xml.Serialization.XmlAttributeAttribute()]
-    public byte CurStrate {
+    public short CurStrate {
         get {
             return this.curStrateField;
         }
@@ -2723,17 +2723,17 @@ public partial class StudyRoot_PlansPlanDataBlocStrates {
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true)]
 public partial class StudyRoot_PlansPlanDataBlocStratesStrate {
     
-    private byte noField;
+    private short noField;
     
-    private byte codeField;
+    private short codeField;
     
-    private byte modeField;
+    private short modeField;
     
     private string nomField;
     
     /// <remarks/>
     [System.Xml.Serialization.XmlAttributeAttribute()]
-    public byte No {
+    public short No {
         get {
             return this.noField;
         }
@@ -2744,7 +2744,7 @@ public partial class StudyRoot_PlansPlanDataBlocStratesStrate {
     
     /// <remarks/>
     [System.Xml.Serialization.XmlAttributeAttribute()]
-    public byte Code {
+    public short Code {
         get {
             return this.codeField;
         }
@@ -2755,7 +2755,7 @@ public partial class StudyRoot_PlansPlanDataBlocStratesStrate {
     
     /// <remarks/>
     [System.Xml.Serialization.XmlAttributeAttribute()]
-    public byte Mode {
+    public short Mode {
         get {
             return this.modeField;
         }
@@ -2786,7 +2786,7 @@ public partial class StudyRoot_PlansPlanDataBlocFormats {
     
     private StudyRoot_PlansPlanDataBlocFormatsFormat[] formatField;
     
-    private byte curFormatField;
+    private short curFormatField;
     
     /// <remarks/>
     [System.Xml.Serialization.XmlElementAttribute("Format")]
@@ -2801,7 +2801,7 @@ public partial class StudyRoot_PlansPlanDataBlocFormats {
     
     /// <remarks/>
     [System.Xml.Serialization.XmlAttributeAttribute()]
-    public byte CurFormat {
+    public short CurFormat {
         get {
             return this.curFormatField;
         }
@@ -2819,15 +2819,15 @@ public partial class StudyRoot_PlansPlanDataBlocFormats {
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true)]
 public partial class StudyRoot_PlansPlanDataBlocFormatsFormat {
     
-    private byte noField;
+    private short noField;
     
-    private byte modeField;
+    private short modeField;
     
-    private byte nomField;
+    private short nomField;
     
     /// <remarks/>
     [System.Xml.Serialization.XmlAttributeAttribute()]
-    public byte No {
+    public short No {
         get {
             return this.noField;
         }
@@ -2838,7 +2838,7 @@ public partial class StudyRoot_PlansPlanDataBlocFormatsFormat {
     
     /// <remarks/>
     [System.Xml.Serialization.XmlAttributeAttribute()]
-    public byte Mode {
+    public short Mode {
         get {
             return this.modeField;
         }
@@ -2849,7 +2849,7 @@ public partial class StudyRoot_PlansPlanDataBlocFormatsFormat {
     
     /// <remarks/>
     [System.Xml.Serialization.XmlAttributeAttribute()]
-    public byte Nom {
+    public short Nom {
         get {
             return this.nomField;
         }
@@ -2888,13 +2888,13 @@ public partial class StudyRoot_PlansPlanDataBlocLegAttributs {
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true)]
 public partial class StudyRoot_PlansPlanDataBlocLegAttributsLegAttrib {
     
-    private byte valSpField;
+    private short valSpField;
     
     private string legField;
     
     /// <remarks/>
     [System.Xml.Serialization.XmlAttributeAttribute()]
-    public byte ValSp {
+    public short ValSp {
         get {
             return this.valSpField;
         }
@@ -2957,27 +2957,27 @@ public partial class StudyRoot_PlansPlanDataBlocSpots {
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true)]
 public partial class StudyRoot_PlansPlanDataBlocSpotsSP {
     
-    private byte regField;
+    private short regField;
     
-    private byte staField;
+    private short staField;
     
     private int numField;
     
     private ushort horField;
     
-    private byte jrField;
+    private short jrField;
     
-    private byte noStrField;
+    private short noStrField;
     
-    private byte noForField;
+    private short noForField;
     
-    private byte valAttField;
+    private short valAttField;
     
     private string attrField;
     
     /// <remarks/>
     [System.Xml.Serialization.XmlAttributeAttribute()]
-    public byte Reg {
+    public short Reg {
         get {
             return this.regField;
         }
@@ -2988,7 +2988,7 @@ public partial class StudyRoot_PlansPlanDataBlocSpotsSP {
     
     /// <remarks/>
     [System.Xml.Serialization.XmlAttributeAttribute()]
-    public byte Sta {
+    public short Sta {
         get {
             return this.staField;
         }
@@ -3021,7 +3021,7 @@ public partial class StudyRoot_PlansPlanDataBlocSpotsSP {
     
     /// <remarks/>
     [System.Xml.Serialization.XmlAttributeAttribute()]
-    public byte Jr {
+    public short Jr {
         get {
             return this.jrField;
         }
@@ -3032,7 +3032,7 @@ public partial class StudyRoot_PlansPlanDataBlocSpotsSP {
     
     /// <remarks/>
     [System.Xml.Serialization.XmlAttributeAttribute()]
-    public byte NoStr {
+    public short NoStr {
         get {
             return this.noStrField;
         }
@@ -3043,7 +3043,7 @@ public partial class StudyRoot_PlansPlanDataBlocSpotsSP {
     
     /// <remarks/>
     [System.Xml.Serialization.XmlAttributeAttribute()]
-    public byte NoFor {
+    public short NoFor {
         get {
             return this.noForField;
         }
@@ -3054,7 +3054,7 @@ public partial class StudyRoot_PlansPlanDataBlocSpotsSP {
     
     /// <remarks/>
     [System.Xml.Serialization.XmlAttributeAttribute()]
-    public byte ValAtt {
+    public short ValAtt {
         get {
             return this.valAttField;
         }

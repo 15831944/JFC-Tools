@@ -102,6 +102,8 @@ namespace PopCornToAtelierRadio
 
                     TranslateXmlToZip l_translate = new TranslateXmlToZip(outFle, eltAr);
 
+                    this.FileWritten = true;
+
                 }
                 catch (System.Exception ex)
                 {
@@ -444,7 +446,7 @@ namespace PopCornToAtelierRadio
             m_study.Root_Plans.Plan.Nom = _namePlan;
             m_study.Root_Plans.Plan.NumCible = -1;
             m_study.Root_Plans.Plan.DateDebut = (ushort)m_study.Root_Cartouche.Periode.DateDebutPeriodeA;
-            m_study.Root_Plans.Plan.DateDebutPA = m_study.Root_Plans.Plan.DateDebut;
+            m_study.Root_Plans.Plan.DateDebutPA = (ushort)m_study.Root_Plans.Plan.DateDebut;
 
             m_study.Root_Plans.Plan.NbSemainePA = (byte)m_study.Root_Cartouche.Periode.NbSemainePeriodeA; 
 

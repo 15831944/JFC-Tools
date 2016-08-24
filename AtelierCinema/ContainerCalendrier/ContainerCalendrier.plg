@@ -1,0 +1,43 @@
+<html>
+<body>
+<pre>
+<h1>Build Log</h1>
+<h3>
+--------------------Configuration: ContainerCalendrier - Win32 Debug--------------------
+</h3>
+<h3>Command Lines</h3>
+Creating temporary file "C:\DOCUME~1\remi\LOCALS~1\Temp\RSP61.tmp" with contents
+[
+/nologo /MTd /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /Fp"Debug/ContainerCalendrier.pch" /Yu"stdafx.h" /Fo"Debug/" /Fd"Debug/" /FD /GZ   /c 
+"C:\dev\AtelierCinemaFrance\ContainerCalendrier\ContainerCalendrierDlg.cpp"
+"C:\dev\AtelierCinemaFrance\ContainerCalendrier\CAlendrierHebdoCinema.cpp"
+]
+Creating command line "cl.exe @C:\DOCUME~1\remi\LOCALS~1\Temp\RSP61.tmp" 
+Creating temporary file "C:\DOCUME~1\remi\LOCALS~1\Temp\RSP62.tmp" with contents
+[
+/nologo /subsystem:windows /incremental:yes /pdb:"Debug/ContainerCalendrier.pdb" /debug /machine:I386 /out:"Debug/ContainerCalendrier.exe" /pdbtype:sept 
+.\Debug\ContainerCalendrier.obj
+.\Debug\ContainerCalendrierDlg.obj
+.\Debug\StdAfx.obj
+.\Debug\ContainerCalendrier.res
+.\Debug\CAlendrierHebdoCinema.obj
+]
+Creating command line "link.exe @C:\DOCUME~1\remi\LOCALS~1\Temp\RSP62.tmp"
+<h3>Output Window</h3>
+Compiling...
+ContainerCalendrierDlg.cpp
+c:\dev\ateliercinemafrance\containercalendrier\calendrierhebdocinema.h(21) : warning C4091: 'static ' : ignored on left of 'class CCAlendrierHebdoCinema' when no variable is declared
+Generating Code...
+Compiling...
+CAlendrierHebdoCinema.cpp
+c:\dev\ateliercinemafrance\containercalendrier\calendrierhebdocinema.h(21) : warning C4091: 'static ' : ignored on left of 'class CCAlendrierHebdoCinema' when no variable is declared
+Generating Code...
+Linking...
+
+
+
+<h3>Results</h3>
+ContainerCalendrier.exe - 0 error(s), 2 warning(s)
+</pre>
+</body>
+</html>

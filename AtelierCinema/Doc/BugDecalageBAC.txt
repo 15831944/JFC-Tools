@@ -1,0 +1,457 @@
+// CALCUL FRED
+bool CSelection::PrepareMasqueRegional()
+{
+	// Initialisation à 0 du masque (bouclage sur les individus)
+	for(int ind=0;ind<theApp.NbIndiv;ind++)
+	{
+		m_MasqueRegional.SetAt(ind,0);		
+	}
+	// On boucle sur les bacs actifs
+	for(int bac=0;bac<m_ListBacActif.GetSize();bac++)
+	{
+		// On récupère l'index bac probabilisé du bac
+		int indexBacProba;
+		// Si le bac est actif, alors on le prend en compte dans le masque
+		if(m_ListBacActif[bac])
+		{
+			CString codeBac = theApp.m_TableCinema.GetTableBac()->GetCode(bac); 
+
+			// ERREUR CODE BAC ALAIN !!!!!!
+			// MODIF FRED: 15/05/2002 bac régie
+			/*if(codeBac[6]!='P')
+			{
+				codeBac=codeBac.Left(codeBac.GetLength()-1);
+				codeBac+="P";
+			}*/
+			if(!theApp.m_MapIndexBac.Lookup(codeBac,indexBacProba))
+			{
+				CString message;
+				message.Format("Erreur lors de la construction de la cible régionale\nLe bac %s n'est pas trouvé",codeBac);
+				AfxMessageBox(message);
+				ASSERT(0);
+			}
+			// Pour chaque individu du bac proba
+			for(ind=0;ind<theApp.m_NbIndivSupp[indexBacProba];ind++)
+			{
+				m_MasqueRegional.SetAt(theApp.m_NrIndivSupp[indexBacProba][ind],1); 		
+			}
+		}
+		
+	}
+	return(1);
+}
+
+
+short CCampagne::CalculCouvertures(int H,int iCib)
+{
+	TRACE("Calcul de l'hypothèse %d cible %d*********************\n",H,iCib);
+	ASSERT(AfxCheckMemory());
+
+	// variables pour boucler
+	int i,c,s,z,b;
+
+	// le pointeur sur la cible
+	// CALCUL FRED
+	double * vCible;
+	vCible = CibleUtile[iCib].Vecteur;
+	
+	// Pour calculer les distributions
+	// on boucle sur les lignes de la sélection afin d'identifier les BACs et les complexes
+	// avec lesquels on va travailler de façon à préparer le vecteur des individus qui doit être utilisé
+
+	// ATTENTION, cette ruse n'est possible que parce que les individus sont attachés à un BAC et un seul !
+
+	// les distributions (qui ne seront pas liberées)
+	for(s=0;s<NbSemaine;s++)
+	{
+		if(NbContactBarre[iCib][H][s])
+		{
+			delete [] NbContactBarre[iCib][H][s];
+			NbContactBarre[iCib][H][s]=0;
+		}
+		if(NbContactPlaque[iCib][H][s])
+		{
+			delete [] NbContactPlaque[iCib][H][s];
+			NbContactPlaque[iCib][H][s]=0;
+		}
+
+		NbContactBarre[iCib][H][s]=new double[NBFOISTOUCHEMAX];
+		for(z=0;z<NBFOISTOUCHEMAX;z++)
+		{
+			NbContactBarre[iCib][H][s][z]=+0.0;
+		}
+		
+		NbContactPlaque[iCib][H][s]=new double[NBFOISTOUCHEMAX];
+		for(z=0;z<NBFOISTOUCHEMAX;z++)
+		{
+			NbContactPlaque[iCib][H][s][z]=+0.0;
+		}
+	}
+
+	PrepareParcActifs(H);
+	PrepareBacParLigne();
+
+	// Recherche des individus qui peuvent etre utilisé en fc de la sélection
+	// et en fonction de la cible
+	// Préparation des individus
+
+	CDWordArray NrIndiv; // Nr réel de l'individu
+	// MODIF FRED : 16/05/2002
+	// MODIF FRED : 03/07/2002 
+	// Ajout d'un tableau de booléen indiquant pour chaque bac probabilisé si les individus ont déjà été ajoutés.
+	// Cela permet d'éviter la multiplication des individus lors de la présence des bacs régie (même index bac probabilisé).
+
+	CByteArray flagIndivAjoute;
+	flagIndivAjoute.SetSize(theApp.m_NbBacProbabilise); 
+	for(b=0;b<theApp.m_NbBacProbabilise;b++)
+		flagIndivAjoute.Add(0);
+
+	for(b=0;b<3*theApp.m_NbBacProbabilise;b++)
+	{
+		if(!m_ListeBacUtilise[b])continue;
+		
+		// BAC simple
+		double coeff=+1.0;
+
+
+		// ERREUR CODE BAC ALAIN !!!!!!
+		// MODIF FRED: 16/05/2002  BAC REGIE
+		// récupération de l'index du bac proba à partir du code de base.
+		CString codebase = theApp.m_TableCinema.GetTableBac()->GetCode(b);
+		int idxproba = theApp.m_TableCinema.GetTableBac()->FindIndexFromCode(codebase);
+
+		if(flagIndivAjoute[idxproba])continue;
+		flagIndivAjoute[idxproba]=1;
+		for(int i=0;i<theApp.m_NbIndivSupp[idxproba];i++)
+		{
+			//TRACE("indexproba:%d,NrIndivSupport:%f\n",idxproba,theApp.m_NrIndivSupp[idxproba][i]);
+			int NrI=theApp.m_NrIndivSupp[idxproba][i];
+			if(vCible[NrI]>0)
+			{
+				NrIndiv.Add(NrI);
+			}
+		}
+	}
+	int NbIndiv=theApp.NbIndiv;
+	int NbIndivCalcul=NrIndiv.GetSize();
+
+	ETC..................................
+
+////////////////////////////////////
+////////////////////////////////////
+
+// Préparation des bacs utiles par ligne
+// Ainsi que des Complexes qui sont à identifier dans les BAC.
+inline void CCampagne::PrepareBacParLigne()
+{
+	CTableComplexe * TableCpx=theApp.m_TableCinema.GetTableComplexe();
+
+	static CMap<CString,LPCSTR,BYTE,BYTE> mapBacNonTrouve;
+
+	if(m_MapCpxUsedParLigne) delete [] m_MapCpxUsedParLigne;
+	m_MapCpxUsedParLigne=new CByteArray[m_Selection.GetSize()];
+
+	// TODO REMI : Alloué correctement lorsque fred modifie la sélection.
+	// TODO REMI : Il est possible de faire ce calcul dans la fonction parent plutôt que dans le calcul couverture
+/*
+	if(!m_QuotaBacUsedParLigne)
+	{
+		// Première allocation des quotas
+		m_QuotaBacUsedParLigne=new CDoubleArray2 * [theApp.m_NbBacProbabilise];
+		for(int b=0;b<theApp.m_NbBacProbabilise;b++)
+			m_QuotaBacUsedParLigne[b]=0;
+	}
+
+	// Allocation des quotas en fc du nombre de ligne:
+	
+	for(int b=0;b<theApp.m_NbBacProbabilise;b++)
+	{
+		if(m_QuotaBacUsedParLigne[b])delete [] m_QuotaBacUsedParLigne[b];
+		m_QuotaBacUsedParLigne[b]=new CDoubleArray2 [m_Selection.GetSize()];
+	}
+	*/
+
+	FreeQuotaBacUsedParLigne();
+	if(!m_QuotaBacUsedParLigne)
+	{
+		// Première allocation des quotas
+		// MODIF FRED: 03/07/2002 : bacs proba + bacs régie.
+		m_QuotaBacUsedParLigne=new CDoubleArray2 * [theApp.m_NbBacProbabilise];
+
+		// ERREUR CODE BAC ALAIN !!!!!!
+		// MODIF FRED: 16/05/2002 BAC REGIE
+		for(int b=0;b<theApp.m_NbBacProbabilise;b++)
+			m_QuotaBacUsedParLigne[b]=new CDoubleArray2 [m_Selection.GetSize()];
+	}
+
+	int nbcpx=theApp.m_TableCinema.GetTableComplexe()->GetSize();
+	int nbbac=theApp.m_NbBacProbabilise;
+	for(int l=0;l<m_Selection.GetSize();l++)
+	{
+		m_MapCpxUsedParLigne[l].SetSize(nbcpx);
+		for(int cpx=0;cpx<nbcpx;cpx++)
+			m_MapCpxUsedParLigne[l][cpx]=0;
+	}
+
+	if(m_ListeCpxParLigne) delete [] m_ListeCpxParLigne;
+	m_ListeCpxParLigne=new CWordArray[m_Selection.GetSize()];
+
+	// ERREUR CODE BAC ALAIN !!!!!!
+	// MODIF FRED : 16/05/2002 BAC REGIE
+	// les bacs proba + les bacs régieA + bac régie M
+	m_ListeBacUtilise.SetSize(3*theApp.m_NbBacProbabilise);
+	for(int b=0;b<3*theApp.m_NbBacProbabilise;b++)m_ListeBacUtilise[b]=0;
+
+	if(m_ListeComplexeParBAC) delete [] m_ListeComplexeParBAC;
+	m_ListeComplexeParBAC=new CWordArray[3*theApp.m_NbBacProbabilise];
+
+	bool flag=0;
+	bool flagBACNONtrouve=0;
+
+	for(int ligne=0;ligne<m_Selection.GetSize();ligne++)
+	{
+		if(!m_Selection.SelectBinome[ligne])continue;
+
+		// Si c'est un produit figé il faut utiliser le nombre de semaines
+		// sinon c'est qu'il n'y a qu'une semaine
+		int NbSemaineLigne=1;
+		if(m_Selection.GetType(ligne)==tagSelection::PRODUITFIGE)
+		{
+			int indexProduit=m_Selection.GetIndex(ligne);
+			tagProduit P=theApp.m_TableCinema.GetTableProduit()->GetAt(indexProduit);
+			ASSERT(P.m_flagProduitFige==1);
+			NbSemaineLigne=P.GetDuree();
+		}
+
+		// ERREUR CODE BAC ALAIN !!!!!!
+		// MODIF FRED : 16/05/2002 : BAC REGIE
+		for(int b=0;b<nbbac;b++)
+			m_QuotaBacUsedParLigne[b][ligne].SetSize(NbSemaineLigne);
+		for(int sem=0;sem<NbSemaineLigne;sem++)
+		{
+			double zero=+0.0;
+			for(int b=0;b<nbbac;b++)
+				m_QuotaBacUsedParLigne[b][ligne].SetAt(sem,zero);
+
+			// on recherche les BAC correspondants à la ligne
+			CStringArray CodeBAC;
+			CWordArray IndexCpx;
+			GetCodeArrayFromSelection(ligne,sem,CodeBAC,IndexCpx);
+
+			// On recherche dans les bac les codes trouvés
+			int NbBac = CodeBAC.GetSize();
+			for(int cod=0;cod<CodeBAC.GetSize();cod++)
+			{
+				int b;
+				LPCSTR codebac=CodeBAC.GetAt(cod);
+
+				if(theApp.m_MapIndexBac.Lookup(codebac,b))
+				{
+					if(!m_ListeBacUtilise[b])
+					{
+						m_ListeBacUtilise.SetAt(b,1);
+					}
+
+					// ERREUR CODE BAC ALAIN !!!!!!
+					// MODIF FRED : 15/05/2002 BAC REGIE
+					tagBAC bac = theApp.m_TableCinema.GetTableBac()->GetAt(b);
+					/*
+					CString CodeBacReel;
+					CodeBacReel = codebac;
+					CodeBacReel = CodeBacReel.Left(6);
+					tagBAC bac = theApp.m_TableCinema.GetTableBac()->GetBac(CodeBacReel);
+					*/
+					
+					// On récupère l'index du bac probabilisé à l'aide du code de base.
+					CString code = bac.GetCode();
+					
+					int idxproba = theApp.m_TableCinema.GetTableBac()->FindIndexFromCode(bac.GetCode());
+					
+					WORD indexCpx=IndexCpx[cod];
+					if(indexCpx!=(WORD)-1)
+					{
+						// On ajoute ce complexe dans la ligne
+						m_ListeCpxParLigne[ligne].Add(indexCpx);
+						m_MapCpxUsedParLigne[ligne][indexCpx]=1;
+
+						// On indique que le bac est utilisé pour ses complexes
+
+						zero=m_QuotaBacUsedParLigne[idxproba][ligne][sem]+TableCpx->GetAt(indexCpx).m_PartDeMarche;
+						m_QuotaBacUsedParLigne[idxproba][ligne].SetAt(sem,zero);
+						ASSERT(m_QuotaBacUsedParLigne[idxproba][ligne][sem]<=+1.00001);
+ETC.......................
+
+///////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////
+
+
+// CALCUL FRED
+bool CSelection::PrepareMasqueRegional()
+{
+	// Initialisation à 0 du masque (bouclage sur les individus)
+	for(int ind=0;ind<theApp.NbIndiv;ind++)
+	{
+		m_MasqueRegional.SetAt(ind,0);		
+	}
+	// On boucle sur les bacs actifs
+	for(int bac=0;bac<m_ListBacActif.GetSize();bac++)
+	{
+		// On récupère l'index bac probabilisé du bac
+		int indexBacProba;
+		// Si le bac est actif, alors on le prend en compte dans le masque
+		if(m_ListBacActif[bac])
+		{
+			CString codeBac = theApp.m_TableCinema.GetTableBac()->GetCode(bac); 
+
+			// ERREUR CODE BAC ALAIN !!!!!!
+			// MODIF FRED: 15/05/2002 bac régie
+			/*if(codeBac[6]!='P')
+			{
+				codeBac=codeBac.Left(codeBac.GetLength()-1);
+				codeBac+="P";
+			}*/
+			if(!theApp.m_MapIndexBac.Lookup(codeBac,indexBacProba))
+			{
+				CString message;
+				message.Format("Erreur lors de la construction de la cible régionale\nLe bac %s n'est pas trouvé",codeBac);
+				AfxMessageBox(message);
+				ASSERT(0);
+			}
+			// Pour chaque individu du bac proba
+			for(ind=0;ind<theApp.m_NbIndivSupp[indexBacProba];ind++)
+			{
+				m_MasqueRegional.SetAt(theApp.m_NrIndivSupp[indexBacProba][ind],1); 		
+			}
+		}
+		
+	}
+	return(1);
+}
+
+//////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////
+
+BOOL CCinemaApp::LoadProba()
+{
+	FILE			*fp_aud;
+
+	// proba d'être touché 0 et une fois
+	m_PT0=new double [PROBABILISATION+1];
+	m_PT1=new double [PROBABILISATION+1];
+	for(int i=0;i<=PROBABILISATION;i++){
+		m_PT1[i]=(double)i/(double)PROBABILISATION;
+		m_PT0[i]=(double)(PROBABILISATION-i)/(double)PROBABILISATION;
+	}
+
+	// Construction de la matrice binomiale
+	m_MPP=new double**[PROBABILISATION+1];
+	m_NbMPP=new BYTE*[PROBABILISATION+1];
+	for(int p=0;p<PROBABILISATION+1;p++){
+		m_MPP[p]=new double*[PROBABILISATION+1];
+		for(int z=0;z<PROBABILISATION+1;z++)m_MPP[p][z]=NULL;
+			
+		m_NbMPP[p]=new BYTE[PROBABILISATION+1];
+	}
+
+	CString txt;
+	txt=theApp.m_Chemin+"\\SOURCE\\VAGUE.AUD";
+	if((fp_aud=fopen(txt,"rb"))==NULL) return(FALSE);
+
+	DWORD nbindivinfile;
+	fread(&nbindivinfile,sizeof(DWORD),1,fp_aud);
+
+	if(NbIndiv!=nbindivinfile)
+	{
+		AfxMessageBox("Erreur dans les fichiers: le fichier .AUD ne dispose pas d'un nombre d'individus correcte !");
+		return(0);
+	}
+
+	fread(&m_NbBacProbabilise,sizeof(DWORD),1,fp_aud);
+	m_CodeBacProbabilise.SetSize(m_NbBacProbabilise);
+
+	// TODO FRED
+	m_NbBacProbabilise--;
+
+
+#ifdef _DEBUG
+	int NrBacTest=-1;
+//	char BACTEST[]="B01004";
+	char BACTEST[]="B75999";
+//	char BACTEST[]="B75060";
+#endif
+	// MODIF FRED: 16/05/2002 BAC REGIE
+	m_NbIndivSupp	= new DWORD [m_NbBacProbabilise];
+	m_NrIndivSupp	= new DWORD*[m_NbBacProbabilise];
+	m_Proba1		= new BYTE* [m_NbBacProbabilise];
+	m_Proba2		= new BYTE* [m_NbBacProbabilise];
+	m_Proba30		= new BYTE* [m_NbBacProbabilise];
+	m_NrIndivDirect	= new DWORD[NbIndiv];
+	m_NrBacParIndiv	= new DWORD[NbIndiv];
+
+	m_MapIndexBac.RemoveAll();
+	for(int iBac=0;iBac<m_NbBacProbabilise;iBac++)
+	{
+		CString txt;
+		WORD w;
+		DWORD dw;
+		const int taillecode=5;
+		
+		char code[taillecode+1];
+		
+		// ERREUR CODE BAC ALAIN !!!!!!
+		fread(code,sizeof(char),taillecode,fp_aud);
+		
+		//CString code;
+		//code = theApp.m_TableCinema.GetTableBac()->GetCode(iBac);
+		//int Nb = theApp.m_TableCinema.GetTableBac()->GetSize();
+		//CString code = theApp.m_TableCinema.GetTableBac()->GetCode(iBac);
+		
+		code[taillecode]=0; // null terminated string
+		txt.Format("B%s",code);
+
+		// ERREUR CODE BAC ALAIN !!!!!!
+		// MODIF FRED : 16/05/2002
+		int IndexBacReel = iBac;
+		int idxregieA = m_NbBacProbabilise+IndexBacReel;
+		int idxregieM = m_NbBacProbabilise*2+IndexBacReel;
+
+		m_CodeBacProbabilise.SetAt(iBac,txt);
+		m_MapIndexBac.SetAt(txt,IndexBacReel);
+
+		// Ajout des codes de bacs régie au map
+		m_MapIndexBac.SetAt(txt+"A",idxregieA);
+		m_MapIndexBac.SetAt(txt+"M",idxregieM);
+
+
+
+//		ASSERT(txt!=BACTEST);
+#ifdef _DEBUG
+		if(txt==BACTEST)NrBacTest=iBac;
+#endif
+		// MODIF FRED : 16/05/2002
+		// lecture du nb d'individu
+		fread(&dw,sizeof(DWORD),1,fp_aud);
+		m_NbIndivSupp[iBac]=dw;
+		/*m_NbIndivSupp[idxregieA]=dw;
+		m_NbIndivSupp[idxregieM]=dw;*/
+
+		m_NrIndivSupp[iBac]= new DWORD[m_NbIndivSupp[iBac]];
+		/*m_NrIndivSupp[idxregieA]= new DWORD[m_NbIndivSupp[idxregieA]];
+		m_NrIndivSupp[idxregieM]= new DWORD[m_NbIndivSupp[idxregieM]];*/
+
+		m_Proba1[iBac]=new BYTE[m_NbIndivSupp[iBac]];
+		m_Proba2[iBac]=new BYTE[m_NbIndivSupp[iBac]];
+		m_Proba30[iBac]=new BYTE[m_NbIndivSupp[iBac]];
+
+		for(int y=0;y<m_NbIndivSupp[iBac];y++)
+		{
+			// lecture des nr d'individus
+			fread(&dw,sizeof(DWORD),1,fp_aud);
+			m_NrIndivSupp[iBac][y]=dw;
+			/*m_NrIndivSupp[idxregieA][y]=dw;
+			m_NrIndivSupp[idxregieM][y]=dw;*/
+ETC.......................................
+
+
+////////////////////////////////////////////////////////////////////////:
+////////////////////////////////////////////////////////////////////////:

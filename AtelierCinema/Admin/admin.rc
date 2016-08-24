@@ -1,0 +1,1186 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+#include "secres.h" 
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// French (France) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_FRA)
+#ifdef _WIN32
+LANGUAGE LANG_FRENCH, SUBLANG_FRENCH
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "#include ""secres.h"" \r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_FRA)\r\n"
+    "#ifdef _WIN32\r\n"
+    "LANGUAGE 12, 1\r\n"
+    "#pragma code_page(1252)\r\n"
+    "#endif //_WIN32\r\n"
+    "#include ""res\\admin.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""l.fra\\afxres.rc""          // Standard components\r\n"
+    "#endif\r\n"
+    "#include ""secres.rc""\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDR_MAINFRAME           BITMAP  MOVEABLE PURE   "res\\Toolbar.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Toolbar
+//
+
+IDR_MAINFRAME TOOLBAR DISCARDABLE  16, 15
+BEGIN
+    BUTTON      ID_EDIT_CUT
+    BUTTON      ID_EDIT_COPY
+    BUTTON      ID_EDIT_PASTE
+    SEPARATOR
+    BUTTON      ID_FILE_PRINT
+    SEPARATOR
+    BUTTON      ID_APP_ABOUT
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDR_MAINFRAME MENU PRELOAD DISCARDABLE 
+BEGIN
+    POPUP "&Base"
+    BEGIN
+        MENUITEM "&Mettre à jour",              ID_BASE_METTREJOUR
+        MENUITEM "&Quitter",                    ID_APP_EXIT
+    END
+    POPUP "&Complexe"
+    BEGIN
+        MENUITEM "&Ajouter",                    ID_COMPLEXE_AJOUT
+        MENUITEM "&Modifier",                   ID_COMPLEXE_MODIFIER
+        MENUITEM "&Supprimer",                  ID_COMPLEXE_SUPPRIMER
+        MENUITEM SEPARATOR
+        MENUITEM "&Editer/Modifier Tarif",      ID_COMPLEXE_EDITMODIFIE_TARIF
+
+        MENUITEM SEPARATOR
+        MENUITEM "&Import du tarif",            ID_COMPLEXE_IMPORTDUTARIF
+        MENUITEM SEPARATOR
+        MENUITEM "Ajouter Groupe",              ID_COMPLX_AJOUT_GROUPE
+        MENUITEM "Supprimer Groupe",            ID_COMPLX_SUPP_GROUPE
+    END
+    POPUP "&Bac"
+    BEGIN
+        MENUITEM "&Ajouter",                    ID_BAC_AJOUTER
+        MENUITEM "&Modifier",                   ID_BAC_MODIFIER
+        MENUITEM "&Supprimer",                  ID_BAC_SUPPRIMER
+        MENUITEM SEPARATOR
+        MENUITEM "&Editer/Modifier Tarif",      ID_BAC_EDITMODIFIE_TARIF
+        MENUITEM SEPARATOR
+        MENUITEM "&Import du tarif",            ID_BAC_IMPORTDUTARIF
+        MENUITEM SEPARATOR
+        MENUITEM "Ajouter groupe",              ID_BAC_AJOUT_GROUPE
+        MENUITEM "Supprimer groupe",            ID_BAC_SUPP_GROUPE
+    END
+    POPUP "&Produit"
+    BEGIN
+        MENUITEM "&Ajouter",                    ID_PRODUIT_AJOUTER
+        MENUITEM "Ajouter à &partir de...",     ID_PRODUIT_AJOUTEDEPUIS
+        MENUITEM "&Modifier",                   ID_PRODUIT_MODIFIER
+        MENUITEM "&Supprimer",                  ID_PRODUIT_SUPPRIMER
+        MENUITEM SEPARATOR
+        MENUITEM "&Editer/Modifier Tarif",      ID_PRODUIT_EDITMODIFIE_TARIF
+        MENUITEM SEPARATOR
+        MENUITEM "&Import du tarif",            ID_PRODUIT_IMPORTDUTARIF
+    END
+    POPUP "F&ormat"
+    BEGIN
+        MENUITEM "&Ajouter",                    ID_FORMAT_AJOUTER
+        MENUITEM "&Supprimer",                  ID_FORMAT_SUPPRIMER
+    END
+    POPUP "&Tempo"
+    BEGIN
+        MENUITEM "&Ajouter",                    ID_TEMPO_AJOUTER
+        MENUITEM "&Modifier",                   ID_TEMPO_MODIFIER
+        MENUITEM "&Supprimer",                  ID_TEMPO_SUPPRIMER
+    END
+    POPUP "&Données CNC"
+    BEGIN
+        MENUITEM "Modifier",                    ID_DONNEESCNC_MODIF
+        MENUITEM SEPARATOR
+        MENUITEM "&Importer",                   ID_DONNESCNC_IMPORTER
+    END
+    POPUP "&Saisonnalités"
+    BEGIN
+        MENUITEM "&Importer",                   ID_SAISONNALITS_IMPORTER
+    END
+    POPUP "&?"
+    BEGIN
+        MENUITEM "&A propos de admin...",       ID_APP_ABOUT
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Accelerator
+//
+
+IDR_MAINFRAME ACCELERATORS PRELOAD MOVEABLE PURE 
+BEGIN
+    "C",            ID_EDIT_COPY,           VIRTKEY, CONTROL, NOINVERT
+    "V",            ID_EDIT_PASTE,          VIRTKEY, CONTROL, NOINVERT
+    VK_BACK,        ID_EDIT_UNDO,           VIRTKEY, ALT, NOINVERT
+    VK_DELETE,      ID_EDIT_CUT,            VIRTKEY, SHIFT, NOINVERT
+    VK_F6,          ID_NEXT_PANE,           VIRTKEY, NOINVERT
+    VK_F6,          ID_PREV_PANE,           VIRTKEY, SHIFT, NOINVERT
+    VK_INSERT,      ID_EDIT_COPY,           VIRTKEY, CONTROL, NOINVERT
+    VK_INSERT,      ID_EDIT_PASTE,          VIRTKEY, SHIFT, NOINVERT
+    "X",            ID_EDIT_CUT,            VIRTKEY, CONTROL, NOINVERT
+    "Z",            ID_EDIT_UNDO,           VIRTKEY, CONTROL, NOINVERT
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_ABOUTBOX DIALOG DISCARDABLE  0, 0, 235, 55
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "A propos de admin"
+FONT 8, "MS Sans Serif"
+BEGIN
+    ICON            IDI_MAINFRAME,IDC_STATIC,11,17,21,20
+    LTEXT           "admin version 3.6",IDC_STATIC,46,14,119,8,SS_NOPREFIX
+    LTEXT           "Copyright (C) JFC 2002-2014",IDC_STATIC,46,29,119,8
+    DEFPUSHBUTTON   "OK",IDOK,178,7,50,14,WS_GROUP
+END
+
+IDD_SUPPCMPLX DIALOGEX 0, 0, 381, 214
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION
+CAPTION "Supprimer un complexe"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    CONTROL         "",IDC_STATIC,"Static",SS_BLACKFRAME | SS_SUNKEN,6,10,
+                    294,1
+    LISTBOX         IDC_LISTCOMPLEXE,13,32,294,168,LBS_SORT | 
+                    LBS_OWNERDRAWFIXED | LBS_HASSTRINGS | 
+                    LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
+    DEFPUSHBUTTON   "OK",IDC_OK,323,10,50,14
+    PUSHBUTTON      "Annuler",IDC_ANNULER,323,26,50,14
+    CTEXT           "Complexe",IDC_NOMCOMPLEXE,13,19,134,11,SS_SUNKEN
+    CTEXT           "R.",IDC_STATIC,150,19,18,11,SS_SUNKEN
+    CTEXT           "B.A.C",IDC_STATIC,171,19,136,11,SS_SUNKEN
+    CONTROL         "",IDC_CADRE1,"Static",SS_BLACKFRAME,6,10,310,198,
+                    WS_EX_CLIENTEDGE
+END
+
+IDD_MODIFCMPLX DIALOGEX 0, 0, 349, 276
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION
+CAPTION "Modifier un complexe"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    CONTROL         "",IDC_CADRE1,"Static",SS_BLACKFRAME,7,9,277,258,
+                    WS_EX_CLIENTEDGE
+    GROUPBOX        "Infos générales",IDC_STATIC,16,124,259,89
+    GROUPBOX        "Tarification",IDC_STATIC,15,216,260,43
+    EDITTEXT        IDC_LIBCOMPLEXE,71,138,196,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_CODECOMPLEXE,71,154,53,12,ES_AUTOHSCROLL
+    COMBOBOX        IDC_COMBOBAC,71,179,197,100,CBS_DROPDOWNLIST | CBS_SORT | 
+                    WS_VSCROLL | WS_TABSTOP
+    COMBOBOX        IDC_COMBOREGIE,71,195,53,39,CBS_DROPDOWNLIST | CBS_SORT | 
+                    WS_VSCROLL | WS_GROUP | WS_TABSTOP
+    EDITTEXT        IDC_TARIFCOMPLEXE,71,233,53,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_ANNEETARIF,197,233,42,12,ES_AUTOHSCROLL
+    LISTBOX         IDC_LISTCOMPLEXE,16,16,259,105,LBS_SORT | 
+                    LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
+    DEFPUSHBUTTON   "OK",IDC_OK,292,9,50,14
+    PUSHBUTTON      "Annuler",IDC_ANNULER,292,29,50,14
+    LTEXT           "Libellé",IDC_LABELLIB,24,140,21,10
+    LTEXT           "Code (5 car.)",IDC_LABELCODE,24,154,44,9
+    LTEXT           "Code Bac",IDC_LABELCODEBAC,24,181,38,10
+    LTEXT           "Régie",IDC_LABELREGIE,25,197,20,8
+    LTEXT           "Tarif",IDC_STATIC,23,235,20,8
+    CONTROL         "Spin1",IDC_SPINANNEE,"msctls_updown32",UDS_ARROWKEYS | 
+                    UDS_HORZ,240,233,26,11
+    LTEXT           "Année",IDC_STATIC,198,222,32,9
+    CONTROL         "",IDC_STATIC,"Static",SS_WHITEFRAME | SS_SUNKEN,17,172,
+                    257,1
+    LTEXT           "(*** tarif non modifiable, différent par semaine)",
+                    IDC_TARIFNONMODIFIABLE,71,247,143,8,NOT WS_VISIBLE
+END
+
+IDD_AJOUTCMPLX DIALOGEX 0, 0, 416, 130
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION
+CAPTION "Ajouter un complexe"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    CONTROL         "",IDC_CADRE1,"Static",SS_BLACKFRAME,6,9,347,113,
+                    WS_EX_CLIENTEDGE
+    GROUPBOX        "Informations générales",IDC_STATIC,13,14,332,57
+    GROUPBOX        "Tarification",IDC_STATIC,13,74,200,41
+    EDITTEXT        IDC_LIBCOMPLEXE,49,29,175,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_CODECOMPLEXE,293,28,44,12,ES_AUTOHSCROLL
+    COMBOBOX        IDC_COMBOREGIE,49,53,51,46,CBS_DROPDOWNLIST | CBS_SORT | 
+                    WS_VSCROLL | WS_GROUP | WS_TABSTOP
+    COMBOBOX        IDC_COMBOBAC,134,53,204,116,CBS_DROPDOWNLIST | CBS_SORT | 
+                    WS_VSCROLL | WS_GROUP | WS_TABSTOP
+    EDITTEXT        IDC_TARIFCOMPLEXE,49,94,49,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_ANNEETARIF,134,94,42,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_CNC,293,94,44,12,ES_AUTOHSCROLL
+    DEFPUSHBUTTON   "OK",IDC_OK,359,8,50,14
+    PUSHBUTTON      "Annuler",IDC_ANNULER,359,27,50,14
+    LTEXT           "Libellé",IDC_LABELLIB,19,30,25,10
+    LTEXT           "Code Complexe  (5 caractères)",IDC_LABELCODE,238,28,51,
+                    19
+    LTEXT           "Bac",IDC_LABELCODEBAC,111,56,18,10
+    LTEXT           "Régie",IDC_LABELREGIE,20,55,20,8
+    LTEXT           "Tarif",IDC_STATIC,19,96,20,8
+    CONTROL         "Spin1",IDC_SPINANNEE,"msctls_updown32",UDS_ARROWKEYS | 
+                    UDS_HORZ,177,94,26,11
+    LTEXT           "Année",IDC_STATIC,135,83,32,9
+    GROUPBOX        "Données CNC",IDC_STATIC,218,74,127,41
+    LTEXT           "Valeur : ",IDC_STATIC,259,96,28,12
+END
+
+IDD_AJOUTBAC DIALOGEX 0, 0, 347, 125
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION
+CAPTION "Ajouter un bac"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    CONTROL         "",IDC_CADRE1,"Static",SS_BLACKFRAME,7,8,276,111,
+                    WS_EX_CLIENTEDGE
+    GROUPBOX        "Informations générales",IDC_STATIC,14,13,260,53
+    GROUPBOX        "Tarification",IDC_STATIC,13,69,262,42
+    EDITTEXT        IDC_LIBBAC,78,23,187,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_CODEBAC,78,46,61,12,ES_AUTOHSCROLL
+    COMBOBOX        IDC_COMBOREGIE,223,46,43,39,CBS_DROPDOWNLIST | CBS_SORT | 
+                    WS_VSCROLL | WS_TABSTOP
+    EDITTEXT        IDC_TARIFBAC,78,90,49,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_ANNEETARIF,196,90,44,12,ES_AUTOHSCROLL
+    DEFPUSHBUTTON   "OK",IDC_OK,290,9,50,14
+    PUSHBUTTON      "Annuler",IDC_ANNULER,290,27,50,14
+    LTEXT           "Libellé :",IDC_LABELLIB,20,25,27,10
+    LTEXT           "Code Bac :          (5 caractères)",IDC_LABELCODE,20,45,
+                    54,17
+    LTEXT           "Tarif BAC :",IDC_STATIC,20,92,37,8
+    CONTROL         "Spin1",IDC_SPINANNEE,"msctls_updown32",UDS_ARROWKEYS | 
+                    UDS_HORZ,240,90,26,11
+    LTEXT           "Année",IDC_STATIC,196,79,32,9
+    LTEXT           "Régie :",IDC_STATIC,187,47,29,9
+END
+
+IDD_MODIFBAC DIALOGEX 0, 0, 330, 255
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION
+CAPTION "Modifier un bac"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    CONTROL         "",IDC_CADRE1,"Static",SS_BLACKFRAME,7,9,256,238,
+                    WS_EX_CLIENTEDGE
+    GROUPBOX        "Infos générales",IDC_STATIC,15,126,240,66
+    GROUPBOX        "Tarification",IDC_STATIC,15,194,240,46
+    EDITTEXT        IDC_LIBBAC,70,137,179,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_CODEBAC,70,154,179,12,ES_AUTOHSCROLL
+    COMBOBOX        IDC_COMBOREGIE,70,171,61,36,CBS_DROPDOWNLIST | CBS_SORT | 
+                    WS_VSCROLL | WS_TABSTOP
+    EDITTEXT        IDC_TARIFBAC,70,214,49,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_ANNEETARIF,177,214,44,12,ES_AUTOHSCROLL
+    LISTBOX         IDC_LISTBAC,15,17,239,105,LBS_SORT | 
+                    LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
+    DEFPUSHBUTTON   "OK",IDC_OK,273,9,50,14
+    PUSHBUTTON      "Annuler",IDC_ANNULER,273,29,50,14
+    LTEXT           "Libellé",IDC_LABELLIB,20,137,39,12,SS_CENTERIMAGE
+    CTEXT           "Code Bac        (5 caractères)",IDC_LABELCODE,17,152,46,
+                    18
+    LTEXT           "Tarif BAC :",IDC_STATIC,20,216,37,8
+    CONTROL         "Spin1",IDC_SPINANNEE,"msctls_updown32",UDS_ARROWKEYS | 
+                    UDS_HORZ,221,214,26,11
+    LTEXT           "Année",IDC_STATIC,177,203,32,9
+    LTEXT           "Régie :",IDC_STATIC,21,172,40,9
+    LTEXT           "(*** tarif non modifiable, différent par semaine)",
+                    IDC_TARIFNONMODIFIABLE,70,227,143,8,NOT WS_VISIBLE
+END
+
+IDD_SUPPBAC DIALOG DISCARDABLE  0, 0, 258, 186
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION
+CAPTION "Supprimer un bac"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LISTBOX         IDC_LISTBAC,6,9,184,169,LBS_SORT | LBS_NOINTEGRALHEIGHT | 
+                    WS_VSCROLL | WS_TABSTOP
+    DEFPUSHBUTTON   "OK",IDC_OK,201,9,50,14
+    PUSHBUTTON      "Annuler",IDC_ANNULER,201,26,50,14
+END
+
+IDD_AJOUTPRODUIT DIALOGEX 0, 0, 420, 330
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION
+CAPTION "Ajouter un produit"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    CONTROL         "",IDC_CADRE1,"Static",SS_BLACKFRAME,7,8,349,316,
+                    WS_EX_CLIENTEDGE
+    GROUPBOX        "Informations générales",IDC_STATIC,16,13,331,56
+    GROUPBOX        "Tarification",IDC_STATIC,16,71,331,41
+    GROUPBOX        "Composition du produit",IDC_COMPOPRODUIT,16,114,331,202,
+                    BS_CENTER
+    EDITTEXT        IDC_LIBPRODUIT,82,25,145,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_CODEPRODUIT,82,46,49,12,ES_AUTOHSCROLL
+    COMBOBOX        IDC_COMBODUREE,185,46,154,43,CBS_DROPDOWNLIST | 
+                    WS_VSCROLL | WS_GROUP
+    EDITTEXT        IDC_TARIFPRODUIT,81,88,49,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_ANNEETARIF,185,88,42,12,ES_AUTOHSCROLL
+    COMBOBOX        IDC_COMBOCOMPO,82,128,174,100,CBS_DROPDOWNLIST | 
+                    CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    LISTBOX         IDC_LISTCOMPLEXE,23,160,234,62,LBS_SORT | 
+                    LBS_OWNERDRAWFIXED | LBS_HASSTRINGS | 
+                    LBS_NOINTEGRALHEIGHT | LBS_EXTENDEDSEL | WS_VSCROLL | 
+                    WS_TABSTOP
+    LISTBOX         IDC_LISTBAC,23,245,235,62,LBS_OWNERDRAWFIXED | 
+                    LBS_HASSTRINGS | LBS_NOINTEGRALHEIGHT | LBS_EXTENDEDSEL | 
+                    WS_VSCROLL | WS_TABSTOP
+    PUSHBUTTON      "Ajouter des complexes",IDC_AJOUTCOMPLEXE,264,160,75,16
+    PUSHBUTTON      "Supprimer",IDC_SUPP,264,184,75,16
+    PUSHBUTTON      "Ajouter des bacs",IDC_AJOUTBAC,265,245,75,16
+    PUSHBUTTON      "Supprimer",IDC_SUPP2,265,268,75,15
+    DEFPUSHBUTTON   "OK",IDC_OK,363,9,50,14
+    PUSHBUTTON      "Annuler",IDC_ANNULER,363,29,50,14
+    LTEXT           "Libellé",IDC_LABELLIB,20,25,39,10
+    LTEXT           "Code Produit       (5 caractères)",IDC_LABELCODE,20,46,
+                    58,19
+    LTEXT           "Durée",IDC_DUREE,153,45,31,14,SS_CENTERIMAGE
+    LTEXT           "composition",IDC_SEMAINE,24,128,52,9,SS_CENTERIMAGE
+    CTEXT           "composition complexe",IDC_COMPOCMPLX,22,147,73,9,
+                    SS_CENTERIMAGE
+    CTEXT           "composition  bac",IDC_COMPOBAC,22,232,57,9,
+                    SS_CENTERIMAGE
+    LTEXT           "Tarif",IDC_STATIC,55,90,20,8
+    CONTROL         "Spin1",IDC_SPINANNEE,"msctls_updown32",UDS_ARROWKEYS | 
+                    UDS_HORZ,227,88,26,11
+    LTEXT           "Année",IDC_STATIC,185,78,32,9
+    LTEXT           "*** Tarif non modifiable, différent par semaine",
+                    IDC_TARIFNONMODIFIABLE,81,101,182,8,NOT WS_VISIBLE
+END
+
+IDD_SELBAC DIALOGEX 0, 0, 257, 153
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION
+CAPTION "Sélectionner des bacs"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    CONTROL         "",IDC_CADRE1,"Static",SS_BLACKFRAME,7,9,185,136,
+                    WS_EX_CLIENTEDGE
+    LISTBOX         IDC_LISTBAC,14,15,171,105,LBS_SORT | LBS_OWNERDRAWFIXED | 
+                    LBS_HASSTRINGS | LBS_NOINTEGRALHEIGHT | LBS_EXTENDEDSEL | 
+                    WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Type :",IDC_STATIC,37,126,24,11,SS_CENTERIMAGE
+    COMBOBOX        IDC_TYPECOMBO,84,126,102,57,CBS_DROPDOWNLIST | 
+                    WS_VSCROLL | WS_TABSTOP
+    DEFPUSHBUTTON   "OK",IDC_OK,200,9,50,14
+    PUSHBUTTON      "Annuler",IDC_ANNULER,200,29,50,14
+END
+
+IDD_SELCOMPLEXE DIALOGEX 0, 0, 382, 233
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION
+CAPTION "Sélectionner des complexes"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    CONTROL         "",IDC_CADRE1,"Static",SS_BLACKFRAME,7,9,312,217,
+                    WS_EX_CLIENTEDGE
+    LISTBOX         IDC_LISTCOMPLEXE,15,32,295,184,LBS_SORT | 
+                    LBS_OWNERDRAWFIXED | LBS_HASSTRINGS | 
+                    LBS_NOINTEGRALHEIGHT | LBS_EXTENDEDSEL | WS_VSCROLL | 
+                    WS_TABSTOP
+    CTEXT           "Complexe",IDC_NOMCOMPLEXE,16,19,134,11,SS_SUNKEN
+    CTEXT           "R.",IDC_STATIC,153,19,18,11,SS_SUNKEN
+    CTEXT           "B.A.C",IDC_STATIC,173,19,138,11,SS_SUNKEN
+    DEFPUSHBUTTON   "OK",IDC_OK,325,9,50,14
+    PUSHBUTTON      "Annuler",IDC_ANNULER,325,29,50,14
+END
+
+IDD_MODIFPRODUIT DIALOG DISCARDABLE  0, 0, 258, 188
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION
+CAPTION "Modifier un produit"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LISTBOX         IDC_LISTPRODUIT,6,9,184,170,LBS_SORT | 
+                    LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
+    DEFPUSHBUTTON   "OK",IDC_OK,201,9,50,14
+    PUSHBUTTON      "Annuler",IDC_ANNULER,201,26,50,14
+END
+
+IDD_SUPPPRODUIT DIALOG DISCARDABLE  0, 0, 258, 185
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION
+CAPTION "Supprimer un produit"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LISTBOX         IDC_LISTPRODUIT,6,9,184,169,LBS_SORT | 
+                    LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
+    DEFPUSHBUTTON   "OK",IDC_OK,201,9,50,14
+    PUSHBUTTON      "Annuler",IDC_ANNULER,201,26,50,14
+END
+
+IDD_AJOUTTEMPO DIALOGEX 0, 0, 249, 151
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION
+CAPTION "Construction d'un nouveau tempo"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    CONTROL         "",IDC_CADRE,"Static",SS_BLACKFRAME,8,9,178,135,
+                    WS_EX_CLIENTEDGE
+    DEFPUSHBUTTON   "OK",IDC_OK,192,9,50,14
+    PUSHBUTTON      "Annuler",IDC_ANNULER,192,27,50,14
+    EDITTEXT        IDC_TEMPO,52,37,125,12,ES_AUTOHSCROLL
+    CTEXT           "Tempo",ID_LIBTEMPO,71,13,39,10
+    LTEXT           "Nom :",IDC_NOM,15,38,24,10
+    LTEXT           "Période :",IDC_PERIODE,15,64,28,10
+    LTEXT           "Patron :",IDC_PATRON,15,87,48,10
+    CONTROL         "",IDC_STATIC,"Static",SS_BLACKFRAME | SS_SUNKEN,15,27,
+                    164,1
+    COMBOBOX        IDC_COMBOPERIODE,52,62,92,88,CBS_DROPDOWNLIST | CBS_SORT | 
+                    WS_VSCROLL | WS_TABSTOP
+    CTEXT           "Semaines",IDC_SEMAINES,145,64,34,10,SS_CENTERIMAGE
+    CONTROL         "",IDC_PASSAGE11,"Button",BS_AUTOCHECKBOX | WS_GROUP,25,
+                    108,8,8
+    CONTROL         "",IDC_PASSAGE12,"Button",BS_AUTOCHECKBOX | WS_GROUP,25,
+                    123,8,8
+    CONTROL         "",IDC_PASSAGE22,"Button",BS_AUTOCHECKBOX | WS_GROUP,40,
+                    123,8,8
+    CONTROL         "",IDC_PASSAGE21,"Button",BS_AUTOCHECKBOX | WS_GROUP,40,
+                    108,8,8
+    CONTROL         "",IDC_PASSAGE31,"Button",BS_AUTOCHECKBOX | WS_GROUP,55,
+                    108,8,8
+    CONTROL         "",IDC_PASSAGE41,"Button",BS_AUTOCHECKBOX | WS_GROUP,70,
+                    108,8,8
+    CONTROL         "",IDC_PASSAGE32,"Button",BS_AUTOCHECKBOX | WS_GROUP,55,
+                    123,8,8
+    CONTROL         "",IDC_PASSAGE42,"Button",BS_AUTOCHECKBOX | WS_GROUP,70,
+                    123,8,8
+    CONTROL         "",IDC_PASSAGE51,"Button",BS_AUTOCHECKBOX | WS_GROUP,85,
+                    108,8,8
+    CONTROL         "",IDC_PASSAGE61,"Button",BS_AUTOCHECKBOX | WS_GROUP,100,
+                    108,8,8
+    CONTROL         "",IDC_PASSAGE52,"Button",BS_AUTOCHECKBOX | WS_GROUP,85,
+                    123,8,8
+    CONTROL         "",IDC_STATIC,"Static",SS_BLACKFRAME,19,104,156,32
+    CONTROL         "",IDC_PASSAGE62,"Button",BS_AUTOCHECKBOX | WS_GROUP,100,
+                    123,8,8
+    CONTROL         "",IDC_PASSAGE71,"Button",BS_AUTOCHECKBOX | WS_GROUP,115,
+                    108,8,8
+    CONTROL         "",IDC_PASSAGE72,"Button",BS_AUTOCHECKBOX | WS_GROUP,115,
+                    123,8,8
+    CONTROL         "",IDC_PASSAGE102,"Button",BS_AUTOCHECKBOX | WS_GROUP,
+                    160,123,8,8
+    CONTROL         "",IDC_PASSAGE92,"Button",BS_AUTOCHECKBOX | WS_GROUP,145,
+                    123,8,8
+    CONTROL         "",IDC_PASSAGE91,"Button",BS_AUTOCHECKBOX | WS_GROUP,145,
+                    108,8,8
+    CONTROL         "",IDC_PASSAGE81,"Button",BS_AUTOCHECKBOX | WS_GROUP,130,
+                    108,8,8
+    CONTROL         "",IDC_PASSAGE101,"Button",BS_AUTOCHECKBOX | WS_GROUP,
+                    160,108,8,8
+    CONTROL         "",IDC_PASSAGE82,"Button",BS_AUTOCHECKBOX | WS_GROUP,130,
+                    123,8,8
+END
+
+IDD_AJOUTFORMAT DIALOGEX 0, 0, 231, 54
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION
+CAPTION "Ajouter un format"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    CONTROL         "",IDC_CADRE1,"Static",SS_BLACKFRAME,6,8,161,40,
+                    WS_EX_CLIENTEDGE
+    EDITTEXT        IDC_LIBFORMAT,79,13,80,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_COEFFFORMAT,79,31,80,12,ES_AUTOHSCROLL
+    DEFPUSHBUTTON   "OK",IDC_OK,174,8,50,14
+    PUSHBUTTON      "Annuler",IDC_ANNULER,174,33,50,14
+    LTEXT           "Libellé",IDC_LABELLIB,11,15,61,10
+    LTEXT           "Coefficient",IDC_coeff,10,32,61,10
+END
+
+IDD_SUPPFORMAT DIALOG DISCARDABLE  0, 0, 108, 69
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION
+CAPTION "Supprimer un format"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LISTBOX         IDC_LISTFORMAT,6,9,36,52,LBS_SORT | LBS_NOINTEGRALHEIGHT | 
+                    WS_VSCROLL | WS_TABSTOP
+    DEFPUSHBUTTON   "OK",IDC_OK,51,9,50,14
+    PUSHBUTTON      "Annuler",IDC_ANNULER,51,26,50,14
+END
+
+IDD_SUPPTEMPO DIALOG DISCARDABLE  0, 0, 258, 87
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION
+CAPTION "Supprimer un tempo"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LISTBOX         IDC_LISTTEMPO,6,9,184,70,LBS_SORT | LBS_NOINTEGRALHEIGHT | 
+                    WS_VSCROLL | WS_TABSTOP
+    DEFPUSHBUTTON   "OK",IDC_OK,201,9,50,14
+    PUSHBUTTON      "Annuler",IDC_ANNULER,201,26,50,14
+END
+
+IDD_MODIFTEMPO DIALOGEX 0, 0, 249, 202
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION
+CAPTION "Modifier un tempo"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    CONTROL         "",IDC_CADRE,"Static",SS_BLACKFRAME,8,9,178,185,
+                    WS_EX_CLIENTEDGE
+    EDITTEXT        IDC_TEMPO,52,104,125,12,ES_AUTOHSCROLL
+    COMBOBOX        IDC_COMBOPERIODE,52,122,92,90,CBS_DROPDOWNLIST | 
+                    CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    DEFPUSHBUTTON   "OK",IDC_OK,192,9,50,14
+    PUSHBUTTON      "Annuler",IDC_ANNULER,192,27,50,14
+    CTEXT           "Tempo",ID_LIBTEMPO,71,13,39,10
+    LTEXT           "Période :",IDC_PERIODE,15,124,28,10
+    LTEXT           "Patron :",IDC_PATRON,15,140,48,10
+    CONTROL         "",IDC_STATIC,"Static",SS_BLACKFRAME | SS_SUNKEN,17,27,
+                    160,1
+    CTEXT           "Semaines",IDC_SEMAINES,145,124,34,10,SS_CENTERIMAGE
+    CONTROL         "",IDC_PASSAGE11,"Button",BS_AUTOCHECKBOX | WS_GROUP,25,
+                    158,8,8
+    CONTROL         "",IDC_PASSAGE12,"Button",BS_AUTOCHECKBOX | WS_GROUP,25,
+                    173,8,8
+    CONTROL         "",IDC_PASSAGE22,"Button",BS_AUTOCHECKBOX | WS_GROUP,40,
+                    173,8,8
+    CONTROL         "",IDC_PASSAGE21,"Button",BS_AUTOCHECKBOX | WS_GROUP,40,
+                    158,8,8
+    CONTROL         "",IDC_PASSAGE31,"Button",BS_AUTOCHECKBOX | WS_GROUP,55,
+                    158,8,8
+    CONTROL         "",IDC_PASSAGE41,"Button",BS_AUTOCHECKBOX | WS_GROUP,70,
+                    158,8,8
+    CONTROL         "",IDC_PASSAGE32,"Button",BS_AUTOCHECKBOX | WS_GROUP,55,
+                    173,8,8
+    CONTROL         "",IDC_PASSAGE42,"Button",BS_AUTOCHECKBOX | WS_GROUP,70,
+                    173,8,8
+    CONTROL         "",IDC_PASSAGE51,"Button",BS_AUTOCHECKBOX | WS_GROUP,85,
+                    158,8,8
+    CONTROL         "",IDC_PASSAGE61,"Button",BS_AUTOCHECKBOX | WS_GROUP,100,
+                    158,8,8
+    CONTROL         "",IDC_PASSAGE52,"Button",BS_AUTOCHECKBOX | WS_GROUP,85,
+                    173,8,8
+    CONTROL         "",IDC_STATIC,"Static",SS_BLACKFRAME | SS_SUNKEN,16,152,
+                    161,34
+    CONTROL         "",IDC_PASSAGE62,"Button",BS_AUTOCHECKBOX | WS_GROUP,100,
+                    173,8,8
+    CONTROL         "",IDC_PASSAGE71,"Button",BS_AUTOCHECKBOX | WS_GROUP,115,
+                    158,8,8
+    CONTROL         "",IDC_PASSAGE72,"Button",BS_AUTOCHECKBOX | WS_GROUP,115,
+                    173,8,8
+    CONTROL         "",IDC_PASSAGE102,"Button",BS_AUTOCHECKBOX | WS_GROUP,
+                    160,173,8,8
+    CONTROL         "",IDC_PASSAGE92,"Button",BS_AUTOCHECKBOX | WS_GROUP,145,
+                    173,8,8
+    CONTROL         "",IDC_PASSAGE91,"Button",BS_AUTOCHECKBOX | WS_GROUP,145,
+                    158,8,8
+    CONTROL         "",IDC_PASSAGE81,"Button",BS_AUTOCHECKBOX | WS_GROUP,130,
+                    158,8,8
+    CONTROL         "",IDC_PASSAGE101,"Button",BS_AUTOCHECKBOX | WS_GROUP,
+                    160,158,8,8
+    CONTROL         "",IDC_PASSAGE82,"Button",BS_AUTOCHECKBOX | WS_GROUP,130,
+                    173,8,8
+    LISTBOX         IDC_LISTTEMPO,16,33,162,65,LBS_SORT | 
+                    LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Nom :",IDC_NOM,15,105,24,10
+END
+
+IDD_MODIFCHEMIN DIALOGEX 0, 0, 289, 68
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION
+CAPTION "Chemin du répertoire de données de l'Atelier Cinéma"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    CONTROL         "",IDC_CADRE1,"Static",SS_BLACKFRAME,7,9,216,49,
+                    WS_EX_CLIENTEDGE
+    DEFPUSHBUTTON   "OK",IDC_OK,232,9,50,14
+    PUSHBUTTON      "Annuler",IDC_ANNULER,232,28,50,14
+    EDITTEXT        IDC_CHEMIN,46,29,165,12,ES_AUTOHSCROLL
+    LTEXT           "Chemin",IDC_LABELCHEMIN,12,30,27,10
+END
+
+IDD_SELPRODUIT DIALOG DISCARDABLE  0, 0, 256, 185
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION
+CAPTION "Sélection d'un produit de départ"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "OK",IDC_OK,199,7,50,14
+    PUSHBUTTON      "Annuler",IDC_ANNULER,199,24,50,14
+    LISTBOX         IDC_LISTPRODUIT,7,7,184,169,LBS_SORT | 
+                    LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
+END
+
+IDD_EDITMODIFTARIF DIALOGEX 0, 0, 384, 265
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Edition / Modification Tarif"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    CONTROL         "",IDC_CADRE1,"Static",SS_BLACKFRAME,7,7,311,251,
+                    WS_EX_CLIENTEDGE
+    GROUPBOX        "Choix Complexe",IDC_FRAMELMT,17,16,196,38
+    GROUPBOX        "Année Tarifaire",IDC_STATIC,219,16,89,38
+    GROUPBOX        "Modification Tarif",IDC_STATIC,17,59,292,190
+    COMBOBOX        IDC_COMBO_ELMT,26,31,177,88,CBS_DROPDOWN | CBS_SORT | 
+                    WS_VSCROLL | WS_TABSTOP
+    EDITTEXT        IDC_EDITANNEE,233,31,50,13,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_TARIF,102,75,65,12,ES_AUTOHSCROLL
+    COMBOBOX        IDC_COMBOREGIE,271,75,30,45,CBS_DROPDOWN | CBS_SORT | 
+                    WS_VSCROLL | WS_TABSTOP
+    PUSHBUTTON      "Quitter",IDOK,327,7,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,327,24,50,14,NOT WS_VISIBLE
+    LISTBOX         IDC_LIST_SEMTARIF,25,104,275,138,LBS_OWNERDRAWFIXED | 
+                    LBS_HASSTRINGS | LBS_NOINTEGRALHEIGHT | WS_VSCROLL | 
+                    WS_TABSTOP
+    LTEXT           "Saisie Nouveau Tarif :",IDC_STATIC,26,78,72,8
+    CONTROL         "Spin1",IDC_SPINANNEE,"msctls_updown32",UDS_ARROWKEYS | 
+                    UDS_HORZ,283,31,18,13
+    CTEXT           "N° Semaine",IDC_NOSEMAINE,26,93,44,10,0,
+                    WS_EX_STATICEDGE
+    CTEXT           "Date",IDC_DATEDEBUT,73,93,86,10,0,WS_EX_STATICEDGE
+    CTEXT           "Tarif en cours",IDC_TARIF,163,93,137,10,0,
+                    WS_EX_STATICEDGE
+    LTEXT           "Régie : ",IDC_OPTIONREGIE,244,78,24,10
+END
+
+IDD_MODIFCNC DIALOGEX 0, 0, 311, 236
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Modification CNC des complexes"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    CONTROL         "",IDC_CADRE1,"Static",SS_BLACKFRAME | WS_GROUP,7,7,239,
+                    220,WS_EX_CLIENTEDGE
+    EDITTEXT        IDC_NEWCNC,193,15,45,12,ES_AUTOHSCROLL
+    DEFPUSHBUTTON   "Quitter",IDOK,254,7,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,254,24,50,14,NOT WS_VISIBLE
+    GROUPBOX        "",IDC_STATIC,254,40,50,187
+    PUSHBUTTON      "A",IDC_A,263,52,13,12
+    PUSHBUTTON      "B",IDC_B,263,65,13,12
+    PUSHBUTTON      "C",IDC_C,263,78,13,12
+    PUSHBUTTON      "D",IDC_D,263,91,13,12
+    PUSHBUTTON      "E",IDC_E,263,104,13,12
+    PUSHBUTTON      "F",IDC_F,263,117,13,12
+    PUSHBUTTON      "G",IDC_G,263,130,13,12
+    PUSHBUTTON      "H",IDC_H,263,143,13,12
+    PUSHBUTTON      "I",IDC_I,263,156,13,12
+    PUSHBUTTON      "J",IDC_J,263,170,13,12
+    PUSHBUTTON      "K",IDC_K,263,183,13,12
+    PUSHBUTTON      "L",IDC_L,263,196,13,12
+    PUSHBUTTON      "M",IDC_M,263,209,13,12
+    PUSHBUTTON      "N",IDC_N,282,52,13,12
+    PUSHBUTTON      "O",IDC_O,282,65,13,12
+    PUSHBUTTON      "P",IDC_P,282,78,13,12
+    PUSHBUTTON      "Q",IDC_Q,282,91,13,12
+    PUSHBUTTON      "R",IDC_R,282,104,13,12
+    PUSHBUTTON      "S",IDC_S,282,117,13,12
+    PUSHBUTTON      "T",IDC_T,282,130,13,12
+    PUSHBUTTON      "U",IDC_U,282,143,13,12
+    PUSHBUTTON      "V",IDC_V,282,156,13,12
+    PUSHBUTTON      "W",IDC_W,282,170,13,12
+    PUSHBUTTON      "X",IDC_X,282,183,13,12
+    PUSHBUTTON      "Y",IDC_Y,282,196,13,12
+    PUSHBUTTON      "Z",IDC_Z,282,209,13,12
+    LTEXT           "Nouvelle valeur CNC :",IDC_STATIC,115,16,71,10
+    CTEXT           "Code",IDC_COMPLEXE2,148,32,44,10,0,WS_EX_STATICEDGE
+    CTEXT           "Libellé Complexe",IDC_COMPLEXE,15,32,131,10,0,
+                    WS_EX_STATICEDGE
+    CTEXT           "CNC",IDC_CNC,193,32,46,10,0,WS_EX_STATICEDGE
+    LISTBOX         IDC_LIST_COMPLEXE,14,44,226,177,LBS_SORT | 
+                    LBS_OWNERDRAWFIXED | LBS_HASSTRINGS | 
+                    LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
+END
+
+IDD_AJOUT_BAC_GROUPE DIALOGEX 0, 0, 435, 274
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION
+CAPTION "Création groupe de bacs"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,378,7,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,378,24,50,14
+    CONTROL         "",IDC_CADRE1,"Static",SS_BLACKFRAME,7,8,362,259,
+                    WS_EX_CLIENTEDGE
+    LISTBOX         IDC_LISTBACDISPO,14,32,171,223,LBS_SORT | 
+                    LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
+    LISTBOX         IDC_LIST_SELBACS,191,32,171,178,LBS_SORT | 
+                    LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
+    GROUPBOX        "Nom du groupe",IDC_STATIC,192,219,169,40
+    EDITTEXT        IDC_LIBBAC,199,237,154,12,ES_AUTOHSCROLL
+    CTEXT           "Liste des bacs existants",IDC_LABEL_LISTBACS,16,15,167,
+                    12,SS_CENTERIMAGE
+    CTEXT           "Bacs sélectionnés",IDC_LABEL_SEL_BACS,193,15,167,12,
+                    SS_CENTERIMAGE
+    CONTROL         "",IDC_CADRE2,"Static",SS_BLACKFRAME,373,229,57,38,
+                    WS_EX_CLIENTEDGE
+    CONTROL         "",IDC_BARRE,"Static",SS_BLACKFRAME | SS_SUNKEN,379,241,
+                    45,1
+    CTEXT           "Régie",IDC_REGIE,378,231,47,8,SS_CENTERIMAGE
+    COMBOBOX        IDC_COMBOREGIE,379,247,45,63,CBS_DROPDOWNLIST | 
+                    WS_VSCROLL | WS_TABSTOP
+END
+
+IDD_AJOUT_COMPLEXE_GROUPE DIALOGEX 0, 0, 572, 274
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION
+CAPTION "Création groupe de complexes"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,515,7,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,515,24,50,14
+    CONTROL         "",IDC_CADRE1,"Static",SS_BLACKFRAME,4,8,501,259,
+                    WS_EX_CLIENTEDGE
+    LISTBOX         IDC_LISTCOMPDISPO,14,32,255,224,LBS_SORT | 
+                    LBS_OWNERDRAWFIXED | LBS_HASSTRINGS | 
+                    LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
+    LISTBOX         IDC_LIST_SELCOMPS,282,32,213,178,LBS_SORT | 
+                    LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
+    GROUPBOX        "Nom du groupe",IDC_STATIC,281,219,214,40
+    EDITTEXT        IDC_LIBCOMPLEXE,288,237,199,12,ES_AUTOHSCROLL
+    CTEXT           "Liste des complexes existants",IDC_LABEL_LISTCOMPS,16,
+                    15,250,12,SS_CENTERIMAGE
+    CTEXT           "Complexes sélectionnés",IDC_LABEL_SEL_COMPS,283,15,209,
+                    12,SS_CENTERIMAGE
+END
+
+IDD_SUPPBAC_GROUPE DIALOG DISCARDABLE  0, 0, 259, 196
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Supprimer un groupe de bacs"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,203,7,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,203,24,50,14
+    LISTBOX         IDC_LISTBAC_GROUPE,7,7,189,97,LBS_SORT | 
+                    LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
+    GROUPBOX        "Composition du groupe",IDC_STATIC,7,109,245,80
+    LISTBOX         IDC_LISTBAC_GROUPE_COMPO,17,123,224,58,LBS_SORT | 
+                    LBS_NOINTEGRALHEIGHT | LBS_NOSEL | WS_VSCROLL | 
+                    WS_TABSTOP
+END
+
+IDD_SUPPCMPLX_GROUPE DIALOG DISCARDABLE  0, 0, 259, 194
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Supprimer un groupe de complexes"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,202,7,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,202,24,50,14
+    LISTBOX         IDC_LISTCOMPLEXE_GROUPE,7,7,189,97,LBS_SORT | 
+                    LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
+    GROUPBOX        "Composition du groupe",IDC_STATIC,7,109,245,80
+    LISTBOX         IDC_LISTCMPLX_GROUPE_COMPO,17,123,224,58,LBS_SORT | 
+                    LBS_NOINTEGRALHEIGHT | LBS_NOSEL | WS_VSCROLL | 
+                    WS_TABSTOP
+END
+
+
+#ifndef _MAC
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 2,1,0,0
+ PRODUCTVERSION 2,1,0,0
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040c04b0"
+        BEGIN
+            VALUE "Comments", "\0"
+            VALUE "CompanyName", "\0"
+            VALUE "FileDescription", "Application MFC admin\0"
+            VALUE "FileVersion", "2, 1, 0, 0\0"
+            VALUE "InternalName", "admin\0"
+            VALUE "LegalCopyright", "Copyright (C) 2002\0"
+            VALUE "LegalTrademarks", "\0"
+            VALUE "OriginalFilename", "admin.EXE\0"
+            VALUE "PrivateBuild", "\0"
+            VALUE "ProductName", "Application admin\0"
+            VALUE "ProductVersion", "2, 1, 0, 0\0"
+            VALUE "SpecialBuild", "\0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x40c, 1200
+    END
+END
+
+#endif    // !_MAC
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_ABOUTBOX, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 228
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 48
+    END
+
+    IDD_SUPPCMPLX, DIALOG
+    BEGIN
+        LEFTMARGIN, 6
+        RIGHTMARGIN, 373
+        TOPMARGIN, 10
+        BOTTOMMARGIN, 207
+    END
+
+    IDD_MODIFCMPLX, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 342
+        TOPMARGIN, 9
+        BOTTOMMARGIN, 269
+    END
+
+    IDD_AJOUTCMPLX, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 409
+        TOPMARGIN, 9
+        BOTTOMMARGIN, 122
+    END
+
+    IDD_AJOUTBAC, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 340
+        TOPMARGIN, 9
+        BOTTOMMARGIN, 118
+    END
+
+    IDD_MODIFBAC, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 323
+        TOPMARGIN, 9
+        BOTTOMMARGIN, 248
+    END
+
+    IDD_SUPPBAC, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 251
+        TOPMARGIN, 9
+        BOTTOMMARGIN, 179
+    END
+
+    IDD_AJOUTPRODUIT, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 413
+        TOPMARGIN, 9
+        BOTTOMMARGIN, 323
+    END
+
+    IDD_SELBAC, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 250
+        TOPMARGIN, 9
+        BOTTOMMARGIN, 146
+    END
+
+    IDD_SELCOMPLEXE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 375
+        TOPMARGIN, 9
+        BOTTOMMARGIN, 226
+    END
+
+    IDD_MODIFPRODUIT, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 251
+        TOPMARGIN, 9
+        BOTTOMMARGIN, 181
+    END
+
+    IDD_SUPPPRODUIT, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 251
+        TOPMARGIN, 9
+        BOTTOMMARGIN, 178
+    END
+
+    IDD_AJOUTTEMPO, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 242
+        TOPMARGIN, 9
+        BOTTOMMARGIN, 144
+    END
+
+    IDD_AJOUTFORMAT, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 224
+        TOPMARGIN, 9
+        BOTTOMMARGIN, 47
+    END
+
+    IDD_SUPPFORMAT, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 101
+        TOPMARGIN, 9
+        BOTTOMMARGIN, 62
+    END
+
+    IDD_SUPPTEMPO, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 251
+        TOPMARGIN, 9
+        BOTTOMMARGIN, 80
+    END
+
+    IDD_MODIFTEMPO, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 242
+        TOPMARGIN, 9
+        BOTTOMMARGIN, 195
+    END
+
+    IDD_MODIFCHEMIN, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 282
+        TOPMARGIN, 9
+        BOTTOMMARGIN, 61
+    END
+
+    IDD_SELPRODUIT, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 249
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 178
+    END
+
+    IDD_EDITMODIFTARIF, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 377
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 258
+    END
+
+    IDD_MODIFCNC, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 304
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 229
+    END
+
+    IDD_AJOUT_COMPLEXE_GROUPE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 565
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 267
+    END
+
+    IDD_SUPPBAC_GROUPE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 252
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 189
+    END
+
+    IDD_SUPPCMPLX_GROUPE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 252
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 187
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDI_MAINFRAME           ICON    DISCARDABLE     "res\\cinema.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Cursor
+//
+
+IDC_CURSOR1             CURSOR  DISCARDABLE     "res\\cursor1.cur"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE PRELOAD DISCARDABLE 
+BEGIN
+    IDR_MAINFRAME           "Administration de l'Atelier cinéma France"
+END
+
+STRINGTABLE PRELOAD DISCARDABLE 
+BEGIN
+    AFX_IDS_APP_TITLE       "Administration AtelierCinemaFrance"
+    AFX_IDS_IDLEMESSAGE     "Prêt"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_INDICATOR_EXT        "EXT"
+    ID_INDICATOR_CAPS       "MAJ"
+    ID_INDICATOR_NUM        "NUM"
+    ID_INDICATOR_SCRL       "DEF"
+    ID_INDICATOR_OVR        "ECR"
+    ID_INDICATOR_REC        "ENR"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_APP_ABOUT            "Affiche des informations sur le programme, le numéro de version et le copyright\nA propos de"
+    ID_APP_EXIT             "Ferme l'application ; propose d'enregistrer les documents\nQuitter"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_NEXT_PANE            "Passe au volet de fenêtre suivant\nVolet suivant"
+    ID_PREV_PANE            "Revient au volet précédent\nVolet précédent"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_WINDOW_SPLIT         "Réorganise les fenêtres en une mosaïque\nMosaïque"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_EDIT_CLEAR           "Efface la sélection\nEffacer"
+    ID_EDIT_CLEAR_ALL       "Efface tout\nEffacer tout"
+    ID_EDIT_COPY            "Copie la sélection et la place dans le Presse-papiers\nCopier"
+    ID_EDIT_CUT             "Supprime la sélection et la place dans le Presse-papiers\nCouper"
+    ID_EDIT_FIND            "Recherche le texte spécifié\nRechercher"
+    ID_EDIT_PASTE           "Insère le contenu du Presse-papiers\nColler"
+    ID_EDIT_REPEAT          "Répète la dernière action\nRépéter"
+    ID_EDIT_REPLACE         "Remplace le texte spécifique par un texte différent\nRemplacer"
+    ID_EDIT_SELECT_ALL      "Sélectionne le document entier\nSélectionner tout"
+    ID_EDIT_UNDO            "Annule la dernière action\nAnnuler"
+    ID_EDIT_REDO            "Rétablit l'action précédemment annulée\nRétablir"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_VIEW_TOOLBAR         "Affiche ou masque la barre d'outils\nBarre d'outils"
+    ID_VIEW_STATUS_BAR      "Affiche ou masque la barre d'état\nBarre d'état"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    AFX_IDS_SCSIZE          "Change la taille de la fenêtre"
+    AFX_IDS_SCMOVE          "Change la position de la fenêtre"
+    AFX_IDS_SCMINIMIZE      "Réduit la fenêtre en icône"
+    AFX_IDS_SCMAXIMIZE      "Agrandit la fenêtre au format de l'écran"
+    AFX_IDS_SCNEXTWINDOW    "Passe à la fenêtre de document suivante"
+    AFX_IDS_SCPREVWINDOW    "Passe à la fenêtre de document précédente"
+    AFX_IDS_SCCLOSE         "Ferme la fenêtre active et propose l'enregistrement des documents"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    AFX_IDS_SCRESTORE       "Restaure la fenêtre à sa taille d'origine"
+    AFX_IDS_SCTASKLIST      "Active la liste des tâches"
+END
+
+#endif    // French (France) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_FRA)
+#ifdef _WIN32
+LANGUAGE 12, 1
+#pragma code_page(1252)
+#endif //_WIN32
+#include "res\admin.rc2"  // non-Microsoft Visual C++ edited resources
+#include "l.fra\afxres.rc"          // Standard components
+#endif
+#include "secres.rc"
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

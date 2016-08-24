@@ -1,0 +1,145 @@
+<html>
+<body>
+<pre>
+<h1>Build Log</h1>
+<h3>
+--------------------Configuration: admin - Win32 Debug--------------------
+</h3>
+<h3>Command Lines</h3>
+Creating command line "rc.exe /l 0x40c /fo"Debug/admin.res" /i "..\..\composants" /i "..\..\sting" /d "_DEBUG" "C:\Projects\Atelier Cinema\AtelierCinemaFrance\admin\admin.rc"" 
+Creating temporary file "C:\DOCUME~1\TEMP\LOCALS~1\Temp\RSP7F.tmp" with contents
+[
+/nologo /MTd /W3 /Gm /GX /ZI /Od /I "..\\" /I "..\..\composants" /I "C:\Program Files\Stingray Objective Studio\OT602\Src\controls" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /FR"Debug/" /Fp"Debug/admin.pch" /Yu"stdafx.h" /Fo"Debug/" /Fd"Debug/" /FD /GZ /c 
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\admin\admin.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\BaseCinema.cpp"
+"C:\Program Files\Stingray Objective Studio\Ot602\Src\controls\browedit.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\CAlendrierHebdoCinema.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\CFichierCinema.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\admin\ChildView.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\admin\ConstCinema.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\admin\DlAjoutFormat.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\admin\DlgAjoutBac.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\admin\DlgAjoutBacGroupe.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\admin\DlgAjoutCmplx.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\admin\DlgAjoutComplexeGroupe.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\admin\DlgAjoutProduit.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\admin\DlgAjoutTempo.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\admin\DlgEditModifTarif.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\admin\DlgModifBac.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\admin\DlgModifCmplx.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\admin\DlgModifCNC.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\admin\DlgModifProduit.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\admin\DlgModifTempo.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\admin\DlgSelBac.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\admin\DlgSelectChemin.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\admin\DlgSelectionBac.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\admin\DlgSelectionComplexe.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\admin\DlgSelectProduit.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\admin\DlgSuppBac.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\admin\DlgSuppBacGroupe.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\admin\DlgSuppCmplx.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\admin\DlgSuppCpmlxGroupe.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\admin\DlgSuppFormat.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\admin\DlgSuppProduit.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\admin\DlgSuppTempo.cpp"
+"C:\Program Files\Stingray Objective Studio\Ot602\Src\utility\filesys.cpp"
+"C:\Projects\Atelier Cinema\Composants\JFCFileException.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\ListBox_Complexe.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\ListBoxSelect.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\admin\MainFrm.cpp"
+"C:\Projects\Atelier Cinema\Composants\MoveManager.cpp"
+"C:\Projects\Atelier Cinema\Composants\Obj_Gray.cpp"
+"C:\Projects\Atelier Cinema\Composants\Obj_LBox.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\Saisonnalite.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\TableBAC.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\TableComplexe.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\TableFormat.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\TableGroupeBAC.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\TableGroupeComplexe.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\TableNbEntreeComplexe.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\TableProduit.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\TableTempo.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\admin\tagProduitFilms.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\Tarif.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\admin\TarifAnnee.cpp"
+]
+Creating command line "cl.exe @C:\DOCUME~1\TEMP\LOCALS~1\Temp\RSP7F.tmp" 
+Creating temporary file "C:\DOCUME~1\TEMP\LOCALS~1\Temp\RSP80.tmp" with contents
+[
+/nologo /MTd /W3 /Gm /GX /ZI /Od /I "..\\" /I "..\..\composants" /I "C:\Program Files\Stingray Objective Studio\OT602\Src\controls" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /FR"Debug/" /Fp"Debug/admin.pch" /Yc"stdafx.h" /Fo"Debug/" /Fd"Debug/" /FD /GZ /c 
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\admin\StdAfx.cpp"
+]
+Creating command line "cl.exe @C:\DOCUME~1\TEMP\LOCALS~1\Temp\RSP80.tmp" 
+Creating temporary file "C:\DOCUME~1\TEMP\LOCALS~1\Temp\RSP81.tmp" with contents
+[
+/nologo /subsystem:windows /incremental:yes /pdb:"Debug/admin.pdb" /debug /machine:I386 /out:"Debug/admin.exe" /pdbtype:sept 
+".\Debug\admin.obj"
+".\Debug\BaseCinema.obj"
+".\Debug\browedit.obj"
+".\Debug\CAlendrierHebdoCinema.obj"
+".\Debug\CFichierCinema.obj"
+".\Debug\ChildView.obj"
+".\Debug\ConstCinema.obj"
+".\Debug\DlAjoutFormat.obj"
+".\Debug\DlgAjoutBac.obj"
+".\Debug\DlgAjoutBacGroupe.obj"
+".\Debug\DlgAjoutCmplx.obj"
+".\Debug\DlgAjoutComplexeGroupe.obj"
+".\Debug\DlgAjoutProduit.obj"
+".\Debug\DlgAjoutTempo.obj"
+".\Debug\DlgEditModifTarif.obj"
+".\Debug\DlgModifBac.obj"
+".\Debug\DlgModifCmplx.obj"
+".\Debug\DlgModifCNC.obj"
+".\Debug\DlgModifProduit.obj"
+".\Debug\DlgModifTempo.obj"
+".\Debug\DlgSelBac.obj"
+".\Debug\DlgSelectChemin.obj"
+".\Debug\DlgSelectionBac.obj"
+".\Debug\DlgSelectionComplexe.obj"
+".\Debug\DlgSelectProduit.obj"
+".\Debug\DlgSuppBac.obj"
+".\Debug\DlgSuppBacGroupe.obj"
+".\Debug\DlgSuppCmplx.obj"
+".\Debug\DlgSuppCpmlxGroupe.obj"
+".\Debug\DlgSuppFormat.obj"
+".\Debug\DlgSuppProduit.obj"
+".\Debug\DlgSuppTempo.obj"
+".\Debug\filesys.obj"
+".\Debug\JFCFileException.obj"
+".\Debug\ListBox_Complexe.obj"
+".\Debug\ListBoxSelect.obj"
+".\Debug\MainFrm.obj"
+".\Debug\MoveManager.obj"
+".\Debug\Obj_Gray.obj"
+".\Debug\Obj_LBox.obj"
+".\Debug\Saisonnalite.obj"
+".\Debug\StdAfx.obj"
+".\Debug\TableBAC.obj"
+".\Debug\TableComplexe.obj"
+".\Debug\TableFormat.obj"
+".\Debug\TableGroupeBAC.obj"
+".\Debug\TableGroupeComplexe.obj"
+".\Debug\TableNbEntreeComplexe.obj"
+".\Debug\TableProduit.obj"
+".\Debug\TableTempo.obj"
+".\Debug\tagProduitFilms.obj"
+".\Debug\Tarif.obj"
+".\Debug\TarifAnnee.obj"
+".\Debug\admin.res"
+]
+Creating command line "link.exe @C:\DOCUME~1\TEMP\LOCALS~1\Temp\RSP81.tmp"
+<h3>Output Window</h3>
+Compiling resources...
+
+
+..\..\sting/toolkit\ActvHost\ScriptHost.rc (13): error RC2135 : file not found: ..\lib\ScriptHost.tlb
+Error executing rc.exe.
+
+
+
+<h3>Results</h3>
+admin.exe - 1 error(s), 0 warning(s)
+</pre>
+</body>
+</html>

@@ -1,0 +1,18 @@
+FICHIER PRODUIT.TABLE
+=====================
+
+P00001|VISION PARISIENNE P100        |0
+P00002|VISION PARISIENNE P60         |6
+P00003|VISION PREMIUM P100           |0
+P00004|VISION OPTIMUM P100           |0
+P00005|VISION OPTIMUM P60            |0
+P00006|VISION OPTIMUM P60-1          |0
+P00007|VISION OPTIMUM P60-2          |0
+P00008|VISION CIBLES                 |0
+P00009|VISION D'ENSEMBLE P100        |0
+P00010|CINE 200+                     |0
+P00011|CINE PARIS                    |0
+P00012|CINE PUISSANCE                |0
+P22222|YYYYY                         |0
+P22223|PALAIN2                       |2
+#

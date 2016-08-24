@@ -1,0 +1,128 @@
+<html>
+<body>
+<pre>
+<h1>Build Log</h1>
+<h3>
+--------------------Configuration: ugmfclib - Win32 UGRelOleMFCStatic Unicode--------------------
+</h3>
+<h3>Command Lines</h3>
+Creating temporary file "C:\DOCUME~1\CHAMBA~1\LOCALS~1\Temp\RSP153.tmp" with contents
+[
+/nologo /MT /W3 /GX /O2 /I "..\include" /I ".\\" /D "NDEBUG" /D "WIN32" /D "_WINDOWS" /D "UG_OLE" /D "_UNICODE" /FR"ugmfclib___Win32_UGRelOleMFCStatic_Unicode/" /Fp"ugmfclib___Win32_UGRelOleMFCStatic_Unicode/ugmfclib.pch" /Yu"stdafx.h" /Fo"ugmfclib___Win32_UGRelOleMFCStatic_Unicode/" /Fd"ugmfclib___Win32_UGRelOleMFCStatic_Unicode/" /FD /c 
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\UltimateGrid\LibProject\Ultimate Grid\Source\UGCBType.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\UltimateGrid\LibProject\Ultimate Grid\Source\UGCell.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\UltimateGrid\LibProject\Ultimate Grid\Source\UGCelTyp.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\UltimateGrid\LibProject\Ultimate Grid\Source\UGCnrBtn.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\UltimateGrid\LibProject\Ultimate Grid\Source\UGCTarrw.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\UltimateGrid\LibProject\Ultimate Grid\Source\UGCtrl.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\UltimateGrid\LibProject\Ultimate Grid\Source\UGDLType.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\UltimateGrid\LibProject\Ultimate Grid\Source\UGDrgDrp.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\UltimateGrid\LibProject\Ultimate Grid\Source\UGDrwHnt.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\UltimateGrid\LibProject\Ultimate Grid\Source\UGDtaSrc.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\UltimateGrid\LibProject\Ultimate Grid\Source\UGEdit.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\UltimateGrid\LibProject\Ultimate Grid\Source\UGEditBase.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\UltimateGrid\LibProject\Ultimate Grid\Source\ugformat.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\UltimateGrid\LibProject\Ultimate Grid\Source\uggdinfo.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\UltimateGrid\LibProject\Ultimate Grid\Source\UGGrid.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\UltimateGrid\LibProject\Ultimate Grid\Source\UGHint.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\UltimateGrid\LibProject\Ultimate Grid\Source\ughscrol.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\UltimateGrid\LibProject\Ultimate Grid\Source\ugLstBox.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\UltimateGrid\LibProject\Ultimate Grid\Source\UGMEdit.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\UltimateGrid\LibProject\Ultimate Grid\Source\UGMemMan.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\UltimateGrid\LibProject\Ultimate Grid\Source\UGMultiS.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\UltimateGrid\LibProject\Ultimate Grid\Source\ugprint.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\UltimateGrid\LibProject\Ultimate Grid\Source\ugptrlst.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\UltimateGrid\LibProject\Ultimate Grid\Source\ugsidehd.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\UltimateGrid\LibProject\Ultimate Grid\Source\UGStrOp.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\UltimateGrid\LibProject\Ultimate Grid\Source\ugtab.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\UltimateGrid\LibProject\Ultimate Grid\Source\UGTopHdg.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\UltimateGrid\LibProject\Ultimate Grid\Source\ugvscrol.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\UltimateGrid\LibProject\Ultimate Grid\Source\UGXPThemes.cpp"
+]
+Creating command line "cl.exe @C:\DOCUME~1\CHAMBA~1\LOCALS~1\Temp\RSP153.tmp" 
+Creating temporary file "C:\DOCUME~1\CHAMBA~1\LOCALS~1\Temp\RSP154.tmp" with contents
+[
+/nologo /MT /W3 /GX /O2 /I "..\include" /I ".\\" /D "NDEBUG" /D "WIN32" /D "_WINDOWS" /D "UG_OLE" /D "_UNICODE" /FR"ugmfclib___Win32_UGRelOleMFCStatic_Unicode/" /Fp"ugmfclib___Win32_UGRelOleMFCStatic_Unicode/ugmfclib.pch" /Yc"stdafx.h" /Fo"ugmfclib___Win32_UGRelOleMFCStatic_Unicode/" /Fd"ugmfclib___Win32_UGRelOleMFCStatic_Unicode/" /FD /c 
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\UltimateGrid\LibProject\Ultimate Grid\BuildLib\StdAfx.cpp"
+]
+Creating command line "cl.exe @C:\DOCUME~1\CHAMBA~1\LOCALS~1\Temp\RSP154.tmp" 
+Creating temporary file "C:\DOCUME~1\CHAMBA~1\LOCALS~1\Temp\RSP155.tmp" with contents
+[
+/nologo /out:"..\Lib\ugrosu.lib" 
+".\ugmfclib___Win32_UGRelOleMFCStatic_Unicode\UGCBType.obj"
+".\ugmfclib___Win32_UGRelOleMFCStatic_Unicode\UGCell.obj"
+".\ugmfclib___Win32_UGRelOleMFCStatic_Unicode\UGCelTyp.obj"
+".\ugmfclib___Win32_UGRelOleMFCStatic_Unicode\UGCnrBtn.obj"
+".\ugmfclib___Win32_UGRelOleMFCStatic_Unicode\UGCTarrw.obj"
+".\ugmfclib___Win32_UGRelOleMFCStatic_Unicode\UGCtrl.obj"
+".\ugmfclib___Win32_UGRelOleMFCStatic_Unicode\UGDLType.obj"
+".\ugmfclib___Win32_UGRelOleMFCStatic_Unicode\UGDrgDrp.obj"
+".\ugmfclib___Win32_UGRelOleMFCStatic_Unicode\UGDrwHnt.obj"
+".\ugmfclib___Win32_UGRelOleMFCStatic_Unicode\UGDtaSrc.obj"
+".\ugmfclib___Win32_UGRelOleMFCStatic_Unicode\UGEdit.obj"
+".\ugmfclib___Win32_UGRelOleMFCStatic_Unicode\UGEditBase.obj"
+".\ugmfclib___Win32_UGRelOleMFCStatic_Unicode\ugformat.obj"
+".\ugmfclib___Win32_UGRelOleMFCStatic_Unicode\uggdinfo.obj"
+".\ugmfclib___Win32_UGRelOleMFCStatic_Unicode\UGGrid.obj"
+".\ugmfclib___Win32_UGRelOleMFCStatic_Unicode\UGHint.obj"
+".\ugmfclib___Win32_UGRelOleMFCStatic_Unicode\ughscrol.obj"
+".\ugmfclib___Win32_UGRelOleMFCStatic_Unicode\ugLstBox.obj"
+".\ugmfclib___Win32_UGRelOleMFCStatic_Unicode\UGMEdit.obj"
+".\ugmfclib___Win32_UGRelOleMFCStatic_Unicode\UGMemMan.obj"
+".\ugmfclib___Win32_UGRelOleMFCStatic_Unicode\UGMultiS.obj"
+".\ugmfclib___Win32_UGRelOleMFCStatic_Unicode\ugprint.obj"
+".\ugmfclib___Win32_UGRelOleMFCStatic_Unicode\ugptrlst.obj"
+".\ugmfclib___Win32_UGRelOleMFCStatic_Unicode\ugsidehd.obj"
+".\ugmfclib___Win32_UGRelOleMFCStatic_Unicode\UGStrOp.obj"
+".\ugmfclib___Win32_UGRelOleMFCStatic_Unicode\ugtab.obj"
+".\ugmfclib___Win32_UGRelOleMFCStatic_Unicode\UGTopHdg.obj"
+".\ugmfclib___Win32_UGRelOleMFCStatic_Unicode\ugvscrol.obj"
+".\ugmfclib___Win32_UGRelOleMFCStatic_Unicode\UGXPThemes.obj"
+".\ugmfclib___Win32_UGRelOleMFCStatic_Unicode\StdAfx.obj"
+]
+Creating command line "link.exe -lib @C:\DOCUME~1\CHAMBA~1\LOCALS~1\Temp\RSP155.tmp"
+<h3>Output Window</h3>
+Compiling...
+StdAfx.cpp
+Compiling...
+UGCBType.cpp
+UGCell.cpp
+UGCelTyp.cpp
+UGCnrBtn.cpp
+UGCTarrw.cpp
+UGCtrl.cpp
+UGDLType.cpp
+UGDrgDrp.cpp
+UGDrwHnt.cpp
+UGDtaSrc.cpp
+UGEdit.cpp
+UGEditBase.cpp
+ugformat.cpp
+uggdinfo.cpp
+UGGrid.cpp
+UGHint.cpp
+ughscrol.cpp
+ugLstBox.cpp
+UGMEdit.cpp
+UGMemMan.cpp
+Generating Code...
+Compiling...
+UGMultiS.cpp
+ugprint.cpp
+ugptrlst.cpp
+ugsidehd.cpp
+UGStrOp.cpp
+ugtab.cpp
+UGTopHdg.cpp
+ugvscrol.cpp
+UGXPThemes.cpp
+Generating Code...
+Creating library...
+
+
+
+<h3>Results</h3>
+ugrosu.lib - 0 error(s), 0 warning(s)
+</pre>
+</body>
+</html>

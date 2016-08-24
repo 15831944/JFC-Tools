@@ -1,0 +1,71 @@
+<html>
+<body>
+<pre>
+<h1>Build Log</h1>
+<h3>
+--------------------Configuration: GetCellFromPoint - Win32 Debug--------------------
+</h3>
+<h3>Command Lines</h3>
+Creating command line "rc.exe /l 0x409 /fo"Debug/GetCellFromPoint.res" /d "_DEBUG" "C:\Projects\Atelier Cinema\AtelierCinemaFrance\UltimateGrid\LibProject\Ultimate Grid\Faq\GetCellFromPoint\GetCellFromPoint.rc"" 
+Creating temporary file "C:\DOCUME~1\CHAMBA~1\LOCALS~1\Temp\RSP164.tmp" with contents
+[
+/nologo /MTd /W3 /Gm /GX /ZI /Od /I "..\..\include" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /Fp"Debug/GetCellFromPoint.pch" /Yu"stdafx.h" /Fo"Debug/" /Fd"Debug/" /FD /GZ /c 
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\UltimateGrid\LibProject\Ultimate Grid\Faq\GetCellFromPoint\GetCellFromPoint.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\UltimateGrid\LibProject\Ultimate Grid\Faq\GetCellFromPoint\GetCellFromPointDlg.cpp"
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\UltimateGrid\LibProject\Ultimate Grid\Faq\GetCellFromPoint\Mycug97.cpp"
+]
+Creating command line "cl.exe @C:\DOCUME~1\CHAMBA~1\LOCALS~1\Temp\RSP164.tmp" 
+Creating temporary file "C:\DOCUME~1\CHAMBA~1\LOCALS~1\Temp\RSP165.tmp" with contents
+[
+/nologo /MTd /W3 /Gm /GX /ZI /Od /I "..\..\include" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /Fp"Debug/GetCellFromPoint.pch" /Yc"stdafx.h" /Fo"Debug/" /Fd"Debug/" /FD /GZ /c 
+"C:\Projects\Atelier Cinema\AtelierCinemaFrance\UltimateGrid\LibProject\Ultimate Grid\Faq\GetCellFromPoint\StdAfx.cpp"
+]
+Creating command line "cl.exe @C:\DOCUME~1\CHAMBA~1\LOCALS~1\Temp\RSP165.tmp" 
+Creating temporary file "C:\DOCUME~1\CHAMBA~1\LOCALS~1\Temp\RSP166.tmp" with contents
+[
+ugrosu.lib /nologo /subsystem:windows /incremental:yes /pdb:"Debug/GetCellFromPoint.pdb" /debug /machine:I386 /out:"Debug/GetCellFromPoint.exe" /pdbtype:sept 
+".\Debug\GetCellFromPoint.obj"
+".\Debug\GetCellFromPointDlg.obj"
+".\Debug\StdAfx.obj"
+".\Debug\Mycug97.obj"
+".\Debug\GetCellFromPoint.res"
+]
+Creating command line "link.exe @C:\DOCUME~1\CHAMBA~1\LOCALS~1\Temp\RSP166.tmp"
+<h3>Output Window</h3>
+Compiling resources...
+Compiling...
+StdAfx.cpp
+Compiling...
+GetCellFromPoint.cpp
+GetCellFromPointDlg.cpp
+Mycug97.cpp
+Generating Code...
+Linking...
+nafxcwd.lib(afxinl3.obj) : error LNK2005: "protected: void __thiscall CWnd::OnRButtonDblClk(unsigned int,class CPoint)" (?OnRButtonDblClk@CWnd@@IAEXIVCPoint@@@Z) already defined in ugrosu.lib(ugsidehd.obj)
+nafxcwd.lib(afxinl3.obj) : error LNK2005: "protected: virtual void __thiscall CWnd::DoDataExchange(class CDataExchange *)" (?DoDataExchange@CWnd@@MAEXPAVCDataExchange@@@Z) already defined in ugrosu.lib(ugvscrol.obj)
+nafxcwd.lib(afxinl3.obj) : error LNK2005: "public: virtual void __thiscall CWnd::BeginModalState(void)" (?BeginModalState@CWnd@@UAEXXZ) already defined in ugrosu.lib(ugvscrol.obj)
+nafxcwd.lib(afxinl3.obj) : error LNK2005: "public: virtual void __thiscall CWnd::EndModalState(void)" (?EndModalState@CWnd@@UAEXXZ) already defined in ugrosu.lib(ugvscrol.obj)
+nafxcwd.lib(afxinl2.obj) : error LNK2005: "public: virtual __thiscall CGdiObject::~CGdiObject(void)" (??1CGdiObject@@UAE@XZ) already defined in ugrosu.lib(ugtab.obj)
+nafxcwd.lib(afxinl2.obj) : error LNK2005: "public: virtual __thiscall CPen::~CPen(void)" (??1CPen@@UAE@XZ) already defined in ugrosu.lib(ugtab.obj)
+nafxcwd.lib(afxinl2.obj) : error LNK2005: "public: virtual __thiscall CBrush::~CBrush(void)" (??1CBrush@@UAE@XZ) already defined in ugrosu.lib(ugtab.obj)
+nafxcwd.lib(afxinl2.obj) : error LNK2005: "public: virtual __thiscall CFont::~CFont(void)" (??1CFont@@UAE@XZ) already defined in ugrosu.lib(ugtab.obj)
+nafxcwd.lib(afxinl2.obj) : error LNK2005: "public: virtual __thiscall CBitmap::~CBitmap(void)" (??1CBitmap@@UAE@XZ) already defined in ugrosu.lib(UGCtrl.obj)
+nafxcwd.lib(afxinl2.obj) : error LNK2005: "public: virtual __thiscall CRgn::~CRgn(void)" (??1CRgn@@UAE@XZ) already defined in ugrosu.lib(UGCTarrw.obj)
+nafxcwd.lib(afxinl2.obj) : error LNK2005: "public: virtual __thiscall CMenu::~CMenu(void)" (??1CMenu@@UAE@XZ) already defined in ugrosu.lib(UGCtrl.obj)
+nafxcwd.lib(afxinl1.obj) : error LNK2005: "public: virtual __thiscall CObject::~CObject(void)" (??1CObject@@UAE@XZ) already defined in ugrosu.lib(ugtab.obj)
+nafxcwd.lib(afxinl1.obj) : error LNK2005: "public: virtual void __thiscall CObject::Serialize(class CArchive &)" (?Serialize@CObject@@UAEXAAVCArchive@@@Z) already defined in ugrosu.lib(ugvscrol.obj)
+nafxcwd.lib(afxinl1.obj) : error LNK2005: "public: __thiscall CString::CString(void)" (??0CString@@QAE@XZ) already defined in ugrosu.lib(ugtab.obj)
+nafxcwd.lib(afxinl1.obj) : error LNK2005: "public: class CString __thiscall CFindReplaceDialog::GetReplaceString(void)const " (?GetReplaceString@CFindReplaceDialog@@QBE?AVCString@@XZ) already defined in ugrosu.lib(UGCtrl.obj)
+nafxcwd.lib(afxinl1.obj) : error LNK2005: "public: class CString __thiscall CFindReplaceDialog::GetFindString(void)const " (?GetFindString@CFindReplaceDialog@@QBE?AVCString@@XZ) already defined in ugrosu.lib(UGCtrl.obj)
+nafxcwd.lib(afxmem.obj) : error LNK2005: "public: static void __stdcall CObject::operator delete(void *)" (??3CObject@@SGXPAX@Z) already defined in ugrosu.lib(ugtab.obj)
+nafxcwd.lib(oleunk.obj) : error LNK2005: "public: __thiscall COleVariant::~COleVariant(void)" (??1COleVariant@@QAE@XZ) already defined in ugrosu.lib(UGCell.obj)
+LINK : fatal error LNK1104: cannot open file "uafxcw.lib"
+Error executing link.exe.
+
+
+
+<h3>Results</h3>
+GetCellFromPoint.exe - 19 error(s), 0 warning(s)
+</pre>
+</body>
+</html>

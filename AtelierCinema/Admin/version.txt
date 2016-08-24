@@ -1,0 +1,96 @@
+25/02/2002 : AtelierCinema module d'administration 1.0
+------------------------------------------------------
+modification des tables d'accès aux données:
+ajout d'une méthode GetInstanceTableTempo pour récupérer l'instance de la table
+ajout d'une méthode SetTableTempo pour changer la table tempo.
+
+06/03/2002 : AtelierCinema module d'administration 1.0
+------------------------------------------------------
+ajout d'un avertissement sur la donnée CNC : lors de l'ajout d'un complexe
+mise à jour d'un complexe en ajoutant son nbentree dans la table nbentree: nbentree ajusté à 0 lors du chargement
+suppression des tarifs associés aux complexe, bac, produit lors de la suppression de ceux-ci.
+suppression du nbentree associé au complexes ou au complexes d'un bac.
+
+Ajout d'une classe: CTarifAnnée:
+--------------------------------
+Cette classe contient les tarifs de l'année de chacun des produits,bacs,complexes définit dans un fichier
+Chaque fichier de tarif est chargé sous la forme d'une instance de cette classe
+  
+import du tarif des complexes,bacs et produits.
+On réalise une fonction d'import(ImportFile()) qui sera appelée par plusieurs menu, elle prend en paramètre un nom de fichier d'import et vérifie le type de ce fichier
+avant de le charger dans l'application.
+import des saisonnalités + nbentree par complexe.
+
+Modification de CFichierCinema: 
+--------------------------------------
+ajout d'une variable de type CString(m_separator) indiquant le séparateur de fichier.
+ajout d'une variable de type CString(m_delimitor) indiquant le délimiteur de fin de fichier.
+
+Modification de CBaseCinema: 
+--------------------------------------
+ajout d'un fichier LockData définissant l'autorisation d'accéder à la base.
+Ce fichier est ouvert en mode create dans le savetable en excluant tout autre accès au fichier.
+Ce même fichier est ouvert en excluant l'écriture dans le loadtable.
+
+Modification de CSaisonnalité: 
+------------------------------------
+définition d'un copie constructor et = operator
+ajout d'une variable nom de fichier à la sasonnalité
+ajout d'une méthode SetSaisonnalite(int saisonnalite,int pos) permettant de modifier la saisonnalite
+
+Modification des tables:
+------------------------
+Ajout d'une variable IsModified de type booléen aux tables CTableProduit,CTableComplexe, CTableBac
+pour répérer leur modification et ne sauvegarder que les tables modifiées.
+
+possibilité de modifier le chemin du répertoire de données à l'aide d'une boite de dialogue apparaissant au démarrage.
+gestion de clés dans la base de registre:OK
+gestion de modification du tarif pour ne pas réenregistrer tous les tarifs et saisonnalités.
+ajout d'un controle pour éviter qu'il y est deux fois le même libellé tempo.
+
+version 1b correction bugs gael: 27/03/2002:
+-------------------------------------------
+correction d'une faute de frappe dans le message d'erreur concernant l'équilibrage des tempos
+correction d'une faute de frappe dans le message d'erreur concernant l'import d'une données CNC pour un complexe qui n'existe pas.
+vérification du nombre de colonne du fichier d'import des tarifs: affichage d'un message d'erreur
+vérification du nombre de saisonnalités dans le fichier d'import de saisonnalités.
+Affichage d'une messsage d'erreur lors de l'ajout d'un tarif de complexe,bac,produit qui n'existe pas dans les tables
+l'import n'est pas bloqué pour autant (iidem CNC)
+Poosibilité d'ajouter/modifier des produits,bacs,complexes avec des codes Non numériques ex:CAAAAA
+
+version 1c correction : 28/03/2002:
+-----------------------------------
+correction bug: la saisonnalité n'est pas mise a jour après l'import.
+
+version 1d  : 17/04/2002:
+-----------------------------------
+Dans la boite de dialogue "Sélection d'un complexe" et "Ajout d'un produit" on visualise le code régie et nom du bac.
+Ajout d'un bouton supprimer permettant de supprimer un bac dans la boite de dialogue "Ajout d'un produit".
+Dans la barre des menu, dans le menu "Produit", ajout d'une Item "Ajout à partir de..."
+
+version 1d correction: 18/04/2002:
+-----------------------------------
+correction bug: lorsque qu'il n'y a qu'une semaine le trait de séparation est à droite.
+correction bug: MAJ grafique des 2 boites de dialogues permanentes.
+
+version 2 : 23/05/2002:
+------------------------
+Ajout d'une combo pour sélectionner le type du bac
+changement de certaines listes box de CListBox en  CListBoxSelect (classe dérivée de CObj_LBox):
+-Liste box de visualisation des bacs sélectionnés lors de l'ajout ou la modif d'un produit.
+-Liste box de sélection des bacs lors de l'ajout ou la modif d'un produit.
+Le code composite des bacs est utilisé pour la description des produits : ajout du type de régie au code(P,A ou M).
+modification de l'import des tarifs de bacs, le code doit être de six caractères (au lieu  de 6 précédemment) dans le fichier d'import.    
+modification du titre des fenetres de sélection, de bacs et de complexe lors de la création d'un produit:
+"Sélectionner un bac" devient "Sélectionner des bacs"
+"Sélectionner un complexe" devient "Sélectionner des complexes"
+-Modification de l'initialisation du produit lors de "Ajout à partir de".
+-Suppression de la fction InitAjoutDepuis équivalente à InitModif()
+-Correction d'un bug lors de la suppression de bacs dans la composition d'un produit.
+-a faire: changer la list box de la composition bac du produit.
+
+version 2.b : 05/07/2002:
+------------------------
+-Correction bug Import tarif: 
+Cause:impossibilité d'import d'un tarif de complexe car élimination du dernier caractère (caractère régie pour bac).
+Solution:distinction de l'import tarif bac et récupération du code base du bac régie.

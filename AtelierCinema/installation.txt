@@ -1,0 +1,71 @@
+---------------------------------------------------------------------------------------------------------------------------
+			                  CONSIGNE D'INSTALLATION
+---------------------------------------------------------------------------------------------------------------------------
+
+Ces notes sont des consignes pour l'installation de l'atelier cinéma 
+avec module d'administration.
+
+liste des répertoires de l'ateliercinéma:
+
+- répertoire de l'atelier cinéma: AtelierCinémaFrance
+	- répertoire des cibles: AtelierCinémaFrance\Cible
+	
+	- répertoire des tables: AtelierCinémaFrance\Data
+
+ 			* Complexe.table: table des complexes
+			* bac.table: table desbacs
+			* produit.table: table des produits
+			* EntreeComplexe.table: table de la données CNC(nbentree).
+			* format.table : table des formats
+			* tempo.table : table des tempos
+			* DefinitionP*****.table: fichiers de définition de produits 
+			* Tarif****.table où **** désigne l'année(un fichier de tarif par année)
+			* Saison****.table où **** désigne l'année (un fichier de saisonnalité par année)
+			* LockData.txt: fichier sémaphore pour la protection lors de l'ouverture des fichiers de la base.
+
+	- répertoire des sources : AtelierCinémaFrance\Source
+
+			* Dico.txt
+			* NomVague.txt: description du nom de la vague de données
+			* Vague.old
+			* Vague.cri
+			* VAGUE.DIC
+			* VAGUE.SOU
+			* Vague.pds
+
+	- répertoire du module d'administration: AtelierCinémaFrance\admin ( sur option au moment de l'installation )
+
+		contient l'exécutable du module d'administration (admin.exe)
+
+		- répertoire d'Imports : AtelierCinémaFrance\admin\Imports
+
+			Ce répertoire contient des exemples de fichiers d'imports ainsi qu'une notice d'uitlisation des imports
+
+			* TARIFC.txt: exemple de fichier d'import de tarif de complexes
+			* TARIFB.txt: exemple de fichier d'import de tarif de bacs
+			* TARIFP.txt: exemple de fichier d'import de tarif de produits
+			* DONNEESCNC.txt: exemple de fichier d'import de données CNC
+			* SAISONNALITE.txt:  exemple de fichier d'import de saisonnalités
+			* NOTICEIMPORT.doc: notice d'uitilisation des imports
+
+	-le répertoire AtelierCinémaFrance contient également l'exécutable de l'AtelierCinéma (cinema.exe).
+
+remarque:
+
+La procédure d'installation doit permettre d'installer ou de ne pas installer le module d'administration (admin.exe).
+L'atelier cinéma a besoin pour son exécution du chemin des données, celui-ci est définit par la clé "Chemin" de HKEY_CURRENT_USER\HKEY_CURRENT_USER\Software\JFC\HKEY_CURRENT_USER\Software\JFC\Atelier Cinéma France\Configuration
+Le module d'administration a besoin pour son exécution du chemin des données(emplacement du répertoire \AtelierCinémaFrance), celui-ci est définit par la clé "Chemin" de HKEY_CURRENT_USER\HKEY_CURRENT_USER\Software\JFC\admin\Configuration
+
+vu que le chemin des données peut être un chemin réseau, il faut préciser un chemin d'installation pour les données différent
+du chemin d'installation de l'Atelier cinéma
+
+Attention!!!: le chemin des données pointe sur le répertoire où sont stockés les répertoires "Source", "Cible" et "data" 
+
+dans le processus d'installation on doit trouver:
+1/ Choix du répertoire d'installation 
+2/ choix d'une installation des données en locale ou en réseau (local par défaut)
+Si installation réseau:
+2.1/ définition ( browse ) chemin du répertoire réseau
+2.2/ choix de copier ou non les données (NON par défaut)(elles sont peut-être déjà copiée, SI c'est le CAS AVERTIR AVANT d'ECRASER !!!)
+
+3/ choix d'instaler le module d'administration (NON par défaut)
