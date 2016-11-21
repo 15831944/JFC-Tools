@@ -638,6 +638,7 @@ namespace PopCornToAtelierRadio
             m_correspIndexStations.Add(32, 121);
             m_correspIndexStations.Add(35, 123);
             m_correspIndexStations.Add(90, 149);
+            m_correspIndexStations.Add(78, 355);
              m_correspIndexStations.Add(144, 356);
          
 
