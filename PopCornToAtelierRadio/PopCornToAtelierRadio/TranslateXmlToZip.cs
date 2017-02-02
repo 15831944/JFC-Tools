@@ -33,7 +33,8 @@ namespace PopCornToAtelierRadio
 
             // Passe en mode Fichier Zip (etd ou cmp)
             String l_filname = Path.GetFileNameWithoutExtension(_filePath);
-            String _filePathEtd = l_filname + ".etd";
+            String l_directory = Path.GetDirectoryName(_filePath);
+            String _filePathEtd = Path.Combine(l_directory,l_filname + ".etd");
 
             Package l_package = ZipPackage.Open(_filePathEtd, FileMode.Create);
  
