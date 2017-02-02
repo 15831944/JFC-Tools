@@ -32,7 +32,8 @@ namespace PopCornToAtelierRadio
             // il n'y a  pas de correspondance directe entre les objets provenant de la version Accenture et la version nouveau format
 
             // Passe en mode Fichier Zip (etd ou cmp)
-            String _filePathEtd = _filePath.Replace(".xml", ".etd");
+            String l_filname = Path.GetFileNameWithoutExtension(_filePath);
+            String _filePathEtd = l_filname + ".etd";
 
             Package l_package = ZipPackage.Open(_filePathEtd, FileMode.Create);
  
