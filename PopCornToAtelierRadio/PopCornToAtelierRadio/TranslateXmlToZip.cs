@@ -330,11 +330,11 @@ namespace PopCornToAtelierRadio
 	        //
 	        // Créer objet Reference Campagne
 	        l_cartouche.blocCamp.RefCamp = new CartoucheBlocCampRefCamp();
-	        l_cartouche.blocCamp.RefCamp.Libelle =  "REF POPCORN";
+	        l_cartouche.blocCamp.RefCamp.Libelle =  "POPX/"+ l_cartouche.Info.NoEtu.ToString("0000");
 	
 	        // Créer objet reference Origine Campagne
 	        l_cartouche.blocCamp.RefOrgCamp = new CartoucheBlocCampRefOrgCamp();
-            l_cartouche.blocCamp.RefOrgCamp.Libelle = "REFORG POPCORN";
+            l_cartouche.blocCamp.RefOrgCamp.Libelle =  "";
 
             // Infomations Tarif
             l_cartouche.blocTar = new CartoucheBlocTar();

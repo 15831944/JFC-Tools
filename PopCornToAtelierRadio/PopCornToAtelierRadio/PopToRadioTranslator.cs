@@ -30,6 +30,10 @@ namespace PopCornToAtelierRadio
         public PopToRadioTranslator(String _nameFile, String _path, String _out, List<JournalLine> _journal)
         {
             String l_nameEtu =  Path.GetFileName(_nameFile);
+            if (l_nameEtu.Count() > 29)
+            {
+                l_nameEtu = l_nameEtu.Substring(0, 29);
+            }
 
             m_pathSourceStation = _path+"\\ZONE\\";
             m_journal = _journal;
@@ -85,6 +89,7 @@ namespace PopCornToAtelierRadio
                     file.Close();
                     String outFle;
                     l_nameEtu = Path.GetFileNameWithoutExtension(l_nameEtu);
+
                    
                    // String l_path = Path.GetFullPath(l_nameEtu);
 
@@ -99,6 +104,11 @@ namespace PopCornToAtelierRadio
                     }
                     outFle += ".etd";
 
+                    if (eltAr.Root_Cartouche != null)
+                    {
+                        NumberStudy.FillNumber(_path, eltAr.Root_Cartouche);
+                    }
+                        
 
                     TranslateXmlToZip l_translate = new TranslateXmlToZip(outFle, eltAr);
 
@@ -475,49 +485,23 @@ namespace PopCornToAtelierRadio
         }
 
 
-         private void CreateEmptyStudy(String _pathRadio, String l_nameEtu)
-         {
-             m_study = new Study();
+        private void CreateEmptyStudy(String _pathRadio, String l_nameEtu)
+        {
+            m_study = new Study();
 
-             m_study.FileVersion = 1;
+            m_study.FileVersion = 1;
 
-             StudyRoot_Cartouche l_cartouche = new StudyRoot_Cartouche();
+            StudyRoot_Cartouche l_cartouche = new StudyRoot_Cartouche();
 
-             l_cartouche.Information = new StudyRoot_CartoucheInformation();
-             l_cartouche.Information.Nom = Path.GetFileNameWithoutExtension(l_nameEtu);
+            l_cartouche.Information = new StudyRoot_CartoucheInformation();
+            l_cartouche.Information.Nom = Path.GetFileNameWithoutExtension(l_nameEtu);
 
-             // Modif ALAIN (lecture Compteur en cours et récup dernier n° étude dispo)
-             String m_nameCompteur = _pathRadio + "\\USER\\UFR02\\Compteur.etu"; //"C:\\ARTRADIO\\USER\\UFR02\\Compteur.etu";
+            // Modif ALAIN (lecture Compteur en cours et récup dernier n° étude dispo)
 
-             if (File.Exists(m_nameCompteur))
-             {
-                 // Lecture n° étude disponible en cours
-                 using (var streamCpt = new FileStream(m_nameCompteur, FileMode.Open, FileAccess.Read))
-                 {
-                     using (var readerCpt = new BinaryReader(streamCpt))
-                     {
-                         l_cartouche.Information.NumeroEtu = readerCpt.ReadInt32();
-                     }
-                 }
-                 
-                 // Ecriture nouveau n° etude max Modif ALAIN
-                 using (FileStream stream = new FileStream(m_nameCompteur, FileMode.Create))
-                 {
-                     using (var l_writ = new BinaryWriter(stream))
-                     {
-                         l_writ.Write(l_cartouche.Information.NumeroEtu + 1);
-                         l_writ.Close();
-                     }
-                 }
-             }
-             else
-             {
-                 // Fichier compteur non trouvé --> Init à 0
-                 l_cartouche.Information.NumeroEtu = 0;
-             }
-                
-             // Par défaut c'est une étude
-             l_cartouche.Information.Etape = 1; //1 etude
+            NumberStudy.FillNumber(_pathRadio, l_cartouche);
+
+            // Par défaut c'est une étude
+            l_cartouche.Information.Etape = 1; //1 etude
 
              l_cartouche.Date = new StudyRoot_CartoucheDate();
              l_cartouche.Date.DateDebut = -1;
