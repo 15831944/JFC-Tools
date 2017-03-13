@@ -37,7 +37,7 @@ namespace PopCornToAtelierRadio
                 {
                     using (var readerCpt = new BinaryReader(streamCpt))
                     {
-                        l_cartouche.Information.NumeroEtu = readerCpt.ReadInt32();
+                        l_cartouche.Information.NumeroEtu = (ushort)readerCpt.ReadInt32();
                     }
                 }
 

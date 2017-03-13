@@ -337,7 +337,7 @@ namespace PopCornToAtelierRadio
 
                 m_study.Root_Plans.Plan.Data.blocSpots.SpotsPresents[_indexSpot].Num =  _indexSpot;
                 m_study.Root_Plans.Plan.Data.blocSpots.SpotsPresents[_indexSpot].NoFor = (byte)indexFound;
-                m_study.Root_Plans.Plan.Data.blocSpots.SpotsPresents[_indexSpot].Sta = (byte) m_correspIndexStations[_indexStation];
+                m_study.Root_Plans.Plan.Data.blocSpots.SpotsPresents[_indexSpot].Sta = m_correspIndexStations[_indexStation];
                 m_study.Root_Plans.Plan.Data.blocSpots.SpotsPresents[_indexSpot].ValAtt = 1;
                 m_study.Root_Plans.Plan.Data.blocSpots.SpotsPresents[_indexSpot].Jr =(byte) _dateSpot.Subtract(m_datePlan).TotalDays;
 
@@ -446,7 +446,7 @@ namespace PopCornToAtelierRadio
             m_study.Root_Plans = new StudyRoot_Plans();
             m_study.Root_Plans.Plan = new StudyRoot_PlansPlan();
 
-            m_study.Root_Plans.Plan.NrEtude = m_study.Root_Cartouche.Information.NumeroEtu;
+            m_study.Root_Plans.Plan.NrEtude =  m_study.Root_Cartouche.Information.NumeroEtu;
 
             // Modif Alain  (on chargera le plan directement dans le creuset) 
             // m_study.Root_Plans.Plan.Occupe = 1;

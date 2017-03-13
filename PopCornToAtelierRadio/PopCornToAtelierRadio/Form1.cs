@@ -135,7 +135,7 @@ namespace PopCornToAtelierRadio
             if (Directory.Exists(textIn.Text))
             {
                 listFilePop.Items.Clear();
-                IEnumerable<string> files = Directory.GetFiles(textIn.Text).Where(s => Path.GetExtension(s).Equals(".xml"));
+                IEnumerable<string> files = Directory.GetFiles(textIn.Text).Select(s => s.ToLower()).Where(s => Path.GetExtension(s).Equals(".xml"));
 
 
                 int index = 0;

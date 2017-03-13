@@ -409,7 +409,7 @@
                                       <xs:element maxOccurs="unbounded" name="Sp">
                                         <xs:complexType>
                                           <xs:attribute name="Reg" type="xs:unsignedByte" use="required" />
-                                          <xs:attribute name="Sta" type="xs:unsignedByte" use="required" />
+                                          <xs:attribute name="Sta" type="xs:int" use="required" />
                                           <xs:attribute name="Num" type="xs:int" use="required" />
                                           <xs:attribute name="Hor" type="xs:unsignedShort" use="required" />
                                           <xs:attribute name="Jr" type="xs:unsignedByte" use="required" />
