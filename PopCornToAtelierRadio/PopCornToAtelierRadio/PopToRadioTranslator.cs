@@ -256,10 +256,10 @@ namespace PopCornToAtelierRadio
         private void AddStation( int _codeSta,int _index, int _indexPop)
         {
             m_study.Root_Cartouche.blocStations.GroupeStation.Stations[0].Station[_index] = new StudyRoot_CartoucheBlocStationsGroupeStationStationsStation();
-            m_study.Root_Cartouche.blocStations.GroupeStation.Stations[0].Station[_index].Code = (byte)_codeSta;
+            m_study.Root_Cartouche.blocStations.GroupeStation.Stations[0].Station[_index].Code = (short)_codeSta;
 
             m_study.Root_Plans.Plan.Data.blocRegions.Region.Station[_index] = new StudyRoot_PlansPlanDataBlocRegionsRegionStation(); // a changer ajouter la possibilite d avoir plusieurs region
-            m_study.Root_Plans.Plan.Data.blocRegions.Region.Station[_index].Sta = (byte)_codeSta;
+            m_study.Root_Plans.Plan.Data.blocRegions.Region.Station[_index].Sta = _codeSta;
 
 
             StudyRoot_CartoucheBlocStationsGroupeStationLienTarifsRegStaTarif l_currentTarf = new StudyRoot_CartoucheBlocStationsGroupeStationLienTarifsRegStaTarif();

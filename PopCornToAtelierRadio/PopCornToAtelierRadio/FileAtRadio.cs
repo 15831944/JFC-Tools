@@ -8,6 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
+using System;
 using System.Xml.Serialization;
 
 // 
@@ -2654,13 +2655,13 @@ public partial class StudyRoot_PlansPlanDataBlocRegionsRegion {
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true)]
 public partial class StudyRoot_PlansPlanDataBlocRegionsRegionStation {
     
-    private byte staField;
+    private Int32 staField;
     
     private byte lockField;
     
     /// <remarks/>
     [System.Xml.Serialization.XmlAttributeAttribute()]
-    public byte Sta {
+    public Int32 Sta {
         get {
             return this.staField;
         }
