@@ -1,0 +1,26 @@
+﻿<UserControl x:Class="JFCGridControl.HierarchicalItem" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:j="clr-namespace:JFCGridControl">
+    <UserControl.Resources>
+        <j:MarginConverter x:Key="marginConverter" />
+        <ControlTemplate x:Key="ContentControlTemplate1" TargetType="{x:Type Control}">
+            <Grid>
+                <Image Name="MyImage" HorizontalAlignment="Left" Height="16" Source="Images/close.png" Stretch="Fill" VerticalAlignment="Top" Width="16" Margin="{Binding Path=Level, Converter={StaticResource marginConverter}}" />
+            </Grid>
+            <ControlTemplate.Triggers>
+                <DataTrigger Value="true" Binding="{Binding Path=IsExpended}">
+                    <Setter TargetName="MyImage" Property="Image.Source" Value="Images/open.png" />
+                </DataTrigger>
+                <DataTrigger Value="false" Binding="{Binding Path=IsExpendable}">
+                    <Setter TargetName="MyImage" Property="UIElement.Visibility" Value="Hidden" />
+                </DataTrigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="auto" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Control Name="MyButton" Focusable="False" Template="{DynamicResource ContentControlTemplate1}" MouseDown="MyButton_MouseDown" />
+        <Grid Name="MyComponent" Grid.Column="1" DataContext="{Binding Path=Obj}" />
+    </Grid>
+</UserControl>

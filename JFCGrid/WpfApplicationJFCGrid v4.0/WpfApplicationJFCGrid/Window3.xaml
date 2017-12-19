@@ -1,0 +1,135 @@
+﻿<Window x:Class="WpfApplicationJFCGrid.Window3"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:f="clr-namespace:JFCGridControl;assembly=JFCGridControl"
+        Title="Window3" Height="300" Width="300">
+    <Window.Resources>
+
+        <LinearGradientBrush x:Key="HeaderColumnBrush"
+                             EndPoint="0.5,1"
+                             StartPoint="0.5,0">
+            <GradientStop Color="#6Ff4f9ff"
+                          Offset="0" />
+            <GradientStop Color="#6Fe1ebf6"
+                          Offset="1" />
+        </LinearGradientBrush>
+        <SolidColorBrush x:Key="BorderHeaderColumnBrush"
+                         Color="#FF93b6e4" />
+        
+        <Style x:Key="{x:Type f:JFCGridColumnHeader}"
+               TargetType="{x:Type f:JFCGridColumnHeader}">
+            <Setter Property="HorizontalContentAlignment"
+                    Value="Center" />
+            <Setter Property="VerticalContentAlignment"
+                    Value="Center" />
+            <Setter Property="MinHeight"
+                    Value="20" />
+            <Setter Property="Foreground"
+                    Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type f:JFCGridColumnHeader}">
+                        <Grid Background="Transparent">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="10"></ColumnDefinition>
+                                <ColumnDefinition></ColumnDefinition>
+                                <ColumnDefinition Width="10"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <Rectangle x:Name="Rect"
+                                       Fill="{StaticResource HeaderColumnBrush}"
+                                       Margin="0,0,1,-8"
+                                       RadiusX="8"
+                                       RadiusY="8"
+                                       Stroke="{StaticResource BorderHeaderColumnBrush}"
+                                       Grid.Column="0"
+                                       Grid.ColumnSpan="3" />
+                            <Line VerticalAlignment="Bottom"
+                                  Stroke="{StaticResource BorderHeaderColumnBrush}"
+                                  StrokeThickness="1"
+                                  x:Name="Line"
+                                  X2="{Binding Path=ActualWidth, ElementName=Line, Mode=Default}"
+                                  Grid.Column="0"
+                                  Grid.ColumnSpan="3" />
+                            <ContentPresenter VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                              HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                              RecognizesAccessKey="True"
+                                              Grid.Column="1" Focusable="False" />
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver"
+                                     Value="true">
+                                <Setter Property="Stroke"
+                                        Value="#FFFFFF00"
+                                        TargetName="Rect" />
+                            </Trigger>
+                            <!--<Trigger Property="ColumnTest.HaveChildren" Value="False">
+                                <Setter TargetName="Line" Property="Visibility" Value="Collapsed"/>
+                            </Trigger>-->
+                            <DataTrigger Binding="{Binding Path=Column.HaveChildren, RelativeSource={RelativeSource Self}}" Value="true">
+                                <Setter TargetName="Line" Property="Visibility" Value="Collapsed"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Path=BelowHeader.IsMouseOver, RelativeSource={RelativeSource Self}}" Value="true">
+                                <Setter Property="Stroke"
+                                        Value="#FFFFFF00"
+                                        TargetName="Rect" />
+                            </DataTrigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        
+        <!-- JFCGridItem  -->
+        <Style x:Key="{x:Type f:JFCGridItem}"
+               TargetType="{x:Type f:JFCGridItem}">
+            <Setter Property="SnapsToDevicePixels"
+                    Value="true" />
+            <Setter Property="OverridesDefaultStyle"
+                    Value="true" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="f:JFCGridItem">
+                        <Border Name="Border"
+                                SnapsToDevicePixels="true"
+                                BorderThickness="0,0,0,0"
+                                BorderBrush="Blue"
+                                Background="Transparent">
+                            <ContentPresenter></ContentPresenter>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsAlternate"
+                                     Value="true">
+                                <Setter Property="Background"
+                                        Value="LightGray"
+                                        TargetName="Border" />
+                            </Trigger>
+                            <Trigger Property="IsMouseOverLine"
+                                     Value="true">
+                                <Setter Property="Background"
+                                        Value="LightYellow"
+                                        TargetName="Border" />
+                            </Trigger>
+                            <Trigger Property="IsSelected"
+                                     Value="true">
+                                <Setter TargetName="Border"
+                                        Property="Background"
+                                        Value="LightBlue" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <ControlTemplate x:Name="CellTemplate2"
+                         x:Key="CellTemplate2" TargetType="f:JFCGridCell">
+            <TextBlock Text="{Binding}" VerticalAlignment="Center" HorizontalAlignment="Stretch" TextWrapping="Wrap"/>
+        </ControlTemplate>
+
+    </Window.Resources>
+    <Grid>
+        <f:JFCGrid x:Name="MyGrid"
+                   HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Width="Auto" ColumnMovable="True">
+        </f:JFCGrid>
+    </Grid>
+</Window>
