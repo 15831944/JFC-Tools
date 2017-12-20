@@ -50,6 +50,8 @@ namespace JFCGridControl
             {
                 //hi.Component.ContextMenu = hi.ContextMenu;
                 hi.MyComponent.Children.Add(hi.Component);
+
+                hi.Component.Tag = hi;
             }
         }
 

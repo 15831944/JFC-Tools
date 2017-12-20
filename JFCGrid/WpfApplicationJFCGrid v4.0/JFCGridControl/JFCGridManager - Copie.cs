@@ -77,7 +77,7 @@ namespace JFCGridControl
 
         private bool InProcess = false;
 
-        private bool UseLstRemoveCol = false;
+        private bool UseLstRemoveCol = true;
 
         private int startIndexColView = 0;
         public int StartIndexColView
@@ -1006,9 +1006,9 @@ namespace JFCGridControl
                 {
                     bool flag = true;
 
-                    if (fe is JFCBorder)
+                    if (fe is Line)
                     {
-                        JFCBorder border = fe as JFCBorder;
+                        Line border = fe as Line;
 
                         if (border.Orientation == Orientation.Vertical)
                             flag = false;
@@ -1037,9 +1037,9 @@ namespace JFCGridControl
                 {
                     bool flag = true;
 
-                    if (fe is JFCBorder)
+                    if (fe is Line)
                     {
-                        JFCBorder border = fe as JFCBorder;
+                        Line border = fe as Line;
 
                         if (border.Orientation == Orientation.Horizontal)
                             flag = false;
@@ -1099,9 +1099,9 @@ namespace JFCGridControl
                     TabColumn = ListColBody;
                 }
 
-                if (fe is JFCBorder)
+                if (fe is Line)
                 {
-                    JFCBorder border = sender as JFCBorder;
+                    Line border = sender as Line;
 
                     if (border.Orientation == Orientation.Horizontal)
                         TabColumn = null;
@@ -1429,9 +1429,9 @@ namespace JFCGridControl
             int idxCol;
             foreach (var ctrl in lctrls)
             {
-                if (ctrl is JFCBorder)
+                if (ctrl is Line)
                 {
-                    JFCBorder border = ctrl as JFCBorder;
+                    Line border = ctrl as Line;
                     if (border.Orientation == Orientation.Vertical)
                     {
                         idxCol = (int)ctrl.GetValue(Grid.ColumnProperty);
@@ -1486,18 +1486,13 @@ namespace JFCGridControl
             ColDef.SetBinding(ColumnDefinition.WidthProperty, BindingWidth);
 
             // on ajoute une ligne de séparation des colonnes
-            //Line bd = new Line();
+            Line bd = new Line();
 
-            //bd.LineBrush = Parent.VerticalBorderColor;
+            bd.LineBrush = Parent.VerticalBorderColor;
 
-            //bd.Thickness = 1;
-            //bd.Orientation = Orientation.Vertical;
-            //bd.HorizontalAlignment = HorizontalAlignment.Right;
-
-            JFCBorder bd = new JFCBorder();
-            bd.BorderBrush = this.Parent.VerticalBorderColor;
-            bd.BorderThickness = new Thickness(0.0, 0.0, 1.0, 0.0);
+            bd.Thickness = 1;
             bd.Orientation = Orientation.Vertical;
+            bd.HorizontalAlignment = HorizontalAlignment.Right;
 
             bd.SetValue(Grid.ColumnProperty, Index);
             if (NbRow > 0)
@@ -1561,7 +1556,7 @@ namespace JFCGridControl
 
                     // on recherche la ligne de séparation des rows
                     var ctrlsRow = from ctrl in LstCells[idxRow]
-                                   where ctrl is JFCBorder && ((JFCBorder)ctrl).Orientation == Orientation.Horizontal
+                                   where ctrl is Line && ((Line)ctrl).Orientation == Orientation.Horizontal
                                    select ctrl;
 
                     //List<UIElement> lctrlsRow = ctrlsRow.ToList();
@@ -1569,7 +1564,7 @@ namespace JFCGridControl
 
                     foreach (var ctrl in ctrlsRow)
                     {
-                        JFCBorder border = ctrl as JFCBorder;
+                        Line border = ctrl as Line;
                         //if (border.Orientation == Orientation.Horizontal)
                         {
                             //int NbCol = BodyGrid.ColumnDefinitions.Count();
@@ -1620,9 +1615,9 @@ namespace JFCGridControl
             int idxCol;
             foreach (var ctrl in lctrls)
             {
-                if (ctrl is JFCBorder)
+                if (ctrl is Line)
                 {
-                    JFCBorder border = ctrl as JFCBorder;
+                    Line border = ctrl as Line;
                     if (border.Orientation != Orientation.Horizontal)
                     {
                         idxCol = (int)ctrl.GetValue(Grid.ColumnProperty);
@@ -1664,18 +1659,13 @@ namespace JFCGridControl
             ColDef.SetBinding(ColumnDefinition.WidthProperty, BindingWidth);
 
             // on ajoute une ligne de séparation des colonnes
-            //Line bd = new Line();
+            Line bd = new Line();
 
-            //bd.LineBrush = Parent.VerticalBorderColor;
+            bd.LineBrush = Parent.VerticalBorderColor;
 
-            //bd.Thickness = 1;
-            //bd.Orientation = Orientation.Vertical;
-            //bd.HorizontalAlignment = HorizontalAlignment.Right;
-
-            JFCBorder bd = new JFCBorder();
-            bd.BorderBrush = this.Parent.VerticalBorderColor;
-            bd.BorderThickness = new Thickness(0.0, 0.0, 1.0, 0.0);
+            bd.Thickness = 1;
             bd.Orientation = Orientation.Vertical;
+            bd.HorizontalAlignment = HorizontalAlignment.Right;
 
             bd.SetValue(Grid.ColumnProperty, Index);
             if (NbRow > 0)
@@ -1690,7 +1680,7 @@ namespace JFCGridControl
             for (int idxRow = 0; idxRow < NbRow; idxRow++)
             {
 
-                if (Parent.dataSourceFooter == null)
+                if (Parent.dataSource == null)
                     break;
 
                 if (idxRow < Parent.dataSourceFooter.Count())
@@ -1710,14 +1700,14 @@ namespace JFCGridControl
 
                     // on recherche la ligne de séparation des rows
                     var ctrlsRow = from ctrl in LstCells[idxRow]
-                                   where ctrl is JFCBorder && ((JFCBorder)ctrl).Orientation == Orientation.Horizontal
+                                   where ctrl is Line && ((Line)ctrl).Orientation == Orientation.Horizontal
                                    select ctrl;
 
                     //List<UIElement> lctrlsRow = ctrlsRow.ToList();
 
                     foreach (var ctrl in ctrlsRow)
                     {
-                        JFCBorder border = ctrl as JFCBorder;
+                        Line border = ctrl as Line;
                         //if (border.Orientation == Orientation.Horizontal)
                         {
                             int NbCol = BodyGrid.ColumnDefinitions.Count();
@@ -2050,9 +2040,9 @@ namespace JFCGridControl
                         else
                             move = true;
                     }
-                    else if (ctrl is JFCBorder)
+                    else if (ctrl is Line)
                     {
-                        JFCBorder b = ctrl as JFCBorder;
+                        Line b = ctrl as Line;
 
                         if (b.Orientation == Orientation.Horizontal)
                             move = false;
@@ -2092,9 +2082,9 @@ namespace JFCGridControl
                     {
                         move = false;
                     }
-                    else if (ctrl is JFCBorder)
+                    else if (ctrl is Line)
                     {
-                        JFCBorder b = ctrl as JFCBorder;
+                        Line b = ctrl as Line;
 
                         if (b.Orientation == Orientation.Horizontal)
                             move = false;
@@ -2231,9 +2221,9 @@ namespace JFCGridControl
                     int idx = (int)ctrl.GetValue(Grid.ColumnProperty);
                     if (idx == index)
                     {
-                        if (ctrl is JFCBorder)
+                        if (ctrl is Line)
                         {
-                            JFCBorder bd = ctrl as JFCBorder;
+                            Line bd = ctrl as Line;
 
                             if (bd.Orientation == Orientation.Vertical)
                                 gridTmp.Children.Remove(bd);
@@ -4220,9 +4210,9 @@ namespace JFCGridControl
             itemB.Orientation = Orientation.Horizontal;
             itemF.Orientation = Orientation.Horizontal;
 
-            Grid.SetZIndex(itemH, -1);
-            Grid.SetZIndex(itemB, -1);
-            Grid.SetZIndex(itemF, -1);
+            Grid.SetZIndex(itemH, -12);
+            Grid.SetZIndex(itemB, -12);
+            Grid.SetZIndex(itemF, -12);
 
             RowAddGrid(Grid10, itemH, Index, IndexData, TabLineH, dataContext, ListColHeaderRow);
 
@@ -4291,14 +4281,14 @@ namespace JFCGridControl
             // on rallonge la ligne de séparation des colonnes
             IEnumerable<UIElement> ListCtrl = grid.Children.Cast<UIElement>();
             var ctrls = from ctrl in ListCtrl
-                        where ctrl is JFCBorder || ctrl is JFCGridItem
+                        where ctrl is Line || ctrl is JFCGridItem
                         select ctrl;
 
             foreach (var ctrl in ctrls)
             {
-                if (ctrl is JFCBorder)
+                if (ctrl is Line)
                 {
-                    JFCBorder l = ctrl as JFCBorder;
+                    Line l = ctrl as Line;
                     if (l.Orientation == Orientation.Vertical)
                     {
                         ctrl.SetValue(Grid.RowProperty, 0);
@@ -4320,9 +4310,9 @@ namespace JFCGridControl
             {
                 foreach (var ctrl in TabLineGrid[idxR])
                 {
-                    if (ctrl is JFCBorder)
+                    if (ctrl is Line)
                     {
-                        JFCBorder l = ctrl as JFCBorder;
+                        Line l = ctrl as Line;
                         if (l.Orientation != Orientation.Vertical)
                         {
                             //idxR = (int)ctrl.GetValue(Grid.RowProperty);
@@ -4386,19 +4376,13 @@ namespace JFCGridControl
             }
 
             // on ajoute une ligne de séparation
-            //Line bdG = new Line();
+            Line bdG = new Line();
 
-            //bdG.LineBrush = Parent.HorizontalBorderColor;
+            bdG.LineBrush = Parent.HorizontalBorderColor;
 
-            //bdG.Thickness = 1;
-            //bdG.Orientation = Orientation.Horizontal;
-            //bdG.VerticalAlignment = VerticalAlignment.Bottom;
-
-            JFCBorder bdG = new JFCBorder();
-
-            bdG.BorderBrush = this.Parent.HorizontalBorderColor;
-            bdG.BorderThickness = new Thickness(0.0, 0.0, 0.0, 1.0);
+            bdG.Thickness = 1;
             bdG.Orientation = Orientation.Horizontal;
+            bdG.VerticalAlignment = VerticalAlignment.Bottom;
 
             bdG.ContextMenu = item.ContextMenu;
 
@@ -4432,14 +4416,14 @@ namespace JFCGridControl
             // on rallonge la ligne de séparation des colonnes
             IEnumerable<UIElement> ListCtrl = grid.Children.Cast<UIElement>();
             var ctrls = from ctrl in ListCtrl
-                        where ctrl is JFCBorder || ctrl is JFCGridItem
+                        where ctrl is Line || ctrl is JFCGridItem
                         select ctrl;
 
             foreach (var ctrl in ctrls)
             {
-                if (ctrl is JFCBorder)
+                if (ctrl is Line)
                 {
-                    JFCBorder l = ctrl as JFCBorder;
+                    Line l = ctrl as Line;
                     if (l.Orientation == Orientation.Vertical)
                     {
                         ctrl.SetValue(Grid.RowProperty, 0);
@@ -4461,9 +4445,9 @@ namespace JFCGridControl
             {
                 foreach (var ctrl in TabLineGrid[idxR])
                 {
-                    if (ctrl is JFCBorder)
+                    if (ctrl is Line)
                     {
-                        JFCBorder l = ctrl as JFCBorder;
+                        Line l = ctrl as Line;
                         if (l.Orientation != Orientation.Vertical)
                         {
                             //idxR = (int)ctrl.GetValue(Grid.RowProperty);
@@ -4536,18 +4520,13 @@ namespace JFCGridControl
             }
 
             // on ajoute une ligne de séparation
-            //Line bdG = new Line();
+            Line bdG = new Line();
 
-            //bdG.LineBrush = Parent.HorizontalBorderColor;
+            bdG.LineBrush = Parent.HorizontalBorderColor;
 
-            //bdG.Thickness = 1;
-            //bdG.Orientation = Orientation.Horizontal;
-            //bdG.VerticalAlignment = VerticalAlignment.Bottom;
-
-            JFCBorder bdG = new JFCBorder();
-            bdG.BorderBrush = this.Parent.HorizontalBorderColor;
-            bdG.BorderThickness = new Thickness(0.0, 0.0, 0.0, 1.0);
+            bdG.Thickness = 1;
             bdG.Orientation = Orientation.Horizontal;
+            bdG.VerticalAlignment = VerticalAlignment.Bottom;
 
             bdG.ContextMenu = item.ContextMenu;
 
@@ -4599,7 +4578,7 @@ namespace JFCGridControl
 
                 cell.Column = Col;
 
-                cell.PropertyChanged += delegate (object sender, PropertyChangedEventArgs e)
+                cell.PropertyChanged += delegate (object sender, PropertyChangedExtendedEventArgs<Object> e)
                 {
                     if (e.PropertyName == "Data")
                     {
@@ -4700,7 +4679,7 @@ namespace JFCGridControl
                                     }
                                     else
                                     {
-                                        //c.Text = "toto";
+                                        //c.Text = "";
                                         Binding binding = new Binding(c.Column.BindingPath);
                                         binding.Source = c.Data;
                                         c.SetBinding(CellImg.TextProperty, binding);
@@ -4708,7 +4687,7 @@ namespace JFCGridControl
                                 }
                                 else
                                 {
-                                    //c.Text = "toto";
+                                    //c.Text = "";
                                     Binding binding = new Binding();
                                     binding.Source = c.Data;
                                     c.SetBinding(CellImg.TextProperty, binding);
@@ -4751,7 +4730,7 @@ namespace JFCGridControl
                     //hi.DataContext = Parent.dataSource[IndexData];
                     hi.DataContext = DataContext;
 
-                    DeleteEvents(cell, true);
+                    DeleteEvents(cell);
 
                     hi.SetValue(Grid.ColumnProperty, IdxCol);
                     hi.SetValue(Grid.RowProperty, IdxRow);
@@ -4878,7 +4857,7 @@ namespace JFCGridControl
                     ///hi.DataContext = Parent.dataSource[IndexData];
                     hi.DataContext = DataContext;
 
-                    DeleteEvents(cellTemplate, true);
+                    DeleteEvents(cellTemplate);
 
                     hi.SetValue(Grid.ColumnProperty, IdxCol);
                     hi.SetValue(Grid.RowProperty, IdxRow);
@@ -4937,7 +4916,7 @@ namespace JFCGridControl
                     cg.Component = cellTemplate;
                     cg.DataContext = dataContextTmp;
 
-                    DeleteEvents(cellTemplate, true);
+                    DeleteEvents(cellTemplate);
 
                     if (dataContextTmp != null)
                     {
@@ -4980,9 +4959,9 @@ namespace JFCGridControl
                 {
                     foreach (var ctrl in TabLine[i])
                     {
-                        if (ctrl is JFCBorder)
+                        if (ctrl is Line)
                         {
-                            JFCBorder b = ctrl as JFCBorder;
+                            Line b = ctrl as Line;
                             if (b.Orientation == Orientation.Horizontal)
                             {
                                 idxRow = (int)ctrl.GetValue(Grid.RowProperty);
@@ -5032,9 +5011,9 @@ namespace JFCGridControl
                 {
                     foreach (var ctrl in TabLine[i])
                     {
-                        if (ctrl is JFCBorder)
+                        if (ctrl is Line)
                         {
-                            JFCBorder b = ctrl as JFCBorder;
+                            Line b = ctrl as Line;
                             if (b.Orientation == Orientation.Horizontal)
                             {
                                 idxRow = (int)ctrl.GetValue(Grid.RowProperty);
@@ -5082,9 +5061,9 @@ namespace JFCGridControl
             // on bouge la ligne
             foreach (var ctrl in TabLine[IndexAfter])
             {
-                if (ctrl is JFCBorder)
+                if (ctrl is Line)
                 {
-                    JFCBorder b = ctrl as JFCBorder;
+                    Line b = ctrl as Line;
                     if (b.Orientation == Orientation.Horizontal)
                     {
                         ctrl.SetValue(Grid.RowProperty, IndexAfter);
@@ -5520,9 +5499,9 @@ namespace JFCGridControl
 
             foreach (var ctrl in TabLine[Index])
             {
-                if (ctrl is JFCBorder)
+                if (ctrl is Line)
                 {
-                    JFCBorder b = ctrl as JFCBorder;
+                    Line b = ctrl as Line;
                     if (b.Orientation == Orientation.Horizontal)
                     {
                         gridtmp.Children.Remove(ctrl);
@@ -5557,14 +5536,14 @@ namespace JFCGridControl
             // on réduit la ligne de séparation des colonnes            
             IEnumerable<UIElement> ListCtrl = gridtmp.Children.Cast<UIElement>();
             var ctrls = from ctrl in ListCtrl
-                        where ctrl is JFCBorder
+                        where ctrl is Line
                         select ctrl;
 
             //List<UIElement> lctrlsBody1 = ctrlsBody1.ToList();
 
             foreach (var ctrl in ctrls)
             {
-                JFCBorder l = ctrl as JFCBorder;
+                Line l = ctrl as Line;
                 if (l.Orientation == Orientation.Vertical)
                     ctrl.SetValue(Grid.RowSpanProperty, NbRow);
             }
@@ -5608,9 +5587,9 @@ namespace JFCGridControl
 
             foreach (var ctrl in TabLineBF[Index])
             {
-                if (ctrl is JFCBorder)
+                if (ctrl is Line)
                 {
-                    JFCBorder b = ctrl as JFCBorder;
+                    Line b = ctrl as Line;
                     if (b.Orientation == Orientation.Horizontal)
                     {
                         Grid21.Children.Remove(ctrl);
@@ -5643,12 +5622,12 @@ namespace JFCGridControl
             // on réduit la ligne de séparation des colonnes            
             IEnumerable<UIElement> ListCtrlBodyFooter1 = Grid21.Children.Cast<UIElement>();
             var ctrlsBody1 = from ctrl in ListCtrlBodyFooter1
-                             where ctrl is JFCBorder
+                             where ctrl is Line
                              select ctrl;
 
             foreach (var ctrl in ctrlsBody1)
             {
-                JFCBorder l = ctrl as JFCBorder;
+                Line l = ctrl as Line;
                 if (l.Orientation == Orientation.Vertical)
                     ctrl.SetValue(Grid.RowSpanProperty, NbRow);
             }
@@ -5667,9 +5646,9 @@ namespace JFCGridControl
             for (int idx = 0; idx < Grid10.Children.Count; idx++)
             {
                 UIElement ctrl = Grid10.Children[idx];
-                if (ctrl is JFCBorder)
+                if (ctrl is Line)
                 {
-                    if (((JFCBorder)ctrl).Orientation == Orientation.Horizontal)
+                    if (((Line)ctrl).Orientation == Orientation.Horizontal)
                     {
                         Grid10.Children.Remove(ctrl);
                         idx--;
@@ -5693,9 +5672,9 @@ namespace JFCGridControl
             for (int idx = 0; idx < Grid11.Children.Count; idx++)
             {
                 UIElement ctrl = Grid11.Children[idx];
-                if (ctrl is JFCBorder)
+                if (ctrl is Line)
                 {
-                    if (((JFCBorder)ctrl).Orientation == Orientation.Horizontal)
+                    if (((Line)ctrl).Orientation == Orientation.Horizontal)
                     {
                         Grid11.Children.Remove(ctrl);
                         idx--;
@@ -5718,9 +5697,9 @@ namespace JFCGridControl
             for (int idx = 0; idx < Grid12.Children.Count; idx++)
             {
                 UIElement ctrl = Grid12.Children[idx];
-                if (ctrl is JFCBorder)
+                if (ctrl is Line)
                 {
-                    if (((JFCBorder)ctrl).Orientation == Orientation.Horizontal)
+                    if (((Line)ctrl).Orientation == Orientation.Horizontal)
                     {
                         Grid12.Children.Remove(ctrl);
                         idx--;
@@ -5754,9 +5733,9 @@ namespace JFCGridControl
             for (int idx = 0; idx < Grid20.Children.Count; idx++)
             {
                 UIElement ctrl = Grid20.Children[idx];
-                if (ctrl is JFCBorder)
+                if (ctrl is Line)
                 {
-                    if (((JFCBorder)ctrl).Orientation == Orientation.Horizontal)
+                    if (((Line)ctrl).Orientation == Orientation.Horizontal)
                     {
                         Grid20.Children.Remove(ctrl);
                         idx--;
@@ -5780,9 +5759,9 @@ namespace JFCGridControl
             for (int idx = 0; idx < Grid21.Children.Count; idx++)
             {
                 UIElement ctrl = Grid21.Children[idx];
-                if (ctrl is JFCBorder)
+                if (ctrl is Line)
                 {
-                    if (((JFCBorder)ctrl).Orientation == Orientation.Horizontal)
+                    if (((Line)ctrl).Orientation == Orientation.Horizontal)
                     {
                         Grid21.Children.Remove(ctrl);
                         idx--;
@@ -6409,12 +6388,12 @@ namespace JFCGridControl
                         }
 
                     }
-                    else if (ctrl is JFCBorder)
+                    else if (ctrl is Line)
                     {
-                        JFCBorder line = ctrl as JFCBorder;
+                        Line line = ctrl as Line;
 
                         if (DataContext != null)
-                            line.BorderBrush = Parent.HorizontalBorderColor;
+                            line.LineBrush = Parent.HorizontalBorderColor;
                     }
                 }
 
@@ -6521,9 +6500,9 @@ namespace JFCGridControl
 
                         item.ContextMenu = Parent.ContextmenuRow;
                     }
-                    else if (ctrl is JFCBorder)
+                    else if (ctrl is Line)
                     {
-                        JFCBorder bdG = ctrl as JFCBorder;
+                        Line bdG = ctrl as Line;
 
                         if (bdG.Orientation == Orientation.Horizontal)
                             bdG.ContextMenu = Parent.ContextmenuRow;
@@ -6651,17 +6630,17 @@ namespace JFCGridControl
 
             IEnumerable<UIElement> ListCtrl = Grid10.Children.Cast<UIElement>();
             var ctrls = from ctrl in ListCtrl
-                        where ctrl is JFCBorder
+                        where ctrl is Line
                         select ctrl;
 
             List<UIElement> lctrls = ctrls.ToList();
 
             foreach (var ctrl in lctrls)
             {
-                var item = ctrl as JFCBorder;
+                var item = ctrl as Line;
 
                 if (item.Orientation == Orientation.Horizontal)
-                    item.BorderBrush = Parent.HorizontalBorderColor;                
+                    item.LineBrush = Parent.HorizontalBorderColor;                
             }
 
             ////////////////////////////////////
@@ -6669,17 +6648,17 @@ namespace JFCGridControl
 
             IEnumerable<UIElement> ListCtrlFooter = Grid20.Children.Cast<UIElement>();
             var ctrlsFooter = from ctrl in ListCtrlFooter
-                              where ctrl is JFCBorder
+                              where ctrl is Line
                               select ctrl;
 
             List<UIElement> lctrlsFooter = ctrlsFooter.ToList();
 
             foreach (var ctrl in lctrls)
             {
-                var item = ctrl as JFCBorder;
+                var item = ctrl as Line;
 
                 if (item.Orientation == Orientation.Horizontal)
-                    item.BorderBrush = Parent.HorizontalBorderColor;
+                    item.LineBrush = Parent.HorizontalBorderColor;
             }
 
             ////////////////////////////////////
@@ -6687,17 +6666,17 @@ namespace JFCGridControl
 
             IEnumerable<UIElement> ListCtrlBody = Grid11.Children.Cast<UIElement>();
             var ctrlsBody = from ctrl in ListCtrlBody
-                            where ctrl is JFCBorder
+                            where ctrl is Line
                             select ctrl;
 
             List<UIElement> lctrlsBody = ctrlsBody.ToList();
 
             foreach (var ctrl in lctrlsBody)
             {
-                var item = ctrl as JFCBorder;
+                var item = ctrl as Line;
 
                 if (item.Orientation == Orientation.Horizontal)
-                    item.BorderBrush = Parent.HorizontalBorderColor;
+                    item.LineBrush = Parent.HorizontalBorderColor;
             }
 
             ////////////////////////////////////
@@ -6705,17 +6684,17 @@ namespace JFCGridControl
 
             IEnumerable<UIElement> ListCtrlBodyFooter = Grid21.Children.Cast<UIElement>();
             var ctrlsBodyFooter = from ctrl in ListCtrlBodyFooter
-                                  where ctrl is JFCBorder
+                                  where ctrl is Line
                                   select ctrl;
 
             List<UIElement> lctrlsBodyFooter = ctrlsBodyFooter.ToList();
 
             foreach (var ctrl in lctrlsBodyFooter)
             {
-                var item = ctrl as JFCBorder;
+                var item = ctrl as Line;
 
                 if (item.Orientation == Orientation.Horizontal)
-                    item.BorderBrush = Parent.HorizontalBorderColor;
+                    item.LineBrush = Parent.HorizontalBorderColor;
             }
 
             ////////////////////////////////////
@@ -6723,17 +6702,17 @@ namespace JFCGridControl
 
             IEnumerable<UIElement> ListCtrlEndRow = Grid12.Children.Cast<UIElement>();
             var ctrlsEndRow = from ctrl in ListCtrlEndRow
-                              where ctrl is JFCBorder
+                              where ctrl is Line
                               select ctrl;
 
             List<UIElement> lctrlsEndRow = ctrlsEndRow.ToList();
 
             foreach (var ctrl in lctrlsEndRow)
             {
-                var item = ctrl as JFCBorder;
+                var item = ctrl as Line;
 
                 if (item.Orientation == Orientation.Horizontal)
-                    item.BorderBrush = Parent.HorizontalBorderColor;
+                    item.LineBrush = Parent.HorizontalBorderColor;
             }
 
         }
@@ -6746,17 +6725,17 @@ namespace JFCGridControl
 
             IEnumerable<UIElement> ListCtrl = Grid10.Children.Cast<UIElement>();
             var ctrls = from ctrl in ListCtrl
-                        where ctrl is JFCBorder
+                        where ctrl is Line
                         select ctrl;
 
             List<UIElement> lctrls = ctrls.ToList();
 
             foreach (var ctrl in lctrls)
             {
-                var item = ctrl as JFCBorder;
+                var item = ctrl as Line;
 
                 if (item.Orientation == Orientation.Vertical)
-                    item.BorderBrush = Parent.VerticalBorderColor;
+                    item.LineBrush = Parent.VerticalBorderColor;
             }
 
             ////////////////////////////////////
@@ -6764,17 +6743,17 @@ namespace JFCGridControl
 
             IEnumerable<UIElement> ListCtrlFooter = Grid20.Children.Cast<UIElement>();
             var ctrlsFooter = from ctrl in ListCtrlFooter
-                              where ctrl is JFCBorder
+                              where ctrl is Line
                               select ctrl;
 
             List<UIElement> lctrlsFooter = ctrlsFooter.ToList();
 
             foreach (var ctrl in lctrlsFooter)
             {
-                var item = ctrl as JFCBorder;
+                var item = ctrl as Line;
 
                 if (item.Orientation == Orientation.Vertical)
-                    item.BorderBrush = Parent.VerticalBorderColor;
+                    item.LineBrush = Parent.VerticalBorderColor;
             }
 
             ////////////////////////////////////
@@ -6782,17 +6761,17 @@ namespace JFCGridControl
 
             IEnumerable<UIElement> ListCtrlBody = Grid11.Children.Cast<UIElement>();
             var ctrlsBody = from ctrl in ListCtrlBody
-                            where ctrl is JFCBorder
+                            where ctrl is Line
                             select ctrl;
 
             List<UIElement> lctrlsBody = ctrlsBody.ToList();
 
             foreach (var ctrl in lctrlsBody)
             {
-                var item = ctrl as JFCBorder;
+                var item = ctrl as Line;
 
                 if (item.Orientation == Orientation.Vertical)
-                    item.BorderBrush = Parent.VerticalBorderColor;
+                    item.LineBrush = Parent.VerticalBorderColor;
             }
 
             ////////////////////////////////////
@@ -6800,17 +6779,17 @@ namespace JFCGridControl
 
             IEnumerable<UIElement> ListCtrlBodyFooter = Grid21.Children.Cast<UIElement>();
             var ctrlsBodyFooter = from ctrl in ListCtrlBodyFooter
-                                  where ctrl is JFCBorder
+                                  where ctrl is Line
                                   select ctrl;
 
             List<UIElement> lctrlsBodyFooter = ctrlsBodyFooter.ToList();
 
             foreach (var ctrl in lctrlsBodyFooter)
             {
-                var item = ctrl as JFCBorder;
+                var item = ctrl as Line;
 
                 if (item.Orientation == Orientation.Vertical)
-                    item.BorderBrush = Parent.VerticalBorderColor;
+                    item.LineBrush = Parent.VerticalBorderColor;
             }
         }
 

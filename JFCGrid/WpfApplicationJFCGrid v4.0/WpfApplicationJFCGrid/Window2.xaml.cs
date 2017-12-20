@@ -32,7 +32,7 @@ namespace WpfApplicationJFCGrid
 
             List<JFCGraph.Serie.Value> pts = new List<JFCGraph.Serie.Value>();
 
-            for (int i = 1; i < 10; i++)
+            for (int i = 1; i < 20; i++)
                 pts.Add(new JFCGraph.Serie.Value() { Point = i * 4, Label= (i*4).ToString() });
 
             serie.Points = pts;
@@ -41,10 +41,8 @@ namespace WpfApplicationJFCGrid
 
             MyGraph.BeforeSpaceBar = 1;
             MyGraph.AfterSpaceBar = 1;
-            MyGraph.BarSize = 20;
             MyGraph.Series = lstSerie;
 
-            MyGraph.SizeRectPoint = new Size(10, 10);
         }
 
         private void MyButton_Click(object sender, RoutedEventArgs e)

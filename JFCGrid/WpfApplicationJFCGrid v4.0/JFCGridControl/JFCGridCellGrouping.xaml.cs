@@ -19,48 +19,43 @@ namespace JFCGridControl
     /// </summary>
     public partial class JFCGridCellGrouping : UserControl
     {
-        public static readonly DependencyProperty ComponentProperty = DependencyProperty.Register("Component", typeof(FrameworkElement), typeof(JFCGridCellGrouping), new UIPropertyMetadata(null, JFCGridCellGrouping.UpdateComponent));
-
-        public static readonly DependencyProperty IsSelectedProperty = DependencyProperty.Register("IsSelected", typeof(bool), typeof(JFCGridCellGrouping), new UIPropertyMetadata(false));
-
         public FrameworkElement Component
         {
-            get
-            {
-                return (FrameworkElement)base.GetValue(JFCGridCellGrouping.ComponentProperty);
-            }
-            set
-            {
-                base.SetValue(JFCGridCellGrouping.ComponentProperty, value);
-            }
+            get { return (FrameworkElement)GetValue(ComponentProperty); }
+            set { SetValue(ComponentProperty, value); }
         }
 
-        public bool IsSelected
+        // Using a DependencyProperty as the backing store for Component.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty ComponentProperty =
+            DependencyProperty.Register("Component", typeof(FrameworkElement), typeof(JFCGridCellGrouping), new UIPropertyMetadata(null, new PropertyChangedCallback(UpdateComponent)));
+
+        public Boolean IsSelected
         {
-            get
-            {
-                return (bool)base.GetValue(JFCGridCellGrouping.IsSelectedProperty);
-            }
-            set
-            {
-                base.SetValue(JFCGridCellGrouping.IsSelectedProperty, value);
-            }
+            get { return (Boolean)GetValue(IsSelectedProperty); }
+            set { SetValue(IsSelectedProperty, value); }
         }
+
+        // Using a DependencyProperty as the backing store for IsSelected.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty IsSelectedProperty =
+            DependencyProperty.Register("IsSelected", typeof(Boolean), typeof(JFCGridCellGrouping), new UIPropertyMetadata(false));
 
         public JFCGridCellGrouping()
         {
-            this.InitializeComponent();
+            InitializeComponent();
         }
 
         private static void UpdateComponent(DependencyObject obj, DependencyPropertyChangedEventArgs e)
         {
-            JFCGridCellGrouping jFCGridCellGrouping = obj as JFCGridCellGrouping;
-            jFCGridCellGrouping.MyComponent.Children.Clear();
-            if (jFCGridCellGrouping.Component != null)
+            JFCGridCellGrouping cg = obj as JFCGridCellGrouping;
+            
+            cg.MyComponent.Children.Clear();
+
+            if (cg.Component != null)
             {
-                jFCGridCellGrouping.MyComponent.Children.Add(jFCGridCellGrouping.Component);
-                jFCGridCellGrouping.Component.Tag = jFCGridCellGrouping;
-            }
+                cg.MyComponent.Children.Add(cg.Component);
+
+                cg.Component.Tag = cg;
+            }            
         }
     }
 }

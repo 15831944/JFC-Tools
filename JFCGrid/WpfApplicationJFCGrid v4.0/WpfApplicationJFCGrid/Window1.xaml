@@ -231,6 +231,11 @@
             <TextBlock Text="{Binding}" VerticalAlignment="Center" HorizontalAlignment="Stretch" TextWrapping="Wrap"/>
         </ControlTemplate>
 
+        <ControlTemplate x:Key="FooterLibelleTemplateKey">
+            <Border Background="Pink">
+                <TextBlock Text="Total" Foreground="Black"  HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center"/>
+            </Border>
+        </ControlTemplate>
     </Window.Resources>
 
     <Grid>

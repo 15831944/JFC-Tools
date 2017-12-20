@@ -1,19 +1,17 @@
-﻿// JFCGridControl.JFCGraph
-using JFCGridControl;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Globalization;
 using System.Linq;
+using System.Text;
 using System.Windows;
-using System.Windows.Input;
+using System.ComponentModel;
 using System.Windows.Media;
-
+using System.Globalization;
 
 namespace JFCGridControl
 {
     public class JFCGraph : FrameworkElement, INotifyPropertyChanged
     {
+
         public enum GraphTypes
         {
             Curve,
@@ -21,674 +19,776 @@ namespace JFCGridControl
             Histogram
         }
 
-        public class Serie
-        {
-            public class Value
-            {
-                public double Point;
-
-                public string Label;
-            }
-
-            public string Name;
-
-            public Brush Color;
-
-            public bool Selected;
-
-            public IEnumerable<Value> Points;
-        }
-
-        public static readonly DependencyProperty GraphTypeProperty = DependencyProperty.Register("GraphType", typeof(GraphTypes), typeof(JFCGraph), new UIPropertyMetadata(GraphTypes.Histogram, JFCGraph.UpdateGraph));
-
-        public static readonly DependencyProperty SeriesProperty = DependencyProperty.Register("Series", typeof(List<Serie>), typeof(JFCGraph), new UIPropertyMetadata(new List<Serie>(), JFCGraph.UpdateGraph));
-
-        public static readonly DependencyProperty BarSizeProperty = DependencyProperty.Register("BarSize", typeof(int), typeof(JFCGraph), new UIPropertyMetadata(10));
-
-        public static readonly DependencyProperty BeforeSpaceBarProperty = DependencyProperty.Register("BeforeSpaceBar", typeof(int), typeof(JFCGraph), new UIPropertyMetadata(0));
-
-        public static readonly DependencyProperty AfterSpaceBarProperty = DependencyProperty.Register("AfterSpaceBar", typeof(int), typeof(JFCGraph), new UIPropertyMetadata(0));
-
-        public static readonly DependencyProperty BackgroundProperty = DependencyProperty.Register("Background", typeof(Brush), typeof(JFCGraph), new UIPropertyMetadata(Brushes.White, JFCGraph.UpdateGraph));
-
-        public static readonly DependencyProperty SizeRectPointProperty = DependencyProperty.Register("SizeRectPoint", typeof(Size), typeof(JFCGraph), new UIPropertyMetadata(default(Size), JFCGraph.UpdateGraph));
-
-        private VisualCollection _children;
-
-        private int childrenCount;
-
-        private Size GraphSize = new Size(0.0, 0.0);
-
-        private Serie serieOver;
-
-        private int ptOver;
-
         public GraphTypes GraphType
         {
-            get
-            {
-                return (GraphTypes)base.GetValue(JFCGraph.GraphTypeProperty);
-            }
-            set
-            {
-                base.SetValue(JFCGraph.GraphTypeProperty, value);
-            }
+            get { return (GraphTypes)GetValue(GraphTypeProperty); }
+            set { SetValue(GraphTypeProperty, value); }
         }
+
+        // Using a DependencyProperty as the backing store for GraphType.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty GraphTypeProperty =
+            DependencyProperty.Register("GraphType", typeof(GraphTypes), typeof(JFCGraph), new UIPropertyMetadata(GraphTypes.Histogram, new PropertyChangedCallback(UpdateGraph)));
 
         public List<Serie> Series
         {
-            get
-            {
-                return (List<Serie>)base.GetValue(JFCGraph.SeriesProperty);
-            }
-            set
-            {
-                base.SetValue(JFCGraph.SeriesProperty, value);
-            }
+            get { return (List<Serie>)GetValue(SeriesProperty); }
+            set { SetValue(SeriesProperty, value); }
         }
+
+        // Using a DependencyProperty as the backing store for Series.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty SeriesProperty =
+            DependencyProperty.Register("Series", typeof(List<Serie>), typeof(JFCGraph), new UIPropertyMetadata(new List<Serie>(), new PropertyChangedCallback(UpdateGraph)));
 
         public int BarSize
         {
-            get
-            {
-                return (int)base.GetValue(JFCGraph.BarSizeProperty);
-            }
-            set
-            {
-                base.SetValue(JFCGraph.BarSizeProperty, value);
-            }
+            get { return (int)GetValue(BarSizeProperty); }
+            set { SetValue(BarSizeProperty, value); }
         }
+
+        // Using a DependencyProperty as the backing store for BarSize.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty BarSizeProperty =
+            DependencyProperty.Register("BarSize", typeof(int), typeof(JFCGraph), new UIPropertyMetadata(10));
 
         public int BeforeSpaceBar
         {
-            get
-            {
-                return (int)base.GetValue(JFCGraph.BeforeSpaceBarProperty);
-            }
-            set
-            {
-                base.SetValue(JFCGraph.BeforeSpaceBarProperty, value);
-            }
+            get { return (int)GetValue(BeforeSpaceBarProperty); }
+            set { SetValue(BeforeSpaceBarProperty, value); }
         }
+
+        // Using a DependencyProperty as the backing store for BeforeSpaceBar.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty BeforeSpaceBarProperty =
+            DependencyProperty.Register("BeforeSpaceBar", typeof(int), typeof(JFCGraph), new UIPropertyMetadata(0));
 
         public int AfterSpaceBar
         {
-            get
-            {
-                return (int)base.GetValue(JFCGraph.AfterSpaceBarProperty);
-            }
-            set
-            {
-                base.SetValue(JFCGraph.AfterSpaceBarProperty, value);
-            }
+            get { return (int)GetValue(AfterSpaceBarProperty); }
+            set { SetValue(AfterSpaceBarProperty, value); }
         }
+
+        // Using a DependencyProperty as the backing store for AfterSpaceBar.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty AfterSpaceBarProperty =
+            DependencyProperty.Register("AfterSpaceBar", typeof(int), typeof(JFCGraph), new UIPropertyMetadata(0));
 
         public Brush Background
         {
-            get
-            {
-                return (Brush)base.GetValue(JFCGraph.BackgroundProperty);
-            }
-            set
-            {
-                base.SetValue(JFCGraph.BackgroundProperty, value);
-            }
+            get { return (Brush)GetValue(BackgroundProperty); }
+            set { SetValue(BackgroundProperty, value); }
         }
+
+        // Using a DependencyProperty as the backing store for Background.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty BackgroundProperty =
+            DependencyProperty.Register("Background", typeof(Brush), typeof(JFCGraph), new UIPropertyMetadata(Brushes.White, new PropertyChangedCallback(UpdateGraph)));
+
+        //public Size SizeRectPoint
+        //{
+        //    get { return (Size)GetValue(SizeRectPointProperty); }
+        //    set { SetValue(SizeRectPointProperty, value); }
+        //}
+
+        //// Using a DependencyProperty as the backing store for CurveWithPoint.  This enables animation, styling, binding, etc...
+        //public static readonly DependencyProperty SizeRectPointProperty =
+        //    DependencyProperty.Register("SizeRectPoint", typeof(Size), typeof(JFCGraph), new UIPropertyMetadata(null, new PropertyChangedCallback(UpdateGraph)));
+
+
 
         public Size SizeRectPoint
         {
-            get
-            {
-                return (Size)base.GetValue(JFCGraph.SizeRectPointProperty);
-            }
-            set
-            {
-                base.SetValue(JFCGraph.SizeRectPointProperty, value);
-            }
+            get { return (Size)GetValue(SizeRectPointProperty); }
+            set { SetValue(SizeRectPointProperty, value); }
         }
 
-        protected override int VisualChildrenCount
-        {
-            get
-            {
-                return this.childrenCount;
-            }
-        }
+        // Using a DependencyProperty as the backing store for SizeRectPoint.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty SizeRectPointProperty =
+            DependencyProperty.Register("SizeRectPoint", typeof(Size), typeof(JFCGraph), new UIPropertyMetadata(new Size(), new PropertyChangedCallback(UpdateGraph)));
 
-        public event PropertyChangedEventHandler PropertyChanged;
+
+        // Create a collection of child visual objects.
+        private VisualCollection _children;
+        int childrenCount = 0;
+
+        Size GraphSize = new Size(0, 0);
 
         public JFCGraph()
         {
-            this._children = new VisualCollection(this);
-            base.SizeChanged += this.JFCGraph_SizeChanged;
-            base.SetValue(RenderOptions.ClearTypeHintProperty, ClearTypeHint.Enabled);
-            base.MouseMove += this.JFCGraph_MouseMove;
-            base.MouseLeave += this.JFCGraph_MouseLeave;
+            //this.ClipToBounds = true;
+            //this.Focusable = false;
+
+            //this.SnapsToDevicePixels = false;
+
+            _children = new VisualCollection(this);
+
+            this.SizeChanged += new SizeChangedEventHandler(JFCGraph_SizeChanged);
+
+            //this.UseLayoutRounding = false;
+
+            this.SetValue(RenderOptions.ClearTypeHintProperty, ClearTypeHint.Enabled);
+
+
+            this.MouseMove += new System.Windows.Input.MouseEventHandler(JFCGraph_MouseMove);
+            this.MouseLeave += new System.Windows.Input.MouseEventHandler(JFCGraph_MouseLeave);
+
         }
+
+        Serie serieOver = null;
+        int ptOver = 0;
 
         public void PointHilite(Serie serieHilite, int idxPoint)
         {
-            bool flag = false;
+            bool update = false;
+
             if (this.serieOver != serieHilite)
             {
                 this.serieOver = serieHilite;
-                flag = true;
+                update = true;
             }
+
             if (this.ptOver != idxPoint)
             {
                 this.ptOver = idxPoint;
-                flag = true;
+                update = true;
             }
-            if (flag)
+
+            if (update)
             {
-                JFCGraph.UpdateGraph(this, default(DependencyPropertyChangedEventArgs));
+                DependencyPropertyChangedEventArgs args = new DependencyPropertyChangedEventArgs();
+
+                UpdateGraph(this, args);
             }
         }
 
-        private void JFCGraph_MouseMove(object sender, MouseEventArgs e)
+        void JFCGraph_MouseMove(object sender, System.Windows.Input.MouseEventArgs e)
         {
-            if (this.Series != null)
+            if (Series != null)
             {
-                Point position = e.GetPosition(this);
-                bool flag = false;
+                Point pt = e.GetPosition(this);
+
+                Boolean update = false;
+
                 Serie serie = null;
-                double num = 0.0;
-                int num2 = 0;
-                List<Serie>.Enumerator enumerator;
-                if (this.GraphType == GraphTypes.Curve)
+                Double valY = 0;
+                int valX = 0;
+
+                if (GraphType == GraphTypes.Curve)
                 {
-                    int num3 = (int)(position.X - position.X % (double)this.BarSize) / this.BarSize;
-                    enumerator = this.Series.GetEnumerator();
-                    try
+                    int x = (int)(pt.X - (pt.X % BarSize)) / BarSize;
+
+                    foreach (var s in Series)
                     {
-                        while (enumerator.MoveNext())
+                        if (s.Points.Count() > x)
                         {
-                            Serie current = enumerator.Current;
-                            if (current.Points.Count() > num3)
+                            var item = s.Points.ElementAt(x);
+                            double y = item.Point;
+
+                            //ptEnd.X = x * BarSize + BarSize / 2;
+                            //ptEnd.Y = this.ActualHeight - y;
+                            
+
+                            if (pt.Y >= this.ActualHeight - y - SizeRectPoint.Height / 2 && pt.Y <= this.ActualHeight - y + SizeRectPoint.Height / 2)
                             {
-                                double point = current.Points.ElementAt(num3).Point;
-                                double y = position.Y;
-                                double num4 = base.ActualHeight - point;
-                                Size sizeRectPoint = this.SizeRectPoint;
-                                if (y >= num4 - sizeRectPoint.Height / 2.0)
+                                if (pt.X >= x * BarSize + BarSize / 2 - SizeRectPoint.Width / 2 && pt.X <= x * BarSize + BarSize / 2 + SizeRectPoint.Width / 2)
                                 {
-                                    double y2 = position.Y;
-                                    double num5 = base.ActualHeight - point;
-                                    sizeRectPoint = this.SizeRectPoint;
-                                    if (y2 <= num5 + sizeRectPoint.Height / 2.0)
-                                    {
-                                        double x = position.X;
-                                        double num6 = (double)(num3 * this.BarSize + this.BarSize / 2);
-                                        sizeRectPoint = this.SizeRectPoint;
-                                        if (x >= num6 - sizeRectPoint.Width / 2.0)
-                                        {
-                                            double x2 = position.X;
-                                            double num7 = (double)(num3 * this.BarSize + this.BarSize / 2);
-                                            sizeRectPoint = this.SizeRectPoint;
-                                            if (x2 <= num7 + sizeRectPoint.Width / 2.0)
-                                            {
-                                                num = base.ActualHeight - point;
-                                                num2 = num3;
-                                                serie = current;
-                                                flag = true;
-                                            }
-                                        }
-                                    }
+                                    valY = this.ActualHeight - y;
+                                    valX = x;
+                                    serie = s;
+
+                                    update = true;
                                 }
                             }
                         }
                     }
-                    finally
-                    {
-                        ((IDisposable)enumerator).Dispose();
-                    }
                 }
-                else if (this.GraphType == GraphTypes.CurveStart0)
+                else if (GraphType == GraphTypes.CurveStart0)
                 {
-                    int num8 = (int)(position.X - position.X % (double)this.BarSize) / this.BarSize;
-                    enumerator = this.Series.GetEnumerator();
-                    try
+                    int x = (int)(pt.X - (pt.X % BarSize)) / BarSize;
+
+                    //x = x + 1;
+
+                    foreach (var s in Series)
                     {
-                        while (enumerator.MoveNext())
+                        if (s.Points.Count() > x)
                         {
-                            Serie current2 = enumerator.Current;
-                            if (current2.Points.Count() > num8)
+                            var item = s.Points.ElementAt(x);
+                            double y = item.Point;
+
+                            if (pt.Y >= this.ActualHeight - y)
                             {
-                                double point2 = current2.Points.ElementAt(num8).Point;
-                                if (position.Y >= base.ActualHeight - point2 && num < base.ActualHeight - point2)
+                                if (valY < this.ActualHeight - y)
                                 {
-                                    num = base.ActualHeight - point2;
-                                    num2 = num8;
-                                    serie = current2;
-                                    flag = true;
+                                    valY = this.ActualHeight - y;
+                                    valX = x;
+                                    serie = s;
+
+                                    update = true;
                                 }
                             }
                         }
                     }
-                    finally
-                    {
-                        ((IDisposable)enumerator).Dispose();
-                    }
                 }
-                else if (this.GraphType == GraphTypes.Histogram)
+                else if (GraphType == GraphTypes.Histogram)
                 {
-                    int num9 = (int)(position.X - position.X % (double)this.BarSize) / this.BarSize;
-                    enumerator = this.Series.GetEnumerator();
-                    try
+                    int x = (int)(pt.X - (pt.X % BarSize)) / BarSize;
+
+                    foreach (var s in Series)
                     {
-                        while (enumerator.MoveNext())
+                        if (s.Points.Count() > x)
                         {
-                            Serie current3 = enumerator.Current;
-                            if (current3.Points.Count() > num9)
+                            var item = s.Points.ElementAt(x);
+                            double y = item.Point;
+
+                            if (pt.Y >= this.ActualHeight - y)
                             {
-                                double point3 = current3.Points.ElementAt(num9).Point;
-                                if (position.Y >= base.ActualHeight - point3 && num < base.ActualHeight - point3)
+                                if (valY < this.ActualHeight - y)
                                 {
-                                    num = base.ActualHeight - point3;
-                                    num2 = num9;
-                                    serie = current3;
-                                    flag = true;
+                                    valY = this.ActualHeight - y;
+                                    valX = x;
+                                    serie = s;
+
+                                    update = true;
                                 }
                             }
                         }
                     }
-                    finally
-                    {
-                        ((IDisposable)enumerator).Dispose();
-                    }
                 }
-                if (!flag && this.serieOver != null)
+
+                if (update == false && serieOver != null)
+                    update = true;
+
+                if (update)
                 {
-                    flag = true;
-                }
-                if (flag)
-                {
-                    this.serieOver = serie;
-                    this.ptOver = num2;
-                    JFCGraph.UpdateGraph(this, default(DependencyPropertyChangedEventArgs));
+                    serieOver = serie;
+                    ptOver = valX;
+
+                    DependencyPropertyChangedEventArgs args = new DependencyPropertyChangedEventArgs();
+
+                    UpdateGraph(this, args);
                 }
             }
         }
 
-        private void JFCGraph_MouseLeave(object sender, MouseEventArgs e)
+        void JFCGraph_MouseLeave(object sender, System.Windows.Input.MouseEventArgs e)
         {
-            this.serieOver = null;
-            this.ptOver = 0;
-            JFCGraph.UpdateGraph(this, default(DependencyPropertyChangedEventArgs));
+            serieOver = null;
+            ptOver = 0;
+
+            DependencyPropertyChangedEventArgs args = new DependencyPropertyChangedEventArgs();
+
+            UpdateGraph(this, args);
         }
 
         public void Refresh()
         {
-            this.childrenCount = 0;
-            this._children.Clear();
-            this._children.Add(this.CreateDrawingVisualGraph());
-            this.childrenCount = 1;
-            base.InvalidateMeasure();
+            childrenCount = 0;
+            _children.Clear();
+            _children.Add(CreateDrawingVisualGraph());
+            childrenCount = 1;
+
+            InvalidateMeasure();
         }
 
-        private void JFCGraph_SizeChanged(object sender, SizeChangedEventArgs e)
+        void JFCGraph_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            JFCGraph jFCGraph = sender as JFCGraph;
-            jFCGraph.childrenCount = 0;
-            jFCGraph._children.Clear();
-            jFCGraph._children.Add(jFCGraph.CreateDrawingVisualGraph());
-            jFCGraph.childrenCount = 1;
-            jFCGraph.InvalidateMeasure();
+            JFCGraph graph = sender as JFCGraph;
+
+            graph.childrenCount = 0;
+            graph._children.Clear();
+            graph._children.Add(graph.CreateDrawingVisualGraph());
+            graph.childrenCount = 1;
+
+            graph.InvalidateMeasure();
         }
 
         private static void UpdateGraph(DependencyObject obj, DependencyPropertyChangedEventArgs e)
         {
-            JFCGraph jFCGraph = obj as JFCGraph;
-            if (e.NewValue == e.OldValue && e.Property != null)
+            JFCGraph graph = obj as JFCGraph;
+
+            if (e.NewValue != e.OldValue || e.Property == null)
             {
-                return;
+                graph.GraphSize = new Size();
+
+                graph.childrenCount = 0;
+                graph._children.Clear();
+                graph._children.Add(graph.CreateDrawingVisualGraph());
+                graph.childrenCount = 1;
+
+                graph.InvalidateMeasure();
             }
-            jFCGraph.GraphSize = default(Size);
-            jFCGraph.childrenCount = 0;
-            jFCGraph._children.Clear();
-            jFCGraph._children.Add(jFCGraph.CreateDrawingVisualGraph());
-            jFCGraph.childrenCount = 1;
-            jFCGraph.InvalidateMeasure();
         }
 
         private DrawingVisual CreateDrawingVisualGraph()
         {
-            if (base.ActualWidth != 0.0 && base.ActualHeight != 0.0)
+            if (this.ActualWidth == 0 || this.ActualHeight == 0)
+                return null;
+
+            // Create an instance of a DrawingVisual.
+            DrawingVisual drawingVisual = new DrawingVisual();
+
+            // Retrieve the DrawingContext from the DrawingVisual.
+            DrawingContext drawingContext = drawingVisual.RenderOpen();
+
+            // On colorie le fond du control
+            drawingContext.DrawRectangle(this.Background, null, new Rect(new Size(ActualWidth, ActualHeight)));
+
+            Point pt; // = new Point(0, this.ActualHeight);
+            Point ptEnd = new Point();
+
+            int nbPtsMax = 0;
+
+            if (Series != null)
             {
-                DrawingVisual drawingVisual = new DrawingVisual();
-                DrawingContext drawingContext = drawingVisual.RenderOpen();
-                drawingContext.DrawRectangle(this.Background, null, new Rect(new Size(base.ActualWidth, base.ActualHeight)));
-                Point point = default(Point);
-                int num = 0;
-                if (this.Series != null)
+                foreach (var s in Series)
                 {
-                    foreach (Serie item in this.Series)
+                    pt = new Point(0, this.ActualHeight);
+
+                    Pen pen = new Pen(); // = new Pen(Brushes.Red, 1);
+                    pen.Brush = s.Color;
+
+                    //if (s.Selected == true)
+                    //    pen.Thickness = 2;
+                    //else
+                    pen.Thickness = 1;
+
+
+                    Brush brush = s.Color;
+
+                    //if (GraphType == GraphTypes.Histogram)
+                    //{
+                    //    if (s.Selected == true)
+                    //    {
+
+                    if (s.Color is SolidColorBrush)
                     {
-                        Point point2 = new Point(0.0, base.ActualHeight);
-                        Pen pen = new Pen();
-                        pen.Brush = item.Color;
-                        pen.Thickness = 1.0;
-                        Brush color = item.Color;
-                        if (item.Color is SolidColorBrush)
+                        var sb = s.Color as SolidColorBrush;
+
+                        Color color = new Color();
+                        color.A = 128;
+                        color.R = sb.Color.R;
+                        color.G = sb.Color.G;
+                        color.B = sb.Color.B;
+
+                        brush = new SolidColorBrush(color);
+                    }
+                    else
+                    {
+                        brush = s.Color;
+                    }
+
+
+                    //brush = new SolidColorBrush(color);
+                    //    }
+                    //    else
+                    //        brush = new SolidColorBrush();
+                    //}
+
+                    int i = 0;
+
+                    if (s.Points != null)
+                    {
+                        int tmpCount = s.Points.Count();
+
+                        if (nbPtsMax < tmpCount)
+                            nbPtsMax = tmpCount;
+
+                        foreach (var ps in s.Points)
                         {
-                            SolidColorBrush solidColorBrush = item.Color as SolidColorBrush;
-                            Color color2 = default(Color);
-                            color2.A = 128;
-                            Color color3 = solidColorBrush.Color;
-                            color2.R = color3.R;
-                            color3 = solidColorBrush.Color;
-                            color2.G = color3.G;
-                            color3 = solidColorBrush.Color;
-                            color2.B = color3.B;
-                            color = new SolidColorBrush(color2);
-                        }
-                        else
-                        {
-                            color = item.Color;
-                        }
-                        int num2 = 0;
-                        if (item.Points != null)
-                        {
-                            int num3 = item.Points.Count();
-                            if (num < num3)
+                            if (GraphType == GraphTypes.Curve)
                             {
-                                num = num3;
+                                //ptEnd.X = (i + 1) * BarSize;
+                                ptEnd.X = i * BarSize + BarSize / 2;
+                                ptEnd.Y = this.ActualHeight - ps.Point;
+
+                                if (i > 0)
+                                {
+                                    drawingContext.DrawLine(pen, pt, ptEnd);
+
+                                    if (i == 1)
+                                    {
+                                        if (SizeRectPoint != null && SizeRectPoint.Width != 0 && SizeRectPoint.Height != 0)
+                                        {
+                                            drawingContext.DrawRectangle(s.Color, pen, new Rect(new Point(pt.X - (SizeRectPoint.Width / 2), pt.Y - (SizeRectPoint.Height / 2)), SizeRectPoint));
+                                        }
+                                    }
+
+                                    if (SizeRectPoint != null && SizeRectPoint.Width != 0 && SizeRectPoint.Height != 0)
+                                    {
+                                        drawingContext.DrawRectangle(s.Color, pen, new Rect(new Point(ptEnd.X - (SizeRectPoint.Width / 2), ptEnd.Y - (SizeRectPoint.Height / 2)), SizeRectPoint));
+                                    }
+
+                                    if (s.Selected == true)
+                                    {
+                                        ////////////
+                                        // hilite //
+                                        ////////////
+
+                                        List<Point> lstPt = new List<Point>();
+
+                                        lstPt.Add(new Point(pt.X, this.ActualHeight));
+                                        lstPt.Add(pt);
+                                        lstPt.Add(ptEnd);
+                                        lstPt.Add(new Point(ptEnd.X, this.ActualHeight));
+                                        lstPt.Add(new Point(pt.X, this.ActualHeight));
+
+                                        PathGeometry geometry = new PathGeometry();
+                                        PathFigure figure = new PathFigure();
+                                        figure.StartPoint = lstPt[0];
+                                        lstPt.Remove(lstPt[0]);
+                                        figure.Segments.Add(new PolyLineSegment(lstPt, false)); // or true
+                                        geometry.Figures.Add(figure);
+
+
+                                        drawingContext.DrawGeometry(brush, null, geometry);
+                                    }                                   
+                                }
+                                else if (s.Points.Count() == 1)
+                                {
+                                    if (SizeRectPoint != null && SizeRectPoint.Width != 0 && SizeRectPoint.Height != 0)
+                                    {
+                                        drawingContext.DrawRectangle(s.Color, pen, new Rect(new Point(ptEnd.X - (SizeRectPoint.Width / 2), ptEnd.Y - (SizeRectPoint.Height / 2)), SizeRectPoint));
+                                    }
+                                }
+
+                                // hilite
+                                if (serieOver == s)
+                                {
+                                    if (ptOver == i)
+                                    {
+                                        ////////////
+                                        // hilite //
+                                        ////////////
+
+                                        //List<Point> lstPt = new List<Point>();
+
+                                        //lstPt.Add(new Point(pt.X, this.ActualHeight));
+                                        //lstPt.Add(pt);
+                                        //lstPt.Add(ptEnd);
+                                        //lstPt.Add(new Point(ptEnd.X, this.ActualHeight));
+                                        //lstPt.Add(new Point(pt.X, this.ActualHeight));
+
+                                        //PathGeometry geometry = new PathGeometry();
+                                        //PathFigure figure = new PathFigure();
+                                        //figure.StartPoint = lstPt[0];
+                                        //lstPt.Remove(lstPt[0]);
+                                        //figure.Segments.Add(new PolyLineSegment(lstPt, false)); // or true
+                                        //geometry.Figures.Add(figure);
+
+
+                                        //drawingContext.DrawGeometry(brush, null, geometry);
+
+                                        /////////////
+                                        // le text //
+                                        /////////////
+
+                                        // Affichage des valeurs
+                                        FormattedText FText = new FormattedText(ps.Label, CultureInfo.GetCultureInfo("en-us"), FlowDirection.LeftToRight, new Typeface(SystemFonts.MessageFontFamily.ToString()), SystemFonts.MessageFontSize, System.Windows.Media.Brushes.Black);
+
+                                        //Point ptVal = new Point(pt.X - ((FText.Height - BarSize) / 2), ptEnd.Y - 5);
+                                        Point ptVal = new Point(ptEnd.X - ((FText.Height) / 2), ptEnd.Y - SizeRectPoint.Height / 2 - 5);
+
+                                        RotateTransform RT = new RotateTransform();
+                                        RT.CenterX = ptVal.X;
+                                        RT.CenterY = ptVal.Y;
+                                        RT.Angle = -90;
+                                        drawingContext.PushTransform(RT);
+
+                                        drawingContext.DrawText(FText, ptVal);
+
+                                        drawingContext.Pop();
+                                    }
+                                }
+
+                                pt.X = ptEnd.X;
+                                pt.Y = ptEnd.Y;
+
                             }
-                            foreach (Serie.Value point3 in item.Points)
+                            else if (GraphType == GraphTypes.CurveStart0)
                             {
-                                Size sizeRectPoint;
-                                if (this.GraphType == GraphTypes.Curve)
+                                ptEnd.X = (i + 1) * BarSize;
+                                //ptEnd.X = i * BarSize;
+                                ptEnd.Y = this.ActualHeight - ps.Point;
+
+                                //if (i > 0)
+                                //{
+                                drawingContext.DrawLine(pen, pt, ptEnd);
+
+                                //if (i == 0)
+                                //{
+                                //    if (SizeRectPoint != null && SizeRectPoint.Width != 0 && SizeRectPoint.Height != 0)
+                                //    {
+                                //        drawingContext.DrawRectangle(s.Color, pen, new Rect(new Point(pt.X - (SizeRectPoint.Width / 2), pt.Y - (SizeRectPoint.Height / 2)), SizeRectPoint));
+                                //    }
+                                //}
+
+                                if (SizeRectPoint != null && SizeRectPoint.Width != 0 && SizeRectPoint.Height != 0)
                                 {
-                                    point.X = (double)(num2 * this.BarSize + this.BarSize / 2);
-                                    point.Y = base.ActualHeight - point3.Point;
-                                    if (num2 > 0)
+                                    drawingContext.DrawRectangle(s.Color, pen, new Rect(new Point(ptEnd.X - (SizeRectPoint.Width / 2), ptEnd.Y - (SizeRectPoint.Height / 2)), SizeRectPoint));
+                                }
+
+                                if (s.Selected == true)
+                                {
+                                    ////////////
+                                    // hilite //
+                                    ////////////
+
+                                    List<Point> lstPt = new List<Point>();
+
+                                    lstPt.Add(new Point(pt.X, this.ActualHeight));
+                                    lstPt.Add(pt);
+                                    lstPt.Add(ptEnd);
+                                    lstPt.Add(new Point(ptEnd.X, this.ActualHeight));
+                                    lstPt.Add(new Point(pt.X, this.ActualHeight));
+
+                                    PathGeometry geometry = new PathGeometry();
+                                    PathFigure figure = new PathFigure();
+                                    figure.StartPoint = lstPt[0];
+                                    lstPt.Remove(lstPt[0]);
+                                    figure.Segments.Add(new PolyLineSegment(lstPt, false)); // or true
+                                    geometry.Figures.Add(figure);
+
+
+                                    drawingContext.DrawGeometry(brush, null, geometry);
+                                }
+
+                                // hilite
+                                if (serieOver == s)
+                                {
+                                    if (ptOver == i)
                                     {
-                                        drawingContext.DrawLine(pen, point2, point);
-                                        if (num2 == 1)
-                                        {
-                                            Size sizeRectPoint2 = this.SizeRectPoint;
-                                            sizeRectPoint = this.SizeRectPoint;
-                                            if (sizeRectPoint.Width != 0.0)
-                                            {
-                                                sizeRectPoint = this.SizeRectPoint;
-                                                if (sizeRectPoint.Height != 0.0)
-                                                {
-                                                    DrawingContext drawingContext2 = drawingContext;
-                                                    Brush color4 = item.Color;
-                                                    Pen pen2 = pen;
-                                                    double x = point2.X;
-                                                    sizeRectPoint = this.SizeRectPoint;
-                                                    double x2 = x - sizeRectPoint.Width / 2.0;
-                                                    double y = point2.Y;
-                                                    sizeRectPoint = this.SizeRectPoint;
-                                                    drawingContext2.DrawRectangle(color4, pen2, new Rect(new Point(x2, y - sizeRectPoint.Height / 2.0), this.SizeRectPoint));
-                                                }
-                                            }
-                                        }
-                                        Size sizeRectPoint3 = this.SizeRectPoint;
-                                        sizeRectPoint = this.SizeRectPoint;
-                                        if (sizeRectPoint.Width != 0.0)
-                                        {
-                                            sizeRectPoint = this.SizeRectPoint;
-                                            if (sizeRectPoint.Height != 0.0)
-                                            {
-                                                DrawingContext drawingContext3 = drawingContext;
-                                                Brush color5 = item.Color;
-                                                Pen pen3 = pen;
-                                                double x3 = point.X;
-                                                sizeRectPoint = this.SizeRectPoint;
-                                                double x4 = x3 - sizeRectPoint.Width / 2.0;
-                                                double y2 = point.Y;
-                                                sizeRectPoint = this.SizeRectPoint;
-                                                drawingContext3.DrawRectangle(color5, pen3, new Rect(new Point(x4, y2 - sizeRectPoint.Height / 2.0), this.SizeRectPoint));
-                                            }
-                                        }
-                                        if (item.Selected)
-                                        {
-                                            List<Point> list = new List<Point>();
-                                            list.Add(new Point(point2.X, base.ActualHeight));
-                                            list.Add(point2);
-                                            list.Add(point);
-                                            list.Add(new Point(point.X, base.ActualHeight));
-                                            list.Add(new Point(point2.X, base.ActualHeight));
-                                            PathGeometry pathGeometry = new PathGeometry();
-                                            PathFigure pathFigure = new PathFigure();
-                                            pathFigure.StartPoint = list[0];
-                                            list.Remove(list[0]);
-                                            pathFigure.Segments.Add(new PolyLineSegment(list, false));
-                                            pathGeometry.Figures.Add(pathFigure);
-                                            drawingContext.DrawGeometry(color, null, pathGeometry);
-                                        }
-                                    }
-                                    else if (item.Points.Count() == 1)
-                                    {
-                                        Size sizeRectPoint4 = this.SizeRectPoint;
-                                        sizeRectPoint = this.SizeRectPoint;
-                                        if (sizeRectPoint.Width != 0.0)
-                                        {
-                                            sizeRectPoint = this.SizeRectPoint;
-                                            if (sizeRectPoint.Height != 0.0)
-                                            {
-                                                DrawingContext drawingContext4 = drawingContext;
-                                                Brush color6 = item.Color;
-                                                Pen pen4 = pen;
-                                                double x5 = point.X;
-                                                sizeRectPoint = this.SizeRectPoint;
-                                                double x6 = x5 - sizeRectPoint.Width / 2.0;
-                                                double y3 = point.Y;
-                                                sizeRectPoint = this.SizeRectPoint;
-                                                drawingContext4.DrawRectangle(color6, pen4, new Rect(new Point(x6, y3 - sizeRectPoint.Height / 2.0), this.SizeRectPoint));
-                                            }
-                                        }
-                                    }
-                                    if (this.serieOver == item && this.ptOver == num2)
-                                    {
-                                        FormattedText formattedText = new FormattedText(point3.Label, CultureInfo.GetCultureInfo("en-us"), FlowDirection.LeftToRight, new Typeface(SystemFonts.MessageFontFamily.ToString()), SystemFonts.MessageFontSize, Brushes.Black);
-                                        double x7 = point.X - formattedText.Height / 2.0;
-                                        double y4 = point.Y;
-                                        sizeRectPoint = this.SizeRectPoint;
-                                        Point origin = new Point(x7, y4 - sizeRectPoint.Height / 2.0 - 5.0);
-                                        RotateTransform rotateTransform = new RotateTransform();
-                                        rotateTransform.CenterX = origin.X;
-                                        rotateTransform.CenterY = origin.Y;
-                                        rotateTransform.Angle = -90.0;
-                                        drawingContext.PushTransform(rotateTransform);
-                                        drawingContext.DrawText(formattedText, origin);
+                                        ////////////
+                                        // hilite //
+                                        ////////////
+
+                                        List<Point> lstPt = new List<Point>();
+
+                                        lstPt.Add(new Point(pt.X, this.ActualHeight));
+                                        lstPt.Add(pt);
+                                        lstPt.Add(ptEnd);
+                                        lstPt.Add(new Point(ptEnd.X, this.ActualHeight));
+                                        lstPt.Add(new Point(pt.X, this.ActualHeight));
+
+                                        PathGeometry geometry = new PathGeometry();
+                                        PathFigure figure = new PathFigure();
+                                        figure.StartPoint = lstPt[0];
+                                        lstPt.Remove(lstPt[0]);
+                                        figure.Segments.Add(new PolyLineSegment(lstPt, false)); // or true
+                                        geometry.Figures.Add(figure);
+
+
+                                        drawingContext.DrawGeometry(brush, null, geometry);
+
+                                        /////////////
+                                        // le text //
+                                        /////////////
+
+                                        // Affichage des valeurs
+                                        FormattedText FText = new FormattedText(ps.Label, CultureInfo.GetCultureInfo("en-us"), FlowDirection.LeftToRight, new Typeface(SystemFonts.MessageFontFamily.ToString()), SystemFonts.MessageFontSize, System.Windows.Media.Brushes.Black);
+
+                                        Point ptVal = new Point(pt.X - ((FText.Height - BarSize) / 2), ptEnd.Y - 5);
+
+                                        RotateTransform RT = new RotateTransform();
+                                        RT.CenterX = ptVal.X;
+                                        RT.CenterY = ptVal.Y;
+                                        RT.Angle = -90;
+                                        drawingContext.PushTransform(RT);
+
+                                        drawingContext.DrawText(FText, ptVal);
+
                                         drawingContext.Pop();
                                     }
-                                    point2.X = point.X;
-                                    point2.Y = point.Y;
                                 }
-                                else if (this.GraphType == GraphTypes.CurveStart0)
+                                //}
+
+                                pt.X = ptEnd.X;
+                                pt.Y = ptEnd.Y;
+
+                            }
+                            else if (GraphType == GraphTypes.Histogram)
+                            {
+                                ptEnd.X = (i + 1) * BarSize;
+                                ptEnd.Y = this.ActualHeight - ps.Point;
+
+                                if (ps.Point > 0)
                                 {
-                                    point.X = (double)((num2 + 1) * this.BarSize);
-                                    point.Y = base.ActualHeight - point3.Point;
-                                    drawingContext.DrawLine(pen, point2, point);
-                                    Size sizeRectPoint5 = this.SizeRectPoint;
-                                    sizeRectPoint = this.SizeRectPoint;
-                                    if (sizeRectPoint.Width != 0.0)
+                                    int x = i * BarSize + BeforeSpaceBar;
+                                    int y = ((int)this.ActualHeight) - ((int)ps.Point);
+                                    int width = BarSize - BeforeSpaceBar - AfterSpaceBar;
+                                    int height = ((int)ps.Point) - 1;
+
+                                    if (width < 0)
+                                        width = 0;
+
+                                    if (height < 0)
+                                        height = 0;
+
+                                    double decal = 0;
+
+                                    if (pen.Thickness % 2 != 0)
+                                        decal = 0.5;
+
+                                    Brush brushTmp = null;
+
+                                    if (s.Selected == true)
                                     {
-                                        sizeRectPoint = this.SizeRectPoint;
-                                        if (sizeRectPoint.Height != 0.0)
-                                        {
-                                            DrawingContext drawingContext5 = drawingContext;
-                                            Brush color7 = item.Color;
-                                            Pen pen5 = pen;
-                                            double x8 = point.X;
-                                            sizeRectPoint = this.SizeRectPoint;
-                                            double x9 = x8 - sizeRectPoint.Width / 2.0;
-                                            double y5 = point.Y;
-                                            sizeRectPoint = this.SizeRectPoint;
-                                            drawingContext5.DrawRectangle(color7, pen5, new Rect(new Point(x9, y5 - sizeRectPoint.Height / 2.0), this.SizeRectPoint));
-                                        }
+                                        brushTmp = brush;
                                     }
-                                    if (item.Selected)
+
+                                    if (serieOver == s)
                                     {
-                                        List<Point> list2 = new List<Point>();
-                                        list2.Add(new Point(point2.X, base.ActualHeight));
-                                        list2.Add(point2);
-                                        list2.Add(point);
-                                        list2.Add(new Point(point.X, base.ActualHeight));
-                                        list2.Add(new Point(point2.X, base.ActualHeight));
-                                        PathGeometry pathGeometry2 = new PathGeometry();
-                                        PathFigure pathFigure2 = new PathFigure();
-                                        pathFigure2.StartPoint = list2[0];
-                                        list2.Remove(list2[0]);
-                                        pathFigure2.Segments.Add(new PolyLineSegment(list2, false));
-                                        pathGeometry2.Figures.Add(pathFigure2);
-                                        drawingContext.DrawGeometry(color, null, pathGeometry2);
-                                    }
-                                    if (this.serieOver == item && this.ptOver == num2)
-                                    {
-                                        List<Point> list3 = new List<Point>();
-                                        list3.Add(new Point(point2.X, base.ActualHeight));
-                                        list3.Add(point2);
-                                        list3.Add(point);
-                                        list3.Add(new Point(point.X, base.ActualHeight));
-                                        list3.Add(new Point(point2.X, base.ActualHeight));
-                                        PathGeometry pathGeometry3 = new PathGeometry();
-                                        PathFigure pathFigure3 = new PathFigure();
-                                        pathFigure3.StartPoint = list3[0];
-                                        list3.Remove(list3[0]);
-                                        pathFigure3.Segments.Add(new PolyLineSegment(list3, false));
-                                        pathGeometry3.Figures.Add(pathFigure3);
-                                        drawingContext.DrawGeometry(color, null, pathGeometry3);
-                                        FormattedText formattedText2 = new FormattedText(point3.Label, CultureInfo.GetCultureInfo("en-us"), FlowDirection.LeftToRight, new Typeface(SystemFonts.MessageFontFamily.ToString()), SystemFonts.MessageFontSize, Brushes.Black);
-                                        Point origin2 = new Point(point2.X - (formattedText2.Height - (double)this.BarSize) / 2.0, point.Y - 5.0);
-                                        RotateTransform rotateTransform2 = new RotateTransform();
-                                        rotateTransform2.CenterX = origin2.X;
-                                        rotateTransform2.CenterY = origin2.Y;
-                                        rotateTransform2.Angle = -90.0;
-                                        drawingContext.PushTransform(rotateTransform2);
-                                        drawingContext.DrawText(formattedText2, origin2);
-                                        drawingContext.Pop();
-                                    }
-                                    point2.X = point.X;
-                                    point2.Y = point.Y;
-                                }
-                                else if (this.GraphType == GraphTypes.Histogram)
-                                {
-                                    point.X = (double)((num2 + 1) * this.BarSize);
-                                    point.Y = base.ActualHeight - point3.Point;
-                                    if (point3.Point > 0.0)
-                                    {
-                                        int num4 = num2 * this.BarSize + this.BeforeSpaceBar;
-                                        int num5 = (int)base.ActualHeight - (int)point3.Point;
-                                        int num6 = this.BarSize - this.BeforeSpaceBar - this.AfterSpaceBar;
-                                        int num7 = (int)point3.Point - 1;
-                                        if (num6 < 0)
+                                        if (ptOver == i)
                                         {
-                                            num6 = 0;
-                                        }
-                                        if (num7 < 0)
-                                        {
-                                            num7 = 0;
-                                        }
-                                        double num8 = 0.0;
-                                        if (pen.Thickness % 2.0 != 0.0)
-                                        {
-                                            num8 = 0.5;
-                                        }
-                                        Brush brush = null;
-                                        if (item.Selected)
-                                        {
-                                            brush = color;
-                                        }
-                                        if (this.serieOver == item)
-                                        {
-                                            if (this.ptOver == num2)
-                                            {
-                                                brush = color;
-                                                drawingContext.DrawRectangle(brush, pen, new Rect((double)num4 + num8, (double)num5 + num8, (double)num6, (double)num7));
-                                                FormattedText formattedText3 = new FormattedText(point3.Label, CultureInfo.GetCultureInfo("en-us"), FlowDirection.LeftToRight, new Typeface(SystemFonts.MessageFontFamily.ToString()), SystemFonts.MessageFontSize, Brushes.Black);
-                                                Point origin3 = new Point((double)num4 - (formattedText3.Height - (double)this.BarSize) / 2.0, (double)(num5 - 5));
-                                                RotateTransform rotateTransform3 = new RotateTransform();
-                                                rotateTransform3.CenterX = origin3.X;
-                                                rotateTransform3.CenterY = origin3.Y;
-                                                rotateTransform3.Angle = -90.0;
-                                                drawingContext.PushTransform(rotateTransform3);
-                                                drawingContext.DrawText(formattedText3, origin3);
-                                                drawingContext.Pop();
-                                            }
-                                            else
-                                            {
-                                                drawingContext.DrawRectangle(brush, pen, new Rect((double)num4 + num8, (double)num5 + num8, (double)num6, (double)num7));
-                                            }
+                                            brushTmp = brush;
+
+                                            drawingContext.DrawRectangle(brushTmp, pen, new Rect(x + decal, y + decal, width, height));
+
+                                            /////////////
+                                            // le text //
+                                            /////////////
+
+                                            // Affichage des valeurs
+                                            FormattedText FText = new FormattedText(ps.Label, CultureInfo.GetCultureInfo("en-us"), FlowDirection.LeftToRight, new Typeface(SystemFonts.MessageFontFamily.ToString()), SystemFonts.MessageFontSize, System.Windows.Media.Brushes.Black);
+
+                                            Point ptVal = new Point(x - ((FText.Height - BarSize) / 2), y - 5);
+
+                                            RotateTransform RT = new RotateTransform();
+                                            RT.CenterX = ptVal.X;
+                                            RT.CenterY = ptVal.Y;
+                                            RT.Angle = -90;
+                                            drawingContext.PushTransform(RT);
+
+                                            drawingContext.DrawText(FText, ptVal);
+
+                                            drawingContext.Pop();
                                         }
                                         else
-                                        {
-                                            drawingContext.DrawRectangle(brush, pen, new Rect((double)num4 + num8, (double)num5 + num8, (double)num6, (double)num7));
-                                        }
-                                        point2.X = (double)num4;
-                                        point2.Y = (double)num5;
+                                            drawingContext.DrawRectangle(brushTmp, pen, new Rect(x + decal, y + decal, width, height));
                                     }
+                                    else
+                                        drawingContext.DrawRectangle(brushTmp, pen, new Rect(x + decal, y + decal, width, height));
+
+
+                                    pt.X = x;
+                                    pt.Y = y;
                                 }
-                                num2++;
+
                             }
+
+                            //// Pour le text
+                            //if (serieOver == s)
+                            //{
+                            //    if (ptOver == i)
+                            //    {
+                            //        Point ptVal = new Point(pt.X - (SystemFonts.MessageFontSize / 2), pt.Y);
+
+                            //        RotateTransform RT = new RotateTransform();
+                            //        RT.CenterX = ptVal.X;
+                            //        RT.CenterY = ptVal.Y;
+                            //        RT.Angle = -90;
+                            //        drawingContext.PushTransform(RT);
+
+                            //        // Affichage des valeurs
+                            //        FormattedText FText = new FormattedText(ps.ToString(), CultureInfo.GetCultureInfo("en-us"), FlowDirection.LeftToRight, new Typeface(SystemFonts.MessageFontFamily.ToString()), SystemFonts.MessageFontSize, System.Windows.Media.Brushes.Black);
+                            //        drawingContext.DrawText(FText, ptVal);
+
+
+                            //        drawingContext.Pop();
+
+                            //    }
+                            //}
+
+                            //if (GraphSize.Width < ptEnd.X)
+                            //    GraphSize.Width = ptEnd.X;
+
+                            //if (GraphSize.Height < ps.Point)
+                            //    GraphSize.Height = ps.Point;
+
+
+                            //if (nbPtsMax < i)
+                            //    nbPtsMax = i;
+                            
+                            i++;
                         }
                     }
                 }
-                if (this.GraphSize.Width < point.X)
-                {
-                    this.GraphSize.Width = (double)(num * this.BarSize);
-                }
-                drawingContext.Close();
-                return drawingVisual;
             }
-            return null;
+
+            if (GraphSize.Width < ptEnd.X)
+                GraphSize.Width = nbPtsMax * BarSize;
+
+            // Close the DrawingContext to persist changes to the DrawingVisual.
+            drawingContext.Close();
+
+            return drawingVisual;
         }
 
         protected override Size MeasureOverride(Size availableSize)
         {
-            if (this.GraphSize.Width == 0.0 && this.GraphSize.Height == 0.0)
+            if (GraphSize.Width != 0 || GraphSize.Height != 0)
+                return GraphSize;
+
+            if (Series != null)
             {
-                if (this.Series != null)
+                foreach (var s in Series)
                 {
-                    foreach (Serie item in this.Series)
+                    if (s.Points != null)
                     {
-                        if (item.Points != null)
+                        int i = 0;
+                        foreach (var ps in s.Points)
                         {
-                            int num = 0;
-                            foreach (Serie.Value point in item.Points)
-                            {
-                                if (this.GraphSize.Width < (double)(num * this.BarSize))
-                                {
-                                    this.GraphSize.Width = (double)(num * this.BarSize);
-                                }
-                                if (this.GraphSize.Height < point.Point)
-                                {
-                                    this.GraphSize.Height = point.Point;
-                                }
-                                num++;
-                            }
+                            if (GraphSize.Width < i * BarSize)
+                                GraphSize.Width = i * BarSize;
+
+                            if (GraphSize.Height < ps.Point)
+                                GraphSize.Height = ps.Point;
+
+                            i++;
                         }
                     }
                 }
-                return this.GraphSize;
             }
-            return this.GraphSize;
+
+            return GraphSize;
         }
 
+        // Provide a required override for the VisualChildrenCount property.
+        protected override int VisualChildrenCount
+        {
+            get { return childrenCount; }
+        }
+
+        // Provide a required override for the GetVisualChild method.
         protected override Visual GetVisualChild(int index)
         {
-            if (index >= 0 && index <= this.childrenCount)
+            if (index < 0 || index > childrenCount)
             {
-                return this._children[index];
+                throw new ArgumentOutOfRangeException();
             }
-            throw new ArgumentOutOfRangeException();
+
+            return _children[index];
         }
 
+        //
+        public event PropertyChangedEventHandler PropertyChanged;
         private void OnPropertyChanged(PropertyChangedEventArgs e)
         {
-            if (this.PropertyChanged != null)
-            {
-                this.PropertyChanged(this, e);
-            }
+            if (PropertyChanged != null)
+                PropertyChanged(this, e);
         }
 
         public void ResetEvent()
         {
-            this.PropertyChanged = null;
+            PropertyChanged = null;
+        }
+
+        public class Serie
+        {
+            public string Name;
+            public Brush Color;
+            public bool Selected = false;
+            public IEnumerable<Value> Points;
+
+            public class Value
+            {
+                public double Point;
+                public string Label;
+            }
         }
     }
 }

@@ -1,20 +1,98 @@
-﻿// JFCGridControl.JFCGridColumnHeader
-using JFCGridControl;
-using System.Windows;
-using System.Windows.Controls;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using System.Windows.Controls.Primitives;
-
+using System.Windows;
+using System.Windows.Media;
 
 namespace JFCGridControl
 {
     public class JFCGridColumnHeader : ButtonBase
     {
+        public JFCGridColumnHeader()
+        {
+            this.ClipToBounds = true;
+            this.IsTabStop = false;
+            this.Focusable = false;
+
+            BHeader = new JFCGridColumnBelowHeader(this);
+            HeaderSort = new JFCGridColumnHeaderSort(this);
+            
+            HeaderSort.Click += new RoutedEventHandler(HeaderSort_Click);
+                    
+        }       
+
+        public event RoutedEventHandler ClickSort;
+        internal void OnClickSort(object sender, RoutedEventArgs e)
+        {
+            if (ClickSort != null)
+                ClickSort(this, e);
+        }
+        
+        public JFCGridColumnHeaderSort HeaderSort
+        {
+            get { return (JFCGridColumnHeaderSort)GetValue(HeaderSortProperty); }
+            set { SetValue(HeaderSortProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for HeaderSort.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty HeaderSortProperty =
+            DependencyProperty.Register("HeaderSort", typeof(JFCGridColumnHeaderSort), typeof(JFCGridColumnHeader), new UIPropertyMetadata(null));
+
+        
+
+        void HeaderSort_Click(object sender, RoutedEventArgs e)
+        {
+            OnClickSort(sender, e);
+
+            //e.Handled = true;
+        }
+
+        internal JFCGridColumnBelowHeader BHeader;
+
+        public JFCGridColumnBelowHeader BelowHeader
+        {
+            get { return BHeader; }
+        }
+
+        public JFCGridColumn Column
+        {
+            get { return (JFCGridColumn)GetValue(ColumnProperty); }
+            internal set { SetValue(ColumnProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for Column.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty ColumnProperty =
+            DependencyProperty.Register("Column", typeof(JFCGridColumn), typeof(JFCGridColumnHeader), new UIPropertyMetadata(null));
+
+
         public enum SortType
         {
             None,
             Ascending,
             Descending
         }
+
+        public SortType IsSort
+        {
+            get { return (SortType)GetValue(IsSortProperty); }
+            set { SetValue(IsSortProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for Sort.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty IsSortProperty = DependencyProperty.Register("IsSort", typeof(SortType), typeof(JFCGridColumnHeader), new UIPropertyMetadata(SortType.None));
+
+
+        public double Orientation
+        {
+            get { return (double)GetValue(OrientationProperty); }
+            set { SetValue(OrientationProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for Orientation.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty OrientationProperty =
+            DependencyProperty.Register("Orientation", typeof(double), typeof(JFCGridColumnHeader), new UIPropertyMetadata(0.0));
 
         public enum InsertType
         {
@@ -25,135 +103,49 @@ namespace JFCGridControl
             Bottom
         }
 
-        public static readonly DependencyProperty HeaderSortProperty = DependencyProperty.Register("HeaderSort", typeof(JFCGridColumnHeaderSort), typeof(JFCGridColumnHeader), new UIPropertyMetadata(null));
-
-        internal JFCGridColumnBelowHeader BHeader;
-
-        public static readonly DependencyProperty ColumnProperty = DependencyProperty.Register("Column", typeof(JFCGridColumn), typeof(JFCGridColumnHeader), new UIPropertyMetadata(null));
-
-        public static readonly DependencyProperty IsSortProperty = DependencyProperty.Register("IsSort", typeof(SortType), typeof(JFCGridColumnHeader), new UIPropertyMetadata(SortType.None));
-
-        public static readonly DependencyProperty OrientationProperty = DependencyProperty.Register("Orientation", typeof(double), typeof(JFCGridColumnHeader), new UIPropertyMetadata(0.0));
-
-        public static readonly DependencyProperty IsInsertProperty = DependencyProperty.Register("IsInsert", typeof(InsertType), typeof(JFCGridColumnHeader), new UIPropertyMetadata(InsertType.None));
-
-        public JFCGridColumnHeaderSort HeaderSort
-        {
-            get
-            {
-                return (JFCGridColumnHeaderSort)base.GetValue(JFCGridColumnHeader.HeaderSortProperty);
-            }
-            set
-            {
-                base.SetValue(JFCGridColumnHeader.HeaderSortProperty, value);
-            }
-        }
-
-        public JFCGridColumnBelowHeader BelowHeader
-        {
-            get
-            {
-                return this.BHeader;
-            }
-        }
-
-        public JFCGridColumn Column
-        {
-            get
-            {
-                return (JFCGridColumn)base.GetValue(JFCGridColumnHeader.ColumnProperty);
-            }
-            internal set
-            {
-                base.SetValue(JFCGridColumnHeader.ColumnProperty, value);
-            }
-        }
-
-        public SortType IsSort
-        {
-            get
-            {
-                return (SortType)base.GetValue(JFCGridColumnHeader.IsSortProperty);
-            }
-            set
-            {
-                base.SetValue(JFCGridColumnHeader.IsSortProperty, value);
-            }
-        }
-
-        public double Orientation
-        {
-            get
-            {
-                return (double)base.GetValue(JFCGridColumnHeader.OrientationProperty);
-            }
-            set
-            {
-                base.SetValue(JFCGridColumnHeader.OrientationProperty, value);
-            }
-        }
-
         public InsertType IsInsert
         {
-            get
-            {
-                return (InsertType)base.GetValue(JFCGridColumnHeader.IsInsertProperty);
-            }
-            set
-            {
-                base.SetValue(JFCGridColumnHeader.IsInsertProperty, value);
-            }
+            get { return (InsertType)GetValue(IsInsertProperty); }
+            set { SetValue(IsInsertProperty, value); }
         }
 
-        public event RoutedEventHandler ClickSort;
-
-        public event DependencyPropertyChangedEventHandler ContentChanged;
-
-        public JFCGridColumnHeader()
-        {
-            base.ClipToBounds = true;
-            base.IsTabStop = false;
-            base.Focusable = false;
-            this.BHeader = new JFCGridColumnBelowHeader(this);
-            this.HeaderSort = new JFCGridColumnHeaderSort(this);
-            this.HeaderSort.Click += this.HeaderSort_Click;
-        }
-
-        internal void OnClickSort(object sender, RoutedEventArgs e)
-        {
-            if (this.ClickSort != null)
-            {
-                this.ClickSort(this, e);
-            }
-        }
-
-        private void HeaderSort_Click(object sender, RoutedEventArgs e)
-        {
-            this.OnClickSort(sender, e);
-        }
+        // Using a DependencyProperty as the backing store for Sort.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty IsInsertProperty = DependencyProperty.Register("IsInsert", typeof(InsertType), typeof(JFCGridColumnHeader), new UIPropertyMetadata(InsertType.None));
+        
 
         protected override void OnContentChanged(object oldContent, object newContent)
         {
             base.OnContentChanged(oldContent, newContent);
-            DependencyPropertyChangedEventArgs e = new DependencyPropertyChangedEventArgs(ContentControl.ContentProperty, oldContent, newContent);
-            this.OnContentChanged(this, e);
+
+            DependencyPropertyChangedEventArgs e = new DependencyPropertyChangedEventArgs(JFCGridColumnHeader.ContentProperty, oldContent, newContent);
+
+            OnContentChanged(this, e);
         }
 
+        public event DependencyPropertyChangedEventHandler ContentChanged;
         internal void OnContentChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
-            if (this.ContentChanged != null)
-            {
-                this.ContentChanged(this, e);
-            }
+            if (ContentChanged != null)
+                ContentChanged(this, e);
         }
 
         protected override void OnPropertyChanged(DependencyPropertyChangedEventArgs e)
         {
             base.OnPropertyChanged(e);
-            if (e.Property == FrameworkElement.ContextMenuProperty && this.BHeader != null)
+
+
+            if (e.Property == JFCGridColumnHeader.ContextMenuProperty)
             {
-                this.BHeader.ContextMenu = (e.NewValue as ContextMenu);
+                if (BHeader != null)
+                    BHeader.ContextMenu = e.NewValue as System.Windows.Controls.ContextMenu;
             }
+
         }
+
+        
+
+
+		  
+	
     }
 }

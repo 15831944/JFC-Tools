@@ -1,21 +1,332 @@
-﻿// JFCGridControl.JFCGridColumn
-using JFCGridControl;
-using System;
-using System.Collections.Specialized;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Windows;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Windows.Controls;
-
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Collections.Specialized;
 
 namespace JFCGridControl
 {
     public class JFCGridColumn : JFCGridColumnBase
     {
+        public JFCGridColumn()
+        {
+            Header = new JFCGridColumnHeader();
+
+            item = new JFCGridItem(null);
+            item.Orientation = Orientation.Vertical;
+
+            childrenColumns.Parent = this;
+            childrenColumns.CollectionChanged += new System.Collections.Specialized.NotifyCollectionChangedEventHandler(childrenColumns_CollectionChanged);
+        }
+
+        public JFCGridColumn(string BindingPath)
+        {
+            this.BindingPath = BindingPath;
+            Header = new JFCGridColumnHeader();
+
+            item = new JFCGridItem(null);
+            item.Orientation = Orientation.Vertical;
+
+            childrenColumns.Parent = this;
+            childrenColumns.CollectionChanged += new System.Collections.Specialized.NotifyCollectionChangedEventHandler(childrenColumns_CollectionChanged);
+        }
+
+        public JFCGridColumn(Func<object, object> getterHandler)
+            : base(getterHandler)
+        {
+            Header = new JFCGridColumnHeader();
+
+            item = new JFCGridItem(null);
+            item.Orientation = Orientation.Vertical;
+
+            childrenColumns.Parent = this;
+            childrenColumns.CollectionChanged += new System.Collections.Specialized.NotifyCollectionChangedEventHandler(childrenColumns_CollectionChanged);
+        }
+
         public enum FrozenType
         {
             None,
             Start,
             End
+        }
+
+        private FrozenType frozen = FrozenType.None;
+        public FrozenType Frozen
+        {
+            get { return frozen; }
+            set
+            {
+                var oldvalue = frozen;
+                frozen = value;
+                OnPropertyChanged(new PropertyChangedExtendedEventArgs<Object>("Frozen", oldvalue, value));
+            }
+        }
+
+        private JFCGridColumnHeader header;
+        public JFCGridColumnHeader Header
+        {
+            get { return header; }
+            set
+            {
+                var oldvalue = header;
+                header = value;
+                header.Column = this;
+                //header.SizeChanged += new SizeChangedEventHandler(header_SizeChanged);
+
+                header.Click += new RoutedEventHandler(header_Click);
+                OnPropertyChanged(new PropertyChangedExtendedEventArgs<Object>("Header", oldvalue, value));
+            }
+        }
+
+        void header_Click(object sender, RoutedEventArgs e)
+        {
+            OnHeaderClick(this, e);
+        }
+
+        // Méthode qui remet à jour la taille de la colonne
+        void header_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            //if (!(e.PreviousSize.Height == 0 && e.PreviousSize.Width == 0))
+            //    Width = new GridLength(e.NewSize.Width);
+            //ActualWidth = new GridLength(e.NewSize.Width);
+        }
+
+        public event RoutedEventHandler HeaderClick;
+        internal void OnHeaderClick(object sender, RoutedEventArgs e)
+        {
+            if (HeaderClick != null)
+                HeaderClick(this, e);
+        }
+
+
+        private bool isResizable = true;
+        public bool IsResizable
+        {
+            get { return isResizable; }
+            set
+            {
+                bool newvalue = false;
+                if (isResizable != value)
+                    newvalue = true;
+
+                var oldvalue = isResizable;
+                isResizable = value;
+
+                if (newvalue == true)
+                    OnPropertyChanged(new PropertyChangedExtendedEventArgs<Object>("IsResizable", oldvalue, value));
+            }
+        }
+
+        private bool isMovable = true;
+        public bool IsMovable
+        {
+            get { return isMovable; }
+            set
+            {
+                bool newvalue = false;
+                if (isMovable != value)
+                    newvalue = true;
+
+                var oldvalue = isMovable;
+                isMovable = value;
+
+                if (newvalue == true)
+                    OnPropertyChanged(new PropertyChangedExtendedEventArgs<Object>("IsMovable", oldvalue, value));
+            }
+        }
+
+        private bool isSelected = false;
+        public bool IsSelected
+        {
+            get { return isSelected; }
+            set
+            {
+                bool newvalue = false;
+                if (isSelected != value)
+                    newvalue = true;
+
+                var oldvalue = isSelected;
+                isSelected = value;
+
+                item.IsSelected = value;
+
+                if (newvalue == true)
+                {
+                    OnPropertyChanged(new PropertyChangedExtendedEventArgs<Object>("IsSelected", oldvalue, value));
+
+                    if (this.ChildrenColumns != null)
+                    {
+                        foreach (var col in this.ChildrenColumns)
+                        {
+                            col.IsSelected = isSelected;
+                        }
+                    }
+                }
+            }
+        }
+
+        private ObservableCollection<JFCGridColumn> childrenColumns = new ObservableCollection<JFCGridColumn>();
+        public ObservableCollection<JFCGridColumn> ChildrenColumns
+        {
+            get { return childrenColumns; }
+            //set
+            //{
+            //    childrenColumns = value;
+            //    OnPropertyChanged(new PropertyChangedEventArgs("ChildrenColumns"));
+            //}
+        }
+
+        void childrenColumns_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            if (childrenColumns.Count() > 0)
+                HaveChildren = true;
+            else
+                HaveChildren = false;
+
+            if (e.Action == NotifyCollectionChangedAction.Add)
+            {
+                foreach (JFCGridColumn col in e.NewItems)
+                {
+                    col.Parent = this;
+                }
+            }
+            else if (e.Action == NotifyCollectionChangedAction.Move)
+            {
+                //foreach (JFCGridColumn col in e.NewItems)
+                //{
+                //    col.Parent = this;
+                //}
+            }
+            else if (e.Action == NotifyCollectionChangedAction.Remove)
+            {
+                foreach (JFCGridColumn col in e.OldItems)
+                {
+                    col.Parent = null;
+                }
+            }
+            else if (e.Action == NotifyCollectionChangedAction.Replace)
+            {
+                foreach (JFCGridColumn col in e.NewItems)
+                {
+                    col.Parent = this;
+                }
+            }
+            else if (e.Action == NotifyCollectionChangedAction.Add)
+            {
+                foreach (JFCGridColumn col in e.OldItems)
+                {
+                    col.Parent = null;
+                }
+            }
+        }
+
+        public Boolean HaveChildren
+        {
+            get { return (Boolean)GetValue(HaveChildrenProperty); }
+            set { SetValue(HaveChildrenProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for HaveChildren.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty HaveChildrenProperty =
+            DependencyProperty.Register("HaveChildren", typeof(Boolean), typeof(JFCGridColumn), new UIPropertyMetadata(false));
+
+        public GridLength actualWidthHeader = new GridLength();
+        public GridLength ActualWidthHeader
+        {
+            get { return actualWidthHeader; }
+            set
+            {
+                bool newvalue = false;
+                if (actualWidthHeader != value)
+                    newvalue = true;
+
+                var oldvalue = actualWidthHeader;
+                actualWidthHeader = value;
+
+                if (newvalue == true)
+                    OnPropertyChanged(new PropertyChangedExtendedEventArgs<Object>("ActualWidthHeader", oldvalue, value));
+
+                if (childrenColumns.Count() == 0)
+                {
+                    if (actualWidth.Value < actualWidthHeader.Value)
+                        ActualWidth = ActualWidthHeader;
+                }
+            }
+        }
+
+        public override GridLength ActualWidth
+        {
+            get
+            {
+                if (childrenColumns.Count() > 0)
+                {
+                    double w = 0;
+
+                    foreach (var col in childrenColumns)
+                    {
+                        w += col.ActualWidth.Value;
+                    }
+
+                    return new GridLength(w);
+                }
+
+                return actualWidth;
+            }
+            set
+            {
+                bool newvalue = false;
+                if (actualWidth != value)
+                    newvalue = true;
+
+                var oldvalue = actualWidth;
+                actualWidth = value;
+
+                if (newvalue == true)
+                    OnPropertyChanged(new PropertyChangedExtendedEventArgs<Object>("ActualWidth", oldvalue, value));
+            }
+        }
+
+        public override GridLength Width
+        {
+            get
+            {
+                if (childrenColumns.Count() > 0)
+                {
+                    double w = 0;
+
+                    foreach (var col in childrenColumns)
+                    {
+                        w += col.Width.Value;
+                    }
+
+                    return new GridLength(w);
+                }
+
+                return width;
+            }
+            set
+            {
+                bool newvalue = false;
+
+                if (width != value)
+                    newvalue = true;
+
+                var oldvalue = width;
+                width = value;
+
+                if (newvalue == true)
+                    //OnPropertyChanged(new PropertyChangedExtendedEventArgs<Object>("Width", oldvalue, value));
+                    OnPropertyChanged(new PropertyChangedExtendedEventArgs<Object>("Width", oldvalue, value));
+
+                if (!width.IsAuto)
+                    ActualWidth = width;
+            }
         }
 
         public enum TypesColumn
@@ -27,398 +338,57 @@ namespace JFCGridControl
             GroupingWithRowWhenNoChildren
         }
 
-        private FrozenType frozen;
-
-        private JFCGridColumnHeader header;
-
-        private bool isResizable = true;
-
-        private bool isMovable = true;
-
-        private bool isSelected;
-
-        private ObservableCollection<JFCGridColumn> childrenColumns = new ObservableCollection<JFCGridColumn>();
-
-        public static readonly DependencyProperty HaveChildrenProperty = DependencyProperty.Register("HaveChildren", typeof(bool), typeof(JFCGridColumn), new UIPropertyMetadata(false));
-
-        public GridLength actualWidthHeader;
-
-        private TypesColumn typeColumn;
-
-        private int levelGrouping = -1;
-
-        private JFCGridItem item;
-
-        private object tag;
-
-        public FrozenType Frozen
-        {
-            get
-            {
-                return this.frozen;
-            }
-            set
-            {
-                FrozenType frozenType = this.frozen;
-                this.frozen = value;
-                base.OnPropertyChanged(new PropertyChangedExtendedEventArgs<object>("Frozen", frozenType, value));
-            }
-        }
-
-        public JFCGridColumnHeader Header
-        {
-            get
-            {
-                return this.header;
-            }
-            set
-            {
-                JFCGridColumnHeader oldValue = this.header;
-                this.header = value;
-                this.header.Column = this;
-                this.header.Click += this.header_Click;
-                base.OnPropertyChanged(new PropertyChangedExtendedEventArgs<object>("Header", oldValue, value));
-            }
-        }
-
-        public bool IsResizable
-        {
-            get
-            {
-                return this.isResizable;
-            }
-            set
-            {
-                bool flag = false;
-                if (this.isResizable != value)
-                {
-                    flag = true;
-                }
-                bool flag2 = this.isResizable;
-                this.isResizable = value;
-                if (flag)
-                {
-                    base.OnPropertyChanged(new PropertyChangedExtendedEventArgs<object>("IsResizable", flag2, value));
-                }
-            }
-        }
-
-        public bool IsMovable
-        {
-            get
-            {
-                return this.isMovable;
-            }
-            set
-            {
-                bool flag = false;
-                if (this.isMovable != value)
-                {
-                    flag = true;
-                }
-                bool flag2 = this.isMovable;
-                this.isMovable = value;
-                if (flag)
-                {
-                    base.OnPropertyChanged(new PropertyChangedExtendedEventArgs<object>("IsMovable", flag2, value));
-                }
-            }
-        }
-
-        public bool IsSelected
-        {
-            get
-            {
-                return this.isSelected;
-            }
-            set
-            {
-                bool flag = false;
-                if (this.isSelected != value)
-                {
-                    flag = true;
-                }
-                bool flag2 = this.isSelected;
-                this.isSelected = value;
-                this.item.IsSelected = value;
-                if (flag)
-                {
-                    base.OnPropertyChanged(new PropertyChangedExtendedEventArgs<object>("IsSelected", flag2, value));
-                    if (this.ChildrenColumns != null)
-                    {
-                        foreach (JFCGridColumn childrenColumn in this.ChildrenColumns)
-                        {
-                            childrenColumn.IsSelected = this.isSelected;
-                        }
-                    }
-                }
-            }
-        }
-
-        public ObservableCollection<JFCGridColumn> ChildrenColumns
-        {
-            get
-            {
-                return this.childrenColumns;
-            }
-        }
-
-        public bool HaveChildren
-        {
-            get
-            {
-                return (bool)base.GetValue(JFCGridColumn.HaveChildrenProperty);
-            }
-            set
-            {
-                base.SetValue(JFCGridColumn.HaveChildrenProperty, value);
-            }
-        }
-
-        public GridLength ActualWidthHeader
-        {
-            get
-            {
-                return this.actualWidthHeader;
-            }
-            set
-            {
-                bool flag = false;
-                if (this.actualWidthHeader != value)
-                {
-                    flag = true;
-                }
-                GridLength gridLength = this.actualWidthHeader;
-                this.actualWidthHeader = value;
-                if (flag)
-                {
-                    base.OnPropertyChanged(new PropertyChangedExtendedEventArgs<object>("ActualWidthHeader", gridLength, value));
-                }
-                if (this.childrenColumns.Count() == 0 && base.actualWidth.Value < this.actualWidthHeader.Value)
-                {
-                    this.ActualWidth = this.ActualWidthHeader;
-                }
-            }
-        }
-
-        public override GridLength ActualWidth
-        {
-            get
-            {
-                if (this.childrenColumns.Count() > 0)
-                {
-                    double num = 0.0;
-                    foreach (JFCGridColumn childrenColumn in this.childrenColumns)
-                    {
-                        num += childrenColumn.ActualWidth.Value;
-                    }
-                    return new GridLength(num);
-                }
-                return base.actualWidth;
-            }
-            set
-            {
-                bool flag = false;
-                if (base.actualWidth != value)
-                {
-                    flag = true;
-                }
-                GridLength actualWidth = base.actualWidth;
-                base.actualWidth = value;
-                if (flag)
-                {
-                    base.OnPropertyChanged(new PropertyChangedExtendedEventArgs<object>("ActualWidth", actualWidth, value));
-                }
-            }
-        }
-
-        public override GridLength Width
-        {
-            get
-            {
-                if (this.childrenColumns.Count() > 0)
-                {
-                    double num = 0.0;
-                    foreach (JFCGridColumn childrenColumn in this.childrenColumns)
-                    {
-                        num += childrenColumn.Width.Value;
-                    }
-                    return new GridLength(num);
-                }
-                return base.width;
-            }
-            set
-            {
-                bool flag = false;
-                if (base.width != value)
-                {
-                    flag = true;
-                }
-                GridLength width = base.width;
-                base.width = value;
-                if (flag)
-                {
-                    base.OnPropertyChanged(new PropertyChangedExtendedEventArgs<object>("Width", width, value));
-                }
-                if (!base.width.IsAuto)
-                {
-                    this.ActualWidth = base.width;
-                }
-            }
-        }
-
+        private TypesColumn typeColumn = TypesColumn.Normal;
         public TypesColumn TypeColumn
         {
-            get
-            {
-                return this.typeColumn;
-            }
+            get { return typeColumn; }
             set
             {
-                bool flag = false;
-                if (this.typeColumn != value)
-                {
-                    flag = true;
-                }
-                TypesColumn typesColumn = this.typeColumn;
-                this.typeColumn = value;
-                if (flag)
-                {
-                    base.OnPropertyChanged(new PropertyChangedExtendedEventArgs<object>("TypeColumn", typesColumn, value));
-                }
+                bool newvalue = false;
+                if (typeColumn != value)
+                    newvalue = true;
+
+                var oldvalue = typeColumn;
+                typeColumn = value;
+
+                if (newvalue == true)
+                    OnPropertyChanged(new PropertyChangedExtendedEventArgs<Object>("TypeColumn", oldvalue, value));
             }
         }
 
+        private int levelGrouping = -1;
         public int LevelGrouping
         {
-            get
-            {
-                return this.levelGrouping;
-            }
+            get { return levelGrouping; }
             set
             {
-                int num = this.levelGrouping;
-                this.levelGrouping = value;
-                base.OnPropertyChanged(new PropertyChangedExtendedEventArgs<object>("LevelGrouping", num, value));
+                var oldvalue = levelGrouping;
+                levelGrouping = value;
+                OnPropertyChanged(new PropertyChangedExtendedEventArgs<Object>("LevelGrouping", oldvalue, value));
             }
         }
 
+        private JFCGridItem item = null;
         public JFCGridItem Item
         {
-            get
-            {
-                return this.item;
-            }
+            get { return item; }
             set
             {
-                JFCGridItem oldValue = this.item;
-                this.item = value;
-                base.OnPropertyChanged(new PropertyChangedExtendedEventArgs<object>("Item", oldValue, value));
+                var oldvalue = item;
+                item = value;
+                OnPropertyChanged(new PropertyChangedExtendedEventArgs<Object>("Item", oldvalue, value));
             }
         }
-
+        
+        private object tag = null;
         public object Tag
         {
-            get
-            {
-                return this.tag;
-            }
+            get { return tag; }
             set
             {
-                object oldValue = this.tag;
-                this.tag = value;
-                base.OnPropertyChanged(new PropertyChangedExtendedEventArgs<object>("Tag", oldValue, value));
-            }
-        }
-
-        public event RoutedEventHandler HeaderClick;
-
-        public JFCGridColumn()
-        {
-            this.Header = new JFCGridColumnHeader();
-            this.item = new JFCGridItem(null);
-            this.item.Orientation = Orientation.Vertical;
-            this.childrenColumns.Parent = this;
-            this.childrenColumns.CollectionChanged += this.childrenColumns_CollectionChanged;
-        }
-
-        public JFCGridColumn(string BindingPath)
-        {
-            base.BindingPath = BindingPath;
-            this.Header = new JFCGridColumnHeader();
-            this.item = new JFCGridItem(null);
-            this.item.Orientation = Orientation.Vertical;
-            this.childrenColumns.Parent = this;
-            this.childrenColumns.CollectionChanged += this.childrenColumns_CollectionChanged;
-        }
-
-        public JFCGridColumn(Func<object, object> getterHandler)
-            : base(getterHandler)
-        {
-            this.Header = new JFCGridColumnHeader();
-            this.item = new JFCGridItem(null);
-            this.item.Orientation = Orientation.Vertical;
-            this.childrenColumns.Parent = this;
-            this.childrenColumns.CollectionChanged += this.childrenColumns_CollectionChanged;
-        }
-
-        private void header_Click(object sender, RoutedEventArgs e)
-        {
-            this.OnHeaderClick(this, e);
-        }
-
-        private void header_SizeChanged(object sender, SizeChangedEventArgs e)
-        {
-        }
-
-        internal void OnHeaderClick(object sender, RoutedEventArgs e)
-        {
-            if (this.HeaderClick != null)
-            {
-                this.HeaderClick(this, e);
-            }
-        }
-
-        private void childrenColumns_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
-        {
-            if (this.childrenColumns.Count() > 0)
-            {
-                this.HaveChildren = true;
-            }
-            else
-            {
-                this.HaveChildren = false;
-            }
-            if (e.Action == NotifyCollectionChangedAction.Add)
-            {
-                foreach (JFCGridColumn newItem in e.NewItems)
-                {
-                    newItem.Parent = this;
-                }
-            }
-            else if (e.Action != NotifyCollectionChangedAction.Move)
-            {
-                if (e.Action == NotifyCollectionChangedAction.Remove)
-                {
-                    foreach (JFCGridColumn oldItem in e.OldItems)
-                    {
-                        oldItem.Parent = null;
-                    }
-                }
-                else if (e.Action == NotifyCollectionChangedAction.Replace)
-                {
-                    foreach (JFCGridColumn newItem2 in e.NewItems)
-                    {
-                        newItem2.Parent = this;
-                    }
-                }
-                else if (e.Action == NotifyCollectionChangedAction.Add)
-                {
-                    foreach (JFCGridColumn oldItem2 in e.OldItems)
-                    {
-                        oldItem2.Parent = null;
-                    }
-                }
+                var oldvalue = tag;
+                tag = value;
+                OnPropertyChanged(new PropertyChangedExtendedEventArgs<Object>("Tag", oldvalue, value));
             }
         }
     }

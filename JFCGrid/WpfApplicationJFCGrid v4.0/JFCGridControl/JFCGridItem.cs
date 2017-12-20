@@ -1,33 +1,29 @@
-﻿// JFCGridControl.JFCGridItem
-using JFCGridControl;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
+using System.Windows.Shapes;
 using System.Windows;
+using System.Windows.Media;
+using System.ComponentModel;
 using System.Windows.Controls;
 using System.Windows.Input;
-
 
 namespace JFCGridControl
 {
     public class JFCGridItem : ContentControl
     {
-        internal bool CallIsMouseOverLineCallBack = true;
 
-        public static readonly DependencyProperty IsMouseOverLineProperty = DependencyProperty.Register("IsMouseOverLine", typeof(bool), typeof(JFCGridItem), new UIPropertyMetadata(false, JFCGridItem.UpdateIsMouseOverLine));
+        public JFCGridItem(JFCGrid parent)
+        {
+            this.ClipToBounds = true;
+            this.SnapsToDevicePixels = true;
+            this.Focusable = false;
 
-        internal bool CallIsMouseOverColumnCallBack = true;
+            this.Peer = new List<JFCGridItem>();
 
-        public static readonly DependencyProperty IsMouseOverColumnProperty = DependencyProperty.Register("IsMouseOverColumn", typeof(bool), typeof(JFCGridItem), new UIPropertyMetadata(false, JFCGridItem.UpdateIsMouseOverColumn));
-
-        public static readonly DependencyProperty IsSelectedProperty = DependencyProperty.Register("IsSelected", typeof(bool), typeof(JFCGridItem), new UIPropertyMetadata(false));
-
-        public static readonly DependencyProperty IsAlternateProperty = DependencyProperty.Register("IsAlternate", typeof(bool), typeof(JFCGridItem), new UIPropertyMetadata(false));
-
-        public static readonly DependencyProperty OrientationProperty = DependencyProperty.Register("Orientation", typeof(Orientation), typeof(JFCGridItem), new UIPropertyMetadata(Orientation.Horizontal, JFCGridItem.UpdateOrientation));
-
-        private JFCExpendItem data;
-
-        public static readonly DependencyProperty SourceProperty = DependencyProperty.Register("Source", typeof(object), typeof(JFCGridItem), new UIPropertyMetadata("test"));
+            this.ParentGrid = parent;
+        }
 
         public JFCGrid ParentGrid
         {
@@ -41,123 +37,18 @@ namespace JFCGridControl
             set;
         }
 
+        public void SelectedPeer(bool isSelected)
+        {
+            foreach (var peer in Peer)
+            {
+                peer.IsSelected = isSelected;
+            }
+        }
+
         public int IndexData
         {
             get;
             set;
-        }
-
-        public bool IsMouseOverLine
-        {
-            get
-            {
-                return (bool)base.GetValue(JFCGridItem.IsMouseOverLineProperty);
-            }
-            set
-            {
-                base.SetValue(JFCGridItem.IsMouseOverLineProperty, value);
-            }
-        }
-
-        public bool IsMouseOverColumn
-        {
-            get
-            {
-                return (bool)base.GetValue(JFCGridItem.IsMouseOverColumnProperty);
-            }
-            set
-            {
-                base.SetValue(JFCGridItem.IsMouseOverColumnProperty, value);
-            }
-        }
-
-        public bool IsSelected
-        {
-            get
-            {
-                return (bool)base.GetValue(JFCGridItem.IsSelectedProperty);
-            }
-            set
-            {
-                base.SetValue(JFCGridItem.IsSelectedProperty, value);
-            }
-        }
-
-        public bool IsAlternate
-        {
-            get
-            {
-                return (bool)base.GetValue(JFCGridItem.IsAlternateProperty);
-            }
-            set
-            {
-                base.SetValue(JFCGridItem.IsAlternateProperty, value);
-            }
-        }
-
-        public Orientation Orientation
-        {
-            get
-            {
-                return (Orientation)base.GetValue(JFCGridItem.OrientationProperty);
-            }
-            set
-            {
-                base.SetValue(JFCGridItem.OrientationProperty, value);
-            }
-        }
-
-        internal JFCExpendItem Data
-        {
-            get
-            {
-                return this.data;
-            }
-            set
-            {
-                this.data = value;
-                if (this.data != null)
-                {
-                    this.Source = this.data.Obj;
-                }
-                else
-                {
-                    this.Source = null;
-                }
-            }
-        }
-
-        public object Source
-        {
-            get
-            {
-                return base.GetValue(JFCGridItem.SourceProperty);
-            }
-            private set
-            {
-                base.SetValue(JFCGridItem.SourceProperty, value);
-            }
-        }
-
-        public event RoutedEventHandler IsMouseOverLineChanged;
-
-        public event RoutedEventHandler IsMouseOverColumnChanged;
-
-        public JFCGridItem(JFCGrid parent)
-        {
-            base.ClipToBounds = true;
-            base.SnapsToDevicePixels = true;
-            base.Focusable = false;
-            this.Peer = new List<JFCGridItem>();
-            this.ParentGrid = parent;
-        }
-
-        public void SelectedPeer(bool isSelected)
-        {
-            foreach (JFCGridItem item in this.Peer)
-            {
-                item.IsSelected = isSelected;
-            }
         }
 
         protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
@@ -167,178 +58,359 @@ namespace JFCGridControl
 
         public void MouseEnterItem()
         {
-            if (this.Orientation == Orientation.Horizontal)
+            if (this.Orientation == System.Windows.Controls.Orientation.Horizontal)
             {
-                if (!(bool)base.GetValue(JFCGridItem.IsMouseOverLineProperty))
+                Boolean IsMouseOver = (Boolean)this.GetValue(JFCGridItem.IsMouseOverLineProperty);
+
+                if (IsMouseOver != true)
                 {
-                    base.SetValue(JFCGridItem.IsMouseOverLineProperty, true);
-                    if (this.Peer != null)
+
+                    this.SetValue(JFCGridItem.IsMouseOverLineProperty, true);
+
+                    if (Peer != null)
                     {
-                        foreach (JFCGridItem item in this.Peer)
+                        foreach (var peer in Peer)
                         {
-                            item.CallIsMouseOverLineCallBack = false;
-                            item.SetValue(JFCGridItem.IsMouseOverLineProperty, true);
-                            item.CallIsMouseOverLineCallBack = true;
+                            peer.CallIsMouseOverLineCallBack = false;
+                            peer.SetValue(JFCGridItem.IsMouseOverLineProperty, true);
+                            peer.CallIsMouseOverLineCallBack = true;
                         }
                     }
+
                 }
             }
-            else
+            else if (this.Orientation == System.Windows.Controls.Orientation.Vertical)
             {
-                Orientation orientation = this.Orientation;
+                //Boolean IsMouseOver = (Boolean)this.GetValue(JFCGridItem.IsMouseOverColumnProperty);
+
+                //if (IsMouseOver != true)
+                //{
+                //    this.SetValue(JFCGridItem.IsMouseOverColumnProperty, true);
+
+                //    if (Peer != null)
+                //    {
+                //        foreach (var peer in Peer)
+                //        {
+                //            peer.CallIsMouseOverColumnCallBack = false;
+                //            peer.SetValue(JFCGridItem.IsMouseOverColumnProperty, true);
+                //            peer.CallIsMouseOverColumnCallBack = true;
+                //        }
+                //    }
+                //}
             }
         }
 
         public void MouseLeaveItem()
         {
-            if (this.Orientation == Orientation.Horizontal)
+            if (this.Orientation == System.Windows.Controls.Orientation.Horizontal)
             {
-                if ((bool)base.GetValue(JFCGridItem.IsMouseOverLineProperty))
+                Boolean IsMouseOver = (Boolean)this.GetValue(JFCGridItem.IsMouseOverLineProperty);
+
+                if (IsMouseOver != false)
                 {
-                    base.SetValue(JFCGridItem.IsMouseOverLineProperty, false);
-                    if (this.Peer != null)
+
+                    this.SetValue(JFCGridItem.IsMouseOverLineProperty, false);
+
+                    if (Peer != null)
                     {
-                        foreach (JFCGridItem item in this.Peer)
+                        foreach (var peer in Peer)
                         {
-                            item.CallIsMouseOverLineCallBack = false;
-                            item.SetValue(JFCGridItem.IsMouseOverLineProperty, false);
-                            item.CallIsMouseOverLineCallBack = true;
+                            peer.CallIsMouseOverLineCallBack = false;
+                            peer.SetValue(JFCGridItem.IsMouseOverLineProperty, false);
+                            peer.CallIsMouseOverLineCallBack = true;
                         }
                     }
                 }
             }
-            else
+            else if (this.Orientation == System.Windows.Controls.Orientation.Vertical)
             {
-                Orientation orientation = this.Orientation;
+                //this.SetValue(JFCGridItem.IsMouseOverColumnProperty, false);
+
+                //if (Peer != null)
+                //{
+                //    foreach (var peer in Peer)
+                //    {
+                //        peer.CallIsMouseOverColumnCallBack = false;
+                //        peer.SetValue(JFCGridItem.IsMouseOverColumnProperty, false);
+                //        peer.CallIsMouseOverColumnCallBack = true;
+                //    }
+                //}
             }
         }
+
 
         protected override void OnMouseEnter(MouseEventArgs e)
         {
             base.OnMouseEnter(e);
-            if (this.Orientation == Orientation.Horizontal)
+
+            if (this.Orientation == System.Windows.Controls.Orientation.Horizontal)
             {
-                base.SetValue(JFCGridItem.IsMouseOverLineProperty, true);
-                if (this.Peer != null)
+                this.SetValue(JFCGridItem.IsMouseOverLineProperty, true);
+
+                if (Peer != null)
                 {
-                    foreach (JFCGridItem item in this.Peer)
+                    foreach (var peer in Peer)
                     {
-                        item.CallIsMouseOverLineCallBack = false;
-                        item.SetValue(JFCGridItem.IsMouseOverLineProperty, true);
-                        item.CallIsMouseOverLineCallBack = true;
+                        peer.CallIsMouseOverLineCallBack = false;
+                        peer.SetValue(JFCGridItem.IsMouseOverLineProperty, true);
+                        peer.CallIsMouseOverLineCallBack = true;
                     }
                 }
             }
-            else
+            else if (this.Orientation == System.Windows.Controls.Orientation.Vertical)
             {
-                Orientation orientation = this.Orientation;
+                //this.SetValue(JFCGridItem.IsMouseOverColumnProperty, true);
+
+                //if (Peer != null)
+                //{
+                //    foreach (var peer in Peer)
+                //    {
+                //        peer.CallIsMouseOverColumnCallBack = false;
+                //        peer.SetValue(JFCGridItem.IsMouseOverColumnProperty, true);
+                //        peer.CallIsMouseOverColumnCallBack = true;
+                //    }
+                //}
             }
         }
 
         protected override void OnMouseLeave(MouseEventArgs e)
         {
             base.OnMouseLeave(e);
-            if (this.Orientation == Orientation.Horizontal)
+
+            if (this.Orientation == System.Windows.Controls.Orientation.Horizontal)
             {
-                base.SetValue(JFCGridItem.IsMouseOverLineProperty, false);
-                if (this.Peer != null)
+                this.SetValue(JFCGridItem.IsMouseOverLineProperty, false);
+
+                if (Peer != null)
                 {
-                    foreach (JFCGridItem item in this.Peer)
+                    foreach (var peer in Peer)
                     {
-                        item.CallIsMouseOverLineCallBack = false;
-                        item.SetValue(JFCGridItem.IsMouseOverLineProperty, false);
-                        item.CallIsMouseOverLineCallBack = true;
+                        peer.CallIsMouseOverLineCallBack = false;
+                        peer.SetValue(JFCGridItem.IsMouseOverLineProperty, false);
+                        peer.CallIsMouseOverLineCallBack = true;
                     }
                 }
             }
-            else
+            else if (this.Orientation == System.Windows.Controls.Orientation.Vertical)
             {
-                Orientation orientation = this.Orientation;
+                //this.SetValue(JFCGridItem.IsMouseOverColumnProperty, false);
+
+                //if (Peer != null)
+                //{
+                //    foreach (var peer in Peer)
+                //    {
+                //        peer.CallIsMouseOverColumnCallBack = false;
+                //        peer.SetValue(JFCGridItem.IsMouseOverColumnProperty, false);
+                //        peer.CallIsMouseOverColumnCallBack = true;
+                //    }
+                //}
             }
         }
+
+        internal Boolean CallIsMouseOverLineCallBack = true;
+
+        public Boolean IsMouseOverLine
+        {
+            get { return (Boolean)GetValue(IsMouseOverLineProperty); }
+            set { SetValue(IsMouseOverLineProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for IsMouseOverLine.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty IsMouseOverLineProperty =
+            DependencyProperty.Register("IsMouseOverLine", typeof(Boolean), typeof(JFCGridItem), new UIPropertyMetadata(false, new PropertyChangedCallback(UpdateIsMouseOverLine)));
+
+        internal Boolean CallIsMouseOverColumnCallBack = true;
+
+        public Boolean IsMouseOverColumn
+        {
+            get { return (Boolean)GetValue(IsMouseOverColumnProperty); }
+            set { SetValue(IsMouseOverColumnProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for IsMouseOverColumn.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty IsMouseOverColumnProperty =
+            DependencyProperty.Register("IsMouseOverColumn", typeof(Boolean), typeof(JFCGridItem), new UIPropertyMetadata(false, new PropertyChangedCallback(UpdateIsMouseOverColumn)));
+
+
+        public Boolean IsSelected
+        {
+            get { return (Boolean)GetValue(IsSelectedProperty); }
+            set { SetValue(IsSelectedProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for IsSelected.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty IsSelectedProperty =
+            DependencyProperty.Register("IsSelected", typeof(Boolean), typeof(JFCGridItem), new UIPropertyMetadata(false));
+
+
+        public Boolean IsAlternate
+        {
+            get { return (Boolean)GetValue(IsAlternateProperty); }
+            set { SetValue(IsAlternateProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for IsAlternate.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty IsAlternateProperty =
+            DependencyProperty.Register("IsAlternate", typeof(Boolean), typeof(JFCGridItem), new UIPropertyMetadata(false));
+
+        //public Orientation Orientation;
+        public Orientation Orientation
+        {
+            get { return (Orientation)GetValue(OrientationProperty); }
+            set { SetValue(OrientationProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for Orientation.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty OrientationProperty =
+            DependencyProperty.Register("Orientation", typeof(Orientation), typeof(JFCGridItem), new UIPropertyMetadata(Orientation.Horizontal, new PropertyChangedCallback(UpdateOrientation)));
+
 
         private static void UpdateOrientation(DependencyObject obj, DependencyPropertyChangedEventArgs e)
         {
-            JFCGridItem jFCGridItem = obj as JFCGridItem;
-            if (jFCGridItem.Orientation == Orientation.Vertical)
+            JFCGridItem Item = obj as JFCGridItem;
+
+            if (Item.Orientation == Orientation.Vertical)
             {
-                jFCGridItem.MouseMove += JFCGridItem.Item_MouseMove;
+                Item.MouseMove += new MouseEventHandler(Item_MouseMove);
             }
             else
             {
-                jFCGridItem.MouseMove -= JFCGridItem.Item_MouseMove;
+                Item.MouseMove -= Item_MouseMove;
             }
         }
 
-        private static void Item_MouseMove(object sender, MouseEventArgs e)
+
+        static void Item_MouseMove(object sender, MouseEventArgs e)
         {
-            JFCGridItem jFCGridItem = sender as JFCGridItem;
-            if (jFCGridItem.ParentGrid != null)
+            JFCGridItem it = sender as JFCGridItem;
+
+            if (it.ParentGrid != null)
             {
-                Point position = e.GetPosition(jFCGridItem);
-                double num = position.Y % (double)jFCGridItem.ParentGrid.Manager.Parent.RowHeight;
-                double num2 = (position.Y - num) / (double)jFCGridItem.ParentGrid.Manager.Parent.RowHeight;
-                if (num > 0.0)
+                Point pt = e.GetPosition(it);
+
+                double modulo = (pt.Y % it.ParentGrid.Manager.Parent.RowHeight);
+                double row = (pt.Y - modulo) / it.ParentGrid.Manager.Parent.RowHeight;
+
+                if (modulo > 0)
+                    row++;
+
+                int index = 0;
+
+                foreach (var lst in it.ParentGrid.Manager.TabLineB)
                 {
-                    num2 += 1.0;
-                }
-                int num3 = 0;
-                foreach (LinkedList<UIElement> item in jFCGridItem.ParentGrid.Manager.TabLineB)
-                {
-                    IEnumerable<JFCGridItem> source = from JFCGridItem ctrl in
-                                                          from ctrl in item
-                                                          where ctrl is JFCGridItem
-                                                          select ctrl
-                                                      where ctrl.Orientation == Orientation.Horizontal
-                                                      select ctrl;
-                    if (source.Count() > 0)
-                    {
-                        if (num3 == (int)num2 - 1)
+                    var l = from ctrl in lst
+                            where ctrl is JFCGridItem
+                            select ctrl;
+
+                    var le = from ctrl in l.Cast<JFCGridItem>()
+                             where ctrl.Orientation == Orientation.Horizontal
+                             select ctrl;
+
+                    if (le.Count() > 0)
+                        if (index == (int)row - 1)
                         {
-                            source.First().MouseEnterItem();
+                            //((JFCGridItem)le.First()).SetValue(JFCGridItem.IsMouseOverLineProperty, true);
+                            ((JFCGridItem)le.First()).MouseEnterItem();
                         }
                         else
                         {
-                            source.First().MouseLeaveItem();
+                            //((JFCGridItem)le.First()).SetValue(JFCGridItem.IsMouseOverLineProperty, false);
+                            ((JFCGridItem)le.First()).MouseLeaveItem();
                         }
-                    }
-                    num3++;
+
+                    index++;
                 }
+
+
+                //if (it.ParentGrid.Manager.TabLineB.Count() > (int)row - 1)
+                //{
+                //    var lst = it.ParentGrid.Manager.TabLineB.ElementAt(((int)row) - 1);
+
+                //    var l = from ctrl in lst
+                //            where ctrl is JFCGridItem
+                //            select ctrl;
+
+                //    var le = from ctrl in l.Cast<JFCGridItem>()
+                //             where ctrl.Orientation == Orientation.Horizontal
+                //             select ctrl;
+
+                //    if (le.Count() > 0)
+                //        ((JFCGridItem)le.First()).SetValue(JFCGridItem.IsMouseOverLineProperty, true);
+                //}
             }
         }
 
+        private JFCExpendItem data = null;
+        internal JFCExpendItem Data
+        {
+            get { return data; }
+            set
+            {
+                data = value;
+                if (data != null)
+                    Source = data.Obj;
+                else
+                    Source = null;
+            }
+        }
+
+        public object Source
+        {
+            get { return (object)GetValue(SourceProperty); }
+            private set { SetValue(SourceProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for Source.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty SourceProperty =
+            DependencyProperty.Register("Source", typeof(object), typeof(JFCGridItem), new UIPropertyMetadata("test"));
+
+
+        //public Object Source
+        //{
+        //    get
+        //    {
+        //        if (Data != null)
+        //            return Data.Obj;
+        //        else
+        //            return null;
+        //    }
+        //}
+
+        // 
+        public event RoutedEventHandler IsMouseOverLineChanged;
         internal void OnIsMouseOverLineChanged(object sender, RoutedEventArgs e)
         {
-            if (this.IsMouseOverLineChanged != null)
-            {
-                this.IsMouseOverLineChanged(this, e);
-            }
+            if (IsMouseOverLineChanged != null)
+                IsMouseOverLineChanged(this, e);
         }
 
         private static void UpdateIsMouseOverLine(DependencyObject obj, DependencyPropertyChangedEventArgs e)
         {
-            JFCGridItem jFCGridItem = obj as JFCGridItem;
-            if (jFCGridItem.CallIsMouseOverLineCallBack)
+            JFCGridItem Item = obj as JFCGridItem;
+
+            if (Item.CallIsMouseOverLineCallBack == true)
             {
-                jFCGridItem.OnIsMouseOverLineChanged(jFCGridItem, new RoutedEventArgs());
+                Item.OnIsMouseOverLineChanged(Item, new RoutedEventArgs());
             }
         }
 
+        // 
+        public event RoutedEventHandler IsMouseOverColumnChanged;
         internal void OnIsMouseOverColumnChanged(object sender, RoutedEventArgs e)
         {
-            if (this.IsMouseOverColumnChanged != null)
-            {
-                this.IsMouseOverColumnChanged(this, e);
-            }
+            if (IsMouseOverColumnChanged != null)
+                IsMouseOverColumnChanged(this, e);
         }
 
         private static void UpdateIsMouseOverColumn(DependencyObject obj, DependencyPropertyChangedEventArgs e)
         {
-            JFCGridItem jFCGridItem = obj as JFCGridItem;
-            if (jFCGridItem.CallIsMouseOverColumnCallBack)
+            JFCGridItem Item = obj as JFCGridItem;
+
+            if (Item.CallIsMouseOverColumnCallBack == true)
             {
-                jFCGridItem.OnIsMouseOverColumnChanged(jFCGridItem, new RoutedEventArgs());
+                Item.OnIsMouseOverColumnChanged(Item, new RoutedEventArgs());
             }
         }
+
     }
 }

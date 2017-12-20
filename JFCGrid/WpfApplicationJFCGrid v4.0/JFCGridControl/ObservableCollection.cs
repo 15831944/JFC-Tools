@@ -1,91 +1,135 @@
-﻿// JFCGridControl.ObservableCollection<T>
+﻿using System.Collections.Specialized;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Collections.Specialized;
-using System.ComponentModel;
-
 
 namespace JFCGridControl
 {
+
+    /// <summary>  
+    /// Represents a dynamic data collection that provides notifications when items get added, removed, or when the whole list is refreshed.  
+    /// </summary>  
+    /// <typeparam name="T"></typeparam>  
     public class ObservableCollection<T> : System.Collections.ObjectModel.ObservableCollection<T>
     {
-        private object parent;
 
-        public object Parent
-        {
-            get
-            {
-                return this.parent;
-            }
-            set
-            {
-                this.parent = value;
-                this.OnPropertyChanged(new PropertyChangedEventArgs("Parent"));
-            }
-        }
-
+        /// <summary>  
+        /// Adds the elements of the specified collection to the end of the ObservableCollection(Of T).  
+        /// </summary>  
         public void AddRange(IEnumerable<T> collection)
         {
-            int count = base.Count;
-            List<T> list = new List<T>();
-            list.AddRange(collection);
-            foreach (T item in collection)
-            {
-                base.Items.Add(item);
-            }
-            NotifyCollectionChangedEventArgs e = new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, list);
-            this.OnCollectionChanged(e);
+            int startingIndex = this.Count;
+
+            List<T> lst = new List<T>();
+            lst.AddRange(collection);
+
+            foreach (var i in collection) Items.Add(i);
+            NotifyCollectionChangedEventArgs notify = new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add,lst);
+            OnCollectionChanged(notify);
+
+            //this.CheckReentrancy();
+            ////
+            //// We need the starting index later
+            ////
+            //int startingIndex = this.Count;
+
+            ////
+            //// Add the items directly to the inner collection
+            ////
+            //foreach (var data in collection)
+            //{
+            //    this.Items.Add(data);
+            //}
+
+
+            ////
+            //// Now raise the changed events
+            ////
+
+            //this.OnPropertyChanged(new System.ComponentModel.PropertyChangedEventArgs("Count"));
+            //this.OnPropertyChanged(new System.ComponentModel.PropertyChangedEventArgs("Item[]"));
+
+            ////
+            //// We have to change our input of new items into an IList since that is what the
+            //// event args require.
+            ////
+
+            ////var changedItems = new List<T>(collection);
+            ////this.OnCollectionChanged(changedItems, startingIndex);
+
+            //this.OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add);
+
         }
 
+        /// <summary>  
+        /// Removes the first occurence of each item in the specified collection from ObservableCollection(Of T).  
+        /// </summary>  
         public void RemoveRange(IEnumerable<T> collection)
         {
-            List<T> list = new List<T>();
-            list.AddRange(collection);
-            foreach (T item in collection)
-            {
-                base.Items.Remove(item);
-            }
-            NotifyCollectionChangedEventArgs e = new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Remove, list);
-            this.OnCollectionChanged(e);
+
+            List<T> lst = new List<T>();
+            lst.AddRange(collection);
+
+            foreach (var i in collection) Items.Remove(i);
+            //OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Remove));
+
+            NotifyCollectionChangedEventArgs notify = new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Remove, lst);
+            OnCollectionChanged(notify);
         }
 
+        /// <summary>  
+        /// Clears the current collection and replaces it with the specified item.  
+        /// </summary>  
         public void Replace(T item)
         {
-            this.ReplaceRange(new T[1]
-            {
-            item
-            });
+            ReplaceRange(new T[] { item });
         }
-
+        /// <summary>  
+        /// Clears the current collection and replaces it with the specified collection.  
+        /// </summary>  
         public void ReplaceRange(IEnumerable<T> collection)
         {
-            new List<T>(base.Items);
-            base.Items.Clear();
-            foreach (T item in collection)
-            {
-                base.Items.Add(item);
-            }
-            this.OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
+            List<T> old = new List<T>(Items);
+            Items.Clear();
+            foreach (var i in collection) Items.Add(i);
+            OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
         }
 
+        /// <summary>  
+        /// Initializes a new instance of the System.Collections.ObjectModel.ObservableCollection(Of T) class.  
+        /// </summary>  
         public ObservableCollection()
-        {
-        }
+            : base() { }
 
+        /// <summary>  
+        /// Initializes a new instance of the System.Collections.ObjectModel.ObservableCollection(Of T) class that contains elements copied from the specified collection.  
+        /// </summary>  
+        /// <param name="collection">collection: The collection from which the elements are copied.</param>  
+        /// <exception cref="System.ArgumentNullException">The collection parameter cannot be null.</exception>  
         public ObservableCollection(IEnumerable<T> collection)
-            : base(collection)
-        {
-        }
+            : base(collection) { }
+
 
         public ObservableCollection(object Parent)
+            : base() 
         {
             this.Parent = Parent;
         }
 
         public ObservableCollection(object Parent, IEnumerable<T> collection)
-            : base(collection)
+            : base(collection) 
         {
             this.Parent = Parent;
+        }
+
+        private object parent = null;
+        public object Parent
+        {
+            get { return parent; }
+            set
+            {
+                parent = value;
+
+                OnPropertyChanged(new System.ComponentModel.PropertyChangedEventArgs("Parent"));
+            }
         }
     }
 }

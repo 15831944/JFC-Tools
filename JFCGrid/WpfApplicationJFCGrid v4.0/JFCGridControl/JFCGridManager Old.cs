@@ -77,7 +77,7 @@ namespace JFCGridControl
 
         private bool InProcess = false;
 
-        private bool UseLstRemoveCol = false;
+        private bool UseLstRemoveCol = true;
 
         private int startIndexColView = 0;
         public int StartIndexColView
@@ -113,7 +113,7 @@ namespace JFCGridControl
                                     }
                                 }
 
-                                //ClearParentLstRemoveCol();
+                                ClearParentLstRemoveCol();
 
                                 // on ajoute les colonnes à la fin
                                 for (int i = Grid11.ColumnDefinitions.Count(); i < NbColView; i++)
@@ -191,7 +191,7 @@ namespace JFCGridControl
                                     //    }
                                     //}
 
-                                    //ClearParentLstRemoveCol();
+                                    ClearParentLstRemoveCol();
 
                                     nbcol = Grid11.ColumnDefinitions.Count();
 
@@ -766,7 +766,7 @@ namespace JFCGridControl
             }
             else if (Column.Frozen == JFCGridColumn.FrozenType.End)
             {
-                int lastPosition = ListColHeaderRowEnd.Count();
+                int lastPosition = ListColHeaderFooter.Count();
                 ColumnAdd(Column, lastPosition);
             }
             else
@@ -778,8 +778,7 @@ namespace JFCGridControl
 
         public void ColumnAdd(JFCGridColumn Column, int Index)
         {
-            //Column.PropertyChanged += new PropertyChangedExtendedEventHandler<Object>(Column_PropertyChanged);
-            Column.PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(Column_PropertyChanged);
+            Column.PropertyChanged += new PropertyChangedExtendedEventHandler<Object>(Column_PropertyChanged);
 
             Grid gridHeaderTmp;
 
@@ -798,7 +797,6 @@ namespace JFCGridControl
                 Binding BindingWidthH = new Binding("ActualWidth");
                 BindingWidthH.Source = Column;
                 BindingWidthH.Mode = BindingMode.TwoWay;
-
                 ColDefH.SetBinding(ColumnDefinition.WidthProperty, BindingWidthH);
 
                 if (Column.Width.IsAuto == true)
@@ -810,9 +808,9 @@ namespace JFCGridControl
             else if (Column.Frozen == JFCGridColumn.FrozenType.End)
             {
                 gridHeaderTmp = Grid02;
-                ListColHeaderRowEnd.Insert(Index, Column);
+                ListColHeaderFooter.Insert(Index, Column);
 
-                ColumnAddGrid(Column, Index, Grid12, TabLineF, ListColHeaderRowEnd);
+                ColumnAddGrid(Column, Index, Grid12, TabLineF, ListColHeaderFooter);
 
                 // on ajoute la colonne dans l'entete
                 ColumnDefinition ColDefH = new ColumnDefinition();
@@ -848,7 +846,7 @@ namespace JFCGridControl
 
                 //if (wCal.Value < Parent.ScrollViewerBody.ActualWidth)
                 //{
-                Column.ActualWidth = new GridLength(Parent.ScrollViewerBody.ActualWidth);
+                    Column.ActualWidth = new GridLength(Parent.ScrollViewerBody.ActualWidth);
                 //}
                 //else
                 //{
@@ -867,22 +865,21 @@ namespace JFCGridControl
 
         public void ColumnAddHeaderFooter(JFCGridColumn Column)
         {
-            int lastPosition = ListColHeaderFooter.Count();
+            int lastPosition = ListColHeaderRowEnd.Count();
             ColumnAddHeaderFooter(Column, lastPosition);
         }
 
         public void ColumnAddHeaderFooter(JFCGridColumn Column, int Index)
         {
-            //Column.PropertyChanged += new PropertyChangedExtendedEventHandler<Object>(Column_PropertyChanged);
             Column.PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(Column_PropertyChanged);
 
             Grid gridHeaderTmp;
 
             gridHeaderTmp = Grid20;
 
-            ListColHeaderFooter.Insert(Index, Column);
+            ListColHeaderRowEnd.Insert(Index, Column);
 
-            ColumnAddGridFooter(Column, Index, Grid20, TabLineHF, ListColHeaderFooter);
+            ColumnAddGridFooter(Column, Index, Grid20, TabLineHF, ListColHeaderRowEnd);
 
             // on crée les headers
             int level = 0;
@@ -943,7 +940,7 @@ namespace JFCGridControl
 
         }
 
-        private void DeleteEvents(UIElement MyElement, Boolean IsContentGrouping = false)
+        private void DeleteEvents(UIElement MyElement)
         {
             MyElement.MouseEnter -= MyElement_MouseEnter;
 
@@ -957,7 +954,7 @@ namespace JFCGridControl
 
             MyElement.MouseDown -= MyElement_MouseDown;
 
-            if (MyElement is CellImg && IsContentGrouping == false)
+            if (MyElement is CellImg)
             {
                 ((CellImg)MyElement).ResetEvent();
             }
@@ -989,12 +986,12 @@ namespace JFCGridControl
                 else if (fe.Parent == Grid12)
                 {
                     TabLine = TabLineF;
-                    TabColumn = ListColHeaderRowEnd;
+                    TabColumn = ListColHeaderFooter;
                 }
                 else if (fe.Parent == Grid20)
                 {
                     TabLine = TabLineHF;
-                    TabColumn = ListColHeaderFooter;
+                    TabColumn = ListColHeaderRowEnd;
                 }
                 else if (fe.Parent == Grid21)
                 {
@@ -1086,12 +1083,12 @@ namespace JFCGridControl
                 else if (fe.Parent == Grid12)
                 {
                     TabLine = TabLineF;
-                    TabColumn = ListColHeaderRowEnd;
+                    TabColumn = ListColHeaderFooter;
                 }
                 else if (fe.Parent == Grid20)
                 {
                     TabLine = TabLineHF;
-                    TabColumn = ListColHeaderFooter;
+                    TabColumn = ListColHeaderRowEnd;
                 }
                 else if (fe.Parent == Grid21)
                 {
@@ -1166,9 +1163,70 @@ namespace JFCGridControl
 
             if (TabLine != null)
             {
+                //var lst = from ctrl in TabLine[idxr]
+                //          where ctrl is JFCGridItem
+                //          select ctrl;
+
+                //if (lst.Count() > 0)
                 if (fe is JFCGridCellGrouping)
                 {
                     JFCGridCellGrouping grp = fe as JFCGridCellGrouping;
+
+                    ////int start = ((JFCGridItem)lst.First()).Data.StartChildIndex;
+                    ////int nbchildren = ((JFCGridItem)lst.First()).Data.NbChildren;
+
+                    //int start = ((JFCExpendItem)grp.DataContext).StartChildViewIndex;
+                    //int nbchildren = ((JFCExpendItem)grp.DataContext).NbChildrenView;
+
+                    //List<JFCExpendItem> lstItem = new List<JFCExpendItem>();
+
+                    //for (int i = start; i < start + nbchildren; i++)
+                    //{
+
+                    //    //var lst1 = from ctrl in TabLine[i]
+                    //    //           where ctrl is JFCGridItem
+                    //    //           select ctrl;
+                    //    //var it = lst1.First();
+                    //    //lstItem.Add(((JFCGridItem)it).Data);
+
+
+                    //    lstItem.Add(Parent.dataSource[i]);
+                    //}
+
+
+                    //if (Parent.SelectionMode == SelectionMode.Single)
+                    //{
+                    //    SelectionSimple(lstItem);
+
+                    //    RefreshSelection();
+                    //}
+                    //else if (Parent.SelectionMode == SelectionMode.Multiple)
+                    //{
+                    //    SelectionMultiple(lstItem);
+
+                    //    RefreshSelection();
+                    //}
+                    //else if (Parent.SelectionMode == SelectionMode.Extended)
+                    //{
+                    //    if (Keyboard.IsKeyDown(Key.RightShift) || Keyboard.IsKeyDown(Key.LeftShift))
+                    //    {
+                    //        SelectionExtendedShift(lstItem);
+                    //    }
+                    //    else if (!(Keyboard.IsKeyDown(Key.RightCtrl) || Keyboard.IsKeyDown(Key.LeftCtrl)))
+                    //    {
+                    //        //if (Parent.SelectedExpendItems.Count <= 1)
+
+                    //        var lst = from ctrl in TabLine[idxr]
+                    //                  where ctrl is JFCGridItem
+                    //                  select ctrl;
+
+                    //        if (lst.Count() > 0)
+                    //            if (!Parent.SelectedExpendItems.Contains(((JFCGridItem)lst.First()).Data))
+                    //                SelectionSimple(lstItem);
+                    //    }
+
+                    //    RefreshSelection();
+                    //}
 
                     var lstChildren = FindChildren((JFCExpendItem)grp.DataContext);
 
@@ -1205,7 +1263,15 @@ namespace JFCGridControl
                     }
                     else
                     {
+                        //if (Parent.SelectedExpendItems.Contains(((JFCExpendItem)grp.DataContext)))
+                        //{
+                        //    Parent.SelectedExpendItems.Remove(((JFCExpendItem)grp.DataContext));
 
+                        //    // déclenche l'évennement
+                        //    Parent.OnSelectedItemsChanged(Parent, new RoutedEventArgs());
+                        //}
+                        //else
+                        //{
                         // on supprime toute la selection            
                         Parent.SelectedExpendItems.RemoveWhere(row => true);
 
@@ -1265,6 +1331,13 @@ namespace JFCGridControl
 
             if (TabLine != null)
             {
+
+                //var lst = from ctrl in TabLine[idxr]
+                //          where ctrl is JFCGridItem
+                //          select ctrl;
+
+                //if (lst.Count() > 0)
+
 
                 if (fe is JFCGridCellGrouping)
                 {
@@ -1457,24 +1530,24 @@ namespace JFCGridControl
                 }
             }
 
-            //JFCGridItem[] TabItem = new JFCGridItem[NbRow];
+            JFCGridItem[] TabItem = new JFCGridItem[NbRow];
 
-            //var ctrlsItems = from ctrl in ListCtrl
-            //                 where ctrl is JFCGridItem && ((JFCGridItem)ctrl).Orientation == Orientation.Horizontal
-            //                 select ctrl;
+            var ctrlsItems = from ctrl in ListCtrl
+                             where ctrl is JFCGridItem
+                             select ctrl;
 
-            //// on récupère les JFCGridItem
-            //foreach (var ctrl in ctrlsItems)
-            //{
-            //    if (ctrl is JFCGridItem)
-            //    {
-            //        if (((JFCGridItem)ctrl).Orientation == Orientation.Horizontal)
-            //        {
-            //            int row = (int)ctrl.GetValue(Grid.RowProperty);
-            //            TabItem[row] = (JFCGridItem)ctrl;
-            //        }
-            //    }
-            //}
+            // on récupère les JFCGridItem
+            foreach (var ctrl in ctrlsItems)
+            {
+                if (ctrl is JFCGridItem)
+                {
+                    if (((JFCGridItem)ctrl).Orientation == Orientation.Horizontal)
+                    {
+                        int row = (int)ctrl.GetValue(Grid.RowProperty);
+                        TabItem[row] = (JFCGridItem)ctrl;
+                    }
+                }
+            }
 
             // on ajoute la colonne
             ColumnDefinition ColDef = new ColumnDefinition();
@@ -1486,17 +1559,9 @@ namespace JFCGridControl
             ColDef.SetBinding(ColumnDefinition.WidthProperty, BindingWidth);
 
             // on ajoute une ligne de séparation des colonnes
-            //Line bd = new Line();
-
-            //bd.LineBrush = Parent.VerticalBorderColor;
-
-            //bd.Thickness = 1;
-            //bd.Orientation = Orientation.Vertical;
-            //bd.HorizontalAlignment = HorizontalAlignment.Right;
-
             JFCBorder bd = new JFCBorder();
-            bd.BorderBrush = this.Parent.VerticalBorderColor;
-            bd.BorderThickness = new Thickness(0.0, 0.0, 1.0, 0.0);
+            bd.BorderBrush = Parent.VerticalBorderColor;
+            bd.BorderThickness = new Thickness(0, 0, 1, 0);
             bd.Orientation = Orientation.Vertical;
 
             bd.SetValue(Grid.ColumnProperty, Index);
@@ -1517,25 +1582,14 @@ namespace JFCGridControl
 
             Column.Item.SetValue(Grid.ZIndexProperty, -10);
 
-            BodyGrid.Children.Add(Column.Item);
+            // on ajoute la ligne
+            //BodyGrid.Children.Add(Column.Item);
 
+            // on ajoute les cellules dans la colonne
+            //JFCGridCell celluleTemplate;
+            //CellImg cellule;
 
-            //
-            JFCGridItem[] TabItem = new JFCGridItem[NbRow];
-
-            var ctrlsItems = from ctrl in ListCtrl
-                             where ctrl is JFCGridItem && ((JFCGridItem)ctrl).Orientation == Orientation.Horizontal
-                             select ctrl;
-
-            foreach (var ctrl in ctrlsItems)
-            {
-                int row = (int)ctrl.GetValue(Grid.RowProperty);
-                TabItem[row] = (JFCGridItem)ctrl;
-
-                ctrl.SetValue(Grid.ColumnSpanProperty, BodyGrid.ColumnDefinitions.Count());
-            }
-
-            int NbCol = BodyGrid.ColumnDefinitions.Count();
+            //List<FrameworkElement> lstCell = new List<FrameworkElement>();
 
             // on boucle sur toutes les lignes
             for (int idxRow = 0; idxRow < NbRow; idxRow++)
@@ -1554,6 +1608,8 @@ namespace JFCGridControl
                     JFCExpendItem exItem = Parent.dataSource[IndexData];
 
                     SetupCellData(BodyGrid, LstCells[idxRow], Column, item, Index, idxRow, exItem);
+                    //var cell = SetupCellData(LstCells[idxRow], Column, item, Index, idxRow, exItem);
+                    //lstCell.Add(cell);
 
                     RefreshData(idxRow, IndexData, Column, LstCells, exItem, LstCol);
 
@@ -1561,18 +1617,17 @@ namespace JFCGridControl
 
                     // on recherche la ligne de séparation des rows
                     var ctrlsRow = from ctrl in LstCells[idxRow]
-                                   where ctrl is JFCBorder && ((JFCBorder)ctrl).Orientation == Orientation.Horizontal
+                                   where ctrl is JFCBorder
                                    select ctrl;
 
                     //List<UIElement> lctrlsRow = ctrlsRow.ToList();
-                    //int NbCol = BodyGrid.ColumnDefinitions.Count();
 
                     foreach (var ctrl in ctrlsRow)
                     {
                         JFCBorder border = ctrl as JFCBorder;
-                        //if (border.Orientation == Orientation.Horizontal)
+                        if (border.Orientation == Orientation.Horizontal)
                         {
-                            //int NbCol = BodyGrid.ColumnDefinitions.Count();
+                            int NbCol = BodyGrid.ColumnDefinitions.Count();
 
                             if (NbCol > 0)
                                 ctrl.SetValue(Grid.ColumnSpanProperty, NbCol);
@@ -1586,21 +1641,23 @@ namespace JFCGridControl
 
                     // on agrandit le JFCGridItem
 
-                    //var ctrlsItem = from ctrl in BodyGrid.Children.Cast<UIElement>()
-                    //                where ctrl is JFCGridItem && ((JFCGridItem)ctrl).Orientation == Orientation.Horizontal
-                    //                select ctrl;
+                    IEnumerable<UIElement> ListCtrlItem = BodyGrid.Children.Cast<UIElement>();
+                    var ctrlsItem = from ctrl in ListCtrlItem
+                                    where ctrl is JFCGridItem
+                                    select ctrl;
 
-                    //foreach (var it in ctrlsItem)
-                    //{
-                    //    //if (it.Orientation == Orientation.Horizontal)
-                    //    it.SetValue(Grid.ColumnSpanProperty, BodyGrid.ColumnDefinitions.Count());
-                    //}
+                    //List<UIElement> ListItem = ctrlsItem.ToList();
+
+                    foreach (var it in ctrlsItem.Cast<JFCGridItem>())
+                    {
+                        if (it.Orientation == Orientation.Horizontal)
+                            it.SetValue(Grid.ColumnSpanProperty, BodyGrid.ColumnDefinitions.Count());
+                    }
                 }
             }
 
             //if (lstCell.Count > 0)
             //    BodyGrid.Children.CopyTo(lstCell.ToArray(), BodyGrid.Children.Count);
-
         }
 
         private void ColumnAddGridFooter(JFCGridColumn Column, int Index, Grid BodyGrid, List<LinkedList<UIElement>> LstCells, IList<JFCGridColumn> LstCol)
@@ -1664,17 +1721,9 @@ namespace JFCGridControl
             ColDef.SetBinding(ColumnDefinition.WidthProperty, BindingWidth);
 
             // on ajoute une ligne de séparation des colonnes
-            //Line bd = new Line();
-
-            //bd.LineBrush = Parent.VerticalBorderColor;
-
-            //bd.Thickness = 1;
-            //bd.Orientation = Orientation.Vertical;
-            //bd.HorizontalAlignment = HorizontalAlignment.Right;
-
             JFCBorder bd = new JFCBorder();
-            bd.BorderBrush = this.Parent.VerticalBorderColor;
-            bd.BorderThickness = new Thickness(0.0, 0.0, 1.0, 0.0);
+            bd.BorderBrush = Parent.VerticalBorderColor;
+            bd.BorderThickness = new Thickness(0, 0, 1, 0);
             bd.Orientation = Orientation.Vertical;
 
             bd.SetValue(Grid.ColumnProperty, Index);
@@ -1686,11 +1735,18 @@ namespace JFCGridControl
             // on ajoute la ligne
             BodyGrid.Children.Add(bd);
 
+            // on ajoute les cellules dans la colonne
+            //JFCGridCell celluleTemplate;
+            //CellImg cellule;
+
+            //List<FrameworkElement> lstCell = new List<FrameworkElement>();
+
             // on boucle sur toutes les lignes
             for (int idxRow = 0; idxRow < NbRow; idxRow++)
             {
+                //int IndexData = Parent.ScrollVerticalValue + idxRow;
 
-                if (Parent.dataSourceFooter == null)
+                if (Parent.dataSource == null)
                     break;
 
                 if (idxRow < Parent.dataSourceFooter.Count())
@@ -1702,15 +1758,16 @@ namespace JFCGridControl
                     JFCExpendItem exItem = Parent.dataSourceFooter[idxRow];
 
                     SetupCellData(BodyGrid, LstCells[idxRow], Column, item, Index, idxRow, exItem);
+                    //var cell = SetupCellData(LstCells[idxRow], Column, item, Index, idxRow, exItem);
+                    //lstCell.Add(cell);
 
                     RefreshData(idxRow, idxRow, Column, LstCells, exItem, LstCol);
 
-                    // on enlève pour JFCGridItem
-                    //SetupEvents(item);
+                    SetupEvents(item);
 
                     // on recherche la ligne de séparation des rows
                     var ctrlsRow = from ctrl in LstCells[idxRow]
-                                   where ctrl is JFCBorder && ((JFCBorder)ctrl).Orientation == Orientation.Horizontal
+                                   where ctrl is JFCBorder
                                    select ctrl;
 
                     //List<UIElement> lctrlsRow = ctrlsRow.ToList();
@@ -1718,7 +1775,7 @@ namespace JFCGridControl
                     foreach (var ctrl in ctrlsRow)
                     {
                         JFCBorder border = ctrl as JFCBorder;
-                        //if (border.Orientation == Orientation.Horizontal)
+                        if (border.Orientation == Orientation.Horizontal)
                         {
                             int NbCol = BodyGrid.ColumnDefinitions.Count();
 
@@ -1796,7 +1853,7 @@ namespace JFCGridControl
                     {
                         gridtmp = Grid12;
                         tabtmp = TabLineF;
-                        LstCol = ListColHeaderRowEnd;
+                        LstCol = ListColHeaderFooter;
                     }
                     else
                     {
@@ -1851,10 +1908,13 @@ namespace JFCGridControl
                             tabtmp[idx].Remove(itremove);
 
                             gridtmp.Children.Remove(itremove);
+
                         }
 
                         idx++;
                     }
+
+                    //List<FrameworkElement> lstCell = new List<FrameworkElement>();
 
                     // on boucle sur toutes les lignes
                     for (int idxRow = 0; idxRow < NbRow; idxRow++)
@@ -1867,12 +1927,43 @@ namespace JFCGridControl
                         JFCExpendItem exItem = Parent.dataSource[IndexData];
 
                         SetupCellData(gridtmp, tabtmp[idxRow], Col, item, idxCol, idxRow, exItem);
+                        //var cell = SetupCellData(tabtmp[idxRow], Col, item, idxCol, idxRow, exItem);
+                        //lstCell.Add(cell);
 
                         RefreshData(idxRow, IndexData, Col, tabtmp, exItem, LstCol);
 
-                        // on enlève pour JFCGridItem
-                        //SetupEvents(item);
+                        SetupEvents(item);
+
+                        //// on recherche la ligne de séparation des rows
+                        //var ctrlsRow = from ctrl in LstCells[idxRow]
+                        //               where ctrl is JFCBorder
+                        //               select ctrl;
+
+                        ////List<UIElement> lctrlsRow = ctrlsRow.ToList();
+
+                        //foreach (var ctrl in ctrlsRow)
+                        //{
+                        //    JFCBorder border = ctrl as JFCBorder;
+                        //    if (border.Orientation == Orientation.Horizontal)
+                        //    {
+                        //        int NbCol = BodyGrid.ColumnDefinitions.Count();
+
+                        //        if (NbCol > 0)
+                        //            ctrl.SetValue(Grid.ColumnSpanProperty, NbCol);
+                        //        else
+                        //            ctrl.SetValue(Grid.ColumnSpanProperty, 1);
+
+                        //        SetupEvents(ctrl);
+                        //    }
+                        //}
                     }
+
+                    //if (lstCell.Count > 0)
+                    //    gridtmp.Children.CopyTo(lstCell.ToArray(), gridtmp.Children.Count);
+
+                    //JFCGrid.UpdateDatasource(Parent,new DependencyPropertyChangedEventArgs());
+
+                    //RowRefreshDataAll();
                 }
             }
         }
@@ -1982,7 +2073,7 @@ namespace JFCGridControl
                 {
                     gridTmp = Grid12;
                     gridHeaderTmp = Grid02;
-                    ListColumns = ListColHeaderRowEnd;
+                    ListColumns = ListColHeaderFooter;
                 }
                 else
                 {
@@ -2164,14 +2255,14 @@ namespace JFCGridControl
             }
             if (Column.Frozen == JFCGridColumn.FrozenType.End)
             {
-                int index = ListColHeaderRowEnd.IndexOf(Column);
+                int index = ListColHeaderFooter.IndexOf(Column);
 
                 if (index == -1)
                     return;
 
                 // on supprime la colonne                
                 Grid02.ColumnDefinitions.RemoveAt(index);
-                ListColHeaderRowEnd.Remove(Column);
+                ListColHeaderFooter.Remove(Column);
 
                 ColumnRemove(index, Grid12, TabLineF);
             }
@@ -2253,46 +2344,21 @@ namespace JFCGridControl
                             {
                                 idxRow = (int)ctrl.GetValue(Grid.RowProperty);
 
-                                bool removed = false;
-
-                                if (idxRow < TabLineTmp.Count())
-                                    removed = TabLineTmp[idxRow].Remove(ctrl);
+                                bool r = TabLineTmp[idxRow].Remove(ctrl);
 
                                 DeleteEvents(ctrl);
 
-                                if (removed)
-                                {
-                                    if (ctrl is CellImg)
-                                        LstRemoveColCellImg.Add((CellImg)ctrl);
-                                    else if (ctrl is JFCGridCell)
-                                        LstRemoveColJFCGridCell.Add((JFCGridCell)ctrl);
-                                }
-                                else
-                                {
-                                    bool finded = false;
-
-                                    if (ctrl is CellImg)
-                                    {
-                                        if (LstRemoveColCellImg.Contains((CellImg)ctrl))
-                                            finded = true;
-                                    }
-                                    else if (ctrl is JFCGridCell)
-                                    {
-                                        if (LstRemoveColJFCGridCell.Contains((JFCGridCell)ctrl))
-                                            finded = true;
-                                    }
-
-                                    if (finded == false)
-                                        gridTmp.Children.Remove(ctrl);
-                                }
+                                if (ctrl is CellImg)
+                                    LstRemoveColCellImg.Add((CellImg)ctrl);
+                                else if (ctrl is JFCGridCell)
+                                    LstRemoveColJFCGridCell.Add((JFCGridCell)ctrl);
                             }
                             else
                             {
                                 gridTmp.Children.Remove(ctrl);
                                 idxRow = (int)ctrl.GetValue(Grid.RowProperty);
 
-                                if (idxRow < TabLineTmp.Count())
-                                    TabLineTmp[idxRow].Remove(ctrl);
+                                bool r = TabLineTmp[idxRow].Remove(ctrl);
 
                                 DeleteEvents(ctrl);
 
@@ -2332,7 +2398,6 @@ namespace JFCGridControl
                 //    }
                 //}
             }
-
         }
 
         public void ColumnRemoveAll()
@@ -2344,19 +2409,27 @@ namespace JFCGridControl
 
             BuildHeader(Grid00);
 
+            //foreach (var colb in ListColBody.ToList())
+            //{
+            //    ColumnRemove(colb);
+            //}
 
             ListColBody.Clear();
 
+            //if (Parent.IsVirtualised == true)
+            //{
+            //    startIndexColView = 0;
+            //    nbColView = 0;
+            //}
+
             BuildHeader(Grid01);
 
-            foreach (var colh in ListColHeaderRowEnd.ToList())
+            foreach (var colh in ListColHeaderFooter.ToList())
             {
                 ColumnRemove(colh);
             }
 
             BuildHeader(Grid02);
-
-            ColumnRemoveFooterAll();
         }
 
         public void ColumnRemoveAll(bool frozen)
@@ -2370,7 +2443,7 @@ namespace JFCGridControl
 
                 BuildHeader(Grid00);
 
-                foreach (var colh in ListColHeaderRowEnd.ToList())
+                foreach (var colh in ListColHeaderFooter.ToList())
                 {
                     ColumnRemove(colh);
                 }
@@ -2396,34 +2469,6 @@ namespace JFCGridControl
             }
         }
 
-        public void ColumnRemoveFooter(JFCGridColumn Column)
-        {
-            Column.PropertyChanged -= Column_PropertyChanged;
-
-            int index = ListColHeaderFooter.IndexOf(Column);
-
-            if (index == -1)
-                return;
-
-            // on supprime la colonne                
-            //Grid00.ColumnDefinitions.RemoveAt(index);
-            ListColHeaderFooter.Remove(Column);
-
-            ColumnRemove(index, Grid20, TabLineHF);
-        }
-
-        public void ColumnRemoveFooterAll()
-        {
-            //BuildHeader(Grid02);
-
-            foreach (var colh in ListColHeaderFooter.ToList())
-            {
-                ColumnRemoveFooter(colh);
-            }
-
-            BuildHeader(Grid02);
-        }
-
         public double ColumnWidth(JFCGridColumn.FrozenType Frozen, int Index)
         {
             if (Frozen == JFCGridColumn.FrozenType.Start)
@@ -2439,9 +2484,9 @@ namespace JFCGridControl
             }
             else if (Frozen == JFCGridColumn.FrozenType.End)
             {
-                if (Index < ListColHeaderRowEnd.Count())
+                if (Index < ListColHeaderFooter.Count())
                 {
-                    return ListColHeaderRowEnd[Index].ActualWidth.Value;
+                    return ListColHeaderFooter[Index].ActualWidth.Value;
                 }
                 else
                 {
@@ -2477,7 +2522,7 @@ namespace JFCGridControl
             }
             else if (Column.Frozen == JFCGridColumn.FrozenType.End)
             {
-                return ListColHeaderRowEnd.IndexOf(Column);
+                return ListColHeaderFooter.IndexOf(Column);
             }
             else
             {
@@ -2496,7 +2541,7 @@ namespace JFCGridControl
 
         public int ColumnHeaderRowFooterIndexOf(JFCGridColumn Column)
         {
-            return ListColHeaderFooter.IndexOf(Column);
+            return ListColHeaderRowEnd.IndexOf(Column);
         }
 
         public int NbColumn(JFCGridColumn.FrozenType Frozen)
@@ -2507,7 +2552,7 @@ namespace JFCGridControl
             }
             else if (Frozen == JFCGridColumn.FrozenType.End)
             {
-                return ListColHeaderRowEnd.Count();
+                return ListColHeaderFooter.Count();
             }
             else
             {
@@ -2517,7 +2562,7 @@ namespace JFCGridControl
 
         public int NbColumnHeaderRowFooter()
         {
-            return ListColHeaderFooter.Count();
+            return ListColHeaderRowEnd.Count();
         }
 
         // calcul le nombre d'entete de colonne
@@ -2575,8 +2620,6 @@ namespace JFCGridControl
                 lstCol = from col in Parent.ColunmDefinition
                          where col.Frozen == JFCGridColumn.FrozenType.None
                          select col;
-
-                //lstCol = new List<JFCGridColumn>();
             }
 
             // on crée les headers
@@ -2603,37 +2646,9 @@ namespace JFCGridControl
             //Grid01.Children.Clear();
             //levelmax = BuildColumnHeader(Parent.ColunmDefinition, ref level, ref levelmax);
 
-            //gridHeaderTmp.Children.Clear();
-
-            LstRemoveHeader = (from item in gridHeaderTmp.Children.Cast<UIElement>()
-                               where item is JFCGridColumnHeader
-                               select item).ToList();
-
-            LstRemoveBelowHeader = (from item in gridHeaderTmp.Children.Cast<UIElement>()
-                                    where item is JFCGridColumnBelowHeader
-                                    select item).ToList();
-
-            LstRemoveSplitter = (from item in gridHeaderTmp.Children.Cast<UIElement>()
-                                 where item is GridSplitter
-                                 select item).ToList();
-
-
+            gridHeaderTmp.Children.Clear();
             levelmax = BuildColumnHeader(lstCol, ref level, ref levelmax);
 
-            foreach (var item in LstRemoveHeader)
-            {
-                gridHeaderTmp.Children.Remove(item);
-            }
-
-            foreach (var item in LstRemoveBelowHeader)
-            {
-                gridHeaderTmp.Children.Remove(item);
-            }
-
-            foreach (var item in LstRemoveSplitter)
-            {
-                gridHeaderTmp.Children.Remove(item);
-            }
         }
 
         internal void BuildHeader(Grid GridHeader)
@@ -2808,7 +2823,7 @@ namespace JFCGridControl
 
                 if (col.ChildrenColumns.Count() == 0)
                 {
-                    IdxCol = ListColHeaderRowEnd.IndexOf(col);
+                    IdxCol = ListColHeaderFooter.IndexOf(col);
 
                     NbCol = 1;
                 }
@@ -2816,7 +2831,7 @@ namespace JFCGridControl
                 {
                     NbCol = CalculColSpan(col);
 
-                    IdxCol = ListColHeaderRowEnd.IndexOf(FindLastChildrenColumn(col.ChildrenColumns)) - NbCol + 1;
+                    IdxCol = ListColHeaderFooter.IndexOf(FindLastChildrenColumn(col.ChildrenColumns)) - NbCol + 1;
                 }
 
                 if (IdxCol < 0)
@@ -2954,17 +2969,8 @@ namespace JFCGridControl
 
             //}
 
-            bool splitterRecycle = false;
-            if (LstRemoveSplitter.Count() > 0)
-            {
-                Split = (GridSplitter)LstRemoveSplitter.Last();
-                LstRemoveSplitter.RemoveAt(LstRemoveSplitter.Count() - 1);
-                splitterRecycle = true;
-            }
-            else
-            {
-                Split = new GridSplitter();
-            }
+
+            Split = new GridSplitter();
 
             // on met a jour la position de la colonne
             col.Header.SetValue(Grid.ColumnProperty, IdxCol);
@@ -3008,33 +3014,15 @@ namespace JFCGridControl
                 col.Header.BelowHeader.SetValue(Grid.RowProperty, Level + 1);
                 col.Header.BelowHeader.SetValue(Grid.RowSpanProperty, MaxLevelColumn - Level);
 
-                //GridH.Children.Insert(0, col.Header.BelowHeader);
-
-                if (!LstRemoveBelowHeader.Contains(col.Header.BelowHeader))
-                {
-                    GridH.Children.Insert(0, col.Header.BelowHeader);
-                }
-                else
-                {
-                    LstRemoveHeader.Remove(col.Header.BelowHeader);
-                }
+                GridH.Children.Insert(0, col.Header.BelowHeader);
 
             }
 
             col.Header.HorizontalAlignment = HorizontalAlignment.Stretch;
             col.Header.VerticalAlignment = VerticalAlignment.Stretch;
 
-            if (!LstRemoveHeader.Contains(col.Header))
-            {
-                GridH.Children.Add(col.Header);
-            }
-            else
-            {
-                LstRemoveHeader.Remove(col.Header);
-            }
-
-            if (!splitterRecycle)
-                GridH.Children.Add(Split);
+            GridH.Children.Add(col.Header);
+            GridH.Children.Add(Split);
 
             if (col.IsResizable == false)
                 Split.Visibility = Visibility.Hidden;
@@ -3734,7 +3722,7 @@ namespace JFCGridControl
             }
             else
             {
-                return new GridLength(Math.Ceiling(widthMax));
+                return new GridLength(Math.Ceiling(widthMax));            
             }
         }
 
@@ -3746,7 +3734,7 @@ namespace JFCGridControl
                     col.actualWidth = new GridLength(0);
             }
 
-            foreach (var col in ListColHeaderRowEnd)
+            foreach (var col in ListColHeaderFooter)
             {
                 if (col.Width == GridLength.Auto)
                     col.actualWidth = new GridLength(0);
@@ -3907,7 +3895,7 @@ namespace JFCGridControl
         {
             if (Parent.ColumnMovable)
             {
-                if (HeaderMove != null && HeaderMove.Parent != null)
+                if (HeaderMove != null)
                 {
                     JFCGridColumnHeader header = sender as JFCGridColumnHeader;
 
@@ -4071,13 +4059,112 @@ namespace JFCGridControl
                                 idxColBody++;
                         }
                     }
+
+                    //if (header.Column.Parent == null)
+                    //{
+                    //    idxColPos = Parent.ColunmDefinition.IndexOf(header.Column);
+
+                    //    if (idxColPos >= 0)
+                    //    {
+                    //        foreach (var c in Parent.ColunmDefinition)
+                    //        {
+                    //            if (c.Frozen == header.Column.Frozen)
+                    //            {
+                    //                if (idxCol < idxColPos)
+                    //                {
+                    //                    if (t < pt.X && pt.X < t + c.ActualWidth.Value)
+                    //                    {
+                    //                        if (pt.X < (t + (c.ActualWidth.Value / 2)))
+                    //                        {
+                    //                            Parent.ColunmDefinition.Move(idxColPos, idxCol);
+                    //                            break;
+                    //                        }
+                    //                        else
+                    //                        {
+                    //                            Parent.ColunmDefinition.Move(idxColPos, idxCol + 1);
+                    //                            break;
+                    //                        }
+                    //                    }
+                    //                }
+                    //                else if (idxColPos < idxCol)
+                    //                {
+                    //                    if (t < pt.X && pt.X < t + c.ActualWidth.Value)
+                    //                    {
+                    //                        if (pt.X < (t + (c.ActualWidth.Value / 2)))
+                    //                        {
+                    //                            Parent.ColunmDefinition.Move(idxColPos, idxCol - 1);
+                    //                            break;
+                    //                        }
+                    //                        else
+                    //                        {
+                    //                            Parent.ColunmDefinition.Move(idxColPos, idxCol);
+                    //                            break;
+                    //                        }
+                    //                    }
+                    //                }
+
+                    //                t += c.ActualWidth.Value;
+                    //            }
+                    //            idxCol++;
+                    //        }
+                    //    }
+                    //}
+                    //else
+                    //{
+                    //    idxColPos = header.Column.Parent.ChildrenColumns.IndexOf(header.Column);
+
+                    //    if (idxColPos >= 0)
+                    //    {
+                    //        foreach (var c in header.Column.Parent.ChildrenColumns)
+                    //        {
+                    //            if (c.Frozen == header.Column.Frozen)
+                    //            {
+                    //                if (idxCol < idxColPos)
+                    //                {
+                    //                    if (t < pt.X && pt.X < t + c.ActualWidth.Value)
+                    //                    {
+                    //                        if (pt.X < (t + (c.ActualWidth.Value / 2)))
+                    //                        {
+                    //                            header.Column.Parent.ChildrenColumns.Move(idxColPos, idxCol);
+                    //                            break;
+                    //                        }
+                    //                        else
+                    //                        {
+                    //                            header.Column.Parent.ChildrenColumns.Move(idxColPos, idxCol + 1);
+                    //                            break;
+                    //                        }
+                    //                    }
+                    //                }
+                    //                else if (idxColPos < idxCol)
+                    //                {
+                    //                    if (t < pt.X && pt.X < t + c.ActualWidth.Value)
+                    //                    {
+                    //                        if (pt.X < (t + (c.ActualWidth.Value / 2)))
+                    //                        {
+                    //                            header.Column.Parent.ChildrenColumns.Move(idxColPos, idxCol - 1);
+                    //                            break;
+                    //                        }
+                    //                        else
+                    //                        {
+                    //                            header.Column.Parent.ChildrenColumns.Move(idxColPos, idxCol);
+                    //                            break;
+                    //                        }
+                    //                    }
+                    //                }
+
+                    //                t += c.ActualWidth.Value;
+                    //            }
+                    //            idxCol++;
+                    //        }
+                    //    }
+                    //}
                 }
             }
         }
 
         void Header_PreviewMouseMove(object sender, MouseEventArgs e)
         {
-            if (HeaderMove != null && HeaderMove.Parent != null && e.LeftButton == MouseButtonState.Pressed)
+            if (HeaderMove != null && e.LeftButton == MouseButtonState.Pressed)
             {
                 JFCGridColumnHeader header = sender as JFCGridColumnHeader;
                 JFCGridColumn col = header.Column;
@@ -4153,6 +4240,11 @@ namespace JFCGridControl
                     cell.Column = null;
                     DeleteEvents(cell);
                 }
+                else
+                {
+                    int i = 0;
+                    i++;
+                }
             }
 
             foreach (var cell in LstRemoveColJFCGridCell)
@@ -4168,10 +4260,25 @@ namespace JFCGridControl
 
         private void ClearLstRemoveCol()
         {
+            //foreach (var cell in LstRemoveColCellImg)
+            //{
+            //    if (cell.Parent is Grid)
+            //        ((Grid)cell.Parent).Children.Remove(cell);
+            //    else
+            //    {
+            //        int i = 0;
+            //        i++;
+            //    }
+
+            //    cell.Tag = 1;                
+            //}
+
             ClearParentLstRemoveCol();
 
             LstRecycleCellImg.AddRange(LstRemoveColCellImg);
             LstRemoveColCellImg.Clear();
+
+
 
             LstRecycleJFCGridCell.AddRange(LstRemoveColJFCGridCell);
             LstRemoveColJFCGridCell.Clear();
@@ -4193,6 +4300,13 @@ namespace JFCGridControl
 
         public bool RowAdd(int Index)
         {
+            //CellImg cell;
+            //JFCGridCell cellTemplate;
+            //int idxCol;
+
+            //List<UIElement> lUIElementH = new List<UIElement>();
+            //List<UIElement> lUIElementB = new List<UIElement>();
+
             if (Parent.dataSource == null)
                 return false;
 
@@ -4202,10 +4316,20 @@ namespace JFCGridControl
                 return false;
 
             JFCExpendItem dataContext = Parent.dataSource[IndexData];
+            //TabDataContext.Insert(Index, dataContext);            
+            //TabDataContext[Index] = dataContext;
+
+            //int NbRow = 0;
 
             JFCGridItem itemH = new JFCGridItem(null);
             JFCGridItem itemB = new JFCGridItem(null);
             JFCGridItem itemF = new JFCGridItem(null);
+
+            //lUIElementH.Add(itemH);
+            //lUIElementB.Add(itemB);
+
+            //itemH.Peer = itemB;
+            //itemB.Peer = itemH;
 
             itemH.Peer.Add(itemB);
             itemH.Peer.Add(itemF);
@@ -4229,7 +4353,7 @@ namespace JFCGridControl
             // création de la row du body
             RowAddGridVirtual(Grid11, itemB, Index, IndexData, TabLineB, dataContext, ListColBody);
 
-            RowAddGrid(Grid12, itemF, Index, IndexData, TabLineF, dataContext, ListColHeaderRowEnd);
+            RowAddGrid(Grid12, itemF, Index, IndexData, TabLineF, dataContext, ListColHeaderFooter);
 
             return true;
         }
@@ -4256,8 +4380,14 @@ namespace JFCGridControl
 
             JFCExpendItem dataContext = Parent.dataSourceFooter[IndexData];
 
+            //int NbRow = 0;
+
             JFCGridItem itemHF = new JFCGridItem(null);
             JFCGridItem itemBF = new JFCGridItem(null);
+
+
+            //itemHF.Peer = itemBF;
+            //itemBF.Peer = itemHF;
 
             itemHF.Peer.Add(itemBF);
             itemBF.Peer.Add(itemHF);
@@ -4268,7 +4398,7 @@ namespace JFCGridControl
             Grid.SetZIndex(itemHF, -1);
             Grid.SetZIndex(itemBF, -1);
 
-            RowAddGrid(Grid20, itemHF, Index, IndexData, TabLineHF, dataContext, ListColHeaderFooter);
+            RowAddGrid(Grid20, itemHF, Index, IndexData, TabLineHF, dataContext, ListColHeaderRowEnd);
 
             // création de la row du body
             RowAddGridVirtual(Grid21, itemBF, Index, IndexData, TabLineBF, dataContext, ListColBody);
@@ -4381,23 +4511,19 @@ namespace JFCGridControl
             foreach (var Col in ListCol)
             {
                 SetupCellData(grid, lUIElement, Col, item, idxCol, Index, DataContext);
+                //var cell = SetupCellData(lUIElement, Col, item, idxCol, Index, DataContext);
+                //lstCell.Add(cell);
 
                 idxCol++;
             }
 
+            //if (lstCell.Count > 0)
+            //    grid.Children.CopyTo(lstCell.ToArray(), grid.Children.Count);
+
             // on ajoute une ligne de séparation
-            //Line bdG = new Line();
-
-            //bdG.LineBrush = Parent.HorizontalBorderColor;
-
-            //bdG.Thickness = 1;
-            //bdG.Orientation = Orientation.Horizontal;
-            //bdG.VerticalAlignment = VerticalAlignment.Bottom;
-
             JFCBorder bdG = new JFCBorder();
-
-            bdG.BorderBrush = this.Parent.HorizontalBorderColor;
-            bdG.BorderThickness = new Thickness(0.0, 0.0, 0.0, 1.0);
+            bdG.BorderBrush = Parent.HorizontalBorderColor;
+            bdG.BorderThickness = new Thickness(0, 0, 0, 1);
             bdG.Orientation = Orientation.Horizontal;
 
             bdG.ContextMenu = item.ContextMenu;
@@ -4516,7 +4642,12 @@ namespace JFCGridControl
             grid.Children.Add(item);
 
             int idxCol = 0;
+            //CellImg cell;
+            //JFCGridCell cellTemplate;
+
             int nbCol = ListCol.Count();
+
+            //List<FrameworkElement> lstCell = new List<FrameworkElement>();
 
             // on boucle sur les colonnes pour ajouter les cellules
             //foreach (var Col in ListCol)
@@ -4526,6 +4657,8 @@ namespace JFCGridControl
                 {
                     JFCGridColumn Col = ListCol[i];
                     SetupCellData(grid, lUIElement, Col, item, idxCol, Index, DataContext);
+                    //var cell = SetupCellData(lUIElement, Col, item, idxCol, Index, DataContext);
+                    //lstCell.Add(cell);
 
                     idxCol++;
                 }
@@ -4535,18 +4668,13 @@ namespace JFCGridControl
                 }
             }
 
+            //if (lstCell.Count > 0)
+            //    grid.Children.CopyTo(lstCell.ToArray(), grid.Children.Count);
+
             // on ajoute une ligne de séparation
-            //Line bdG = new Line();
-
-            //bdG.LineBrush = Parent.HorizontalBorderColor;
-
-            //bdG.Thickness = 1;
-            //bdG.Orientation = Orientation.Horizontal;
-            //bdG.VerticalAlignment = VerticalAlignment.Bottom;
-
             JFCBorder bdG = new JFCBorder();
-            bdG.BorderBrush = this.Parent.HorizontalBorderColor;
-            bdG.BorderThickness = new Thickness(0.0, 0.0, 0.0, 1.0);
+            bdG.BorderBrush = Parent.HorizontalBorderColor;
+            bdG.BorderThickness = new Thickness(0, 0, 0, 1);
             bdG.Orientation = Orientation.Horizontal;
 
             bdG.ContextMenu = item.ContextMenu;
@@ -4554,6 +4682,8 @@ namespace JFCGridControl
             bdG.SetValue(Grid.RowProperty, Index);
             if (grid.ColumnDefinitions.Count() > 0)
             {
+                //bdG.SetValue(Grid.ColumnSpanProperty, ListCol.Count());
+                //bdG.SetValue(Grid.ColumnSpanProperty, NbColView);
                 bdG.SetValue(Grid.ColumnSpanProperty, grid.ColumnDefinitions.Count());
             }
 
@@ -4577,6 +4707,7 @@ namespace JFCGridControl
                 if (LstRemoveColCellImg.Count() > 0 && LstRemoveColCellImg.Last().Parent == grid)
                 {
                     cell = LstRemoveColCellImg.Last();
+                    //LstRemoveColCellImg.RemoveAt(LstRemoveColCellImg.Count() - 1);
                     LstRemoveColCellImg.Remove(cell);
                     removeCol = true;
                 }
@@ -4599,7 +4730,7 @@ namespace JFCGridControl
 
                 cell.Column = Col;
 
-                cell.PropertyChanged += delegate (object sender, PropertyChangedEventArgs e)
+                cell.PropertyChanged += delegate(object sender, PropertyChangedExtendedEventArgs<Object> e)
                 {
                     if (e.PropertyName == "Data")
                     {
@@ -4623,12 +4754,12 @@ namespace JFCGridControl
                                 {
                                     INotifyPropertyChanged n = c.Data as INotifyPropertyChanged;
 
-                                    PropertyChangedEventHandler d = delegate (object sender1, PropertyChangedEventArgs e1)
+                                    PropertyChangedEventHandler d = delegate(object sender1, PropertyChangedEventArgs e1)
                                     {
                                         if (e1.PropertyName == c.Column.BindingPath)
                                         {
                                             c.Dispatcher.BeginInvoke(
-                                                (Action)delegate ()
+                                                (Action)delegate()
                                                 {
                                                     object val;
                                                     c.Column.GetCellValue(c.Data, out val);
@@ -4642,11 +4773,11 @@ namespace JFCGridControl
                                     };
 
 
-                                    n.PropertyChanged += delegate (object sender1, PropertyChangedEventArgs e1)
+                                    n.PropertyChanged += delegate(object sender1, PropertyChangedEventArgs e1)
                                     {
 
                                         c.Dispatcher.BeginInvoke(
-                                            (Action)delegate ()
+                                            (Action)delegate()
                                             {
                                                 if (e1.PropertyName == c.Column.BindingPath)
                                                 {
@@ -4673,12 +4804,12 @@ namespace JFCGridControl
                                         if (c.Data is INotifyPropertyChanged)
                                         {
                                             INotifyPropertyChanged n = c.Data as INotifyPropertyChanged;
-                                            n.PropertyChanged += delegate (object sender1, PropertyChangedEventArgs e1)
+                                            n.PropertyChanged += delegate(object sender1, PropertyChangedEventArgs e1)
                                             {
                                                 if (e1.PropertyName == c.Column.BindingPath)
                                                 {
                                                     c.Dispatcher.BeginInvoke(
-                                                            (Action)delegate ()
+                                                            (Action)delegate()
                                                             {
                                                                 var val = data.GetValue(c.Data, null);
 
@@ -4700,7 +4831,7 @@ namespace JFCGridControl
                                     }
                                     else
                                     {
-                                        //c.Text = "toto";
+                                        //c.Text = "";
                                         Binding binding = new Binding(c.Column.BindingPath);
                                         binding.Source = c.Data;
                                         c.SetBinding(CellImg.TextProperty, binding);
@@ -4708,7 +4839,7 @@ namespace JFCGridControl
                                 }
                                 else
                                 {
-                                    //c.Text = "toto";
+                                    //c.Text = "";
                                     Binding binding = new Binding();
                                     binding.Source = c.Data;
                                     c.SetBinding(CellImg.TextProperty, binding);
@@ -4740,6 +4871,7 @@ namespace JFCGridControl
                             ((Grid)cell.Parent).Children.Remove(cell);
 
                         grid.Children.Add(cell);
+
                     }
 
                     lUIElement.AddLast(cell);
@@ -4751,7 +4883,7 @@ namespace JFCGridControl
                     //hi.DataContext = Parent.dataSource[IndexData];
                     hi.DataContext = DataContext;
 
-                    DeleteEvents(cell, true);
+                    DeleteEvents(cell);
 
                     hi.SetValue(Grid.ColumnProperty, IdxCol);
                     hi.SetValue(Grid.RowProperty, IdxRow);
@@ -4797,7 +4929,7 @@ namespace JFCGridControl
                     cg.Component = cell;
                     cg.DataContext = dataContextTmp;
 
-                    DeleteEvents(cell, true);
+                    DeleteEvents(cell);
 
                     if (dataContextTmp != null)
                     {
@@ -4866,8 +4998,7 @@ namespace JFCGridControl
                 if (column.TypeColumn == JFCGridColumn.TypesColumn.Normal)
                 {
                     if (removeCol == false)
-                        if (grid != cellTemplate.Parent)
-                            grid.Children.Add(cellTemplate);
+                        grid.Children.Add(cellTemplate);
 
                     lUIElement.AddLast(cellTemplate);
                 }
@@ -4878,7 +5009,7 @@ namespace JFCGridControl
                     ///hi.DataContext = Parent.dataSource[IndexData];
                     hi.DataContext = DataContext;
 
-                    DeleteEvents(cellTemplate, true);
+                    DeleteEvents(cellTemplate);
 
                     hi.SetValue(Grid.ColumnProperty, IdxCol);
                     hi.SetValue(Grid.RowProperty, IdxRow);
@@ -4933,11 +5064,16 @@ namespace JFCGridControl
                         dataContextTmp = null;
                     }
 
+                    //if (dataContextTmp != null)
+                    //{
+                    //if (indexData == 0 || dataContextTmp.StartChildIndex == indexData)
+                    //{
+
                     JFCGridCellGrouping cg = new JFCGridCellGrouping();
                     cg.Component = cellTemplate;
                     cg.DataContext = dataContextTmp;
 
-                    DeleteEvents(cellTemplate, true);
+                    DeleteEvents(cellTemplate);
 
                     if (dataContextTmp != null)
                     {
@@ -5164,9 +5300,9 @@ namespace JFCGridControl
             //    {
             //        foreach (var ctrl in TabLineH[i])
             //        {
-            //            if (ctrl is Line)
+            //            if (ctrl is JFCBorder)
             //            {
-            //                Line b = ctrl as Line;
+            //                JFCBorder b = ctrl as JFCBorder;
             //                if (b.Orientation == Orientation.Horizontal)
             //                {
             //                    idxRow = (int)ctrl.GetValue(Grid.RowProperty);
@@ -5216,9 +5352,9 @@ namespace JFCGridControl
             //    {
             //        foreach (var ctrl in TabLineH[i])
             //        {
-            //            if (ctrl is Line)
+            //            if (ctrl is JFCBorder)
             //            {
-            //                Line b = ctrl as Line;
+            //                JFCBorder b = ctrl as JFCBorder;
             //                if (b.Orientation == Orientation.Horizontal)
             //                {
             //                    idxRow = (int)ctrl.GetValue(Grid.RowProperty);
@@ -5266,9 +5402,9 @@ namespace JFCGridControl
             //// on bouge la ligne
             //foreach (var ctrl in TabLineH[IndexAfter])
             //{
-            //    if (ctrl is Line)
+            //    if (ctrl is JFCBorder)
             //    {
-            //        Line b = ctrl as Line;
+            //        JFCBorder b = ctrl as JFCBorder;
             //        if (b.Orientation == Orientation.Horizontal)
             //        {
             //            ctrl.SetValue(Grid.RowProperty, IndexAfter);
@@ -5314,9 +5450,9 @@ namespace JFCGridControl
             //    {
             //        foreach (var ctrl in TabLineB[i])
             //        {
-            //            if (ctrl is Line)
+            //            if (ctrl is JFCBorder)
             //            {
-            //                Line b = ctrl as Line;
+            //                JFCBorder b = ctrl as JFCBorder;
             //                if (b.Orientation == Orientation.Horizontal)
             //                {
             //                    idxRow = (int)ctrl.GetValue(Grid.RowProperty);
@@ -5366,9 +5502,9 @@ namespace JFCGridControl
             //    {
             //        foreach (var ctrl in TabLineB[i])
             //        {
-            //            if (ctrl is Line)
+            //            if (ctrl is JFCBorder)
             //            {
-            //                Line b = ctrl as Line;
+            //                JFCBorder b = ctrl as JFCBorder;
             //                if (b.Orientation == Orientation.Horizontal)
             //                {
             //                    idxRow = (int)ctrl.GetValue(Grid.RowProperty);
@@ -5416,9 +5552,9 @@ namespace JFCGridControl
             //// on bouge la ligne
             //foreach (var ctrl in TabLineB[IndexAfter])
             //{
-            //    if (ctrl is Line)
+            //    if (ctrl is JFCBorder)
             //    {
-            //        Line b = ctrl as Line;
+            //        JFCBorder b = ctrl as JFCBorder;
             //        if (b.Orientation == Orientation.Horizontal)
             //        {
             //            ctrl.SetValue(Grid.RowProperty, IndexAfter);
@@ -5808,51 +5944,40 @@ namespace JFCGridControl
 
         public void RowRefreshDataAll()
         {
-            if (Parent?.dataSource != null)
-            {
-                int dataSourceCount = Parent.dataSource.Count();
+            if (Parent.dataSource == null)
+                return;
 
-                for (int Index = 0; Index < Grid11.RowDefinitions.Count(); Index++)
-                {
-                    if ((Parent.ScrollVerticalValue + Index) >= dataSourceCount)
-                    {
-                        RowRemove(Index);
-                        Index--;
-                    }
-                    else
-                    {
-                        RowRefreshData(Index);
-                    }
-                }
-            }
-            else
+            int dataSourceCount = Parent.dataSource.Count();
+
+            for (int Index = 0; Index < Grid11.RowDefinitions.Count(); Index++)
             {
-                RowRemoveAll();
+                if ((Parent.ScrollVerticalValue + Index) >= dataSourceCount)
+                {
+                    RowRemove(Index);
+                    Index--;
+                }
+                else
+                {
+                    RowRefreshData(Index);
+                }
             }
         }
 
         public void RowFooterRefreshDataAll()
         {
-            if (Parent?.dataSourceFooter != null)
-            {
-                int dataSourceCount = Parent.dataSourceFooter.Count();
+            int dataSourceCount = Parent.dataSourceFooter.Count();
 
-                for (int Index = 0; Index < Grid21.RowDefinitions.Count(); Index++)
-                {
-                    if (Grid21.RowDefinitions.Count > dataSourceCount)
-                    {
-                        RowFooterRemove(Index);
-                        Index--;
-                    }
-                    else
-                    {
-                        RowFooterRefreshData(Index);
-                    }
-                }
-            }
-            else
+            for (int Index = 0; Index < Grid21.RowDefinitions.Count(); Index++)
             {
-                RowFooterRemoveAll();
+                if (Grid21.RowDefinitions.Count >= dataSourceCount)
+                {
+                    RowFooterRemove(Index);
+                    Index--;
+                }
+                else
+                {
+                    RowFooterRefreshData(Index);
+                }
             }
         }
 
@@ -5990,10 +6115,10 @@ namespace JFCGridControl
                                         {
                                             int idxCol = (int)ctrl.GetValue(Grid.ColumnProperty);
 
-                                            if (ListCol == ListColBody)
-                                                Col = ListCol[StartIndexColView + idxCol];
-                                            else
+                                            if (ListCol == ListColHeaderRow)
                                                 Col = ListCol[idxCol];
+                                            else
+                                                Col = ListCol[StartIndexColView + idxCol];
                                         }
 
                                         var lst = from s in Parent.SearchResult
@@ -6022,10 +6147,11 @@ namespace JFCGridControl
                             {
                                 int idxCol = (int)ctrl.GetValue(Grid.ColumnProperty);
 
-                                if (ListCol == ListColBody)
-                                    Col = ListCol[StartIndexColView + idxCol];
-                                else
+                                if (ListCol == ListColHeaderRow)
                                     Col = ListCol[idxCol];
+                                else
+                                    Col = ListCol[StartIndexColView + idxCol];
+
                             }
 
                             object value;
@@ -6116,10 +6242,10 @@ namespace JFCGridControl
                                             {
                                                 int idxCol = (int)ctrl.GetValue(Grid.ColumnProperty);
 
-                                                if (ListCol == ListColBody)
-                                                    Col = ListCol[StartIndexColView + idxCol];
-                                                else
+                                                if (ListCol == ListColHeaderRow)
                                                     Col = ListCol[idxCol];
+                                                else
+                                                    Col = ListCol[StartIndexColView + idxCol];
                                             }
 
                                             var lst = from s in Parent.SearchResult
@@ -6146,10 +6272,10 @@ namespace JFCGridControl
                                 {
                                     int idxCol = (int)ctrl.GetValue(Grid.ColumnProperty);
 
-                                    if (ListCol == ListColBody)
-                                        Col = ListCol[StartIndexColView + idxCol];
-                                    else
+                                    if (ListCol == ListColHeaderRow)
                                         Col = ListCol[idxCol];
+                                    else
+                                        Col = ListCol[StartIndexColView + idxCol];
                                 }
 
                                 if (hi.Component is JFCGridCell)
@@ -6216,10 +6342,10 @@ namespace JFCGridControl
 
                             if (Col == null)
                             {
-                                if (ListCol == ListColBody)
-                                    Col = ListCol[StartIndexColView + IdxCol];
-                                else
+                                if (ListCol == ListColHeaderRow)
                                     Col = ListCol[IdxCol];
+                                else
+                                    Col = ListCol[StartIndexColView + IdxCol];
 
                             }
 
@@ -6282,6 +6408,7 @@ namespace JFCGridControl
                                 else
                                 {
                                     cell.Data = dataContextTmp.Obj;
+                                    //cell.Text = "idx:" + dataContextTmp.StartChildIndex.ToString() + " nb:" + dataContextTmp.NbChildren.ToString();
 
                                     if (Parent.IsSearchVisible)
                                     {
@@ -6317,7 +6444,15 @@ namespace JFCGridControl
                             }
                             else
                             {
+                                //if (Col == null)
+                                //{
+                                //    int idxCol = (int)ctrl.GetValue(Grid.ColumnProperty);
 
+                                //    if (ListCol == ListColHeaderRow)
+                                //        Col = ListCol[idxCol];
+                                //    else
+                                //        Col = ListCol[StartIndexColView + idxCol];
+                                //}
 
                                 if (cg.Component is JFCGridCell)
                                 {
@@ -6408,13 +6543,8 @@ namespace JFCGridControl
                             }
                         }
 
-                    }
-                    else if (ctrl is JFCBorder)
-                    {
-                        JFCBorder line = ctrl as JFCBorder;
-
-                        if (DataContext != null)
-                            line.BorderBrush = Parent.HorizontalBorderColor;
+                        //if (DataContext != null)
+                        //    item.Content = DataContext.StartChildIndex;
                     }
                 }
 
@@ -6453,7 +6583,7 @@ namespace JFCGridControl
 
             RefreshData(Index, IndexData, Column, TabLineB, DataContext, ListColBody);
 
-            RefreshData(Index, IndexData, Column, TabLineF, DataContext, ListColHeaderRowEnd);
+            RefreshData(Index, IndexData, Column, TabLineF, DataContext, ListColHeaderFooter);
 
         }
 
@@ -6490,7 +6620,7 @@ namespace JFCGridControl
                 DataContext = Parent.dataSourceFooter[IndexData];
 
 
-            RefreshData(Index, IndexData, Column, TabLineHF, DataContext, ListColHeaderFooter);
+            RefreshData(Index, IndexData, Column, TabLineHF, DataContext, ListColHeaderRowEnd);
 
 
             ////////////////////////////////////
@@ -6590,7 +6720,7 @@ namespace JFCGridControl
             {
                 Cell.TextAlignment = Column.CellStyle.TextAlignment;
 
-                Column.CellStyle.PropertyChanged += delegate (object sender, System.ComponentModel.PropertyChangedEventArgs e)
+                Column.CellStyle.PropertyChanged += delegate(object sender, System.ComponentModel.PropertyChangedEventArgs e)
                     {
                         Cell.TextAlignment = Column.CellStyle.TextAlignment;
                     };
@@ -6628,8 +6758,7 @@ namespace JFCGridControl
 
             if (Mode == ApplyMode.View)
             {
-                //Column.PropertyChanged += delegate (object sender, PropertyChangedExtendedEventArgs<Object> e)
-                Column.PropertyChanged += delegate (object sender, System.ComponentModel.PropertyChangedEventArgs e)
+                Column.PropertyChanged += delegate(object sender, System.ComponentModel.PropertyChangedEventArgs e)
                 {
                     if (e.PropertyName == "Margin")
                         Cell.Margin = Column.CellPadding;
@@ -6661,7 +6790,7 @@ namespace JFCGridControl
                 var item = ctrl as JFCBorder;
 
                 if (item.Orientation == Orientation.Horizontal)
-                    item.BorderBrush = Parent.HorizontalBorderColor;                
+                    item.BorderBrush = Parent.HorizontalBorderColor;
             }
 
             ////////////////////////////////////
@@ -6717,25 +6846,6 @@ namespace JFCGridControl
                 if (item.Orientation == Orientation.Horizontal)
                     item.BorderBrush = Parent.HorizontalBorderColor;
             }
-
-            ////////////////////////////////////
-            // Grid12
-
-            IEnumerable<UIElement> ListCtrlEndRow = Grid12.Children.Cast<UIElement>();
-            var ctrlsEndRow = from ctrl in ListCtrlEndRow
-                              where ctrl is JFCBorder
-                              select ctrl;
-
-            List<UIElement> lctrlsEndRow = ctrlsEndRow.ToList();
-
-            foreach (var ctrl in lctrlsEndRow)
-            {
-                var item = ctrl as JFCBorder;
-
-                if (item.Orientation == Orientation.Horizontal)
-                    item.BorderBrush = Parent.HorizontalBorderColor;
-            }
-
         }
 
         public void RefreshVerticalBorderColor()
@@ -6859,6 +6969,21 @@ namespace JFCGridControl
         #endregion
 
         #region Selection manager
+
+        //// selection des lignes
+        //private List<object> selectedItems = new List<object>();
+        //public List<object> SelectedItems
+        //{
+        //    get { return selectedItems; }
+        //    set
+        //    {
+        //        selectedItems = value;
+        //    }
+        //}
+
+        //// mode de selection
+        //public SelectionMode SelectionMode
+        //{ get; set; }
 
         private void SelectionSimple(JFCGridItem Item)
         {
@@ -7206,6 +7331,35 @@ namespace JFCGridControl
 
         }
 
+        //public void RefreshSelection(IEnumerable<UIElement> ListCtrl)
+        //{
+        //    var ctrlsBody = from ctrl in ListCtrl
+        //                    where ctrl is JFCGridItem
+        //                    select ctrl;
+
+        //    foreach (var ctrl in ctrlsBody)
+        //    {
+        //        JFCGridItem item = ctrl as JFCGridItem;
+
+        //        if (Parent.SelectedExpendItems.Contains(item.Data))
+        //        {
+        //            if (item.IsSelected == false)
+        //            {
+        //                item.IsSelected = true;
+        //                item.SelectedPeer(true);
+        //            }
+        //        }
+        //        else
+        //        {
+        //            if (item.IsSelected == true)
+        //            {
+        //                item.IsSelected = false;
+        //                item.SelectedPeer(false);
+        //            }
+        //        }
+        //    }
+        //}
+
         private void item_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             JFCGridItem Item = sender as JFCGridItem;
@@ -7278,7 +7432,7 @@ namespace JFCGridControl
 
             //int index =  Parent.dataSource item.Data;
 
-            JFCGrid.DependencyPropertyLineOverChangedEventArgs.GridPosition pos;
+            JFCGridControl.JFCGrid.DependencyPropertyLineOverChangedEventArgs.GridPosition pos;
 
             if (item.Parent != null)
             {
@@ -7297,12 +7451,12 @@ namespace JFCGridControl
                 if (item.IsMouseOverLine)
                 {
                     if (item.Data != null)
-                        this.Parent.OnLineOverChanged(this, new JFCGrid.DependencyPropertyLineOverChangedEventArgs(JFCGridItem.DataContextProperty, null, item.Data.Obj, pos, item.IndexData));
+                        this.Parent.OnLineOverChanged(this, new JFCGridControl.JFCGrid.DependencyPropertyLineOverChangedEventArgs(JFCGridItem.DataContextProperty, null, item.Data.Obj, pos, item.IndexData));
                 }
                 else
                 {
                     if (item.Data != null)
-                        this.Parent.OnLineOverChanged(this, new JFCGrid.DependencyPropertyLineOverChangedEventArgs(JFCGridItem.DataContextProperty, item.Data.Obj, null, pos, item.IndexData));
+                        this.Parent.OnLineOverChanged(this, new JFCGridControl.JFCGrid.DependencyPropertyLineOverChangedEventArgs(JFCGridItem.DataContextProperty, item.Data.Obj, null, pos, item.IndexData));
                 }
             }
         }

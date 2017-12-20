@@ -41,83 +41,85 @@ namespace WpfApplicationJFCGrid
 
             //MyGrid.IsVirtualised = false;
 
-            //BuilColumns();
+            BuilColumns();
 
-            //for (int i = 0; i < 100; i++)
-            //{
-            //    ////MyList.Add(new Person("Chambard", "Alain", 100));
-            //    ////MyList.Add(new Person("Benesteau", "Stephane", 40));
-            //    ////MyList.Add(new Person("Solau", "Xavier", 35));
-            //    ////MyList.Add(new Person("Legeay", "Frederic", 18));
+            for (int i = 0; i < 10; i++)
+            {
+                ////MyList.Add(new Person("Chambard", "Alain", 100));
+                ////MyList.Add(new Person("Benesteau", "Stephane", 40));
+                ////MyList.Add(new Person("Solau", "Xavier", 35));
+                ////MyList.Add(new Person("Legeay", "Frederic", 18));
 
-            //    ////MyList.Add(new Person("Nom" + i.ToString(), "Prenom" + i.ToString(), i));
+                ////MyList.Add(new Person("Nom" + i.ToString(), "Prenom" + i.ToString(), i));
 
-            //    //Person pers = new Person("Nom" + i.ToString(), "Prenom" + i.ToString(), i);
+                //Person pers = new Person("Nom" + i.ToString(), "Prenom" + i.ToString(), i);
 
-            //    ////if (i % 2 == 0)
-            //    ////    pers.IsExpande = true;
+                ////if (i % 2 == 0)
+                ////    pers.IsExpande = true;
 
-            //    ////pers.Children.Add(new Person("Chambard", "Alain", 100));
+                ////pers.Children.Add(new Person("Chambard", "Alain", 100));
 
-            //    //Person p = new Person("Benesteau", "Stephane", 40);
+                //Person p = new Person("Benesteau", "Stephane", 40);
 
-            //    ////for (int j = 0; j < 100; j++)
-            //    ////{
-            //    ////    p.Children.Add(new Person("Nom" + j.ToString(), "Prenom" + j.ToString(), j));
-            //    ////}
+                ////for (int j = 0; j < 100; j++)
+                ////{
+                ////    p.Children.Add(new Person("Nom" + j.ToString(), "Prenom" + j.ToString(), j));
+                ////}
 
-            //    //pers.Children.Add(p);
-            //    ////pers.Children.Add(new Person("Benesteau", "Stephane", 40));
-            //    //pers.Children.Add(new Person("Solau", "Xavier", 35, false));
-            //    //pers.Children.Add(new Person("Legeay", "Frederic", 18, true));
+                //pers.Children.Add(p);
+                ////pers.Children.Add(new Person("Benesteau", "Stephane", 40));
+                //pers.Children.Add(new Person("Solau", "Xavier", 35, false));
+                //pers.Children.Add(new Person("Legeay", "Frederic", 18, true));
 
-            //    //MyList.Add(pers);
+                //MyList.Add(pers);
 
-            //    Person pi = new Person("n" + i.ToString(),"p" + i.ToString(), i);
-            //    pi.IsExpande = true;
+                Person pi = new Person("n" + i.ToString(), "p" + i.ToString(), i);
+                pi.IsExpande = true;
 
-            //    for (int j = 0; j < 10; i++)
-            //    {
-            //        Person pj = new Person(pi.Nom + j.ToString(), pi.Prenom + j.ToString(), j);
-            //        pj.IsExpande = true;
+                for (int j = 0; j < 10; j++)
+                {
+                    Person pj = new Person(pi.Nom + j.ToString(), pi.Prenom + j.ToString(), j);
+                    pj.IsExpande = true;
 
-            //        pi.Children.Add(pj);
+                    pi.Children.Add(pj);
 
-            //        for (int k = 0; k < 10; i++)
-            //        {
-            //            Person pk = new Person(pj.Nom + k.ToString(), pj.Prenom + k.ToString(), k);
-            //            pk.IsExpande = true;
+                    //for (int k = 0; k < 10; k++)
+                    //{
+                    //    Person pk = new Person(pj.Nom + k.ToString(), pj.Prenom + k.ToString(), k);
+                    //    pk.IsExpande = true;
 
-            //            pj.Children.Add(pk);
+                    //    pj.Children.Add(pk);
 
-            //            for (int l = 0; l < 10; i++)
-            //            {
-            //                Person pl = new Person(pk.Nom + l.ToString(), pk.Prenom + l.ToString(), l);
-            //                pl.IsExpande = true;
+                    //    for (int l = 0; l < 10; l++)
+                    //    {
+                    //        Person pl = new Person(pk.Nom + l.ToString(), pk.Prenom + l.ToString(), l);
+                    //        pl.IsExpande = true;
 
-            //                pk.Children.Add(pl);
+                    //        pk.Children.Add(pl);
 
-            //                for (int m = 0; m < 10; i++)
-            //                {
-            //                    Person pm = new Person(pl.Nom + m.ToString(), pl.Prenom + m.ToString(), m);
-            //                    pm.IsExpande = true;
+                    //        for (int m = 0; m < 10; m++)
+                    //        {
+                    //            Person pm = new Person(pl.Nom + m.ToString(), pl.Prenom + m.ToString(), m);
+                    //            pm.IsExpande = true;
 
-            //                    pl.Children.Add(pm);
-            //                }
-            //            }
-            //        }
-            //    }
+                    //            pl.Children.Add(pm);
+                    //        }
+                    //    }
+                    //}
+                }
 
-            //    MyList.Add(pi);
+                MyList.Add(pi);
 
-            //}
+            }
 
             //MyTreeView.DataContext = MyList;
 
             MyGrid.PropertyChildrenName = "Children";
             MyGrid.PropertyExpandeChildrenName = "IsExpande";
-            //MyGrid.DataSource = MyList;
+            MyGrid.DataSource = MyList;
 
+            MyGrid.DataSourceFooter = new List<Person>() { new Person("test","test",15) };
+                        
             //Binding binding = new Binding("IsExpande");
             //binding.Source = MyList[0];
 
@@ -216,9 +218,30 @@ namespace WpfApplicationJFCGrid
             MyGrid.ColunmDefinition.Add(Col21);
 
 
-            JFCGridColumn c = new JFCGridColumn("1");
-            MyGrid.ColunmDefinition.Add(c);
+            //JFCGridColumn c = new JFCGridColumn("1");
+            //c.Width = new GridLength(1, GridUnitType.Star);
+            //MyGrid.ColunmDefinition.Add(c);
 
+
+            JFCGridColumn colB1 = new JFCGridColumn("Prenom");
+            colB1.Width = new GridLength(50);
+            MyGrid.ColunmDefinition.Add(colB1);
+            JFCGridColumn colB2 = new JFCGridColumn("Prenom");
+            colB2.Width = new GridLength(50);
+            MyGrid.ColunmDefinition.Add(colB2);
+            JFCGridColumn colB3 = new JFCGridColumn("Prenom");
+            colB3.Width = new GridLength(50);
+            MyGrid.ColunmDefinition.Add(colB3);
+            JFCGridColumn colB4 = new JFCGridColumn("Nom");
+            colB4.Width = new GridLength(100);
+            MyGrid.ColunmDefinition.Add(colB4);
+
+
+
+            //JFCGridColumn colFoot = new JFCGridColumn();
+            ////colFoot.CellTemplate = (ControlTemplate)this.Resources["FooterLibelleTemplateKey"];
+            //colFoot.Width = new GridLength(1, GridUnitType.Star);
+            //MyGrid.ColunmDefinitionFooter.Add(colFoot);
 
             //JFCGridColumn Col25 = new JFCGridColumn("Prenom");
             //Col25.TypeColumn = JFCGridColumn.TypesColumn.GroupingNoRow;

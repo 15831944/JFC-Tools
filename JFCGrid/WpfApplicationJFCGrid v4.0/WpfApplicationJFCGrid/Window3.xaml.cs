@@ -26,20 +26,7 @@ namespace WpfApplicationJFCGrid
             public string Date { get; set; }
             public string Type { get; set; }
             public string Id { get; set; }
-
-            private string name = "";
-            public string Name 
-            {
-                get 
-                {
-                    System.Threading.Thread.Sleep(100);
-                    return name;
-                }
-                set 
-                {
-                    name = value;
-                } 
-            }
+            public string Name { get; set; }
 
             public Produit()
             {
@@ -75,14 +62,6 @@ namespace WpfApplicationJFCGrid
             {
                 get { return children; }
             }
-
-            private string[] tab = new string[] { "toto","titi","tata" };
-
-            public string[] Tab
-            {
-                get { return tab; }
-            }
-
 
             #region INotifyPropertyChanged Members
 
@@ -205,20 +184,37 @@ namespace WpfApplicationJFCGrid
             #endregion
 
 
-            //JFCGridColumn Col1 = new JFCGridColumn("Date");
-            ////Col1.Frozen = true;
-            //Col1.TypeColumn = JFCGridColumn.TypesColumn.Normal;
-            ////Col1.LevelGrouping = 0;
-            ////Col1.CellTemplate = (ControlTemplate)Resources["CellTemplate2"];
-            //Col1.Header.Content = "Date";
-            //MyGrid.ColunmDefinition.Add(Col1);
+            JFCGridColumn Col = new JFCGridColumn("Date");            
+            Col.Frozen = JFCGridColumn.FrozenType.Start;
+            Col.TypeColumn = JFCGridColumn.TypesColumn.Normal;
+            Border b = new Border();
+            b.Background = Brushes.Red;
+            b.Width = 20;
+            b.Height = 20;
+            //Col.Header.Content = b;
+            Col.Header.HeaderSort.Content = b;
+            //Col.Header.HeaderSort2 = b;
+            Col.Header.Content = "Date";
+            Col.IsMovable = false;
+            MyGrid.ColunmDefinition.Add(Col);
+
+            Col.Header.Click += new RoutedEventHandler(Header_Click);
+            Col.Header.HeaderSort.Click += new RoutedEventHandler(HeaderSort_Click);
+
+            JFCGridColumn Col1 = new JFCGridColumn("Date");
+            //Col1.Frozen = true;
+            Col1.TypeColumn = JFCGridColumn.TypesColumn.Normal;
+            //Col1.LevelGrouping = 0;
+            //Col1.CellTemplate = (ControlTemplate)Resources["CellTemplate2"];
+            Col1.Header.Content = "Date";
+            MyGrid.ColunmDefinition.Add(Col1);
 
             JFCGridColumn Col21 = new JFCGridColumn("Name");
             //Col21.Frozen = true;
             Col21.LevelGrouping = 0;
             Col21.CellTemplate = (ControlTemplate)Resources["CellTemplate2"];
             Col21.TypeColumn = JFCGridColumn.TypesColumn.GroupingWithRow;
-            Col21.Header.Content = "Famille"; 
+            Col21.Header.Content = "Famille";
             //MyGrid.ColunmDefinition.Add(Col21);
 
             JFCGridColumn Col2 = new JFCGridColumn("Name");
@@ -229,16 +225,16 @@ namespace WpfApplicationJFCGrid
             Col2.Header.Content = "Classe";
             //MyGrid.ColunmDefinition.Add(Col2);
 
-            //JFCGridColumn Col22 = new JFCGridColumn("Type");
-            ////Col22.Frozen = true;
-            //Col22.TypeColumn = JFCGridColumn.TypesColumn.Hierarchical;
-            //MyGrid.ColunmDefinition.Add(Col22);
+            JFCGridColumn Col22 = new JFCGridColumn("Type");
+            //Col22.Frozen = true;
+            Col22.TypeColumn = JFCGridColumn.TypesColumn.Hierarchical;
+            MyGrid.ColunmDefinition.Add(Col22);
 
-            //JFCGridColumn Col3 = new JFCGridColumn("Id");
-            ////Col3.Frozen = true;
-            //Col3.TypeColumn = JFCGridColumn.TypesColumn.Normal;
-            //Col3.Header.Content = "Id";
-            //MyGrid.ColunmDefinition.Add(Col3);
+            JFCGridColumn Col3 = new JFCGridColumn("Id");
+            //Col3.Frozen = true;
+            Col3.TypeColumn = JFCGridColumn.TypesColumn.Normal;
+            Col3.Header.Content = "Id";
+            MyGrid.ColunmDefinition.Add(Col3);
 
             JFCGridColumn Col4 = new JFCGridColumn("Name");
             //Col4.Frozen = true;
@@ -246,14 +242,38 @@ namespace WpfApplicationJFCGrid
             Col4.Header.Content = "Produit";
             MyGrid.ColunmDefinition.Add(Col4);
 
-            //JFCGridColumn Col5 = new JFCGridColumn("Tab[1]");
-            ////Col4.Frozen = true;
-            //Col5.TypeColumn = JFCGridColumn.TypesColumn.Normal;
-            //Col5.Header.Content = "Tab";
-            //MyGrid.ColunmDefinition.Add(Col5);
+            Col4.IsSelected = true;
 
+            JFCGridColumn Col5 = new JFCGridColumn("Id");
+            Col5.Frozen = JFCGridColumn.FrozenType.End;
+            Col5.TypeColumn = JFCGridColumn.TypesColumn.Normal;
+            Col5.Header.Content = "Id";
+            MyGrid.ColunmDefinition.Add(Col5);
+
+            JFCGridColumn Col6 = new JFCGridColumn("Date");
+            Col6.Frozen = JFCGridColumn.FrozenType.End;
+            Col6.TypeColumn = JFCGridColumn.TypesColumn.Normal;
+            Col6.Header.Content = "Date";
+            MyGrid.ColunmDefinition.Add(Col6);
 
             MyGrid.DataSource = lstProduit;
+            //MyGrid.DataSourceFooter = new List<object>() { lstProduit.First(), lstProduit.First() };
+        }
+
+        void HeaderSort_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("HeaderSort");
+        }
+
+        void Header_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("Header");
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            MyGrid.DataSource = null;
+            //MyGrid.DataSource = new List<object>() {lstProduit.First()};
         }
     }
 }

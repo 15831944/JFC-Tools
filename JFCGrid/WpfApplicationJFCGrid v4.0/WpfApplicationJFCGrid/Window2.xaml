@@ -12,7 +12,7 @@
         </Grid.RowDefinitions>
         
         <f:JFCGraph x:Name="MyGraph" GraphType="Histogram"/>
-                
+        
         <Button x:Name="MyButton" Grid.Row="2" Content="Type Graph" Click="MyButton_Click"/>
     </Grid>
 </Window>

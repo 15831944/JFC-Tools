@@ -1,0 +1,19 @@
+﻿<Window x:Class="WpfApplicationJFCGrid.Window5"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:jfc="clr-namespace:JFCGridControl;assembly=JFCGridControl"
+        Title="Window5" Height="300" Width="300">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="30"/>
+        </Grid.RowDefinitions>
+        
+        <jfc:JFCGrid x:Name="MyGrid"/>
+        
+        <StackPanel Grid.Row="2" Orientation="Horizontal">
+            <Button x:Name="ButtonLoad" Content="load" Click="ButtonLoad_Click"/>
+            <Button x:Name="ButtonChangeData" Content="ChangeData" Click="ButtonChangeData_Click"/>
+        </StackPanel>        
+    </Grid>
+</Window>
