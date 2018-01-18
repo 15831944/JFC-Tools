@@ -930,6 +930,7 @@ namespace JFCGridControl
             //SearchNext
         }
 
+        private bool IsGroupingChanged = false;
         void ParamColumn(JFCGridColumn col)
         {
             if (col.TypeColumn == JFCGridColumn.TypesColumn.GroupingNoRow)
@@ -937,7 +938,10 @@ namespace JFCGridControl
                 if (col.LevelGrouping != -1)
                 {
                     if (!LstGroupingNoRowLevel.Contains(col.LevelGrouping))
+                    {
                         LstGroupingNoRowLevel.Add(col.LevelGrouping);
+                        IsGroupingChanged = true;
+                    }
                 }
             }
             else if (col.TypeColumn == JFCGridColumn.TypesColumn.GroupingWithRow)
@@ -945,7 +949,10 @@ namespace JFCGridControl
                 if (col.LevelGrouping != -1)
                 {
                     if (!LstGroupingWithRowLevel.Contains(col.LevelGrouping))
+                    {
                         LstGroupingWithRowLevel.Add(col.LevelGrouping);
+                        IsGroupingChanged = true;
+                    }
                 }
             }
             else if (col.TypeColumn == JFCGridColumn.TypesColumn.GroupingWithRowWhenNoChildren)
@@ -953,10 +960,16 @@ namespace JFCGridControl
                 if (col.LevelGrouping != -1)
                 {
                     if (!LstGroupingNoRowLevel.Contains(col.LevelGrouping))
+                    {
                         LstGroupingNoRowLevel.Add(col.LevelGrouping);
+                        IsGroupingChanged = true;
+                    }
 
                     if (!LstGroupingWithRowWhenNoChildrenLevel.Contains(col.LevelGrouping))
+                    {
                         LstGroupingWithRowWhenNoChildrenLevel.Add(col.LevelGrouping);
+                        IsGroupingChanged = true;
+                    }
                 }
             }
         }
@@ -1393,6 +1406,23 @@ namespace JFCGridControl
             }
 
             UpdateEcart(this, new DependencyPropertyChangedEventArgs());
+
+            if (IsGroupingChanged && DataSource != null)
+            {
+                UpdateDatasource(this, new DependencyPropertyChangedEventArgs());
+
+                OnDataSourceChanged();
+
+                RefreshScrollBarVertical();
+                RefreshScrollBarHorizontal();
+
+                Manager.RefreshAllColumnsWidth();
+
+                Manager.RefreshSizeColumnStar();
+
+                if (IsSearchVisible)
+                    OnSearchChanged(this, new DependencyPropertySearchChangedEventArgs(TextBoxSearch.Text, SearchResult));
+            }
         }
 
         void ColunmDefinitionFooter_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
@@ -1779,6 +1809,8 @@ namespace JFCGridControl
                     grid.dataSource = null;
                 }
             }
+
+            grid.IsGroupingChanged = false;
 
             //UpdateEcart(obj, e);
         }

@@ -195,14 +195,14 @@ namespace WpfApplicationJFCGrid
 
             JFCGridColumn Col20 = new JFCGridColumn("Prenom");
             Col20.Frozen = JFCGridColumn.FrozenType.Start;
-            Col20.TypeColumn = JFCGridColumn.TypesColumn.GroupingWithRow;
+            Col20.TypeColumn = JFCGridColumn.TypesColumn.GroupingNoRow;
             Col20.LevelGrouping = 0;
             //Col20.CellTemplate = (ControlTemplate)Resources["CellTemplate2"];
             MyGrid.ColunmDefinition.Add(Col20);
 
             JFCGridColumn col32 = new JFCGridColumn("Prenom");
             col32.Frozen = JFCGridColumn.FrozenType.Start;
-            col32.TypeColumn = JFCGridColumn.TypesColumn.GroupingWithRow;
+            //col32.TypeColumn = JFCGridColumn.TypesColumn.GroupingWithRow;
             col32.LevelGrouping = 1;
             MyGrid.ColunmDefinition.Add(col32);
 
@@ -215,7 +215,7 @@ namespace WpfApplicationJFCGrid
             //Col21.IsHierarchicalColumn = true;
             Col21.TypeColumn = JFCGridColumn.TypesColumn.Hierarchical;
             //Col21.Width = new GridLength(50);
-            MyGrid.ColunmDefinition.Add(Col21);
+            //MyGrid.ColunmDefinition.Add(Col21);
 
 
             //JFCGridColumn c = new JFCGridColumn("1");
