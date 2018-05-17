@@ -1,0 +1,9 @@
+﻿<UserControl x:Class="JFCGridControl.JFCVisualBrush3"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Grid>
+        <Image x:Name="MyImage"
+               Source="{Binding Path=SourceImage}" Stretch="None" />
+        <Rectangle x:Name="MyRectangle" Fill="White" Margin="0"></Rectangle>
+    </Grid>
+</UserControl>

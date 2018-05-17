@@ -1,0 +1,299 @@
+﻿<UserControl x:Class="JFCGridControl.JFCGrid"
+             x:Name="jfcgrid"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             Height="auto"
+             Width="auto">
+    <Grid x:Name="TotalGrid" UseLayoutRounding="True" Focusable="False">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition x:Name="ColumnHeader" Width="Auto"/>
+            <ColumnDefinition Width="{Binding EcartHeaderRow,ElementName=jfcgrid}"
+                              x:Name="ColumnEcart1"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="{Binding EcartBodyFooterVertical,ElementName=jfcgrid}"
+                              x:Name="ColumnEcart2"/>
+            <ColumnDefinition Width="Auto" x:Name="ColFooter"/>
+            <ColumnDefinition Width="{Binding EcartScrollVertical,ElementName=jfcgrid}"
+                              x:Name="ColumnEcart3"/>
+            <ColumnDefinition x:Name="ColumnScrollBar" Width="Auto"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="0"
+                           x:Name="RowSearch"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="{Binding EcartHeaderColumn, ElementName=jfcgrid}"
+                           x:Name="RowEcart1"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="{Binding EcartBodyFooterHorizontal, ElementName=jfcgrid}"
+                           x:Name="RowEcart2"/>
+            <RowDefinition Height="0" x:Name="RowFooter"/>
+            <RowDefinition Height="{Binding EcartScrollHorizontal, ElementName=jfcgrid}"
+                           x:Name="RowEcart3"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <WrapPanel x:Name="WrapPanelSearch" Visibility="Collapsed" Orientation="Horizontal" ClipToBounds="True" Focusable="False" Grid.Row="0" Grid.ColumnSpan="5" Margin="0,0,0,5">
+            <!--<StackPanel Orientation="Horizontal" ClipToBounds="True" Focusable="False" Grid.Row="0" Grid.ColumnSpan="5" Margin="0,0,0,5">-->
+            <!--<Grid x:Name="GridSearch" ClipToBounds="True" Focusable="False" Grid.Row="0" Grid.ColumnSpan="5">-->
+            <StackPanel Orientation="Horizontal">
+                <!--la croix pour fermer-->
+                <Button x:Name="SearchClose" VerticalAlignment="Center" Margin="5,0,0,0" Click="SearchClose_Click" Focusable="False">
+                    <Button.Template>
+                        <ControlTemplate>
+                            <Border x:Name="MyBorder" Width="{Binding Path=ActualHeight, ElementName=MyBorder}" BorderThickness="1" BorderBrush="Transparent" CornerRadius="3">
+                                <TextBlock Text="X" VerticalAlignment="Center" HorizontalAlignment="Center" FontFamily="Arial" FontWeight="Bold" Foreground="{Binding ElementName=TextBlockSearch ,Path=Foreground}"/>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger SourceName="MyBorder" Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="MyBorder" Property="BorderBrush" Value="{Binding ElementName=TextBlockSearch ,Path=Foreground}"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+
+                <!--Libellé rechercher-->
+                <TextBlock x:Name="TextBlockSearch" Text="{Binding ElementName=jfcgrid, Path=LabelResearch}" VerticalAlignment="Center" Margin="5,0,0,0" Focusable="False"/>
+                <TextBlock Text=" :" VerticalAlignment="Center" Margin="0,0,0,0" Focusable="False"/>
+
+                <!--Champs de saisie-->
+                <TextBox x:Name="TextBoxSearch" TextChanged="TextBoxSearch_TextChanged" KeyDown="TextBoxSearch_KeyDown" VerticalAlignment="Center" Width="200" Margin="5,0,0,0" Focusable="True"/>
+
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal">
+
+                <!--Bouton précédent-->
+                <Button x:Name="SearchPrevious" VerticalAlignment="Center" Margin="5,0,0,0" Click="SearchPrevious_Click">
+                    <Button.Template>
+                        <ControlTemplate>
+                            <Image Name="image1" Height="16" Width="16" Stretch="Fill" Source="/JFCGridControl;component/Images/left.png" />
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+
+
+                <!--Bouton suivant-->
+                <Button x:Name="SearchNext" VerticalAlignment="Center" Margin="5,0,0,0" Click="SearchNext_Click">
+                    <Button.Template>
+                        <ControlTemplate>
+                            <Image Name="image2" Height="16" Width="16" Stretch="Fill" Source="/JFCGridControl;component/Images/right.png" />
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+
+
+                <!--Nombre de résultat-->
+                <TextBlock x:Name="TextBlockResult" Text="{Binding ElementName=jfcgrid, Path=LabelResult}" VerticalAlignment="Center" Margin="5,0,0,0"/>
+                <TextBlock Text=" :" VerticalAlignment="Center" Margin="0,0,0,0"/>
+                <TextBlock x:Name="TextBlockNbFind" Text="0 / 0" VerticalAlignment="Center" Margin="5,0,0,0"/>
+            </StackPanel>
+            <!--</Grid>-->
+            <!--</StackPanel>-->
+        </WrapPanel>
+
+        <Border x:Name="SearchBorder"
+                BorderThickness="1"
+                CornerRadius="3"
+                BorderBrush="{Binding ScrollViewerBorderColor, ElementName=jfcgrid}"
+                Grid.Row="1"
+                Grid.Column="6"
+                Visibility="Collapsed">
+            <Button x:Name="SearchButton" VerticalAlignment="Center" Margin="0" Click="SearchButton_Click">
+                <Button.Template>
+                    <ControlTemplate>
+                        <Image Name="image3" Height="16" Width="16" Stretch="Fill" Source="/JFCGridControl;component/Images/Search.png" />
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+        </Border>
+
+        <Grid x:Name="Grid00"
+              Grid.Row="1"
+              ClipToBounds="True"
+              Focusable="False">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="0"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+        </Grid>
+
+        <Border x:Name="BorderScrollViewerHeaderRow"
+                BorderBrush="{Binding ScrollViewerBorderColor, ElementName=jfcgrid}"
+                BorderThickness="{Binding ScrollViewerBorderThickness, ElementName=jfcgrid}"
+                Background="{Binding ScrollViewerBackgroundColor, ElementName=jfcgrid}"
+                Grid.Row="3"
+                Focusable="False">
+            <ScrollViewer x:Name="ScrollViewerHeaderRow"
+                      IsTabStop="False"
+                      Focusable="True"                      
+                      Margin="0"
+                      HorizontalScrollBarVisibility="Hidden"
+                      VerticalScrollBarVisibility="Hidden"                      
+                      PreviewMouseWheel="ScrollViewer_PreviewMouseWheel"
+                      PreviewKeyDown="ScrollViewer_PreviewKeyDown"
+                      ScrollChanged="ScrollViewerHeaderRow_ScrollChanged"
+                      Grid.Row="3">
+                <Grid x:Name="Grid10"
+                      HorizontalAlignment="Left"
+                      VerticalAlignment="Top"
+                      UseLayoutRounding="True"
+                      Focusable="False"></Grid>
+            </ScrollViewer>
+        </Border>
+
+        <ScrollViewer x:Name="ScrollViewerHeaderColumn"
+                      IsTabStop="False"
+                      Focusable="False"
+                      HorizontalScrollBarVisibility="Hidden"
+                      VerticalScrollBarVisibility="Hidden"
+                      Background="{Binding ScrollViewerBackgroundColorHeaderColumn, ElementName=jfcgrid}"
+                      Grid.Row="1"
+                      Grid.Column="2"
+                      ScrollChanged="ScrollViewerHeaderColumn_ScrollChanged">
+            <Grid x:Name="Grid01"
+                  HorizontalAlignment="Left"
+                  UseLayoutRounding="True"
+                  Focusable="False">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="0"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+            </Grid>
+        </ScrollViewer>
+
+        <Border x:Name="BorderScrollViewerBody"
+                BorderBrush="{Binding ScrollViewerBorderColor, ElementName=jfcgrid}"
+                BorderThickness="{Binding ScrollViewerBorderThickness, ElementName=jfcgrid}"
+                Background="{Binding ScrollViewerBackgroundColor, ElementName=jfcgrid}"
+                Grid.Column="2"
+                Grid.Row="3"
+                Focusable="False">
+            <ScrollViewer x:Name="ScrollViewerBody"
+                      IsTabStop="False"
+                      Focusable="True"
+                      Margin="0"
+                      HorizontalScrollBarVisibility="Hidden"
+                      VerticalScrollBarVisibility="Hidden"                      
+                      SizeChanged="ScrollViewerBody_SizeChanged"
+                      PreviewMouseWheel="ScrollViewer_PreviewMouseWheel"
+                      PreviewKeyDown="ScrollViewer_PreviewKeyDown"
+                      Grid.Column="2"
+                      Grid.Row="3">
+
+                <Grid x:Name="Grid11"
+                  HorizontalAlignment="Left"
+                  VerticalAlignment="Top"
+                  UseLayoutRounding="True"
+                  Focusable="False">
+                </Grid>
+            </ScrollViewer>
+        </Border>
+
+        <Grid x:Name="Grid02"
+              Grid.Row="1"
+              Grid.Column="4"
+              ClipToBounds="True"
+              Focusable="False">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="0"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+        </Grid>
+
+        <Border x:Name="BorderScrollViewerFooterRow"
+                BorderBrush="{Binding ScrollViewerBorderColor, ElementName=jfcgrid}"
+                BorderThickness="{Binding ScrollViewerBorderThickness, ElementName=jfcgrid}"
+                Background="{Binding ScrollViewerBackgroundColor, ElementName=jfcgrid}"
+                Grid.Row="3"
+                Grid.Column="4"
+                Focusable="False">
+            <ScrollViewer x:Name="ScrollViewerFooterRow"
+                      IsTabStop="False"
+                      Focusable="True"                      
+                      Margin="0"
+                      HorizontalScrollBarVisibility="Hidden"
+                      VerticalScrollBarVisibility="Hidden"                      
+                      PreviewMouseWheel="ScrollViewer_PreviewMouseWheel"
+                      PreviewKeyDown="ScrollViewer_PreviewKeyDown"
+                      ScrollChanged="ScrollViewerHeaderRow_ScrollChanged"
+                      Grid.Row="3">
+                <Grid x:Name="Grid12"
+                      HorizontalAlignment="Left"
+                      VerticalAlignment="Top"
+                      UseLayoutRounding="True"
+                      Focusable="False"></Grid>
+            </ScrollViewer>
+        </Border>
+
+        
+        <Border x:Name="BorderScrollViewerHeaderRowFooter"
+                BorderBrush="{Binding ScrollViewerBorderColor, ElementName=jfcgrid}"
+                BorderThickness="{Binding ScrollViewerBorderThickness, ElementName=jfcgrid}"
+                Background="{Binding ScrollViewerBackgroundColor, ElementName=jfcgrid}"
+                Grid.Row="5"
+                Focusable="False">
+            <ScrollViewer x:Name="ScrollViewerHeaderRowFooter"
+                      IsTabStop="False"
+                      Focusable="False"
+                      Margin="0"
+                      HorizontalScrollBarVisibility="Hidden"
+                      VerticalScrollBarVisibility="Hidden"
+                      Grid.Row="5">
+                <Grid x:Name="Grid20" Margin="0"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch"
+                    UseLayoutRounding="True"
+                    Focusable="False"></Grid>
+            </ScrollViewer>
+        </Border>
+
+        <Border x:Name="BorderScrollViewerBodyFooter"
+                BorderBrush="{Binding ScrollViewerBorderColor, ElementName=jfcgrid}"
+                BorderThickness="{Binding ScrollViewerBorderThickness, ElementName=jfcgrid}"
+                Background="{Binding ScrollViewerBackgroundColor, ElementName=jfcgrid}"
+                Grid.Column="2"
+                Grid.Row="5"
+                Focusable="False">
+            <ScrollViewer x:Name="ScrollViewerBodyFooter"
+                      IsTabStop="False"
+                      Focusable="False"                      
+                      Margin="0"
+                      HorizontalScrollBarVisibility="Hidden"
+                      VerticalScrollBarVisibility="Hidden"
+                      Grid.Column="2"
+                      Grid.Row="5">
+
+                <Grid x:Name="Grid21"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    UseLayoutRounding="True"
+                    Focusable="False">
+                </Grid>
+            </ScrollViewer>
+        </Border>
+
+        <ScrollBar x:Name="ScrollBarVertical"
+                   Orientation="Vertical"
+                   Grid.Column="6"
+                   Grid.Row="3"
+                   Visibility="{Binding ScrollBarVerticalVisibility, ElementName=jfcgrid}"
+                   ValueChanged="ScrollBarVertical_ValueChanged"/>
+
+        <ScrollBar x:Name="ScrollBarHorizontal"
+                   Orientation="Horizontal"
+                   Grid.Column="2"
+                   Grid.Row="7"
+                   Visibility="{Binding ScrollBarHorizontalVisibility, ElementName=jfcgrid}"                   
+                   ValueChanged="ScrollBarHorizontal_ValueChanged"/>
+
+        <!--Minimum="{Binding Path=Minimum, ElementName=ScrollViewerBody}"
+                   Maximum="{Binding Path=Maximum, ElementName=ScrollViewerBody}"-->
+
+
+        <!--<TextBlock x:Name="MyTextblock"
+                   Margin="0,0,0,0"
+                   VerticalAlignment="Bottom"
+                   HorizontalAlignment="Left"
+                   Grid.Row="5"
+                   Grid.Column="4"></TextBlock>-->
+
+    </Grid>
+</UserControl>
