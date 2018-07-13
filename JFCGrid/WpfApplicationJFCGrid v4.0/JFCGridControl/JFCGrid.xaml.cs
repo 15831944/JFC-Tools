@@ -93,8 +93,8 @@ namespace JFCGridControl
             }
         }
 
-        public event RoutedEventHandler ColumnMoved;
-        internal void OnColumnMoved(object sender, RoutedEventArgs e)
+        public event ColumnMovedEventHandler ColumnMoved;
+        internal void OnColumnMoved(object sender, ColumnMovedEventArgs e)
         {
             if (ColumnMoved != null)
                 ColumnMoved(this, e);
@@ -1296,7 +1296,11 @@ namespace JFCGridControl
                     }
                 }
 
-                OnColumnMoved(this, new RoutedEventArgs());
+                if (e.NewItems[0] is JFCGridColumn)
+                {
+                    JFCGridColumn col = e.NewItems[0] as JFCGridColumn;
+                    OnColumnMoved(this, new ColumnMovedEventArgs(col));
+                }
             }
             else if (e.Action == NotifyCollectionChangedAction.Remove)
             {
@@ -1602,7 +1606,11 @@ namespace JFCGridControl
                     }
                 }
 
-                OnColumnMoved(this, new RoutedEventArgs());
+                if (e.NewItems[0] is JFCGridColumn)
+                {
+                    JFCGridColumn col = e.NewItems[0] as JFCGridColumn;
+                    OnColumnMoved(this, new ColumnMovedEventArgs(col));
+                }
             }
             else if (e.Action == NotifyCollectionChangedAction.Remove)
             {

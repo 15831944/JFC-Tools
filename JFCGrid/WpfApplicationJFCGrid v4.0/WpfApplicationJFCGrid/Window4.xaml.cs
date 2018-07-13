@@ -34,21 +34,20 @@ namespace WpfApplicationJFCGrid
         {
 
             JFCGridColumn col1 = new JFCGridColumn("Nom");
-            col1.Header.Content = "nom";
+            //col1.Header.Content = "nom";
             col1.Frozen = JFCGridColumn.FrozenType.Start;
             col1.LevelGrouping = 0;
             col1.TypeColumn = JFCGridColumn.TypesColumn.GroupingNoRow;
-            col1.Header.Style = this.FindResource("JFCGridColumnHeader") as Style;
-            //col1.CellTemplate = this.FindResource("ColumnFrozenCellTemplate") as ControlTemplate;
-
+            //col1.Header.Style = this.FindResource("JFCGridColumnHeader") as Style;
+            
             MyGrid.ColunmDefinition.Add(col1);
 
             JFCGridColumn col2 = new JFCGridColumn("Nom");
             col2.Header.Content = "nom";
             col2.Frozen = JFCGridColumn.FrozenType.Start;
             col2.LevelGrouping = 1;
-            col2.TypeColumn = JFCGridColumn.TypesColumn.GroupingNoRow; 
-            col2.Header.Style = this.FindResource("JFCGridColumnHeader") as Style;
+            col2.TypeColumn = JFCGridColumn.TypesColumn.Hierarchical;
+            //col2.Header.Style = this.FindResource("JFCGridColumnHeader") as Style;
             //col2.CellTemplate = this.FindResource("ColumnFrozenCellTemplate") as ControlTemplate;
 
             MyGrid.ColunmDefinition.Add(col2);
@@ -56,30 +55,34 @@ namespace WpfApplicationJFCGrid
 
             JFCGridColumn colb1 = new JFCGridColumn("Nom");
             colb1.Header.Content = "nom";
-            colb1.Header.Style = this.FindResource("JFCGridColumnHeader") as Style;
-            colb1.CellTemplate = this.FindResource("toto") as ControlTemplate;
+            //colb1.Header.Style = this.FindResource("JFCGridColumnHeader") as Style;
+            //colb1.CellTemplate = this.FindResource("toto") as ControlTemplate;
 
             MyGrid.ColunmDefinition.Add(colb1);
 
-            JFCGridColumn colb2 = new JFCGridColumn("Prenom");
-            colb2.Header.Content = "prenom";
-            colb2.Header.Style = this.FindResource("JFCGridColumnHeader") as Style;
-            colb2.CellTemplate = this.FindResource("toto") as ControlTemplate;
+            //JFCGridColumn colb2 = new JFCGridColumn("Prenom");
+            //colb2.Header.Content = "prenom";
+            //colb2.Header.Style = this.FindResource("JFCGridColumnHeader") as Style;
+            //colb2.CellTemplate = this.FindResource("toto") as ControlTemplate;
 
-            MyGrid.ColunmDefinition.Add(colb2);
-
-            
-                       
+            //MyGrid.ColunmDefinition.Add(colb2);
 
             for (int i = 0; i < 20; i++)
             {
                 JFCGridColumn colb3 = new JFCGridColumn("Age");
                 colb3.Header.Content = "age";
-                colb3.Header.Style = this.FindResource("JFCGridColumnHeader") as Style;
-                colb3.CellTemplate = this.FindResource("toto") as ControlTemplate;
+                //colb3.Header.Style = this.FindResource("JFCGridColumnHeader") as Style;
+                //colb3.CellTemplate = this.FindResource("toto") as ControlTemplate;
                 MyGrid.ColunmDefinition.Add(colb3);
             }
-            
+
+
+            MyGrid.ColunmDefinition.CollectionChanged += ColunmDefinition_CollectionChanged;
+        }
+
+        private void ColunmDefinition_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            int i = 0;
         }
 
         public void BuildData()

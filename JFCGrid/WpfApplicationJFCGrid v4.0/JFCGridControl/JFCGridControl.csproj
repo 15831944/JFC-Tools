@@ -97,6 +97,7 @@
     <Compile Include="HierarchicalItem.xaml.cs">
       <DependentUpon>HierarchicalItem.xaml</DependentUpon>
     </Compile>
+    <Compile Include="INotifyColumnMoved.cs" />
     <Compile Include="INotifyPropertyChangedExtended.cs" />
     <Compile Include="JFCBorder.cs" />
     <Compile Include="JFCExpendItem.cs" />

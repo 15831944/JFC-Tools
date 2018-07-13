@@ -3931,7 +3931,7 @@ namespace JFCGridControl
                         parent = Grid00;
                         colFrozen = JFCGridColumn.FrozenType.Start;
                     }
-                    if (ContainColumn(lcolsFrozenEnd, header.Column))
+                    else if (ContainColumn(lcolsFrozenEnd, header.Column))
                     {
                         parent = Grid02;
                         colFrozen = JFCGridColumn.FrozenType.End;
