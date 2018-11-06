@@ -2,7 +2,7 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:jfc="clr-namespace:JFCGridControl;assembly=JFCGridControl"
-        Title="Window4" Height="300" Width="300">
+        Title="Window4" Height="300" Width="300" x:Name="win">
     <Window.Resources>
 
         <LinearGradientBrush x:Key="HeaderColumnBrush"
@@ -78,13 +78,64 @@
                 </Setter.Value>
             </Setter>
         </Style>
-        
+
+        <!-- JFCGridItem  -->
+        <Style x:Key="{x:Type jfc:JFCGridItem}"
+               TargetType="{x:Type jfc:JFCGridItem}">
+            <Setter Property="SnapsToDevicePixels"
+                    Value="true" />
+            <Setter Property="OverridesDefaultStyle"
+                    Value="true" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="jfc:JFCGridItem">
+                        <Border Name="Border"
+                                SnapsToDevicePixels="true"
+                                BorderThickness="0,0,0,1"
+                                BorderBrush="Blue"
+                                Background="Transparent">
+                            <ContentPresenter></ContentPresenter>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsAlternate"
+                                     Value="true">
+                                <Setter Property="Background"
+                                        Value="Gray"
+                                        TargetName="Border" />
+                            </Trigger>
+                            <Trigger Property="IsMouseOverLine"
+                                     Value="true">
+                                <Setter Property="Background"
+                                        Value="Red"
+                                        TargetName="Border" />
+                            </Trigger>
+                            <Trigger Property="IsSelected"
+                                     Value="true">
+                                <Setter TargetName="Border"
+                                        Property="Background"
+                                        Value="Blue" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
 
     </Window.Resources>
     
     <Grid>
-        <jfc:JFCGrid x:Name="MyGrid" ColumnMovable="True">
+
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="20"/>
+        </Grid.RowDefinitions>
+        
+        <jfc:JFCGrid x:Name="MyGrid" ColumnMovable="True" SelectionMode="Extended" SelectedItems="{Binding Path=MyProperty, Mode=TwoWay}">
             
         </jfc:JFCGrid>
+
+        <Button Content="toto" Grid.Row="2" Click="Button_Click"/>
+
     </Grid>
 </Window>

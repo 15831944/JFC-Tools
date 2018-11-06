@@ -1,17 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using JFCGridControl;
+﻿using JFCGridControl;
+using System;
 using System.ComponentModel;
+using System.Windows;
+using System.Windows.Media;
 
 namespace WpfApplicationJFCGrid
 {
@@ -80,7 +71,7 @@ namespace WpfApplicationJFCGrid
                 {
                     Data[i].Value[j].Value = Data[i].Value[j].Value + 1;
                 }
-                                
+
             }
         }
 
@@ -100,16 +91,16 @@ namespace WpfApplicationJFCGrid
         public class MyInt : INotifyPropertyChanged
         {
             private int mvalue;
-            public int Value 
+            public int Value
             {
                 get { return mvalue; }
-                set 
+                set
                 {
                     mvalue = value;
                     OnPropertyChanged("Value");
                 }
             }
-            
+
             public event PropertyChangedEventHandler PropertyChanged;
 
             private void OnPropertyChanged(String propertyName)
@@ -121,5 +112,9 @@ namespace WpfApplicationJFCGrid
             }
         }
 
+        private void ButtonChangeForeground_Click(object sender, RoutedEventArgs e)
+        {
+            CellImageTest.Foreground = Brushes.Aqua;
+        }
     }
 }

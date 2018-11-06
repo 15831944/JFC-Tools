@@ -1,38 +1,31 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfApplicationJFCGrid", "WpfApplicationJFCGrid\WpfApplicationJFCGrid.csproj", "{77BAF38D-F228-472A-8DD8-F152C4B9F39F}"
-EndProject
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27703.2042
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JFCGridControl", "JFCGridControl\JFCGridControl.csproj", "{7CBE88BF-37FB-4F60-9709-7869FA9C14E4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfApplicationJFCGrid", "WpfApplicationJFCGrid\WpfApplicationJFCGrid.csproj", "{77BAF38D-F228-472A-8DD8-F152C4B9F39F}"
+EndProject
 Global
-	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 3
-		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccTeamFoundationServer = http://frmitch-tfs000:8080/
-		SccLocalPath0 = .
-		SccProjectUniqueName1 = JFCGridControl\\JFCGridControl.csproj
-		SccProjectName1 = JFCGridControl
-		SccLocalPath1 = JFCGridControl
-		SccProjectUniqueName2 = WpfApplicationJFCGrid\\WpfApplicationJFCGrid.csproj
-		SccProjectName2 = WpfApplicationJFCGrid
-		SccLocalPath2 = WpfApplicationJFCGrid
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{77BAF38D-F228-472A-8DD8-F152C4B9F39F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{77BAF38D-F228-472A-8DD8-F152C4B9F39F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{77BAF38D-F228-472A-8DD8-F152C4B9F39F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{77BAF38D-F228-472A-8DD8-F152C4B9F39F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{7CBE88BF-37FB-4F60-9709-7869FA9C14E4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{7CBE88BF-37FB-4F60-9709-7869FA9C14E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7CBE88BF-37FB-4F60-9709-7869FA9C14E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7CBE88BF-37FB-4F60-9709-7869FA9C14E4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{77BAF38D-F228-472A-8DD8-F152C4B9F39F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{77BAF38D-F228-472A-8DD8-F152C4B9F39F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{77BAF38D-F228-472A-8DD8-F152C4B9F39F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{77BAF38D-F228-472A-8DD8-F152C4B9F39F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {FF2A2876-E59E-41A8-A15B-9FF60A567311}
 	EndGlobalSection
 EndGlobal

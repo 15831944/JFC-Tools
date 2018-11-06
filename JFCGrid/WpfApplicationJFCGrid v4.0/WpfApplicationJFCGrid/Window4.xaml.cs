@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Windows;
@@ -23,6 +24,10 @@ namespace WpfApplicationJFCGrid
         {
             InitializeComponent();
 
+            toto t = new toto();
+
+            this.DataContext = t;
+
             MyGrid.PropertyChildrenName = "Children";
             MyGrid.PropertyExpandeChildrenName = "IsExpande";
 
@@ -37,7 +42,7 @@ namespace WpfApplicationJFCGrid
             //col1.Header.Content = "nom";
             col1.Frozen = JFCGridColumn.FrozenType.Start;
             col1.LevelGrouping = 0;
-            col1.TypeColumn = JFCGridColumn.TypesColumn.GroupingNoRow;
+            col1.TypeColumn = JFCGridColumn.TypesColumn.GroupingWithRow;
             //col1.Header.Style = this.FindResource("JFCGridColumnHeader") as Style;
             
             MyGrid.ColunmDefinition.Add(col1);
@@ -85,10 +90,13 @@ namespace WpfApplicationJFCGrid
             int i = 0;
         }
 
+        List<Person> lstpers = new List<Person>();
         public void BuildData()
         {
-            List<Person> lstpers = new List<Person>();
-            
+            //List<Person> lstpers = new List<Person>();
+
+            lstpers = new List<Person>();
+
             for (int i = 0; i < 10; i++)
             {
                 Person persi = new Person("nom" + i, "prenom" + i, i);
@@ -115,6 +123,35 @@ namespace WpfApplicationJFCGrid
 
             MyGrid.DataSource = lstpers;
         
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+
+            //((toto)this.DataContext).MyProperty = new ObservableCollection<object>() { lstpers.ElementAt(3) };
+            ((toto)this.DataContext).MyProperty.Add(lstpers.ElementAt(3));
+        }
+    }
+
+    public class toto: INotifyPropertyChanged
+    {
+        private ObservableCollection<object> myProperty = new ObservableCollection<object>();
+        public ObservableCollection<object> MyProperty
+        {
+            get { return myProperty; }
+            set
+            {
+                myProperty = value;
+                OnPropertyChanged();
+            }
+        }
+
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected virtual void OnPropertyChanged(string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

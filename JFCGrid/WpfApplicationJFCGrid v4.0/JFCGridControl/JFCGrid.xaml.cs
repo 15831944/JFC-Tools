@@ -1,23 +1,17 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Collections.Specialized;
+using System.ComponentModel;
 using System.Linq;
-using System.Text;
+using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using System.Collections;
-using System.Collections.ObjectModel;
-using System.Collections.Specialized;
-using System.Windows.Controls.Primitives;
 using System.Windows.Threading;
-using System.Reflection;
-using System.ComponentModel;
 
 
 namespace JFCGridControl
@@ -25,7 +19,7 @@ namespace JFCGridControl
     /// <summary>
     /// Interaction logic for JFCGrid.xaml
     /// </summary>
-    public partial class JFCGrid : UserControl
+    public partial class JFCGrid : UserControl, INotifyPropertyChanged
     {
         Size MaxSize = new Size();
 
@@ -137,40 +131,66 @@ namespace JFCGridControl
             }
         }
 
-        public List<Object> SelectedItems
-        {
-            get
-            {
-                var lst = from item in selectedExpendItems
-                          select item.Obj;
+        //public List<Object> SelectedItems
+        //{
+        //    get
+        //    {
+        //        var lst = from item in selectedExpendItems
+        //                  select item.Obj;
 
-                return lst.ToList();
-            }
+        //        return lst.ToList();
+        //    }
+        //    set
+        //    {
+        //        HashSet<JFCExpendItem> selItem = new HashSet<JFCExpendItem>();
+
+        //        if (value != null)
+        //        {
+        //            foreach (var obj in value)
+        //            {
+
+        //                var lst = from item in dataSource
+        //                          where item.Obj == obj
+        //                          select item;
+
+        //                if (lst.Count() == 1)
+        //                    selItem.Add((JFCExpendItem)lst.ElementAt(0));
+        //            }
+        //        }
+
+        //        SelectedExpendItems = selItem;
+        //    }
+        //}
+
+
+
+        public ObservableCollection<Object> SelectedItems
+        {
+            get { return (ObservableCollection<Object>)GetValue(SelectedItemsProperty); }
             set
             {
-                HashSet<JFCExpendItem> selItem = new HashSet<JFCExpendItem>();
-
-                if (value != null)
-                {
-                    foreach (var obj in value)
-                    {
-
-                        var lst = from item in dataSource
-                                  where item.Obj == obj
-                                  select item;
-
-                        if (lst.Count() == 1)
-                            selItem.Add((JFCExpendItem)lst.ElementAt(0));
-                    }
-                }
-
-                SelectedExpendItems = selItem;
+                SetValue(SelectedItemsProperty, value);
+                value.CollectionChanged += Value_CollectionChanged;
             }
         }
+
+        private void Value_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            UpdateSelectedItems(this, new DependencyPropertyChangedEventArgs(SelectedItemsProperty, null, SelectedItems));
+        }
+
+        // Using a DependencyProperty as the backing store for SelectedItems.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty SelectedItemsProperty =
+            DependencyProperty.Register("SelectedItems", typeof(ObservableCollection<Object>), typeof(JFCGrid), new PropertyMetadata(null, new PropertyChangedCallback(UpdateSelectedItems)));
 
         public event RoutedEventHandler SelectedItemsChanged;
         internal void OnSelectedItemsChanged(object sender, RoutedEventArgs e)
         {
+            var lst = from item in selectedExpendItems
+                      select item.Obj;
+
+            SelectedItems = new ObservableCollection<object>(lst.ToList());
+
             if (SelectedItemsChanged != null)
                 SelectedItemsChanged(this, e);
         }
@@ -781,7 +801,6 @@ namespace JFCGridControl
 
 
         private event DependencyPropertySearchChangedEventHandler SearchChangedInternal;
-
         // 
         public event DependencyPropertySearchChangedEventHandler SearchChanged
         {
@@ -808,6 +827,13 @@ namespace JFCGridControl
 
                 SearchChangedInternal(this, e);
             }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        internal void OnPropertyChanged(PropertyChangedEventArgs e)
+        {
+            if (PropertyChanged != null)
+                PropertyChanged(this, e);
         }
 
         private List<int> LstGroupingNoRowLevel = new List<int>();
@@ -2653,6 +2679,49 @@ namespace JFCGridControl
             #endregion
         }
 
+        private static void UpdateSelectedItems(DependencyObject obj, DependencyPropertyChangedEventArgs e)
+        {
+            JFCGrid grid = obj as JFCGrid;
+
+            if (grid != null)
+            {
+                HashSet<JFCExpendItem> selItem = new HashSet<JFCExpendItem>();
+
+                if (e.NewValue != null && ((IEnumerable<object>)e.NewValue).Any())
+                {
+                    foreach (var item in (IEnumerable<Object>)e.NewValue)
+                    {
+
+                        var lst = from it in grid.dataSource
+                                  where it.Obj == item
+                                  select it;
+
+                        var tt = lst.ToList();
+
+                        if (lst.Count() == 1)
+                            selItem.Add((JFCExpendItem)lst.ElementAt(0));
+                    }
+                }
+
+                if (grid.SelectedExpendItems.Count() == selItem.Count() && selItem.Any())
+                {
+                    var t = from item in grid.SelectedExpendItems
+                            where !selItem.Contains(item)
+                            select item;
+
+                    if (t.Any())
+                        grid.SelectedExpendItems = selItem;
+
+                    //if (grid.SelectedExpendItems.Intersect(selItem).Count() == selItem.Count())
+                    //    grid.SelectedExpendItems = selItem;
+
+                }
+                else if (selItem.Any() || grid.SelectedExpendItems.Any())
+                    grid.SelectedExpendItems = selItem;
+
+            }
+        }
+
         private static void FindString(DependencyObject element, string stringFind)
         {
 
@@ -4073,6 +4142,7 @@ namespace JFCGridControl
 
             }));
         }
+
         private void SearchPrevious_Click(object sender, RoutedEventArgs e)
         {
             if (SearchResult.Count() > 0)

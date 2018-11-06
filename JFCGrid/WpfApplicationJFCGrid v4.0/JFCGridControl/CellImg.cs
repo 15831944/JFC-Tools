@@ -1,16 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Media;
-using System.Globalization;
-using System.Windows.Data;
-using System.Windows.Media.Imaging;
-using System.Windows.Documents;
-using System.Threading;
 using System.ComponentModel;
+using System.Globalization;
+using System.Windows;
+using System.Windows.Media;
 
 namespace JFCGridControl
 {
@@ -54,7 +46,7 @@ namespace JFCGridControl
 
         // Using a DependencyProperty as the backing store for FontFamily.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty FontFamilyProperty =
-            DependencyProperty.Register("FontFamily", typeof(FontFamily), typeof(CellImg), new FrameworkPropertyMetadata(SystemFonts.MessageFontFamily, FrameworkPropertyMetadataOptions.Inherits));
+            DependencyProperty.Register("FontFamily", typeof(FontFamily), typeof(CellImg), new FrameworkPropertyMetadata(SystemFonts.MessageFontFamily, FrameworkPropertyMetadataOptions.Inherits, new PropertyChangedCallback(UpdateText)));
 
         public double FontSize
         {
@@ -64,8 +56,8 @@ namespace JFCGridControl
 
         // Using a DependencyProperty as the backing store for FontSize.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty FontSizeProperty =
-            DependencyProperty.Register("FontSize", typeof(double), typeof(CellImg), new FrameworkPropertyMetadata(SystemFonts.MessageFontSize, FrameworkPropertyMetadataOptions.Inherits));
-                
+            DependencyProperty.Register("FontSize", typeof(double), typeof(CellImg), new FrameworkPropertyMetadata(SystemFonts.MessageFontSize, FrameworkPropertyMetadataOptions.Inherits, new PropertyChangedCallback(UpdateText)));
+
         public Brush Foreground
         {
             get { return (Brush)GetValue(ForegroundProperty); }
@@ -74,8 +66,8 @@ namespace JFCGridControl
 
         // Using a DependencyProperty as the backing store for Foreground.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty ForegroundProperty =
-            DependencyProperty.Register("Foreground", typeof(Brush), typeof(CellImg), new FrameworkPropertyMetadata(SystemColors.ControlTextBrush, FrameworkPropertyMetadataOptions.Inherits)); //new UIPropertyMetadata(SystemColors.ControlTextBrush));
-               
+            DependencyProperty.Register("Foreground", typeof(Brush), typeof(CellImg), new FrameworkPropertyMetadata(SystemColors.ControlTextBrush, FrameworkPropertyMetadataOptions.Inherits, new PropertyChangedCallback(UpdateText))); //new UIPropertyMetadata(SystemColors.ControlTextBrush));
+
 
         public TextAlignment TextAlignment
         {
@@ -130,7 +122,8 @@ namespace JFCGridControl
         public object Data
         {
             get
-            { return data;
+            {
+                return data;
             }
             set
             {
@@ -141,19 +134,19 @@ namespace JFCGridControl
             }
         }
 
-            //public object Data
-            //{
-            //    get { return (object)GetValue(DataProperty); }
-            //    set { SetValue(DataProperty, value); }
-            //}
+        //public object Data
+        //{
+        //    get { return (object)GetValue(DataProperty); }
+        //    set { SetValue(DataProperty, value); }
+        //}
 
-            //// Using a DependencyProperty as the backing store for Data.  This enables animation, styling, binding, etc...
-            //public static readonly DependencyProperty DataProperty =
-            //    DependencyProperty.Register("Data", typeof(object), typeof(CellImg), new UIPropertyMetadata(null));
+        //// Using a DependencyProperty as the backing store for Data.  This enables animation, styling, binding, etc...
+        //public static readonly DependencyProperty DataProperty =
+        //    DependencyProperty.Register("Data", typeof(object), typeof(CellImg), new UIPropertyMetadata(null));
 
 
 
-            // Create a collection of child visual objects.
+        // Create a collection of child visual objects.
         private VisualCollection _children;
         int childrenCount = 0;
 
@@ -174,7 +167,7 @@ namespace JFCGridControl
 
             //this.SetValue(RenderOptions.ClearTypeHintProperty, ClearTypeHint.Enabled);
 
-        }        
+        }
 
         void CellImg_SizeChanged(object sender, SizeChangedEventArgs e)
         {
@@ -589,7 +582,7 @@ namespace JFCGridControl
             PropertyChanged = null;
         }
 
-        
+
     }
 }
 

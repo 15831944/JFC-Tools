@@ -69,5 +69,10 @@ namespace WpfApplicationJFCGrid
 
         #endregion
 
+        public override bool Equals(object obj)
+        {
+            return (this.Nom == ((Person)obj).Nom && this.Prenom == ((Person)obj).Prenom && this.Age == ((Person)obj).Age);
+        }
+
     }
 }
