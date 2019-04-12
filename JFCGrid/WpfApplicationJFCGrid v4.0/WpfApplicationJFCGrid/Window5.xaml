@@ -16,6 +16,7 @@
             <Button x:Name="ButtonChangeData" Content="ChangeData" Click="ButtonChangeData_Click"/>
             <jfc:CellImg x:Name="CellImageTest" Text="toto"/>
             <Button x:Name="ButtonChangeForeground" Content="Foreground" Click="ButtonChangeForeground_Click"/>
+            
         </StackPanel>        
     </Grid>
 </Window>

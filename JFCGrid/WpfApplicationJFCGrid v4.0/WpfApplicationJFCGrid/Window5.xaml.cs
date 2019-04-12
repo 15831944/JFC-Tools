@@ -2,6 +2,7 @@
 using System;
 using System.ComponentModel;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Media;
 
 namespace WpfApplicationJFCGrid
@@ -22,12 +23,15 @@ namespace WpfApplicationJFCGrid
         {
 
             JFCGridColumn col1 = new JFCGridColumn("Value[0].Value");
+            col1.Header.Content = "test";
             MyGrid.ColunmDefinition.Add(col1);
             JFCGridColumn col2 = new JFCGridColumn("Value[1].Value");
+            col2.Header.Content = "test";
             MyGrid.ColunmDefinition.Add(col2);
             JFCGridColumn col3 = new JFCGridColumn("Value[2].Value");
+            col3.Header.Content = "test";
             MyGrid.ColunmDefinition.Add(col3);
-
+            
         }
 
         void CreatData()

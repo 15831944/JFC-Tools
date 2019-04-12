@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Windows.Controls;
+﻿using System.Windows.Controls;
 
 namespace JFCGridControl
 {
@@ -10,15 +6,15 @@ namespace JFCGridControl
     {
         public JFCGridColumnBelowHeader()
         {
-            this.Parent = null;
+            this.HeaderParent = null;
         }
 
-        public JFCGridColumnBelowHeader(JFCGridColumnHeader Parent)
+        public JFCGridColumnBelowHeader(JFCGridColumnHeader parent)
         {
-            this.Parent = Parent;
+            this.HeaderParent = parent;
         }
 
-        public JFCGridColumnHeader Parent
+        public JFCGridColumnHeader HeaderParent
         {
             get;
             private set;

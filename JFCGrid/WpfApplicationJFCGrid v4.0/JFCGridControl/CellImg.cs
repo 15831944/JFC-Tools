@@ -58,6 +58,40 @@ namespace JFCGridControl
         public static readonly DependencyProperty FontSizeProperty =
             DependencyProperty.Register("FontSize", typeof(double), typeof(CellImg), new FrameworkPropertyMetadata(SystemFonts.MessageFontSize, FrameworkPropertyMetadataOptions.Inherits, new PropertyChangedCallback(UpdateText)));
 
+        public FontWeight FontWeight
+        {
+            get { return (FontWeight)GetValue(FontWeightProperty); }
+            set { SetValue(FontWeightProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for FontWeight.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty FontWeightProperty =
+            DependencyProperty.Register("FontWeight", typeof(FontWeight), typeof(CellImg), new FrameworkPropertyMetadata(SystemFonts.MessageFontWeight, FrameworkPropertyMetadataOptions.Inherits, new PropertyChangedCallback(UpdateText)));
+
+        public FontStretch FontStretch
+        {
+            get { return (FontStretch)GetValue(FontStretchProperty); }
+            set { SetValue(FontStretchProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for FontStretch.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty FontStretchProperty =
+            DependencyProperty.Register("FontStretch", typeof(FontStretch), typeof(CellImg), new PropertyMetadata(FontStretches.Normal, new PropertyChangedCallback(UpdateText)));
+
+
+
+        public FontStyle FontStyle
+        {
+            get { return (FontStyle)GetValue(FontStyleProperty); }
+            set { SetValue(FontStyleProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for FontStyle.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty FontStyleProperty =
+            DependencyProperty.Register("FontStyle", typeof(FontStyle), typeof(CellImg), new FrameworkPropertyMetadata(SystemFonts.MessageFontStyle, FrameworkPropertyMetadataOptions.Inherits, new PropertyChangedCallback(UpdateText)));
+
+
+
         public Brush Foreground
         {
             get { return (Brush)GetValue(ForegroundProperty); }
@@ -167,6 +201,7 @@ namespace JFCGridControl
 
             //this.SetValue(RenderOptions.ClearTypeHintProperty, ClearTypeHint.Enabled);
 
+
         }
 
         void CellImg_SizeChanged(object sender, SizeChangedEventArgs e)
@@ -242,7 +277,7 @@ namespace JFCGridControl
 
             System.Windows.Point position = new System.Windows.Point(0, 0);
 
-            FormattedText FText = new FormattedText(testString, CultureInfo.GetCultureInfo("en-us"), FlowDirection.LeftToRight, new Typeface(this.FontFamily.ToString()), this.FontSize, this.Foreground);
+            FormattedText FText = new FormattedText(testString, CultureInfo.GetCultureInfo("en-us"), FlowDirection.LeftToRight, new Typeface(this.FontFamily, this.FontStyle, this.FontWeight, this.FontStretch), this.FontSize, this.Foreground);
 
             //if (FText.Width < this.Width)
             //    size.Width = FText.Width;

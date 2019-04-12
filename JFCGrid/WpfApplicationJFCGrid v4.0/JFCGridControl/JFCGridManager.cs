@@ -1,22 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
+using System.ComponentModel;
+using System.IO;
 using System.Linq;
-using System.Text;
+using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
-using System.Media;
-using System.Windows.Media;
 using System.Windows.Data;
-using System.Windows.Shapes;
-using System.Collections;
 using System.Windows.Input;
-using System.Reflection;
-using System.ComponentModel;
-using System.Windows.Threading;
 using System.Windows.Markup;
-using System.IO;
+using System.Windows.Media;
+using System.Windows.Shapes;
+using System.Windows.Threading;
 using System.Xml;
-using System.Collections.Specialized;
 
 namespace JFCGridControl
 {
@@ -260,7 +257,7 @@ namespace JFCGridControl
                 }
                 else
                 {
-                    int i = 0;
+                    //int i = 0;
                 }
 
                 if (InProcess)
@@ -404,7 +401,7 @@ namespace JFCGridControl
                 }
                 else
                 {
-                    int i = 0;
+                    //int i = 0;
                 }
 
                 if (InProcess)
@@ -3034,7 +3031,14 @@ namespace JFCGridControl
             }
 
             if (!splitterRecycle)
+            {
                 GridH.Children.Add(Split);
+            }
+            else
+            {
+                int zindex = (int)col.Header.GetValue(Grid.ZIndexProperty);
+                Split.SetValue(Grid.ZIndexProperty, zindex + 1);
+            }
 
             if (col.IsResizable == false)
                 Split.Visibility = Visibility.Hidden;
@@ -3982,7 +3986,7 @@ namespace JFCGridControl
                     {
                         // TODO pour gérer les mouvements des colonnes en multi header
                         return;
-                        lstCol = header.Column.Parent.ChildrenColumns;
+                        //lstCol = header.Column.Parent.ChildrenColumns;
                     }
 
                     idxColPos = lstCol.IndexOf(header.Column);
@@ -5572,10 +5576,7 @@ namespace JFCGridControl
 
         public void RowRemove(int Index)
         {
-            int idxr;
             int NbRow = Grid11.RowDefinitions.Count();
-
-
 
             ///////////////////////////////////
             // Grid10
@@ -6661,7 +6662,7 @@ namespace JFCGridControl
                 var item = ctrl as JFCBorder;
 
                 if (item.Orientation == Orientation.Horizontal)
-                    item.BorderBrush = Parent.HorizontalBorderColor;                
+                    item.BorderBrush = Parent.HorizontalBorderColor;
             }
 
             ////////////////////////////////////

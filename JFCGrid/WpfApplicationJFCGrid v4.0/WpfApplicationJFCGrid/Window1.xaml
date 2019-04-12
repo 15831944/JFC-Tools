@@ -274,7 +274,8 @@
 
         <!--<TreeView x:Name="MyTreeView" Grid.Column="2" ItemsSource="{Binding}" ItemTemplate="{StaticResource PersonItemTemplate}">
             
-        </TreeView>-->        
+        </TreeView>-->      
+        
         
     </Grid>
 </Window>
