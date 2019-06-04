@@ -14,8 +14,6 @@ Imports System.Runtime.InteropServices
 Imports System.Security.Principal
 Imports System.ComponentModel
 
-'Imports System.Runtime.CompilerServices
-
 Friend Class AUService
 
     Inherits System.Windows.Forms.Form
@@ -384,7 +382,7 @@ Friend Class AUService
 
     End Function
 
-   
+
 
     Private Function Internet_Update() As Integer
 
