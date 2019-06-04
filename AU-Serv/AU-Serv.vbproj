@@ -1,0 +1,310 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{FBEEC75E-3119-45EB-B638-3938DA8D8169}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <StartupObject>AUServ.My.MyApplication</StartupObject>
+    <RootNamespace>AUServ</RootNamespace>
+    <AssemblyName>AU-Serv</AssemblyName>
+    <FileAlignment>512</FileAlignment>
+    <MyType>WindowsForms</MyType>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <OptionExplicit>On</OptionExplicit>
+    <OptionCompare>Binary</OptionCompare>
+    <OptionStrict>On</OptionStrict>
+    <OptionInfer>On</OptionInfer>
+    <ApplicationManifest>My Project\app.manifest</ApplicationManifest>
+    <ApplicationIcon>Resources\AU-Serv.ico</ApplicationIcon>
+    <TargetZone>LocalIntranet</TargetZone>
+    <GenerateManifests>false</GenerateManifests>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DocumentationFile>
+    </DocumentationFile>
+    <NoWarn>42353,42354,42355</NoWarn>
+    <WarningsAsErrors>41998,41999,42004,42016,42017,42018,42019,42020,42021,42022,42024,42025,42026,42029,42030,42031,42032,42036,42099,42104,42105,42106,42107,42108,42109</WarningsAsErrors>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>Full</DebugType>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>false</DefineTrace>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DocumentationFile>
+    </DocumentationFile>
+    <NoWarn>42353,42354,42355</NoWarn>
+    <WarningsAsErrors>41998,41999,42004,42016,42017,42018,42019,42020,42021,42022,42024,42025,42026,42029,42030,42031,42032,42036,42099,42104,42105,42106,42107,42108,42109</WarningsAsErrors>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <DebugSymbols>true</DebugSymbols>
+    <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+  </ItemGroup>
+  <ItemGroup>
+    <Import Include="Microsoft.VisualBasic" />
+    <Import Include="System" />
+    <Import Include="System.Collections" />
+    <Import Include="System.Collections.Generic" />
+    <Import Include="System.Diagnostics" />
+    <Import Include="System.Drawing" />
+    <Import Include="System.Linq" />
+    <Import Include="System.Windows.Forms" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ApplicationEvents.vb" />
+    <Compile Include="Class\AliasAccount.vb" />
+    <Compile Include="Class\cMacAddress.vb" />
+    <Compile Include="Form\About.Designer.vb">
+      <DependentUpon>About.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Form\About.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form\AU-Serv.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form\AU-Serv.Designer.vb">
+      <DependentUpon>AU-Serv.vb</DependentUpon>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Class\cConnection.vb" />
+    <Compile Include="Form\DialogNetWork.Designer.vb">
+      <DependentUpon>DialogNetWork.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Form\DialogNetWork.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form\PleaseWait.Designer.vb">
+      <DependentUpon>PleaseWait.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Form\PleaseWait.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form\Settings.Designer.vb">
+      <DependentUpon>Settings.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Form\Settings.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form\DialogProductCode.Designer.vb">
+      <DependentUpon>DialogProductCode.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Form\DialogProductCode.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form\DialogProcessKill.Designer.vb">
+      <DependentUpon>DialogProcessKill.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Form\DialogProcessKill.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Module\mLanguageAU.vb" />
+    <Compile Include="Form\ListBoxEX.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Module\mCrypter.vb" />
+    <Compile Include="Module\mCheckSum.vb" />
+    <Compile Include="Module\mCopyFile.vb" />
+    <Compile Include="Module\mDecrypter.vb" />
+    <Compile Include="Module\mEasyCrypt.vb" />
+    <Compile Include="Module\mFileFunction.vb" />
+    <Compile Include="Module\mFileIni.vb" />
+    <Compile Include="Module\mFindFile.vb" />
+    <Compile Include="Module\mFunction.vb" />
+    <Compile Include="Module\mGetClass.vb" />
+    <Compile Include="Module\mGetWindows.vb" />
+    <Compile Include="Module\mHddSerial.vb" />
+    <Compile Include="Module\mLaunchAppAndWait.vb" />
+    <Compile Include="Module\mMessageCode.vb" />
+    <Compile Include="Module\mActiveExe.vb" />
+    <Compile Include="Module\mPing.vb" />
+    <Compile Include="Module\mShowWindows.vb" />
+    <Compile Include="Module\mSleep.vb" />
+    <Compile Include="My Project\AssemblyInfo.vb" />
+    <Compile Include="My Project\Application.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Application.myapp</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Resources.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Settings.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Form\About.resx">
+      <DependentUpon>About.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form\AU-Serv.resx">
+      <DependentUpon>AU-Serv.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form\DialogNetWork.resx">
+      <DependentUpon>DialogNetWork.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form\DialogProductCode.resx">
+      <DependentUpon>DialogProductCode.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form\DialogProcessKill.resx">
+      <DependentUpon>DialogProcessKill.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form\ListBoxEX.resx">
+      <DependentUpon>ListBoxEX.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form\PleaseWait.resx">
+      <DependentUpon>PleaseWait.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form\Settings.resx">
+      <DependentUpon>Settings.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="My Project\Resources.resx">
+      <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.vb</LastGenOutput>
+      <CustomToolNamespace>My.Resources</CustomToolNamespace>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="My Project\app.manifest">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="My Project\Application.myapp">
+      <Generator>MyApplicationCodeGenerator</Generator>
+      <LastGenOutput>Application.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="My Project\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <CustomToolNamespace>My</CustomToolNamespace>
+      <LastGenOutput>Settings.Designer.vb</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Icon\AU-Serv.ico" />
+    <None Include="Resources\synchroniser.png" />
+    <None Include="Resources\mise-a-jour.png" />
+    <None Include="Resources\proxy.png" />
+    <None Include="Resources\Tools Settings.png" />
+    <None Include="Resources\About.png" />
+    <None Include="Resources\annuler.png" />
+    <Content Include="Resources\AU-Serv.ico" />
+    <None Include="Resources\avertissement.png" />
+    <None Include="Resources\automatiques-mises-a-jour.png" />
+    <Content Include="Resources\BarBlack.gif" />
+    <None Include="Resources\certifie.png" />
+    <None Include="Resources\bureau-a-distance.png" />
+    <None Include="Resources\cable-connexion-ethernet-reseau.png" />
+    <None Include="Resources\Boite_aux_lettres.ico" />
+    <Content Include="Resources\Download.ico" />
+    <Content Include="Resources\Execute.ico" />
+    <Content Include="Resources\FolderClosed.ico" />
+    <Content Include="Resources\FolderMoveto.ico" />
+    <Content Include="Resources\FolderOk.ico" />
+    <Content Include="Resources\FolderOpen.ico" />
+    <None Include="Resources\warning.png" />
+    <None Include="Resources\FolderSecurity.ico" />
+    <None Include="Resources\gif-anime-kantar-day-lancer-de-chapeaux.gif" />
+    <Content Include="Resources\Globe.ico" />
+    <Content Include="Resources\Harddrive.ico" />
+    <None Include="Resources\JFC.png" />
+    <None Include="Resources\License.png" />
+    <None Include="Resources\internet-reseau-local.png" />
+    <None Include="Resources\kantarb.png" />
+    <None Include="Resources\kantarc.png" />
+    <None Include="Resources\image002.png" />
+    <None Include="Resources\image009.png" />
+    <Content Include="Resources\LogoJFC.gif" />
+    <None Include="Resources\patienter.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 2.0 %28x86%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.0 %28x86%29</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="bin\Debug\" />
+    <Folder Include="bin\Release\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
