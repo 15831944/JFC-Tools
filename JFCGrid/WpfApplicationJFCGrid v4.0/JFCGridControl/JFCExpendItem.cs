@@ -7,7 +7,7 @@ using System.Windows;
 
 namespace JFCGridControl
 {
-    internal class JFCExpendItem : DependencyObject, INotifyPropertyChangedExtended<object>
+    public class JFCExpendItem : DependencyObject, INotifyPropertyChangedExtended<object>
     {
         public JFCExpendItem()
         { }

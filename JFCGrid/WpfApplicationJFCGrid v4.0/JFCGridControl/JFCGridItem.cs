@@ -341,7 +341,7 @@ namespace JFCGridControl
         }
 
         private JFCExpendItem data = null;
-        internal JFCExpendItem Data
+        public JFCExpendItem Data
         {
             get { return data; }
             set
