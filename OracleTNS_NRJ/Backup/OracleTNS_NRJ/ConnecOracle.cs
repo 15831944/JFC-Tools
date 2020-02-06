@@ -1,11 +1,16 @@
 ﻿using System;
-using System.Data;
-using System.Data.OracleClient;
-using System.IO;
-using System.Runtime.InteropServices;
+using System.Collections.Generic;
+using System.Linq;
 using System.Text;
-using System.Threading;
+using System.Data.OracleClient;
+using System.Data;
+using System.Data.OleDb;
+using System.IO;
+using AtOracle_NRJ;
+using System.Collections;
+using System.Runtime.InteropServices;
 using System.Windows.Forms;
+using System.Threading;
 
 
 
@@ -104,7 +109,7 @@ namespace AtOracle_NRJ
 
 
             try
-            {
+            { 
                 DataView dv = RequestOracle();
                 if (iChoixProcSto != 5)
                 {
@@ -115,7 +120,7 @@ namespace AtOracle_NRJ
             catch (System.Exception ex2)
             {
                 Application.Exit();
-            }
+            }           
 
 
         }
@@ -170,7 +175,7 @@ namespace AtOracle_NRJ
                 String error = "Pas de connexion chez NRJ" + ex.Message;
                 MessageBox.Show(error + "chaine : " + oradb, "Probleme de connexion avec la base de données");
                 throw ex;
-
+                
                 //Application.Exit();
             }
 
@@ -770,13 +775,13 @@ namespace AtOracle_NRJ
             return buffer;
         }
 
-
-        private void ReadWriteStreamBuffer(OracleConnection connection, string fichier)
+        
+        private void ReadWriteStreamBuffer( OracleConnection connection, string fichier)
         {
             int Length = 32768;
             Byte[] bufferEnd = new Byte[Length];
-
-
+            
+            
             byte[] bufferImport = ReadFile(fichier + ".csv");
 
             string str;
@@ -784,10 +789,10 @@ namespace AtOracle_NRJ
             str = enc.GetString(bufferImport);
 
             int nbLignesEntrant = 0;
-            string nbLignesDonne = "";
-
+            string nbLignesDonne = "" ;
+           
             string[] sep = { "\r\n" };
-            string[] tabRecu = str.Split(sep, StringSplitOptions.None);
+            string[] tabRecu = str.Split(sep,StringSplitOptions.None);
 
             //StringBuilder sb = new StringBuilder();
             int lenBufferPosition = 0;
@@ -800,11 +805,11 @@ namespace AtOracle_NRJ
                     if (code.Length > 6)
                     {
                         //sb.Append(RequeteUnEcranDispo(code, connection).Replace("-", "") + ";" + "\r\n");
-
+                                             
                         byte[] bufferCurrent = new Byte[32];
                         bufferCurrent = Encoding.UTF8.GetBytes(RequeteUnEcranDispo(code, connection) + "\r\n");//.Replace("-", "")
 
-                        Buffer.BlockCopy(bufferCurrent, 0, bufferEnd, lenBufferPosition, Buffer.ByteLength(bufferCurrent));
+                        Buffer.BlockCopy(bufferCurrent, 0 , bufferEnd, lenBufferPosition, Buffer.ByteLength(bufferCurrent));
 
                         lenBufferPosition += bufferCurrent.Length;
 
@@ -812,9 +817,9 @@ namespace AtOracle_NRJ
                     }
                     else
                     {
-                        if (!String.IsNullOrEmpty(code))
-                        {
-                            nbLignesDonne = code;
+                        if(!String.IsNullOrEmpty(code))
+                        {                            
+                            nbLignesDonne =code ;
                         }
                     }
                 }
@@ -839,7 +844,7 @@ namespace AtOracle_NRJ
             // create a write stream
             FileStream writeStream = new FileStream(fichier + "_R.csv", FileMode.Create, FileAccess.Write, FileShare.None);//, FileOptions.SequentialScan
 
-            writeStream.Write(bufferEnd, 0, lenBufferPosition + bufferCurrentFin.Length);
+            writeStream.Write(bufferEnd, 0, lenBufferPosition  + bufferCurrentFin.Length);
 
             writeStream.Close();
 
@@ -847,9 +852,9 @@ namespace AtOracle_NRJ
 
             //Timer au cas ou le nombre d'enregistrement est faux
             DateTime TempsDebut;
-            TempsDebut = DateTime.Now;
+            TempsDebut= DateTime.Now;
             TimeSpan delta;
-            DateTime TempsFin;
+            DateTime  TempsFin;
 
 
             while ("[" + nbLignesEntrant + "]" != nbLignesDonne)
@@ -857,17 +862,17 @@ namespace AtOracle_NRJ
                 Thread.Sleep(1000);
                 TempsFin = DateTime.Now;
                 delta = TempsFin - TempsDebut;
-                if (delta.Seconds > 30)
+                if(delta.Seconds > 30 )
                 {
                     return;
                 }
 
-            }
+            }                       
 
         }
 
 
-        private void ReadWriteStream(OracleConnection connection, string fichier)
+        private void ReadWriteStream( OracleConnection connection, string fichier)
         {
             int Length = 32700;
             Byte[] buffer = new Byte[Length];
@@ -878,21 +883,21 @@ namespace AtOracle_NRJ
             string nbLignesReader = "";
 
             StringBuilder sb = new StringBuilder();
+          
 
-
-            while (ligne != null)// && bytesRead > 0
+            while (ligne !=null)// && bytesRead > 0
             {
                 if (!monStreamReader.EndOfStream)
-                {
+                 {
 
                     //byte[] b1 = new byte[32]; 
                     //b1 = Encoding.UTF8.GetBytes(RequeteUnEcranDispo(ligne, connection).Replace("-", "") + "\r\n");
                     sb.Append(RequeteUnEcranDispo(ligne, connection).Replace("-", "") + ";" + "\r\n");
-
+                   
                 }
                 if (monStreamReader.EndOfStream)
                 {
-                    nbLignesReader = ligne;
+                       nbLignesReader = ligne;
                 }
                 ligne = monStreamReader.ReadLine();
                 i++;
@@ -904,7 +909,7 @@ namespace AtOracle_NRJ
                 ligne = nbLignesReader.Substring(1, nbLignesReader.Length - 2);
             }
 
-            if (!(ligne == (len - 1).ToString()))
+            if (!(ligne == (len-1).ToString()))
             {
                 MessageBox.Show("Le nombre de lignes est different entre le fichier entrant et sortant", "Probleme de fichier txt");
             }
@@ -931,14 +936,14 @@ namespace AtOracle_NRJ
                 }
                 catch (System.Exception ex)
                 {
-                    Thread.Sleep(1000);
-                }
-
+                	Thread.Sleep(1000);
+                }                
+                    
             }
 
 
-
-
+        
+            
 
         }
 
@@ -950,22 +955,22 @@ namespace AtOracle_NRJ
                 // create a write stream
                 //FileStream writeStream = new FileStream(fichier + "_R.csv", FileMode.Create, FileAccess.Write, FileShare.None);//, FileOptions.SequentialScan
                 // write to the stream
-                ReadWriteStreamBuffer(connection, fichier);
+                ReadWriteStreamBuffer(connection,fichier);
 
                 connection.Close();
-                connection.Dispose();
+                connection.Dispose();               
 
             }
             catch (Exception ex)
             {
                 string err = ex.Message;
                 MessageBox.Show(err, "Probleme de connexion");
-                throw ex;
+                throw ex; 
             }
 
             return true;
         }
-
+        
         /// <summary>
         /// retourne un code ercan en fonction de la string parametres a decouper pour la fonction oracle FN_GET_ECRAN_DISPO
         /// </summary>
@@ -986,7 +991,7 @@ namespace AtOracle_NRJ
 
                 //string hdeb = strCh[3].Substring(0, 4);
                 //string hfin = strCh[4].Substring(0, 4);
-
+                
 
                 cmd.Parameters.Add("a_regie", OracleType.VarChar, 2).Value = strCh[0].ToString();
                 cmd.Parameters.Add("a_region", OracleType.VarChar, 2).Value = strCh[1].ToString();
@@ -995,21 +1000,14 @@ namespace AtOracle_NRJ
                 cmd.Parameters.Add("h_fin", OracleType.VarChar, 10).Value = strCh[4].ToString();
                 cmd.Parameters.Add("i_format", OracleType.VarChar, 2).Value = strCh[5].ToString();
 
-                //string s = "[a_regie]" + strCh[0].ToString() + "[a_region]" + strCh[1].ToString() + "[d_datdif]" + strCh[2].ToString() + "[h_debut]" + strCh[3].ToString() + "[h_fin]" + strCh[4].ToString() + "[i_format]" + strCh[5].ToString();
-                //MessageBox.Show(s);
-
-                cmd.Parameters.Add("RetVal", OracleType.VarChar, 10);
+                cmd.Parameters.Add("RetVal", OracleType.VarChar,10);
                 cmd.Parameters["RetVal"].Direction = ParameterDirection.ReturnValue;
 
-                cmd.ExecuteNonQuery();
-
+                cmd.ExecuteNonQuery(); 
+                
 
                 //myReader = cmd.ExecuteReader();
                 strResult = (string)cmd.Parameters["RetVal"].Value;// 6
-
-                //s += "\r\n" + "[Resultat]" + strResult;
-                //MessageBox.Show(s);
-
                 cmd.Dispose();
                 //myReader.Dispose();
                 //myReader.Close();
@@ -1023,7 +1021,7 @@ namespace AtOracle_NRJ
                 //throw ex;
             }
             return strResult;
-
+                       
         }
 
 
