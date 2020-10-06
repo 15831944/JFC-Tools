@@ -43,6 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AffinageProcess.cs" />
     <Compile Include="F04Processor.cs" />
     <Compile Include="ARProba.cs" />
     <Compile Include="FortranProcessor.cs" />
