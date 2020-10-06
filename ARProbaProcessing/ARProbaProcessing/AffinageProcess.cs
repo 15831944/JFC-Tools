@@ -1,6 +1,5 @@
-Ôªøusing System;
+using System;
 using System.Collections.Generic;
-using System.IO;
 using System.IO;
 
 namespace ARProbaProcessing
@@ -14,14 +13,17 @@ namespace ARProbaProcessing
             int NbGRPStation = 0;
             int[] NotorieteStation = null;
             string PathGRPWave = @"C:\AffinageART\France\Source\SFR04\U120";
+            List<int> lstPoids;
+            List<int> lstAges;
+            List<int> lstFiltreIDF;
 
-            #region entr√©es Fushab09
+            lecpanel(0, "", 0, 0, 0, 0, 0, 0, 0, out lstPoids, out lstAges, out lstFiltreIDF);
+            #region entrÈes Fushab09
             int SIGN_LINE_LEN_BEFORE_HAB = 0;
             int NB_STA_ALL_HAB = 0;
             int[] TABRH = null;
             #endregion
 
-            lecpanel();
             segpanel();
             ecrpan1j();
             regr5jp2(0);
@@ -42,7 +44,7 @@ namespace ARProbaProcessing
             sav1qhps();
             sav1qhpd();
 
-            int[,,,] Couverture = cgrp75br(PathGRPWave, NbStation, NbGRPModulation, NbGRPStation, NotorieteStation);
+            int[, , ,] Couverture = cgrp75br(PathGRPWave, NbStation, NbGRPModulation, NbGRPStation, NotorieteStation);
             cont75br();
 
             cnzuptse();
@@ -57,8 +59,126 @@ namespace ARProbaProcessing
             asympt();
         }
 
-        private void lecpanel()
+        private void lecpanel(int SIGN_LINE_LEN_FULL, string Path_SIGJFC_BDE, int COL_AGE3, int COL_RUDA, int COL_PIAB_0, int COL_PIAB_1, int COL_PIAB_2, int COL_PIAB_3, int COL_PIAB_4, out List<int> lstPoids, out List<int> lstAges, out List<int> lstFiltreIDF)
         {
+            // PANEL RADIO 08 MEDIAMETRIE(nouveau format)
+            // CONTROLE DES POIDS DE REDRESSEMENT
+            // SORTIE D UN FICHIER AGE NECESSAIRE A LA FABRICATION DU FICHIER POUR MEDIAPOLIS
+            //
+            //INCLUDE 'FSUBLIB.FI'
+            //COMMON / NUBIT / NBIT
+            //SAVE / NUBIT /
+
+            int IPERS, IAGE, ICL, COMPTIDF;
+            // Attention, le nombre de caract√®res r√©el est de 599 colonnes(on en rajoute 2 pour le retour Chariot)
+            int[] KHI2 = new int[SIGN_LINE_LEN_FULL + 1];
+
+            //                  INITIALISATIONS
+
+
+            int IG = 0;
+            int I15 = 0;
+            int IPOP = 0;
+
+            COMPTIDF = 0;
+
+
+            //         OUVERTURE FICHIERS
+
+            //WRITE(*, *) 'Hello World!'
+            Console.WriteLine("Hello World!");
+
+            //OPEN(13, FILE = '#SIGJFC_BDE#',
+            //    -RECORDTYPE = 'FIXED', FORM = 'UNFORMATTED')
+
+
+            //OPEN(14, FILE = '#OUTPUT#POIDS',
+            //    -FORM = 'UNFORMATTED', RECORDTYPE = 'FIXED')
+
+            lstPoids = new List<int>();
+
+
+            //OPEN(15, FILE = '#OUTPUT#AGES',
+            //    -FORM = 'UNFORMATTED', RECORDTYPE = 'FIXED')
+
+            lstAges = new List<int>();
+
+
+            //OPEN(16, FILE = '#OUTPUT#FILTREIF',
+            //    -FORM = 'UNFORMATTED', RECORDTYPE = 'FIXED')
+
+            lstFiltreIDF = new List<int>();
+
+
+            //                              BOUCLE INDIVIDUS
+
+            FileStream fs = File.Open(Path_SIGJFC_BDE, FileMode.Open);
+            fs.Seek(0, SeekOrigin.Begin);
+            BinaryReader br = new BinaryReader(fs);
+
+            while (fs.Position != fs.Length)
+            {
+
+                //30
+
+                for (int i = 1; i < KHI2.Length; i++)
+                    KHI2[i] = br.ReadUInt16();
+
+                IAGE = 1;
+
+                if ((KHI2[COL_AGE3] - 48) == 1)
+                    IAGE = 2;
+
+                // Filtre REGION PARISIENNE(R√©gion Uda)
+
+                ICL = 0;
+
+                if ((KHI2[COL_RUDA] - 48) == 1)
+                {
+                    ICL = 1;
+                    COMPTIDF = COMPTIDF + 1;
+                }
+
+
+
+                // CALCUL DU POIDS(Colonnes 9 √† 13 inclues)
+
+                IPERS = 10000 * (KHI2[COL_PIAB_0] - 48) + 1000 * (KHI2[COL_PIAB_1] - 48) + 100 * (KHI2[COL_PIAB_2] - 48) + 10 * (KHI2[COL_PIAB_3] - 48) + (KHI2[COL_PIAB_4] - 48);
+
+                if (IPERS <= 0) continue;
+
+
+                //if (IPERS > 3276) PRINT * , ' IPERS= ', IPERS
+
+                // On comptabilise les individus
+
+                IG = IG + 1;
+
+
+                IPOP = IPOP + IPERS * 10;
+
+
+                //WRITE(14) IPERS
+                lstPoids.Add(IPERS);
+
+
+                //WRITE(15) IAGE
+                lstAges.Add(IAGE);
+
+
+                //WRITE(16) ICL
+                lstFiltreIDF.Add(ICL);
+
+
+            }
+            //                                                FIN DE FICHIER
+
+            //120 WRITE(6, 1) IG, IPOP, COMPTIDF
+            Console.WriteLine("NbIndiv : " + IG + " Population : " + IPOP + " NbIndivIDF : " + COMPTIDF);
+
+
+            //1 FORMAT('1   NBGUS:', I6, ' POPULATION:', I9, ' Individus IDF:', I12)
+
 
         }
 
@@ -181,8 +301,8 @@ namespace ARProbaProcessing
             // C Le nombre de station correspond au nombre de stations(#NB_STA_HAB_NOTO_TOTAL#) - #NB_STA_TOTAL_ONLY# pour Total Radio (et Total TV)
             // PARAMETER (NBSTA=#NB_STA_HAB_NOTO#)
 
-            // C Attention AVANT(#SIGN_LINE_LEN_BEFORE_HAB#) et le buffer de lecture pour se caler au d√©but des donn√©es de HAB
-            // C Attention APRES(#SIGN_LINE_LEN_AFTER_HAB#) et le buffer de lecture pour se caler √† la fin de la ligne des donn√©es
+            // C Attention AVANT(#SIGN_LINE_LEN_BEFORE_HAB#) et le buffer de lecture pour se caler au dÈbut des donnÈes de HAB
+            // C Attention APRES(#SIGN_LINE_LEN_AFTER_HAB#) et le buffer de lecture pour se caler ‡ la fin de la ligne des donnÈes
 
             // INTEGER * 1 AVANT(#SIGN_LINE_LEN_BEFORE_HAB#),KHAB(9,#NB_STA_ALL_HAB#),KHSA(9,#NB_STA_ALL_HAB#),KHDI(9,#NB_STA_ALL_HAB#),APRES(#SIGN_LINE_LEN_AFTER_HAB#),CHARIOT(2)
             // INTEGER * 1 KHA2(9, NBSTA),KHS2(9, NBSTA),KHD2(9, NBSTA)
@@ -192,7 +312,7 @@ namespace ARProbaProcessing
 
             // => EN PARAMETRE
             // INTEGER * 2 TABRH(NBSTA)
-            // C Attention pour les stations avec Notori√©t√© il faut metre les donn√©es total radio(#TOTAL_RADIO_INDEX#)
+            // C Attention pour les stations avec NotoriÈtÈ il faut metre les donnÈes total radio(#TOTAL_RADIO_INDEX#)
             // int[] TABRH = new int[NBSTA + 1]; 
             // int[] TABRH /#HAB_STA_LIST_ID_NOTO_SET_TO_TOTAL_RADIO#/
 
@@ -333,7 +453,7 @@ namespace ARProbaProcessing
         /// <param name="NbGRPStation">Nombre de station dans la fichier de GRP U109</param>
         /// <param name="NotorieteStation"></param>
         /// <returns></returns>
-        private int[,,,] cgrp75br(string PathGRPWave, int NbStation, int NbGRPModulation, int NbGRPStation, int[] NotorieteStation)
+        private int[, , ,] cgrp75br(string PathGRPWave, int NbStation, int NbGRPModulation, int NbGRPStation, int[] NotorieteStation)
         {
             if (NbStation == 0
                 || NbGRPModulation == 0
@@ -345,7 +465,7 @@ namespace ARProbaProcessing
             // PANEL RADIO 08 MEDIAMETRIE(nouveau format)
             // CALCUL DES GRP 75000 POUR CALAGE
 
-            int[,,,] COUV = new int[37 + 1, 3 + 1, NbStation + 1, 96 + 1];
+            int[, , ,] COUV = new int[37 + 1, 3 + 1, NbStation + 1, 96 + 1];
             int[] SEG1 = new int[16 + 1];
             int[] SEG2 = new int[10 + 1];
             int[] SEG3 = new int[6 + 1];
@@ -442,6 +562,8 @@ namespace ARProbaProcessing
 
                 IG = IG + 1;
                 //write(*, *) IG;
+                Console.WriteLine(IG);
+
                 int IU = 1;
                 if (KHI2[2] == 6) IU = 2;
                 if (KHI2[2] == 7) IU = 3;
