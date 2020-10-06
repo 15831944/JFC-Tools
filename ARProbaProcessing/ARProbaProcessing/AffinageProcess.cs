@@ -1,4 +1,6 @@
-﻿using System.IO;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
 
 namespace ARProbaProcessing
 {
@@ -11,8 +13,11 @@ namespace ARProbaProcessing
             int NbGRPStation = 0;
             int[] NotorieteStation = null;
             string PathGRPWave = @"C:\AffinageART\France\Source\SFR04\U120";
+            List<int> lstPoids;
+            List<int> lstAges;
+            List<int> lstFiltreIDF;
 
-            lecpanel();
+            lecpanel(0, "", 0, 0, 0, 0, 0, 0, 0, out lstPoids, out lstAges, out lstFiltreIDF);
             segpanel();
             ecrpan1j();
             regr5jp2();
@@ -46,8 +51,126 @@ namespace ARProbaProcessing
             asympt();
         }
 
-        private void lecpanel()
+        private void lecpanel(int SIGN_LINE_LEN_FULL, string Path_SIGJFC_BDE, int COL_AGE3, int COL_RUDA, int COL_PIAB_0, int COL_PIAB_1, int COL_PIAB_2, int COL_PIAB_3, int COL_PIAB_4, out List<int> lstPoids, out List<int> lstAges, out List<int> lstFiltreIDF)
         {
+            // PANEL RADIO 08 MEDIAMETRIE(nouveau format)
+            // CONTROLE DES POIDS DE REDRESSEMENT
+            // SORTIE D UN FICHIER AGE NECESSAIRE A LA FABRICATION DU FICHIER POUR MEDIAPOLIS
+            //
+            //INCLUDE 'FSUBLIB.FI'
+            //COMMON / NUBIT / NBIT
+            //SAVE / NUBIT /
+
+            int IPERS, IAGE, ICL, COMPTIDF;
+            // Attention, le nombre de caractères réel est de 599 colonnes(on en rajoute 2 pour le retour Chariot)
+            int[] KHI2 = new int[SIGN_LINE_LEN_FULL + 1];
+
+            //                  INITIALISATIONS
+
+
+            int IG = 0;
+            int I15 = 0;
+            int IPOP = 0;
+
+            COMPTIDF = 0;
+
+
+            //         OUVERTURE FICHIERS
+
+            //WRITE(*, *) 'Hello World!'
+            Console.WriteLine("Hello World!");
+
+            //OPEN(13, FILE = '#SIGJFC_BDE#',
+            //    -RECORDTYPE = 'FIXED', FORM = 'UNFORMATTED')
+
+
+            //OPEN(14, FILE = '#OUTPUT#POIDS',
+            //    -FORM = 'UNFORMATTED', RECORDTYPE = 'FIXED')
+
+            lstPoids = new List<int>();
+
+
+            //OPEN(15, FILE = '#OUTPUT#AGES',
+            //    -FORM = 'UNFORMATTED', RECORDTYPE = 'FIXED')
+
+            lstAges = new List<int>();
+
+
+            //OPEN(16, FILE = '#OUTPUT#FILTREIF',
+            //    -FORM = 'UNFORMATTED', RECORDTYPE = 'FIXED')
+
+            lstFiltreIDF = new List<int>();
+
+
+            //                              BOUCLE INDIVIDUS
+
+            FileStream fs = File.Open(Path_SIGJFC_BDE, FileMode.Open);
+            fs.Seek(0, SeekOrigin.Begin);
+            BinaryReader br = new BinaryReader(fs);
+
+            while (fs.Position != fs.Length)
+            {
+
+                //30
+
+                for (int i = 1; i < KHI2.Length; i++)
+                    KHI2[i] = br.ReadUInt16();
+
+                IAGE = 1;
+
+                if ((KHI2[COL_AGE3] - 48) == 1)
+                    IAGE = 2;
+
+                // Filtre REGION PARISIENNE(Région Uda)
+
+                ICL = 0;
+
+                if ((KHI2[COL_RUDA] - 48) == 1)
+                {
+                    ICL = 1;
+                    COMPTIDF = COMPTIDF + 1;
+                }
+
+
+
+                // CALCUL DU POIDS(Colonnes 9 à 13 inclues)
+
+                IPERS = 10000 * (KHI2[COL_PIAB_0] - 48) + 1000 * (KHI2[COL_PIAB_1] - 48) + 100 * (KHI2[COL_PIAB_2] - 48) + 10 * (KHI2[COL_PIAB_3] - 48) + (KHI2[COL_PIAB_4] - 48);
+
+                if (IPERS <= 0) continue;
+
+
+                //if (IPERS > 3276) PRINT * , ' IPERS= ', IPERS
+
+                // On comptabilise les individus
+
+                IG = IG + 1;
+
+
+                IPOP = IPOP + IPERS * 10;
+
+
+                //WRITE(14) IPERS
+                lstPoids.Add(IPERS);
+
+
+                //WRITE(15) IAGE
+                lstAges.Add(IAGE);
+
+
+                //WRITE(16) ICL
+                lstFiltreIDF.Add(ICL);
+
+
+            }
+            //                                                FIN DE FICHIER
+
+            //120 WRITE(6, 1) IG, IPOP, COMPTIDF
+            Console.WriteLine("NbIndiv : " + IG + " Population : " + IPOP + " NbIndivIDF : " + COMPTIDF);
+
+
+            //1 FORMAT('1   NBGUS:', I6, ' POPULATION:', I9, ' Individus IDF:', I12)
+
 
         }
 
@@ -229,6 +352,8 @@ namespace ARProbaProcessing
 
                 IG = IG + 1;
                 //write(*, *) IG;
+                Console.WriteLine(IG);
+
                 int IU = 1;
                 if (KHI2[2] == 6) IU = 2;
                 if (KHI2[2] == 7) IU = 3;
