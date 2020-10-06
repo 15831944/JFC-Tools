@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 
@@ -36,7 +36,7 @@ namespace ARProbaProcessing
             sav1qhps();
             sav1qhpd();
 
-            int[,,,] Couverture = cgrp75br(PathGRPWave, NbStation, NbGRPModulation, NbGRPStation, NotorieteStation);
+            int[, , ,] Couverture = cgrp75br(PathGRPWave, NbStation, NbGRPModulation, NbGRPStation, NotorieteStation);
             cont75br();
 
             cnzuptse();
@@ -243,7 +243,7 @@ namespace ARProbaProcessing
         /// <param name="NbGRPStation">Nombre de station dans la fichier de GRP U109</param>
         /// <param name="NotorieteStation"></param>
         /// <returns></returns>
-        private int[,,,] cgrp75br(string PathGRPWave, int NbStation, int NbGRPModulation, int NbGRPStation, int[] NotorieteStation)
+        private int[, , ,] cgrp75br(string PathGRPWave, int NbStation, int NbGRPModulation, int NbGRPStation, int[] NotorieteStation)
         {
             if (NbStation == 0
                 || NbGRPModulation == 0
@@ -255,7 +255,7 @@ namespace ARProbaProcessing
             // PANEL RADIO 08 MEDIAMETRIE(nouveau format)
             // CALCUL DES GRP 75000 POUR CALAGE
 
-            int[,,,] COUV = new int[37 + 1, 3 + 1, NbStation + 1, 96 + 1];
+            int[, , ,] COUV = new int[37 + 1, 3 + 1, NbStation + 1, 96 + 1];
             int[] SEG1 = new int[16 + 1];
             int[] SEG2 = new int[10 + 1];
             int[] SEG3 = new int[6 + 1];
