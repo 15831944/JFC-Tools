@@ -6,6 +6,9 @@ namespace ARProbaProcessing
 {
     public class AffinageProcess
     {
+        private int[] NOTE = new int[25 + 1] { 999999, 0, 12, 6, 4, 3, 3, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
+        private int[] NBIT = new int[] { 999999, 0, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1 };
+
         public void Run()
         {
             int NbStation = 0;
@@ -18,15 +21,25 @@ namespace ARProbaProcessing
             List<int> lstFiltreIDF;
 
             lecpanel(0, "", 0, 0, 0, 0, 0, 0, 0, out lstPoids, out lstAges, out lstFiltreIDF);
+
             #region entrées Fushab09
             int SIGN_LINE_LEN_BEFORE_HAB = 0;
             int NB_STA_ALL_HAB = 0;
             int[] TABRH = null;
             #endregion
 
+            #region entrées ecrpan1
+            string pathF04 = @"c:\Affinage\Panel_National\PanFra20\Input\F04\";
+            int nbStationTotal = NbStation;
+            int year = 2020;
+            int[] ITS = new int[] { 999999, 16, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, -35, 36, 37, 39, 47, 50, 53, 54, 55, 56, 59, 60, 61, 64, 1 };
+            #endregion entrées ecrpan1
+
             segpanel();
-            ecrpan1j();
-            regr5jp2(0);
+
+            VsorPoid[][] JN = ecrpan1j(pathF04, NbStation, nbStationTotal, ITS, year);   // [Jour 1..23][Individus 1..N] = {VOSR[,]?, Poid[]}
+
+            VsorPoid[][][] JNByWeek = regr5jp2(JN);
 
             List<Fushab09Indiv> Fushab09Indivs = Fushab09(NbStation, SIGN_LINE_LEN_BEFORE_HAB, NB_STA_ALL_HAB, TABRH);
 
@@ -44,7 +57,7 @@ namespace ARProbaProcessing
             sav1qhps();
             sav1qhpd();
 
-            int[, , ,] Couverture = cgrp75br(PathGRPWave, NbStation, NbGRPModulation, NbGRPStation, NotorieteStation);
+            int[,,,] Couverture = cgrp75br(PathGRPWave, NbStation, NbGRPModulation, NbGRPStation, NotorieteStation);
             cont75br();
 
             cnzuptse();
@@ -186,103 +199,125 @@ namespace ARProbaProcessing
         {
 
         }
-        private void ecrpan1j()
-        {
 
+        private VsorPoid[][] ecrpan1j(string pathF04, int NBSTA, int NB_STA_TOTAL, int[] ITS, int year)
+        {
+            VsorPoid[][] resultJn = new VsorPoid[23 + 1][];
+            for (int sor = 1; sor <= 24; sor++)
+                resultJn[sor] = new VsorPoid[NBSTA];
+
+            // PANEL RADIO 08 MEDIAMETRIE(Nouveau format)
+            // CREATION DU POIDS DES 1 / 4H POUR 1 JOUR
+
+            //  Attention: ne pas oublier de changer NBSTA avec le nombre de stations utiliser dans hab et noto
+            //PARAMETER(NBSTA =#NB_STA_HAB_NOTO_TOTAL#)
+
+            int L1BIT;
+            int[] KHI2 = new int[3 + 1];
+
+            // Attention: ne pas oublier de changer VRAD avec le nombre de stations totals
+
+            int[] KDEB = new int[130 + 1];
+            int[,] VRAD = new int[6 + 1, NB_STA_TOTAL + 1];
+
+
+            int[] ITAP = new int[96 + 1];
+
+            string C2;
+
+            // INITIALISATIONS
+            int IG;
+
+            // OUVERTURE FICHIERS
+            for (int IJ = 1; IJ <= 23; IJ++)
+            {
+                IG = 0;
+
+                string pathJN = Path.Combine(pathF04, "JN" + IJ.ToString("00") + "NI" + (year % 100).ToString("00") + ".F04");
+                FileStream fs = File.Open(pathJN, FileMode.Open);
+                fs.Seek(0, SeekOrigin.Begin);
+                BinaryReader br = new BinaryReader(fs);
+
+                // Lecture KDEB
+                for (int i = 1; i <= 130; i++)
+                    KDEB[i] = br.ReadUInt16();
+
+                // BOUCLE INDIVIDUS
+                while (fs.Position != fs.Length)
+                {
+                    for (int i = 1; i <= 3; i++)
+                        KHI2[i] = br.ReadInt16();
+
+                    for (int i = 1; i <= 6; i++)
+                        for (int j = 1; j <= NB_STA_TOTAL; j++)
+                            VRAD[i, j] = br.ReadInt16();
+
+                    if (KHI2[1] == 1)
+                    {
+                        IG = IG + 1;
+
+                        int[,] VSOR = new int[6 + 1, NBSTA + 1];
+                        for (int IS = 1; IS <= NBSTA; IS++)
+                        {
+                            for (int I = 1; I <= 6; I++)
+                            {
+                                VSOR[I, IS] = VRAD[I, ITS[IS]];
+                            }
+                        }
+
+                        for (int IS = 1; IS <= NBSTA - 2; IS++)
+                        {
+                            int IC = ITS[IS];
+                            for (int I = 1; I <= 96; I++)
+                            {
+                                if (L1BITFCT(VRAD[1, IC], I)) ITAP[I] = ITAP[I] + 1;
+                            }
+                        }
+
+                        int[] POID = new int[96 + 1];
+                        for (int I = 1; I <= 96; I++)
+                        {
+                            POID[I] = NOTE[ITAP[I] + 1];
+                        }
+
+                        resultJn[IJ][IG] = new VsorPoid(NBSTA) { Poid = POID, VSor = VSOR };
+                    }
+                }
+
+                // FIN DE FICHIER
+                Console.WriteLine(IJ.ToString() + " " + IG.ToString());
+            }
+
+            // ???? Console.WriteLine($"JOUR : {I2}   NBGUS : {I6});
+            return resultJn;
         }
-        private void regr5jp2(int LENENR)
+
+        private bool L1BITFCT(int ZLEC, int IND)
         {
+            return BTEST(ZLEC, IND);
+        }
 
-//            int[,] KHI3 = new int[LENENR, 5];   // INTEGER *2 KHI3(LENENR,5)
-//            string C2, C1, C3;                  // CHARACTER C2*2, C1*1,C3*1
-      
-//            // INITIALISATIONS
-//            // OUVERTURE FICHIERS
-//            for (int J=1; J<=3; J++)
-//            { 
-//                int IG=0
-//                C1 = J
+        private VsorPoid[][][] regr5jp2(VsorPoid[][] JN)
+        {
+            VsorPoid[][][] JNByWeek = new VsorPoid[3+1][][];   // [Semaine 1..3][Jour de semaine Lundi à vendredi 1..5][indiv]
 
-//                OPEN(14,FILE='#OUTPUT#jfc\PANSEM'//C1//'.JFC',  
-//                -FORM='UNFORMATTED',RECORDTYPE='FIXED')
-       
-//        DO I = 3+(J-1)*7,7+(J-1)*7
-//          IO=20+I
-//          WRITE(C2,'(I2.2)') I
-//          OPEN(IO,FILE='#OUTPUT#jfc\JN'//C2//'NIV.JFC',
-//     -FORM='UNFORMATTED',RECORDTYPE='FIXED')
-       
-//        ENDDO	
-//C                              BOUCLE INDIVIDUS
-//C
-//   30   IG=IG+1
-//        DO I = 3+(J-1)*7,7+(J-1)*7
-//          IJ=I-(J-1)*7-2
-//          IO=20+I
-//          READ(IO) (KHI3(K,IJ),K=1,LENENR)
-//        ENDDO
-//        WRITE(14)KHI3
-//        IF(IG.LT.NBIND) GO TO 30
-//C                              FIN DE FICHIER
-//        WRITE(C3,'(I1.1)') J+1
-//  120   OPEN(16,FILE='#OUTPUT#SORTIE'//C3//'.txt',RECORDTYPE='TEXT')
-//        WRITE(16,1) IG
-//        CLOSE(16)
-//        DO I = 3+(J-1)*7,7+(J-1)*7
-//          IO=20+I
-//          CLOSE(IO)
-//        ENDDO
-//        CLOSE(14)
-//      ENDDO
-//C           
-//      STOP
-//    1 FORMAT('1   NBGUS:',I6)
-//            CHARACTER C2*2, C1 * 1,C3 * 1
-//C
-//C                              INITIALISATIONS
-//C
-//C
-//C                              OUVERTURE FICHIERS
-//C
-//      DO J = 1,3
-//        IG = 0
-//        WRITE(C1, '(I1.1)') J
-//        OPEN(14, FILE = '#OUTPUT#jfc\PANSEM'//C1//'.JFC',
-//     - FORM = 'UNFORMATTED', RECORDTYPE = 'FIXED')
+            int nbIndiv = JN[0].Length;
+            for (int week = 1; week <= 3; week++)
+            {
+                JNByWeek[week] = new VsorPoid[5 + 1][];
+                for (int j = 1; j <= 5; j++)
+                {
+                    JNByWeek[week][j] = new VsorPoid[nbIndiv];
 
+                    for (int indiv = 1; indiv <= nbIndiv; indiv++)
+                    {
+                        int noJour = 2 + (week - 1) * 7 + j;
+                        JNByWeek[week][j][indiv] = JN[noJour][indiv];                     // JN[Jour 1..23][Individus 1..N] = {VOSR[,]?, Poid[]}
+                    }
+                }
+            }
 
-//        DO I = 3 + (J - 1) * 7,7 + (J - 1) * 7
-//          IO = 20 + I
-//          WRITE(C2, '(I2.2)') I
-//          OPEN(IO, FILE = '#OUTPUT#jfc\JN'//C2//'NIV.JFC',
-//     - FORM = 'UNFORMATTED', RECORDTYPE = 'FIXED')
-
-
-//        ENDDO
-//C                              BOUCLE INDIVIDUS
-//C
-//   30   IG = IG + 1
-//        DO I = 3 + (J - 1) * 7,7 + (J - 1) * 7
-//          IJ = I - (J - 1) * 7 - 2
-//          IO = 20 + I
-//          READ(IO)(KHI3(K, IJ), K = 1, LENENR)
-//        ENDDO
-//        WRITE(14)KHI3
-//        IF(IG.LT.NBIND) GO TO 30
-//C FIN DE FICHIER
-//        WRITE(C3, '(I1.1)') J + 1
-//  120   OPEN(16, FILE = '#OUTPUT#SORTIE'//C3//'.txt',RECORDTYPE='TEXT')
-//        WRITE(16, 1) IG
-//        CLOSE(16)
-//        DO I = 3 + (J - 1) * 7, 7 + (J - 1) * 7
-//          IO = 20 + I
-//          CLOSE(IO)
-//        ENDDO
-//        CLOSE(14)
-//      ENDDO
-//C
-//      STOP
-//    1 FORMAT('1   NBGUS:', I6)
+            return JNByWeek;
         }
 
         public List<Fushab09Indiv> Fushab09(
@@ -453,7 +488,7 @@ namespace ARProbaProcessing
         /// <param name="NbGRPStation">Nombre de station dans la fichier de GRP U109</param>
         /// <param name="NotorieteStation"></param>
         /// <returns></returns>
-        private int[, , ,] cgrp75br(string PathGRPWave, int NbStation, int NbGRPModulation, int NbGRPStation, int[] NotorieteStation)
+        private int[,,,] cgrp75br(string PathGRPWave, int NbStation, int NbGRPModulation, int NbGRPStation, int[] NotorieteStation)
         {
             if (NbStation == 0
                 || NbGRPModulation == 0
@@ -465,7 +500,7 @@ namespace ARProbaProcessing
             // PANEL RADIO 08 MEDIAMETRIE(nouveau format)
             // CALCUL DES GRP 75000 POUR CALAGE
 
-            int[, , ,] COUV = new int[37 + 1, 3 + 1, NbStation + 1, 96 + 1];
+            int[,,,] COUV = new int[37 + 1, 3 + 1, NbStation + 1, 96 + 1];
             int[] SEG1 = new int[16 + 1];
             int[] SEG2 = new int[10 + 1];
             int[] SEG3 = new int[6 + 1];
@@ -748,6 +783,11 @@ namespace ARProbaProcessing
         {
 
         }
+
+        private bool BTEST(int value, int pos)
+        {
+            return (value & (1 << pos)) != 0;
+        }
     }
 
     public struct Fushab09Indiv
@@ -769,4 +809,30 @@ namespace ARProbaProcessing
             CHARIOT = new int[2];
         }
     }
+
+    #region Structures
+    public struct Regr5jp2
+    {
+        public int[][,] KHI3;
+        public int[] IG;
+        public Regr5jp2(int LENENR)
+        {
+            KHI3 = new int[3][,];
+            for (int i = 1; i <= 3; i++)
+                KHI3[i] = new int[LENENR, 5];
+            IG = new int[3];
+        }
+    }
+
+    public struct VsorPoid
+    {
+        public int[,] VSor;
+        public int[] Poid;
+        public VsorPoid(int NBSTA)
+        {
+            VSor = new int[6 + 1, NBSTA];
+            Poid = new int[96 + 1];
+        }
+    }
+    #endregion Structures
 }

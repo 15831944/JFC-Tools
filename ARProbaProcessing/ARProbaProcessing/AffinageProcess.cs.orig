@@ -2,11 +2,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 =======
-﻿using System.IO;
->>>>>>> 035cf6da647790727f6fe6d07f364f0ddf1bf030
+using System;
+using System.Collections.Generic;
+>>>>>>> d04426c7413589ec743192377b659956e7552cc3
+using System.IO;
 
 namespace ARProbaProcessing
 {
@@ -19,12 +19,27 @@ namespace ARProbaProcessing
             int NbGRPStation = 0;
             int[] NotorieteStation = null;
             string PathGRPWave = @"C:\AffinageART\France\Source\SFR04\U120";
+            List<int> lstPoids;
+            List<int> lstAges;
+            List<int> lstFiltreIDF;
+
+<<<<<<< HEAD
+            #region entrées Fushab09
+            int SIGN_LINE_LEN_BEFORE_HAB = 0;
+            int NB_STA_ALL_HAB = 0;
+            int[] TABRH = null;
+            #endregion
 
             lecpanel();
+=======
+            lecpanel(0, "", 0, 0, 0, 0, 0, 0, 0, out lstPoids, out lstAges, out lstFiltreIDF);
+>>>>>>> d04426c7413589ec743192377b659956e7552cc3
             segpanel();
             ecrpan1j();
-            regr5jp2();
-            fushab09();
+            regr5jp2(0);
+
+            List<Fushab09Indiv> Fushab09Indivs = Fushab09(NbStation, SIGN_LINE_LEN_BEFORE_HAB, NB_STA_ALL_HAB, TABRH);
+
             chab1qhp();
             crenonin();
 
@@ -39,7 +54,7 @@ namespace ARProbaProcessing
             sav1qhps();
             sav1qhpd();
 
-            int[,,,] Couverture = cgrp75br(PathGRPWave, NbStation, NbGRPModulation, NbGRPStation, NotorieteStation);
+            int[, , ,] Couverture = cgrp75br(PathGRPWave, NbStation, NbGRPModulation, NbGRPStation, NotorieteStation);
             cont75br();
 
             cnzuptse();
@@ -54,8 +69,126 @@ namespace ARProbaProcessing
             asympt();
         }
 
-        private void lecpanel()
+        private void lecpanel(int SIGN_LINE_LEN_FULL, string Path_SIGJFC_BDE, int COL_AGE3, int COL_RUDA, int COL_PIAB_0, int COL_PIAB_1, int COL_PIAB_2, int COL_PIAB_3, int COL_PIAB_4, out List<int> lstPoids, out List<int> lstAges, out List<int> lstFiltreIDF)
         {
+            // PANEL RADIO 08 MEDIAMETRIE(nouveau format)
+            // CONTROLE DES POIDS DE REDRESSEMENT
+            // SORTIE D UN FICHIER AGE NECESSAIRE A LA FABRICATION DU FICHIER POUR MEDIAPOLIS
+            //
+            //INCLUDE 'FSUBLIB.FI'
+            //COMMON / NUBIT / NBIT
+            //SAVE / NUBIT /
+
+            int IPERS, IAGE, ICL, COMPTIDF;
+            // Attention, le nombre de caractères réel est de 599 colonnes(on en rajoute 2 pour le retour Chariot)
+            int[] KHI2 = new int[SIGN_LINE_LEN_FULL + 1];
+
+            //                  INITIALISATIONS
+
+
+            int IG = 0;
+            int I15 = 0;
+            int IPOP = 0;
+
+            COMPTIDF = 0;
+
+
+            //         OUVERTURE FICHIERS
+
+            //WRITE(*, *) 'Hello World!'
+            Console.WriteLine("Hello World!");
+
+            //OPEN(13, FILE = '#SIGJFC_BDE#',
+            //    -RECORDTYPE = 'FIXED', FORM = 'UNFORMATTED')
+
+
+            //OPEN(14, FILE = '#OUTPUT#POIDS',
+            //    -FORM = 'UNFORMATTED', RECORDTYPE = 'FIXED')
+
+            lstPoids = new List<int>();
+
+
+            //OPEN(15, FILE = '#OUTPUT#AGES',
+            //    -FORM = 'UNFORMATTED', RECORDTYPE = 'FIXED')
+
+            lstAges = new List<int>();
+
+
+            //OPEN(16, FILE = '#OUTPUT#FILTREIF',
+            //    -FORM = 'UNFORMATTED', RECORDTYPE = 'FIXED')
+
+            lstFiltreIDF = new List<int>();
+
+
+            //                              BOUCLE INDIVIDUS
+
+            FileStream fs = File.Open(Path_SIGJFC_BDE, FileMode.Open);
+            fs.Seek(0, SeekOrigin.Begin);
+            BinaryReader br = new BinaryReader(fs);
+
+            while (fs.Position != fs.Length)
+            {
+
+                //30
+
+                for (int i = 1; i < KHI2.Length; i++)
+                    KHI2[i] = br.ReadUInt16();
+
+                IAGE = 1;
+
+                if ((KHI2[COL_AGE3] - 48) == 1)
+                    IAGE = 2;
+
+                // Filtre REGION PARISIENNE(Région Uda)
+
+                ICL = 0;
+
+                if ((KHI2[COL_RUDA] - 48) == 1)
+                {
+                    ICL = 1;
+                    COMPTIDF = COMPTIDF + 1;
+                }
+
+
+
+                // CALCUL DU POIDS(Colonnes 9 à 13 inclues)
+
+                IPERS = 10000 * (KHI2[COL_PIAB_0] - 48) + 1000 * (KHI2[COL_PIAB_1] - 48) + 100 * (KHI2[COL_PIAB_2] - 48) + 10 * (KHI2[COL_PIAB_3] - 48) + (KHI2[COL_PIAB_4] - 48);
+
+                if (IPERS <= 0) continue;
+
+
+                //if (IPERS > 3276) PRINT * , ' IPERS= ', IPERS
+
+                // On comptabilise les individus
+
+                IG = IG + 1;
+
+
+                IPOP = IPOP + IPERS * 10;
+
+
+                //WRITE(14) IPERS
+                lstPoids.Add(IPERS);
+
+
+                //WRITE(15) IAGE
+                lstAges.Add(IAGE);
+
+
+                //WRITE(16) ICL
+                lstFiltreIDF.Add(ICL);
+
+
+            }
+            //                                                FIN DE FICHIER
+
+            //120 WRITE(6, 1) IG, IPOP, COMPTIDF
+            Console.WriteLine("NbIndiv : " + IG + " Population : " + IPOP + " NbIndivIDF : " + COMPTIDF);
+
+
+            //1 FORMAT('1   NBGUS:', I6, ' POPULATION:', I9, ' Individus IDF:', I12)
+
 
         }
 
@@ -67,14 +200,216 @@ namespace ARProbaProcessing
         {
 
         }
-        private void regr5jp2()
+        private void regr5jp2(int LENENR)
         {
 
-        }
-        private void fushab09()
-        {
+//            int[,] KHI3 = new int[LENENR, 5];   // INTEGER *2 KHI3(LENENR,5)
+//            string C2, C1, C3;                  // CHARACTER C2*2, C1*1,C3*1
+      
+//            // INITIALISATIONS
+//            // OUVERTURE FICHIERS
+//            for (int J=1; J<=3; J++)
+//            { 
+//                int IG=0
+//                C1 = J
 
+//                OPEN(14,FILE='#OUTPUT#jfc\PANSEM'//C1//'.JFC',  
+//                -FORM='UNFORMATTED',RECORDTYPE='FIXED')
+       
+//        DO I = 3+(J-1)*7,7+(J-1)*7
+//          IO=20+I
+//          WRITE(C2,'(I2.2)') I
+//          OPEN(IO,FILE='#OUTPUT#jfc\JN'//C2//'NIV.JFC',
+//     -FORM='UNFORMATTED',RECORDTYPE='FIXED')
+       
+//        ENDDO	
+//C                              BOUCLE INDIVIDUS
+//C
+//   30   IG=IG+1
+//        DO I = 3+(J-1)*7,7+(J-1)*7
+//          IJ=I-(J-1)*7-2
+//          IO=20+I
+//          READ(IO) (KHI3(K,IJ),K=1,LENENR)
+//        ENDDO
+//        WRITE(14)KHI3
+//        IF(IG.LT.NBIND) GO TO 30
+//C                              FIN DE FICHIER
+//        WRITE(C3,'(I1.1)') J+1
+//  120   OPEN(16,FILE='#OUTPUT#SORTIE'//C3//'.txt',RECORDTYPE='TEXT')
+//        WRITE(16,1) IG
+//        CLOSE(16)
+//        DO I = 3+(J-1)*7,7+(J-1)*7
+//          IO=20+I
+//          CLOSE(IO)
+//        ENDDO
+//        CLOSE(14)
+//      ENDDO
+//C           
+//      STOP
+//    1 FORMAT('1   NBGUS:',I6)
+//            CHARACTER C2*2, C1 * 1,C3 * 1
+//C
+//C                              INITIALISATIONS
+//C
+//C
+//C                              OUVERTURE FICHIERS
+//C
+//      DO J = 1,3
+//        IG = 0
+//        WRITE(C1, '(I1.1)') J
+//        OPEN(14, FILE = '#OUTPUT#jfc\PANSEM'//C1//'.JFC',
+//     - FORM = 'UNFORMATTED', RECORDTYPE = 'FIXED')
+
+
+//        DO I = 3 + (J - 1) * 7,7 + (J - 1) * 7
+//          IO = 20 + I
+//          WRITE(C2, '(I2.2)') I
+//          OPEN(IO, FILE = '#OUTPUT#jfc\JN'//C2//'NIV.JFC',
+//     - FORM = 'UNFORMATTED', RECORDTYPE = 'FIXED')
+
+
+//        ENDDO
+//C                              BOUCLE INDIVIDUS
+//C
+//   30   IG = IG + 1
+//        DO I = 3 + (J - 1) * 7,7 + (J - 1) * 7
+//          IJ = I - (J - 1) * 7 - 2
+//          IO = 20 + I
+//          READ(IO)(KHI3(K, IJ), K = 1, LENENR)
+//        ENDDO
+//        WRITE(14)KHI3
+//        IF(IG.LT.NBIND) GO TO 30
+//C FIN DE FICHIER
+//        WRITE(C3, '(I1.1)') J + 1
+//  120   OPEN(16, FILE = '#OUTPUT#SORTIE'//C3//'.txt',RECORDTYPE='TEXT')
+//        WRITE(16, 1) IG
+//        CLOSE(16)
+//        DO I = 3 + (J - 1) * 7, 7 + (J - 1) * 7
+//          IO = 20 + I
+//          CLOSE(IO)
+//        ENDDO
+//        CLOSE(14)
+//      ENDDO
+//C
+//      STOP
+//    1 FORMAT('1   NBGUS:', I6)
         }
+
+        public List<Fushab09Indiv> Fushab09(
+            int NBSTA,
+            int SIGN_LINE_LEN_BEFORE_HAB,
+            int NB_STA_ALL_HAB,
+            int[] TABRH)
+        {
+            // C PANEL RADIO 08 MEDIAMETRIE(nouveau format)
+            // C fusion des Habitudes total RADIO oubliees dans SIGN2007.F04
+            // C        et rangement des habitudes dans le meme ordre que les audiences
+            // C        avec traitement des 'sans habitudes'.
+            // C
+            // C
+            // INCLUDE 'FSUBLIB.FI'
+            // C Le nombre de station correspond au nombre de stations(#NB_STA_HAB_NOTO_TOTAL#) - #NB_STA_TOTAL_ONLY# pour Total Radio (et Total TV)
+            // PARAMETER (NBSTA=#NB_STA_HAB_NOTO#)
+
+            // C Attention AVANT(#SIGN_LINE_LEN_BEFORE_HAB#) et le buffer de lecture pour se caler au début des données de HAB
+            // C Attention APRES(#SIGN_LINE_LEN_AFTER_HAB#) et le buffer de lecture pour se caler à la fin de la ligne des données
+
+            // INTEGER * 1 AVANT(#SIGN_LINE_LEN_BEFORE_HAB#),KHAB(9,#NB_STA_ALL_HAB#),KHSA(9,#NB_STA_ALL_HAB#),KHDI(9,#NB_STA_ALL_HAB#),APRES(#SIGN_LINE_LEN_AFTER_HAB#),CHARIOT(2)
+            // INTEGER * 1 KHA2(9, NBSTA),KHS2(9, NBSTA),KHD2(9, NBSTA)
+            int[,] KHA2 = new int[9 + 1, NBSTA + 1];
+            int[,] KHS2 = new int[9 + 1, NBSTA + 1];
+            int[,] KHD2 = new int[9 + 1, NBSTA + 1];
+
+            // => EN PARAMETRE
+            // INTEGER * 2 TABRH(NBSTA)
+            // C Attention pour les stations avec Notoriété il faut metre les données total radio(#TOTAL_RADIO_INDEX#)
+            // int[] TABRH = new int[NBSTA + 1]; 
+            // int[] TABRH /#HAB_STA_LIST_ID_NOTO_SET_TO_TOTAL_RADIO#/
+
+            // INTEGER*1 int KHAB(9,NB_STA_ALL_HAB),KHSA(9,#NB_STA_ALL_HAB#),KHDI(9,#NB_STA_ALL_HAB#),APRES(#SIGN_LINE_LEN_AFTER_HAB#), CHARIOT(2)
+            int[] AVANT = new int[SIGN_LINE_LEN_BEFORE_HAB + 1];
+            int[,] KHAB = new int[9 + 1, NB_STA_ALL_HAB + 1];
+            int[,] KHSA = new int[9 + 1, NB_STA_ALL_HAB + 1];
+            int[,] KHDI = new int[9 + 1, NB_STA_ALL_HAB + 1];
+            int[] APRES = new int[SIGN_LINE_LEN_BEFORE_HAB + 1];
+            int[] CHARIOT = new int[2];
+
+            // INITIALISATIONS
+            int G = 0;
+
+            // OUVERTURE FICHIERS
+            Console.WriteLine("NBSTA=" + NBSTA);
+            Console.WriteLine("SIGN_LINE_LEN_BEFORE_HAB=" + SIGN_LINE_LEN_BEFORE_HAB);
+            Console.WriteLine("NB_STA_ALL_HAB=" + NB_STA_ALL_HAB);
+
+            //
+            //                              OUVERTURE FICHIER
+            //
+            // OPEN(13, FILE = '#SIGJFC_BDE#', -FORM = 'UNFORMATTED', RECORDTYPE = 'FIXED')
+            FileStream fs = File.Open(@"C:\AffinageART\France\Source\SFR04\U120\sig20jfc.bde", FileMode.Open);
+            fs.Seek(0, SeekOrigin.Begin);
+            BinaryReader br = new BinaryReader(fs);
+
+            int IG = 0;
+            List<Fushab09Indiv> fushab09Indivs = new List<Fushab09Indiv>();
+            while (fs.Position != fs.Length)
+            {
+                // BOUCLE INDIVIDUS
+                // 30 READ(13, END = 120) AVANT,((KHAB(I, J), I = 1, 9), J = 1,#NB_STA_ALL_HAB#),((KHSA(I,J),I=1,9),J=1,#NB_STA_ALL_HAB#),
+                // -((KHDI(I,J),I=1,9),J=1,#NB_STA_ALL_HAB#),APRES,CHARIOT
+
+                for (int i = 1; i <= SIGN_LINE_LEN_BEFORE_HAB; i++)
+                    AVANT[i] = br.ReadByte();
+
+                for (int i = 1; i <= 9; i++)
+                    for (int j = 1; j <= NB_STA_ALL_HAB; j++)
+                        KHAB[i, j] = br.ReadByte();
+
+                for (int i = 1; i <= 9; i++)
+                    for (int j = 1; j <= NB_STA_ALL_HAB; j++)
+                        KHSA[i, j] = br.ReadByte();
+
+                for (int i = 1; i <= 9; i++)
+                    for (int j = 1; j <= NB_STA_ALL_HAB; j++)
+                        KHDI[i, j] = br.ReadByte();
+
+                for (int i = 1; i <= SIGN_LINE_LEN_BEFORE_HAB; i++)
+                    APRES[i] = br.ReadByte();
+
+                for (int i = 1; i <= 2; i++)
+                    CHARIOT[i] = br.ReadByte();
+
+                IG = IG + 1;
+
+                // BOUCLE STATIONS
+
+                for (int NOP = 1; NOP <= NBSTA; NOP++)
+                {
+                    int IP = TABRH[NOP];
+                    for (int I = 1; I <= 9; I++)
+                    {
+                        KHA2[I, NOP] = KHAB[I, IP];
+                        KHS2[I, NOP] = KHSA[I, IP];
+                        KHD2[I, NOP] = KHDI[I, IP];
+                    }
+                }
+                fushab09Indivs.Add(new Fushab09Indiv(SIGN_LINE_LEN_BEFORE_HAB, NB_STA_ALL_HAB)
+                {
+                    AVANT = AVANT,
+                    KHAB = KHAB,
+                    KHSA = KHSA,
+                    KHDI = KHDI,
+                    APRES = APRES,
+                    CHARIOT = CHARIOT,
+                });
+            }
+
+            // FIN DE FICHIER
+            Console.WriteLine("NB.GUS=", IG);
+
+            return fushab09Indivs;
+        }
+
         private void chab1qhp()
         {
 
@@ -128,7 +463,7 @@ namespace ARProbaProcessing
         /// <param name="NbGRPStation">Nombre de station dans la fichier de GRP U109</param>
         /// <param name="NotorieteStation"></param>
         /// <returns></returns>
-        private int[,,,] cgrp75br(string PathGRPWave, int NbStation, int NbGRPModulation, int NbGRPStation, int[] NotorieteStation)
+        private int[, , ,] cgrp75br(string PathGRPWave, int NbStation, int NbGRPModulation, int NbGRPStation, int[] NotorieteStation)
         {
             if (NbStation == 0
                 || NbGRPModulation == 0
@@ -140,7 +475,7 @@ namespace ARProbaProcessing
             // PANEL RADIO 08 MEDIAMETRIE(nouveau format)
             // CALCUL DES GRP 75000 POUR CALAGE
 
-            int[,,,] COUV = new int[37 + 1, 3 + 1, NbStation + 1, 96 + 1];
+            int[, , ,] COUV = new int[37 + 1, 3 + 1, NbStation + 1, 96 + 1];
             int[] SEG1 = new int[16 + 1];
             int[] SEG2 = new int[10 + 1];
             int[] SEG3 = new int[6 + 1];
@@ -237,6 +572,8 @@ namespace ARProbaProcessing
 
                 IG = IG + 1;
                 //write(*, *) IG;
+                Console.WriteLine(IG);
+
                 int IU = 1;
                 if (KHI2[2] == 6) IU = 2;
                 if (KHI2[2] == 7) IU = 3;
@@ -420,6 +757,26 @@ namespace ARProbaProcessing
         private void asympt()
         {
 
+        }
+    }
+
+    public struct Fushab09Indiv
+    {
+        public int[] AVANT;
+        public int[,] KHAB;
+        public int[,] KHSA;
+        public int[,] KHDI;
+        public int[] APRES;
+        public int[] CHARIOT;
+
+        public Fushab09Indiv(int SIGN_LINE_LEN_BEFORE_HAB, int NB_STA_ALL_HAB)
+        {
+            AVANT = new int[SIGN_LINE_LEN_BEFORE_HAB + 1];
+            KHAB = new int[9 + 1, NB_STA_ALL_HAB + 1];
+            KHSA = new int[9 + 1, NB_STA_ALL_HAB + 1];
+            KHDI = new int[9 + 1, NB_STA_ALL_HAB + 1];
+            APRES = new int[SIGN_LINE_LEN_BEFORE_HAB + 1];
+            CHARIOT = new int[2];
         }
     }
 }
