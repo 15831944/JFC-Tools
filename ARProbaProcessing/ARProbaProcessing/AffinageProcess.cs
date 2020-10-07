@@ -43,7 +43,8 @@ namespace ARProbaProcessing
 
             List<Fushab09Indiv> Fushab09Indivs = Fushab09(NbStation, SIGN_LINE_LEN_BEFORE_HAB, NB_STA_ALL_HAB, TABRH);
 
-            chab1qhp();
+            int[,,]  habitudeQHIndiv = chab1qhp(NbStation, Fushab09Indivs);
+
             crenonin();
 
             ecrsegpa();
@@ -212,7 +213,6 @@ namespace ARProbaProcessing
             //  Attention: ne pas oublier de changer NBSTA avec le nombre de stations utiliser dans hab et noto
             //PARAMETER(NBSTA =#NB_STA_HAB_NOTO_TOTAL#)
 
-            int L1BIT;
             int[] KHI2 = new int[3 + 1];
 
             // Attention: ne pas oublier de changer VRAD avec le nombre de stations totals
@@ -222,8 +222,6 @@ namespace ARProbaProcessing
 
 
             int[] ITAP = new int[96 + 1];
-
-            string C2;
 
             // INITIALISATIONS
             int IG;
@@ -299,7 +297,7 @@ namespace ARProbaProcessing
 
         private VsorPoid[][][] regr5jp2(VsorPoid[][] JN)
         {
-            VsorPoid[][][] JNByWeek = new VsorPoid[3+1][][];   // [Semaine 1..3][Jour de semaine Lundi à vendredi 1..5][indiv]
+            VsorPoid[][][] JNByWeek = new VsorPoid[3 + 1][][];   // [Semaine 1..3][Jour de semaine Lundi à vendredi 1..5][indiv]
 
             int nbIndiv = JN[0].Length;
             for (int week = 1; week <= 3; week++)
@@ -435,10 +433,71 @@ namespace ARProbaProcessing
             return fushab09Indivs;
         }
 
-        private void chab1qhp()
+        private int[,,] chab1qhp(int NBSTA, List<Fushab09Indiv> fushab09Indivs)
         {
+            // PANEL RADIO 08 MEDIAMETRIE(nouveau format)
+            // CALCUL DES HABITUDES 1 / 4h PAR INDIVIDU
 
+            //  Le nombre de station correspond au nombre de stations(30) -1 pour Total Radio(et Total TV)
+            
+            int NBIND = fushab09Indivs.Count;
+            int[,,] NINI = new int[NBIND + 1, 96 + 1, 3 + 1];
+            int[] ISTA = new int[NBSTA + 1];
+
+
+            // id  time
+            //   1     05h00 - 06h00 = 4
+            //   2     06h00 - 09h00 = 12
+            //   3     09h00 - 12h00 = 12
+            //   4     12h00 - 14h00 = 8
+            //   5     14h00 - 16h00 = 8
+            //   6     16h00 - 18h00 = 8
+            //   7     18h00 - 20h00 = 8
+            //   8     20h00 - 24h00 = 16
+            //   9     24h00 - 05h00 = 20
+
+            // C On attribue 1 aux stations qui ne possèdent pas d'habitudes d'écoute.A mon avis, cela est maintenant
+            // C inutile puisqu'on leur attribue leur notoriété.
+            int[] ITH = new int[] {
+                9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,
+                1,1,1,1,
+                2,2,2,2,2,2,2,2,2,2,2,2,
+                3,3,3,3,3,3,3,3,3,3,3,3,
+                4,4,4,4,4,4,4,4,
+                5,5,5,5,5,5,5,5,
+                6,6,6,6,6,6,6,6,
+                7,7,7,7,7,7,7,7,
+                8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8};
+
+            for (int IPO = 1; IPO <= NBSTA; IPO++)
+            {
+                int IP = IPO;
+                Console.WriteLine($" Traitement station {IPO}");
+                int IG = 0;
+
+                // BOUCLE INDIVIDUS
+                foreach (Fushab09Indiv indiv in fushab09Indivs)
+                {
+                    IG = IG + 1;
+                    for (int IU = 1; IU <= 3; IU++)
+                    {
+                        for (int IQ = 1; IQ <= 96; IQ++)
+                        {
+                            int IH = 0;
+                            if (IU == 1) IH = indiv.KHAB[ITH[IQ], IP] - 48;
+                            if (IU == 2) IH = indiv.KHSA[ITH[IQ], IP] - 48;
+                            if (IU == 3) IH = indiv.KHDI[ITH[IQ], IP] - 48;
+                            if (IH < 1) IH = 5;
+                            NINI[IG, IQ, IU] = 5 - IH;
+                            if (ISTA[IPO] == 1 && IH != 5) NINI[IG, IQ, IU] = 1;
+                        }
+                    }
+                }
+            }
+
+            return NINI;
         }
+
         private void crenonin()
         {
 
