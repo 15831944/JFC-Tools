@@ -309,10 +309,6 @@ namespace ARProbaProcessing
             return resultJn;
         }
 
-        private bool L1BITFCT(int ZLEC, int IND)
-        {
-            return BTEST(ZLEC, IND);
-        }
 
         private VsorPoid[][][] regr5jp2(VsorPoid[][] JN)
         {
@@ -1164,6 +1160,14 @@ namespace ARProbaProcessing
         private void asympt()
         {
 
+        }
+        
+        private bool L1BITFCT(int[] ZLEC, int ind)
+        {
+            int sizeBit = (sizeof(int) * 8);
+            int index = (ind-1) / sizeBit;
+            int pos = ind % sizeBit;
+            return BTEST(ZLEC[index], pos);
         }
 
         private bool BTEST(int value, int pos)
