@@ -59,7 +59,7 @@ namespace ARProbaProcessing
             List<Fushab09Indiv> fushab09Indivs = Fushab09(NbStation, SIGN_LINE_LEN_BEFORE_HAB, NB_STA_ALL_HAB, TABRH);
             int NBINDIV = fushab09Indivs.Count;
 
-            int[,,] NINI_IND_QD_W = chab1qhp(NbStation, fushab09Indivs); // Habitude
+            int[,,] NINI_IND_QH_W = chab1qhp(NbStation, fushab09Indivs); // Habitude
 
             int[,] NINI_IND_STA = crenonin(nbJour, NbStation, fushab09Indivs, JN);
 
@@ -238,8 +238,6 @@ namespace ARProbaProcessing
 
             int[] KDEB = new int[130 + 1];
             int[,] VRAD = new int[6 + 1, NB_STA_TOTAL + 1];
-
-
             int[] ITAP = new int[96 + 1];
 
             // INITIALISATIONS
@@ -287,7 +285,10 @@ namespace ARProbaProcessing
                             int IC = ITS[IS];
                             for (int I = 1; I <= 96; I++)
                             {
-                                if (L1BITFCT(VRAD[1, IC], I)) ITAP[I] = ITAP[I] + 1;
+                                int[] bits = new int[7];
+                                for (int b = 1; b <= 6; b++)
+                                    bits[b] = VRAD[b, IC];
+                                if (L1BITFCT(bits, I)) ITAP[I] = ITAP[I] + 1;
                             }
                         }
 
@@ -597,7 +598,11 @@ namespace ARProbaProcessing
                         {
                             for (int IQ = 1; IQ <= 96; IQ++)
                             {
-                                if (L1BITFCT(JN[I][IG].VSor[1, NOP], IQ)) // A VOIR... if (L1BIT(KHI3(IPO,I),IQ) == 1) GO TO 201
+                                int[] bits = new int[7];
+                                for (int b = 1; b <= 6; b++)
+                                    bits[b] = JN[I][IG].VSor[b, NOP];
+
+                                if (L1BITFCT(bits, IQ)) 
                                 {
                                     sortie = true;
                                     break;
@@ -1165,7 +1170,7 @@ namespace ARProbaProcessing
         private bool L1BITFCT(int[] ZLEC, int ind)
         {
             int sizeBit = (sizeof(int) * 8);
-            int index = (ind-1) / sizeBit;
+            int index = 1 + (ind-1) / sizeBit;
             int pos = ind % sizeBit;
             return BTEST(ZLEC[index], pos);
         }
