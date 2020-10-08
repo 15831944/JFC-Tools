@@ -811,7 +811,12 @@ namespace ARProbaProcessing
                                 int IU = 1;
                                 if (I == 1 || I == 8 || I == 15 || I == 22) IU = 2;
                                 if (I == 2 || I == 9 || I == 16 || I == 23) IU = 3;
-                                if (L1BITFCT(JN[I][IG].VSor[1, NOP], IQ)) IAUD[IU] = 1;
+
+                                int[] bits = new int[7];
+                                for (int b = 1; b <= 6; b++)
+                                    bits[b] = JN[I][IG].VSor[b, NOP];
+
+                                if (L1BITFCT(bits, IQ)) IAUD[IU] = 1;
                             }
                             if (IAUD[1] == 1) MINIS[1, NOP, IQ, IC]++;
                             if (IAUD[2] == 1) MINIS[2, NOP, IQ, IC]++;
