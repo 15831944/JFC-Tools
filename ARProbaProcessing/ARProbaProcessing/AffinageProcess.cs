@@ -46,6 +46,9 @@ namespace ARProbaProcessing
             int SIGN_LINE_LEN_FULL = 694;
             #endregion entrées ecrsegpa
 
+            #region entrees Calcregr
+            int NB_STA_HAB_NOTO = NbStation;
+            #endregion entrees Calcregr
 
             segpanel();
 
@@ -56,14 +59,15 @@ namespace ARProbaProcessing
             List<Fushab09Indiv> fushab09Indivs = Fushab09(NbStation, SIGN_LINE_LEN_BEFORE_HAB, NB_STA_ALL_HAB, TABRH);
             int NBINDIV = fushab09Indivs.Count;
 
-            int[,,] habitudeQHIndiv = chab1qhp(NbStation, fushab09Indivs);
+            int[,,] NINI_IND_QD_W = chab1qhp(NbStation, fushab09Indivs); // Habitude
 
-            int[,] ninities = crenonin(nbJour, NbStation, fushab09Indivs, JN);
+            int[,] NINI_IND_STA = crenonin(nbJour, NbStation, fushab09Indivs, JN);
 
             ecrsegpa(pathSig, COL_PIAB, COL_CSCI, COL_SEX, COL_AGE, COL_RUDA, NbStation, NBINDIV, SIGN_LINE_LEN_FULL, 
                      out int[,] POIDSEGM, out int IPOP);
 
-            CALCREGR();
+            int[,,,] cellules = calcregr(NBINDIV, NB_STA_HAB_NOTO, NINI_IND_STA, POIDSEGM, JN);
+
             calcnivo();
             caud1qhp();
 
@@ -564,13 +568,40 @@ namespace ARProbaProcessing
 
                     }
 
+                    // id  idx sta
+                    // 16  101    Les Indés Radios 1
+                    // 47  201    NRJ Global Proximité Premium 20
+                    // 50  303    Nova and Friends 21
+                    // 53  305    Lagardère Publicité News IDF 22
+                    // 55  306    Lip !24
+                    // 56  307    Paris – IDF + 25
+                    // 60  310    Les Indés Capitale 27
+                    // 61  311    TF1 Pub Radios 28
+
+                    // Les Indés Radios
+                    if (NOP == 1 && (indiv.APRES[1] - 48) == 1) sortie = true;
+                    // NRJ Global Proximité Premium
+                    if (NOP == 20 && (indiv.APRES[19] - 48) == 1) sortie = true;
+                    // Nova and Friends
+                    if (NOP == 21 && (indiv.APRES[28] - 48) == 1) sortie = true;
+                    // Lagardère Publicité News IDF
+                    if (NOP == 22 && (indiv.APRES[30] - 48) == 1) sortie = true;
+                    // Lip !
+                    if (NOP == 24 && (indiv.APRES[31] - 48) == 1) sortie = true;
+                    // Paris – IDF +
+                    if (NOP == 25 && (indiv.APRES[32] - 48) == 1) sortie = true;
+                    // Les Indés Capitale
+                    if (NOP == 27 && (indiv.APRES[35] - 48) == 1) sortie = true;
+                    // TF1 Pub Radios
+                    if (NOP == 28 && (indiv.APRES[36] - 48) == 1) sortie = true;
+
                     if (!sortie)
                     {
                         for (int I = 1; I <= NBJOUR; I++)
                         {
                             for (int IQ = 1; IQ <= 96; IQ++)
                             {
-                                if (L1BITFCT(JN[I][IG].VSor[1, NOP], IQ)) // A VOIR... IF(L1BIT(KHI3(IPO,I),IQ) == 1) GO TO 201
+                                if (L1BITFCT(JN[I][IG].VSor[1, NOP], IQ)) // A VOIR... if (L1BIT(KHI3(IPO,I),IQ) == 1) GO TO 201
                                 {
                                     sortie = true;
                                     break;
@@ -743,9 +774,63 @@ namespace ARProbaProcessing
             }
         }
 
-        private void CALCREGR()
+        private int[,,,] calcregr(int NBIND, int NBSTA, int[,] NINI, int[,] POIDSEGM, VsorPoid[][] JN)
         {
+            // PANEL RADIO 08 MEDIAMETRIE(nouveau format)
+            // CONTROLE DES MINIMA D'ECOUTES PAR CELLULES DE BASE          
+            // Le nombre de station correspond au nombre de stations(#NB_STA_HAB_NOTO_TOTAL#) - #NB_STA_TOTAL_ONLY# pour Total Radio (et Total TV)
 
+            int NBJOUR = 23;
+            int NBCEL = 23;
+            int[,] KHI2 = new int[NBIND + 1, 6 + 1];
+            int[] IAUD = new int[3 + 1];
+            int[,,,] MINIS = new int[3 + 1, NBSTA + 1, 96 + 1, NBCEL + 1];
+
+            // BOUCLE INDIVIDUS
+            for (int IG = 0; IG <= NBIND; IG++)
+            {
+                int IC = POIDSEGM[IG, 2];
+
+                // BOUCLE STATIONS
+                for (int NOP = 1; NOP <= NBSTA; NOP++)
+                {
+                    if (NINI[IG, NOP] == 0)
+                    {
+                        int IP = NOP;
+                        int IPO = 6 * (IP - 1) + 1;
+                        //  BOUCLE TRANCHE HORAIRE
+                        for (int IQ = 1; IQ <= 96; IQ++)
+                        {
+                            IAUD[1] = 0;
+                            IAUD[2] = 0;
+                            IAUD[3] = 0;
+                            for (int I = 1; I <= NBJOUR; I++)
+                            {
+                                int IL = I;
+                                int IU = 1;
+                                if (I == 1 || I == 8 || I == 15 || I == 22) IU = 2;
+                                if (I == 2 || I == 9 || I == 16 || I == 23) IU = 3;
+                                if (L1BITFCT(JN[I][IG].VSor[1, NOP], IQ)) IAUD[IU] = 1;
+                            }
+                            if (IAUD[1] == 1) MINIS[1, NOP, IQ, IC]++;
+                            if (IAUD[2] == 1) MINIS[2, NOP, IQ, IC]++;
+                            if (IAUD[3] == 1) MINIS[3, NOP, IQ, IC]++;
+                        }
+                    }
+                }
+            }
+
+            Console.WriteLine("7h15 :");
+            for (int J = 1; J <= NBCEL; J++)
+                Console.WriteLine(MINIS[2, 2, 30, J]);
+            Console.WriteLine("7h30 :");
+            for (int J = 1; J <= NBCEL; J++)
+                Console.WriteLine(MINIS[2, 2, 31, J]);
+            Console.WriteLine("7h45 :");
+            for (int J = 1; J <= NBCEL; J++)
+                Console.WriteLine(MINIS[2, 2, 32, J]);
+
+            return MINIS;
         }
 
         private void calcnivo()
