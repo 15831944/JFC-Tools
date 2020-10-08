@@ -19,6 +19,7 @@ namespace ARProbaProcessing
             List<int> lstPoids;
             List<int> lstAges;
             List<int> lstFiltreIDF;
+            int nbJour = 23;
 
             lecpanel(0, "", 0, 0, 0, 0, 0, 0, 0, out lstPoids, out lstAges, out lstFiltreIDF);
 
@@ -41,11 +42,11 @@ namespace ARProbaProcessing
 
             VsorPoid[][][] JNByWeek = regr5jp2(JN);
 
-            List<Fushab09Indiv> Fushab09Indivs = Fushab09(NbStation, SIGN_LINE_LEN_BEFORE_HAB, NB_STA_ALL_HAB, TABRH);
+            List<Fushab09Indiv> fushab09Indivs = Fushab09(NbStation, SIGN_LINE_LEN_BEFORE_HAB, NB_STA_ALL_HAB, TABRH);
 
-            int[,,]  habitudeQHIndiv = chab1qhp(NbStation, Fushab09Indivs);
+            int[,,]  habitudeQHIndiv = chab1qhp(NbStation, fushab09Indivs);
 
-            crenonin();
+            int[,] ninities = crenonin(nbJour, NbStation, fushab09Indivs, JN);
 
             ecrsegpa();
             CALCREGR();
@@ -498,9 +499,85 @@ namespace ARProbaProcessing
             return NINI;
         }
 
-        private void crenonin()
+        private int[,] crenonin(int NBJOUR, int NBSTA, List<Fushab09Indiv> fushab09Indivs, VsorPoid[][] JN)
         {
+            // PANEL RADIO 08 MEDIAMETRIE(nouveau format)
+            // CREATION DU FICHIER DES NON INITIALISES AUX STATIONS
 
+            // Le nombre de station correspond au nombre de stations(#NB_STA_HAB_NOTO_TOTAL#) - #NB_STA_TOTAL_ONLY# pour Total Radio (et Total TV)
+            //PARAMETER(NBSTA =#NB_STA_HAB_NOTO#)
+            //PARAMETER(NBJOUR = 23)
+            //PARAMETER(NBIND =#NB_INDIV#)
+            //PARAMETER(LENENR =#JFC_FILE_LEN_ENR#)
+
+            int COMPT;
+            int NBIND = fushab09Indivs.Count;
+
+            // Attention AVANT(#SIGN_LINE_LEN_BEFORE_HAB#) et le buffer de lecture pour se caler au début des données de HAB
+            // Attention APRES(#SIGN_LINE_LEN_AFTER_HAB#) et le buffer de lecture pour se caler à la fin de la ligne des données
+            int[,] KHI2 = new int[NBIND + 1, NBSTA + 1];
+
+            // INITIALISATIONS
+            int IG = 0;
+
+            // BOUCLE INDIVIDUS
+            foreach (Fushab09Indiv indiv in fushab09Indivs)
+            {
+                IG = IG + 1;
+                // BOUCLE STATIONS
+                for (int NOP = 1; NOP <= NBSTA; NOP++)
+                {
+                    int IP = NOP;
+                    int IPO = 6 * (IP - 1) + 1;
+                    int NOSH = NOP;
+                    KHI2[IG, NOP] = 0;
+
+                    // NON INITIALISE ?
+                    bool sortie = false;
+                    if ((NOP != 20) && (NOP != 21) && (NOP != 22) && (NOP != 23) && (NOP != 24) && (NOP != 25) && (NOP != 26) && (NOP != 27))
+                    {
+                        for (int ITR = 1; ITR <= 9; ITR++)
+                        {
+                            if (((indiv.KHAB[ITR, NOSH] - 48) != 5 && (indiv.KHAB[ITR, NOSH] - 48) != 0) ||
+                                ((indiv.KHSA[ITR, NOSH] - 48) != 5 && (indiv.KHSA[ITR, NOSH] - 48) != 0) ||
+                                ((indiv.KHDI[ITR, NOSH] - 48) != 5 && (indiv.KHDI[ITR, NOSH] - 48) != 0))
+                            {
+                                sortie = true;
+                                break;
+                            }
+                        }
+
+                    }
+
+                    if (!sortie)
+                    {
+                        for (int I = 1; I <= NBJOUR; I++)
+                        {
+                            for (int IQ = 1; IQ <= 96; IQ++)
+                            {
+                                if (L1BITFCT(JN[I][IG].VSor[1,NOP], IQ)) // A VOIR... IF(L1BIT(KHI3(IPO,I),IQ).EQ.1) GO TO 201
+                                {
+                                    sortie = true;
+                                    break;
+                                }
+                            }
+                        }
+                        KHI2[IG, NOP] = 1;
+                    }
+                }
+            }
+
+            for (int I = 1; I <= NBSTA; I++)
+            {
+                COMPT = 0;
+                for (int J = 1; J <= NBIND; J++)
+                {
+                    if (KHI2[J, I] == 1) COMPT = COMPT + 1;
+                }
+                Console.WriteLine($"Compt = {COMPT}");
+            }
+
+            return KHI2;
         }
 
         private void ecrsegpa()
