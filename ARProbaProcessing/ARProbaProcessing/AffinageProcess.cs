@@ -63,12 +63,13 @@ namespace ARProbaProcessing
 
             int[,] NINI_IND_STA = crenonin(nbJour, NbStation, fushab09Indivs, JN);
 
-            ecrsegpa(pathSig, COL_PIAB, COL_CSCI, COL_SEX, COL_AGE, COL_RUDA, NbStation, NBINDIV, SIGN_LINE_LEN_FULL, 
+            ecrsegpa(pathSig, COL_PIAB, COL_CSCI, COL_SEX, COL_AGE, COL_RUDA, NbStation, NBINDIV, SIGN_LINE_LEN_FULL,
                      out int[,] POIDSEGM, out int IPOP);
 
-            int[,,,] cellules = calcregr(NBINDIV, NB_STA_HAB_NOTO, NINI_IND_STA, POIDSEGM, JN);
+            int[,,,] cellules = calcregr(NBINDIV, NB_STA_HAB_NOTO, NINI_IND_STA, POIDSEGM, JN); // int[3 + 1, NBSTA + 1, 96 + 1, NBCEL + 1];
 
-            calcnivo();
+            int[,,,] nivo = calcnivo(NBINDIV, NbStation, cellules);
+
             caud1qhp();
 
             caudtotp();
@@ -107,7 +108,6 @@ namespace ARProbaProcessing
             int[] KHI2 = new int[SIGN_LINE_LEN_FULL + 1];
 
             //                  INITIALISATIONS
-
 
             int IG = 0;
             int I15 = 0;
@@ -602,7 +602,7 @@ namespace ARProbaProcessing
                                 for (int b = 1; b <= 6; b++)
                                     bits[b] = JN[I][IG].VSor[b, NOP];
 
-                                if (L1BITFCT(bits, IQ)) 
+                                if (L1BITFCT(bits, IQ))
                                 {
                                     sortie = true;
                                     break;
@@ -839,9 +839,137 @@ namespace ARProbaProcessing
             return MINIS;
         }
 
-        private void calcnivo()
+        private int[,,,] calcnivo(int NBIND, int NBSTA, int[,,,] MINIS)
         {
+            // C PANEL RADIO 08 MEDIAMETRIE(nouveau format)
+            // REGROUPEMENTS DES CELLULES DE BASE
+            int NBCEL = 16;
+            int NIVREG = 9;
 
+            // Le nombre de station correspond au nombre de stations(30) -1 pour Total Radio(et Total TV)
+            int[,,,] REGRS = new int[3 + 1, NBSTA + 1, 96 + 1, NBCEL + 1];
+            int[] TREG = new int[NBCEL];
+            //       DATA NIVO/ 1,1,2,3,3,4,4,5,6,6,7,8,9,9,10,10,
+            //                 -1,1,1,2,2,3,3,3,4,4,4,5,6,6,6,6,
+            //                 -1,1,1,2,2,2,2,2,3,3,3,3,4,4,4,4,
+            //                 -1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1 /
+
+            int[,] NIVO = new int[,]  { { 0, 0,0,0,0 },
+                                        { 0, 1,-1,-1,-1 },
+                                        { 0, 1,1,1,1},
+                                        { 0, 2,1,1,1},
+                                        { 0, 3,2,2,1},
+                                        { 0, 3,2,2,1},
+                                        { 0, 4,3,2,1},
+                                        { 0, 4,3,2,1},
+                                        { 0, 5,3,2,1},
+                                        { 0, 6,4,3,1},
+                                        { 0, 6,4,3,1},
+                                        { 0, 7,4,3,1},
+                                        { 0, 8,5,3,1},
+                                        { 0, 9,6,4,1},
+                                        { 0, 9,6,4,1},
+                                        { 0, 10,6,4,1},
+                                        { 0, 10,6,4,1}};
+
+            // BOUCLE STATIONS
+            for (int IP = 1; IP <= NBSTA; IP++)
+            {
+                // BOUCLE UNIVERS
+                for (int IU = 1; IU <= 3; IU++)
+                {
+                    // BOUCLE TRANCHE HORAIRE
+                    for (int IQ = 1; IQ <= 96; IQ++)
+                    {
+                        int N = 0;
+                        for (int IC = 1; IC <= NBCEL; IC++)
+                        {
+                            TREG[IC] = 1;
+                            if (MINIS[IU, IP, IQ, IC] > 0) N = 1;
+                            if (MINIS[IU, IP, IQ, IC] >= NIVREG) TREG[IC] = 0;
+                        }
+                        if (N == 0)
+                        {
+                            for (int IC = 1; IC <= NBCEL; IC++)
+                            {
+                                TREG[IC] = 5;
+                            }
+                        }
+                        else
+                        {
+                            // REGROUPEMENT NIVEAU N1 >> NIVEAU N2
+                            bool sortie = false;
+                            for (int IN = 1; IN <= 3; IN++)
+                            {
+                                for (int IC = 1; IC <= NBCEL; IC++)
+                                {
+                                    if (TREG[IC] == IN)
+                                    {
+                                        for (int I = 1; I <= NBCEL; I++)
+                                        {
+
+                                            if (NIVO[I, IN] == NIVO[IC, IN]) TREG[I] = TREG[IC];
+                                        }
+                                    }
+                                }
+                                N = 0;
+                                for (int IC = 1; IC <= NBCEL; IC++)
+                                {
+                                    if (TREG[IC] == IN)
+                                    {
+                                        int IM = 0;
+
+                                        for (int I = 1; I <= NBCEL; I++)
+                                        {
+                                            if (NIVO[I, IN] == NIVO[IC, IN]) IM = IM + MINIS[IU, IP, IQ, I];
+                                        }
+
+                                        if (IM < NIVREG)
+                                        {
+                                            N = 1;
+                                            for (int I = 1; I <= NBCEL; I++)
+                                            {
+                                                if (NIVO[I, IN] == NIVO[IC, IN]) TREG[I] = IN + 1;
+                                            }
+                                        }
+                                    }
+                                }
+
+                                if (N == 0)
+                                {
+                                    sortie = true;
+                                    break;
+                                }
+                            }
+
+                            if (!sortie)
+                            {
+                                for (int IC = 1; IC <= NBCEL; IC++)
+                                {
+                                    if (TREG[IC] == 4)
+                                    {
+                                        for (int I = 1; I <= NBCEL; I++)
+                                        {
+                                            TREG[I] = 4;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        for (int IC = 1; IC <= NBCEL; IC++)
+                        {
+                            REGRS[IU, IP, IQ, IC] = TREG[IC];
+                        }
+                    }
+                }
+            }
+
+            for (int I = 1; I <= NBCEL; I++)
+                Console.WriteLine(REGRS[2, 2, 11, I]);
+            for (int I = 1; I <= NBCEL; I++)
+                Console.WriteLine(MINIS[2, 2, 11, I]);
+
+            return REGRS;
         }
 
         private void caud1qhp()
@@ -1171,11 +1299,11 @@ namespace ARProbaProcessing
         {
 
         }
-        
+
         private bool L1BITFCT(int[] ZLEC, int ind)
         {
             int sizeBit = (sizeof(int) * 8);
-            int index = 1 + (ind-1) / sizeBit;
+            int index = 1 + (ind - 1) / sizeBit;
             int pos = ind % sizeBit;
             return BTEST(ZLEC[index], pos);
         }
