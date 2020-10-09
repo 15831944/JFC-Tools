@@ -72,7 +72,7 @@ namespace ARProbaProcessing
 
             int[,,,] audiences = caud1qhp(NBINDIV, NB_STA_HAB_NOTO, JN, POIDSEGM); // audiences[Station, INdiv, Qh, 1..3]
 
-            caudtotp();
+            double[] noteIndiv = caudtotp(NBINDIV, NB_STA_HAB_NOTO, JN, POIDSEGM, fushab09Indivs);
 
             sav1qhpa();
             sav1qhps();
@@ -350,10 +350,10 @@ namespace ARProbaProcessing
             // C Le nombre de station correspond au nombre de stations(#NB_STA_HAB_NOTO_TOTAL#) - #NB_STA_TOTAL_ONLY# pour Total Radio (et Total TV)
             // PARAMETER (NBSTA=#NB_STA_HAB_NOTO#)
 
-            // C Attention AVANT(#SIGN_LINE_LEN_BEFORE_HAB#) et le buffer de lecture pour se caler au début des données de HAB
+            // C Attention AVANT[#SIGN_LINE_LEN_BEFORE_HAB#) et le buffer de lecture pour se caler au début des données de HAB
             // C Attention APRES(#SIGN_LINE_LEN_AFTER_HAB#) et le buffer de lecture pour se caler à la fin de la ligne des données
 
-            // INTEGER * 1 AVANT(#SIGN_LINE_LEN_BEFORE_HAB#),KHAB(9,#NB_STA_ALL_HAB#),KHSA(9,#NB_STA_ALL_HAB#),KHDI(9,#NB_STA_ALL_HAB#),APRES(#SIGN_LINE_LEN_AFTER_HAB#),CHARIOT(2)
+            // INTEGER * 1 AVANT[#SIGN_LINE_LEN_BEFORE_HAB#),KHAB(9,#NB_STA_ALL_HAB#),KHSA(9,#NB_STA_ALL_HAB#),KHDI(9,#NB_STA_ALL_HAB#),APRES(#SIGN_LINE_LEN_AFTER_HAB#),CHARIOT(2)
             // INTEGER * 1 KHA2(9, NBSTA),KHS2(9, NBSTA),KHD2(9, NBSTA)
             int[,] KHA2 = new int[9 + 1, NBSTA + 1];
             int[,] KHS2 = new int[9 + 1, NBSTA + 1];
@@ -529,7 +529,7 @@ namespace ARProbaProcessing
             int COMPT;
             int NBIND = fushab09Indivs.Count;
 
-            // Attention AVANT(#SIGN_LINE_LEN_BEFORE_HAB#) et le buffer de lecture pour se caler au début des données de HAB
+            // Attention AVANT[#SIGN_LINE_LEN_BEFORE_HAB#) et le buffer de lecture pour se caler au début des données de HAB
             // Attention APRES(#SIGN_LINE_LEN_AFTER_HAB#) et le buffer de lecture pour se caler à la fin de la ligne des données
             int[,] KHI2 = new int[NBIND + 1, NBSTA + 1];
 
@@ -1002,9 +1002,146 @@ namespace ARProbaProcessing
             return NIN2;
         }
 
-        private void caudtotp()
+        private double[] caudtotp(int NBIND, int NBSTA, VsorPoid[][] JN, int[,] POIDS, List<Fushab09Indiv> fushab09Indivs)
         {
+            // PANEL RADIO 08 MEDIAMETRIE(nouveau format)
+            // CALCUL DES AUDIENCES TOTALES PAR INDIVIDUS / STATION
+            // POUR DISTANCES ENTRE INDIVIDUS
+            // Le nombre de station correspond au nombre de stations(30) -1 pour Total Radio(et Total TV)
 
+            int NBJOUR = 23;
+
+            // Dans les fichier .jfc, chaque enregistrement(individu) est de 180 short = 6 short(96 qh) * 30 stations
+
+            double[] COUV = new double[NBIND + 1];
+            double[] NOTE = new double[NBIND + 1];
+            //int KHI3(LENENR, NBJOUR),POIDS(NBIND),AGE,INSEE,CELLULE,ETAPE,
+
+        // Attention fushab09Indiv.AVANT[34) et le buffer de lecture pour se caler au début des données de HAB
+        // Attention APRES(64) et le buffer de lecture pour se caler à la fin de la ligne des données
+            int[,] NINI = new int[NBIND + 1, 20 + 1];
+    
+
+            // BOUCLE INDIVIDUS
+            int IG = 0;
+            foreach (Fushab09Indiv fushab09Indiv in fushab09Indivs)
+            {
+                IG++;
+
+                for (int IJ = 1; IJ <= NBJOUR; IJ++)
+                {
+                    for (int IPO = 1; IPO <= NBSTA; IPO++)
+                    {
+                        for (int IQ = 1; IQ <= 96; IQ++)
+                        {
+                            int[] bits = new int[7];
+                            for (int b = 1; b <= 6; b++)
+                                bits[b] = JN[IJ][IG].VSor[b, IPO];
+                            if (L1BITFCT(bits, IQ))
+                            {
+                                COUV[IG] = COUV[IG] + JN[IJ][IG].Poid[IQ];
+                            }
+                        }
+                    }
+                }
+
+                //  **CRITERES**
+                // SEXE
+                NINI[IG, 1] = fushab09Indiv.AVANT[14] - 48;
+                // AGE
+                int AGE = 10 * (fushab09Indiv.AVANT[24] - 48) + (fushab09Indiv.AVANT[25] - 48);
+                NINI[IG, 2] = 1;
+                if (AGE > 2) NINI[IG, 2] = 2;
+                if (AGE > 4) NINI[IG, 2] = 3;
+                if (AGE > 7) NINI[IG, 2] = 4;
+                if (AGE > 10) NINI[IG, 2] = 5;
+                // AGE
+                NINI[IG, 3] = 1;
+                if (AGE > 7) NINI[IG, 3] = 2;
+                // AGE
+                NINI[IG, 4] = 1;
+                if (AGE > 1) NINI[IG, 4] = 2;
+                // Profession Individu
+                NINI[IG, 5] = fushab09Indiv.AVANT[18] - 48;
+                // Région UDA
+                NINI[IG, 6] = fushab09Indiv.AVANT[20] - 48;
+                // Région UDA
+                NINI[IG, 7] = 1;
+                if ((fushab09Indiv.AVANT[20] - 48) > 1) NINI[IG, 7] = 2;
+                if ((fushab09Indiv.AVANT[20] - 48) > 6) NINI[IG, 7] = 3;
+                // Habitat
+                NINI[IG, 8] = 1;
+                if ((fushab09Indiv.AVANT[17] - 48) > 1) NINI[IG, 8] = 2;
+                if ((fushab09Indiv.AVANT[17] - 48) > 2) NINI[IG, 8] = 3;
+                if ((fushab09Indiv.AVANT[17] - 48) > 4) NINI[IG, 8] = 4;
+                if ((fushab09Indiv.AVANT[17] - 48) > 6) NINI[IG, 8] = 5;
+                // Ménagère
+                NINI[IG, 9] = (fushab09Indiv.AVANT[15] - 48);
+                // Responsable des achats
+                NINI[IG, 10] = (fushab09Indiv.AVANT[16] - 48);
+                // Profession du chef de famille
+                NINI[IG, 11] = (fushab09Indiv.AVANT[19] - 48);
+                // Région NIELSEN
+                NINI[IG, 12] = (fushab09Indiv.AVANT[21] - 48);
+                // Région INSEE
+                int INSEE = 10 * (fushab09Indiv.AVANT[22] - 48) + (fushab09Indiv.AVANT[23] - 48);
+                NINI[IG, 13] = INSEE;
+                // Nb d'enfants de moins de 6 ans
+                NINI[IG, 14] = fushab09Indiv.AVANT[27] - 48;
+                // Nb d'enfants de 6 à 8 ans
+                NINI[IG, 15] = fushab09Indiv.AVANT[28] - 48;
+                // Nb d'enfant de 9 à 10 ans
+                NINI[IG, 16] = fushab09Indiv.AVANT[29] - 48;
+                // Nb d'enfant de 11 à 14 ans
+                NINI[IG, 17] = fushab09Indiv.AVANT[30] - 48;
+                // Nb de personnes vivant dans le foyer
+                NINI[IG, 18] = fushab09Indiv.AVANT[31] - 48;
+                // Etape de la vie
+                int ETAPE = 10 * (fushab09Indiv.APRES[11] - 48) + fushab09Indiv.APRES[12] - 48;
+                NINI[IG, 19] = ETAPE;
+                Console.WriteLine(ETAPE);
+                // Cellule
+                int CELLULE = 10 * (fushab09Indiv.AVANT[33] - 48) + (fushab09Indiv.AVANT[34] - 48);
+                NINI[IG, 20] = CELLULE;
+            }
+
+            // CALCUL DE LA NOTE INDIVIDUELLE
+            double MINOT = 100000;
+            double MANOT = 0;
+            for (int I = 1; I <= NBIND; I++)
+            {
+                double NUM = 0d;
+                double DEN = 0d;
+
+                for (int J = 1; J <= NBIND; J++)
+                {
+                    int DIF = 0;
+                    int NO = 25;
+                    for (int IC = 1; IC <= 20; IC++)
+                    {
+                        if (IC == 9) NO = 1;
+                        if (NINI[I, IC] != NINI[J, IC]) DIF = DIF + NO;
+                    }
+                    double D = -1d * ((DIF / 25) ^ 2);
+                    double A = POIDS[J,1] * Math.Exp(D);   // A VOIR POIDS[J,1] : à priori on ne lirait que la premire zone de poiids dans fichier origine => tableau 1 dimension
+
+                    DEN = DEN + A;
+                    NUM = NUM + A * (COUV[J] / 12d);
+                }
+
+                NOTE[I] = NUM / DEN;
+            }
+
+            for (int I = 1; I <= NBIND; I++)
+            {
+                if (NOTE[I] < MINOT) MINOT = NOTE[I];
+
+                if (NOTE[I] > MANOT) MANOT = NOTE[I];
+            }
+
+            Console.WriteLine($"MINOT {MINOT} MANOT {MANOT}");
+
+            return NOTE;
         }
 
         private void sav1qhpa()
