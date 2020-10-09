@@ -68,9 +68,9 @@ namespace ARProbaProcessing
 
             int[,,,] cellules = calcregr(NBINDIV, NB_STA_HAB_NOTO, NINI_IND_STA, POIDSEGM, JN); // int[3 + 1, NBSTA + 1, 96 + 1, NBCEL + 1];
 
-            int[,,,] nivo = calcnivo(NBINDIV, NbStation, cellules);
+            int[,,,] nivo = calcnivo(NBINDIV, NbStation, cellules); // [1..3, Station, Qh, Cellules de 1 à 16 ?]
 
-            caud1qhp();
+            int[,,,] audiences = caud1qhp(NBINDIV, NB_STA_HAB_NOTO, JN, POIDSEGM); // audiences[Station, INdiv, Qh, 1..3]
 
             caudtotp();
 
@@ -849,28 +849,11 @@ namespace ARProbaProcessing
             // Le nombre de station correspond au nombre de stations(30) -1 pour Total Radio(et Total TV)
             int[,,,] REGRS = new int[3 + 1, NBSTA + 1, 96 + 1, NBCEL + 1];
             int[] TREG = new int[NBCEL];
-            //       DATA NIVO/ 1,1,2,3,3,4,4,5,6,6,7,8,9,9,10,10,
-            //                 -1,1,1,2,2,3,3,3,4,4,4,5,6,6,6,6,
-            //                 -1,1,1,2,2,2,2,2,3,3,3,3,4,4,4,4,
-            //                 -1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1 /
-
-            int[,] NIVO = new int[,]  { { 0, 0,0,0,0 },
-                                        { 0, 1,-1,-1,-1 },
-                                        { 0, 1,1,1,1},
-                                        { 0, 2,1,1,1},
-                                        { 0, 3,2,2,1},
-                                        { 0, 3,2,2,1},
-                                        { 0, 4,3,2,1},
-                                        { 0, 4,3,2,1},
-                                        { 0, 5,3,2,1},
-                                        { 0, 6,4,3,1},
-                                        { 0, 6,4,3,1},
-                                        { 0, 7,4,3,1},
-                                        { 0, 8,5,3,1},
-                                        { 0, 9,6,4,1},
-                                        { 0, 9,6,4,1},
-                                        { 0, 10,6,4,1},
-                                        { 0, 10,6,4,1}};
+            int[,] NIVO = new int[,]  { {0, 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
+                                   {999999, 1,1,2,3,3,4,4,5,6,6,7,8,9,9,10,10 },
+                                   {999999,-1,1,1,2,2,3,3,3,4,4,4,5,6,6,6,6},
+                                   {999999,-1,1,1,2,2,2,2,2,3,3,3,3,4,4,4,4 },
+                                   {999999,-1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1 } };
 
             // BOUCLE STATIONS
             for (int IP = 1; IP <= NBSTA; IP++)
@@ -908,7 +891,7 @@ namespace ARProbaProcessing
                                         for (int I = 1; I <= NBCEL; I++)
                                         {
 
-                                            if (NIVO[I, IN] == NIVO[IC, IN]) TREG[I] = TREG[IC];
+                                            if (NIVO[IN, I] == NIVO[IN, IC]) TREG[I] = TREG[IC];
                                         }
                                     }
                                 }
@@ -921,7 +904,7 @@ namespace ARProbaProcessing
 
                                         for (int I = 1; I <= NBCEL; I++)
                                         {
-                                            if (NIVO[I, IN] == NIVO[IC, IN]) IM = IM + MINIS[IU, IP, IQ, I];
+                                            if (NIVO[IN, I] == NIVO[IN, IC]) IM = IM + MINIS[IU, IP, IQ, I];
                                         }
 
                                         if (IM < NIVREG)
@@ -929,7 +912,7 @@ namespace ARProbaProcessing
                                             N = 1;
                                             for (int I = 1; I <= NBCEL; I++)
                                             {
-                                                if (NIVO[I, IN] == NIVO[IC, IN]) TREG[I] = IN + 1;
+                                                if (NIVO[IN, I] == NIVO[IN, IC]) TREG[I] = IN + 1;
                                             }
                                         }
                                     }
@@ -972,9 +955,51 @@ namespace ARProbaProcessing
             return REGRS;
         }
 
-        private void caud1qhp()
+        // VsorPoid[][] JN [Jour 1..23][Individus 1..N] = {VOSR[,]?, Poid[]}
+        // retour [Station, INdiv, Qh, 1..3]
+        private int[,,,] caud1qhp(int NBIND, int NBSTA, VsorPoid[][] JN, int[,] POIDSEGM)
         {
+            // C PANEL RADIO 08 MEDIAMETRIE(nouveau format)
+            // CALCUL DES AUDIENCES PAR INDIVIDU/ QUARTS d'HEURE/STATIONS
+            // Le nombre de station correspond au nombre de stations(#NB_STA_HAB_NOTO_TOTAL#) - #NB_STA_TOTAL_ONLY# pour Total Radio (et Total TV)
 
+            int NBJOUR = 23;
+            int[,,,] NIN2 = new int[NBSTA + 1, NBIND + 1, 96 + 1, 3 + 1];
+            int[] NINI = new int[NBIND + 1];
+
+            // OPEN(15, FILE = '#OUTPUT#audqhind',
+            //-FORM = 'UNFORMATTED', RECORDTYPE = 'FIXED')
+
+            for (int STA = 1; STA <= NBSTA; STA++)
+            {
+                // BOUCLE INDIVIDUS
+                for (int IG = 0; IG <= NBIND; IG++)
+                {
+
+                    for (int IJ = 1; IJ <= NBJOUR; IJ++)
+                    {
+                        int IU = 1;
+                        if (IJ == 1 || IJ == 8 || IJ == 15 || IJ == 22) IU = 2;
+                        if (IJ == 2 || IJ == 9 || IJ == 16 || IJ == 23) IU = 3;
+
+                        for (int IQ = 1; IQ <= 96; IQ++)
+                        {
+
+                            int[] bits = new int[7];
+                            for (int b = 1; b <= 6; b++)
+                                bits[b] = JN[IJ][IG].VSor[b, STA];
+
+                            if (L1BITFCT(bits, IQ))
+                            {
+                                NIN2[STA, IG, IQ, IU] = NIN2[STA, IG, IQ, IU] + POIDSEGM[IQ, IJ];
+                            }
+
+                        }
+                    }
+                }
+            }
+
+            return NIN2;
         }
 
         private void caudtotp()
