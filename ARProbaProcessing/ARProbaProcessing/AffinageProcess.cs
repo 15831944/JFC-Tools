@@ -351,9 +351,9 @@ namespace ARProbaProcessing
             // PARAMETER (NBSTA=#NB_STA_HAB_NOTO#)
 
             // C Attention AVANT[#SIGN_LINE_LEN_BEFORE_HAB#) et le buffer de lecture pour se caler au début des données de HAB
-            // C Attention APRES(#SIGN_LINE_LEN_AFTER_HAB#) et le buffer de lecture pour se caler à la fin de la ligne des données
+            // C Attention APRES[#SIGN_LINE_LEN_AFTER_HAB#) et le buffer de lecture pour se caler à la fin de la ligne des données
 
-            // INTEGER * 1 AVANT[#SIGN_LINE_LEN_BEFORE_HAB#),KHAB(9,#NB_STA_ALL_HAB#),KHSA(9,#NB_STA_ALL_HAB#),KHDI(9,#NB_STA_ALL_HAB#),APRES(#SIGN_LINE_LEN_AFTER_HAB#),CHARIOT(2)
+            // INTEGER * 1 AVANT[#SIGN_LINE_LEN_BEFORE_HAB#),KHAB(9,#NB_STA_ALL_HAB#),KHSA(9,#NB_STA_ALL_HAB#),KHDI(9,#NB_STA_ALL_HAB#),APRES[#SIGN_LINE_LEN_AFTER_HAB#),CHARIOT(2)
             // INTEGER * 1 KHA2(9, NBSTA),KHS2(9, NBSTA),KHD2(9, NBSTA)
             int[,] KHA2 = new int[9 + 1, NBSTA + 1];
             int[,] KHS2 = new int[9 + 1, NBSTA + 1];
@@ -365,7 +365,7 @@ namespace ARProbaProcessing
             // int[] TABRH = new int[NBSTA + 1]; 
             // int[] TABRH /#HAB_STA_LIST_ID_NOTO_SET_TO_TOTAL_RADIO#/
 
-            // INTEGER*1 int KHAB(9,NB_STA_ALL_HAB),KHSA(9,#NB_STA_ALL_HAB#),KHDI(9,#NB_STA_ALL_HAB#),APRES(#SIGN_LINE_LEN_AFTER_HAB#), CHARIOT(2)
+            // INTEGER*1 int KHAB(9,NB_STA_ALL_HAB),KHSA(9,#NB_STA_ALL_HAB#),KHDI(9,#NB_STA_ALL_HAB#),APRES[#SIGN_LINE_LEN_AFTER_HAB#), CHARIOT(2)
             int[] AVANT = new int[SIGN_LINE_LEN_BEFORE_HAB + 1];
             int[,] KHAB = new int[9 + 1, NB_STA_ALL_HAB + 1];
             int[,] KHSA = new int[9 + 1, NB_STA_ALL_HAB + 1];
@@ -530,7 +530,7 @@ namespace ARProbaProcessing
             int NBIND = fushab09Indivs.Count;
 
             // Attention AVANT[#SIGN_LINE_LEN_BEFORE_HAB#) et le buffer de lecture pour se caler au début des données de HAB
-            // Attention APRES(#SIGN_LINE_LEN_AFTER_HAB#) et le buffer de lecture pour se caler à la fin de la ligne des données
+            // Attention APRES[#SIGN_LINE_LEN_AFTER_HAB#) et le buffer de lecture pour se caler à la fin de la ligne des données
             int[,] KHI2 = new int[NBIND + 1, NBSTA + 1];
 
             // INITIALISATIONS
@@ -1017,10 +1017,10 @@ namespace ARProbaProcessing
             double[] NOTE = new double[NBIND + 1];
             //int KHI3(LENENR, NBJOUR),POIDS(NBIND),AGE,INSEE,CELLULE,ETAPE,
 
-        // Attention fushab09Indiv.AVANT[34) et le buffer de lecture pour se caler au début des données de HAB
-        // Attention APRES(64) et le buffer de lecture pour se caler à la fin de la ligne des données
+            // Attention fushab09Indiv.AVANT[34) et le buffer de lecture pour se caler au début des données de HAB
+            // Attention APRES[64) et le buffer de lecture pour se caler à la fin de la ligne des données
             int[,] NINI = new int[NBIND + 1, 20 + 1];
-    
+
 
             // BOUCLE INDIVIDUS
             int IG = 0;
@@ -1123,7 +1123,7 @@ namespace ARProbaProcessing
                         if (NINI[I, IC] != NINI[J, IC]) DIF = DIF + NO;
                     }
                     double D = -1d * ((DIF / 25) ^ 2);
-                    double A = POIDS[J,1] * Math.Exp(D);   // A VOIR POIDS[J,1] : à priori on ne lirait que la premire zone de poiids dans fichier origine => tableau 1 dimension
+                    double A = POIDS[J, 1] * Math.Exp(D);   // A VOIR POIDS[J,1] : à priori on ne lirait que la premire zone de poiids dans fichier origine => tableau 1 dimension
 
                     DEN = DEN + A;
                     NUM = NUM + A * (COUV[J] / 12d);
@@ -1473,6 +1473,329 @@ namespace ARProbaProcessing
         private bool BTEST(int value, int pos)
         {
             return (value & (1 << pos)) != 0;
+        }
+
+
+
+        // SUBROUTINE MINIMISE
+        // optimisation de la courbe theorique de montee en audience
+        // suivant la beta binomiale
+        private void MINIMISE(double GRP, double[] ZC, double YR, double PR, double UR, double ZR, double TAU, double ZA, double UA, double NB)
+        {
+            double Z, Z1, Z2, DELTA0, DELTZ0, DELTZ1, DELTZ2, DELTA00, DELTATO;
+            double[] RES = new double[5] { 0, ZA, UA, 0d, 0d };
+            double DZ0, DT0, DZ, DU;
+            double V0 = 1d - ZA - UR;
+            if (V0 > 0.00005)
+            {
+                DELTA0 = 0d;
+                for (int I = 1; I <= NB; I++)
+                {
+                    DELTA0 = DELTA0 + 2 * I * I * ZC[I] * ZC[I];
+                }
+                DELTA00 = DELTA0;
+                DELTATO = DELTA0;
+                DELTZ0 = DELTA0;
+                DELTZ1 = DELTA0;
+                DELTZ2 = DELTA0;
+                DZ0 = DT0 = DZ = DU = 0.1;
+
+                Z = ZA + (1d - ZA) / 2;
+                if ((1d - Z) < DZ) DZ = 1d - Z - 0.00001;
+                Z1 = Z;
+                Z2 = ZR;
+                double U0 = UR;
+                //5 
+                bool sortie = false;
+                for (; ; )
+                {
+                    double ITZ = 0;
+                    if (Z >= ZR)
+                    {
+                        if (DZ > (Z1 - Z2)) DZ = Z1 - Z2;
+                        // VARIATION DES JAMAIS
+                        //10 
+                        for (; ; )
+                        {
+                            ITZ = ITZ + 1;
+
+                            MINIMU(ITZ, Z, GRP, ZC, ZA, UA, U0, NB, DELTA00, out double DELTZ);
+
+                            if (DELTZ <= DELTZ0)
+                            {
+                                // LA DISTANCE A DIMINUE
+                                DELTZ2 = DELTZ1;
+                                DELTZ1 = DELTZ0;
+                                DELTZ0 = DELTZ;
+                                if (Z > Z2)
+                                {
+                                    Z = Z - DZ;
+                                    continue; // GOTO 10
+                                }
+                                if (DZ <= 0.0001)
+                                {
+                                    sortie = true;
+                                    break;
+                                }
+
+                                Z2 = Z;
+                                Z = Z + DZ * 2;
+                                DZ = DZ / 10d;
+                                continue; // GOTO 10
+                            }
+                            else
+                            {
+                                // LA DISTANCE A AUGMENTE
+                                if (ITZ > 2)
+                                {
+                                    if (DZ <= 0.0001)
+                                    {
+                                        sortie = true;
+                                        break;
+                                    }
+                                    Z2 = Z;
+                                    Z = Z + 2 * DZ;
+                                    DZ = DZ / 10d;
+                                    DELTZ0 = DELTZ2;
+                                    break; // GOTO 5
+                                }
+                                if (DZ <= 0.0001)
+                                {
+                                    sortie = true;
+                                    break;
+                                }
+                                Z2 = Z;
+                                Z = Z1;
+                                DZ = DZ / 10d;
+                                DELTZ0 = DELTZ1;
+                                break; // GOTO 5
+                            }
+                        } // for (; ; )  du 10
+                    }// if (Z >= ZR)
+                    if (sortie) break; // GOTO 5 suite...
+                } // for (; ; )  du 5
+                ZR = RES[1];
+                UR = RES[2];
+                PR = RES[3];
+                TAU = RES[4];
+                return;
+            } // if (V0 > 0.00005)
+
+            ZR = ZA;
+            TAU = 0d;
+        }
+
+        // SUBROUTINE MINITAU
+        // CALCUL DE LA VALEUR OPTIMALE DE TAU
+        private void MINITAU(double ITZ, double ITU, double[] ZC, double[] X, double ZA, double NB, double U0, double Q, double Z, double U, double P, double V, out double DELTT, ref double DELTA00)
+        {
+            double[] Y = new double[15];
+            double[] RES = new double[5];
+            double T, DELTA0, T1, T2, DMOINS1 = 0, DMOINS2 = 0, DELTATO = 0, DT;
+
+            // INCREMENTS INITIAUX
+            DELTT = 0;
+            DELTA0 = DELTA00;
+            DT = 0.1d;
+            T1 = 0d;
+            T2 = 2d;
+
+            // VARIATION DE LA DISPERSION
+            int ITE = 0;
+            T = T1;
+            for (; ; )
+            {
+                ITE = ITE + 1;
+                // EVALUATION DE LA DISTANCE
+                for (int N = 2; N <= NB; N++)
+                {
+                    double A = (N - 1) * T;
+                    X[N] = X[N - 1] * (Q + A) / (1 + A);
+                }
+                for (int K = 1; K <= NB; K++)
+                {
+                    Y[K] = (1d - V * X[K] - Z);
+                }
+                double DELTA = 0d;
+                for (int K = 1; K <= NB; K++)
+                {
+                    DELTA = DELTA + K * Math.Pow(ZC[K] * 0.01 - Y[K], 2d);
+                }
+                DELTA = DELTA + 0.1 * Math.Pow(ZA - Z, 2) / ZA;
+
+                if (U0 > 0) DELTA = DELTA + 0.1 * Math.Pow(U0 - U, 2) / U0;
+
+                if (DELTA <= DELTA0)
+                {
+                    // LA DISTANCE A DIMINUE
+                    DMOINS2 = DMOINS1;
+                    DMOINS1 = DELTA0;
+                    DELTA0 = DELTA;
+
+                    if (DELTA < DELTATO)
+                    {
+                        DELTATO = DELTA;
+                        RES[4] = T;
+                        RES[3] = P;
+                        RES[2] = U;
+                        RES[1] = Z;
+                    }
+
+                    if (T < T2)
+                    {
+                        T = T + DT;
+                        continue;
+                    }
+
+                    if (DT != 0.1) break;
+                }
+                else
+                {
+                    // LA DISTANCE A AUGMENTE
+                    if (ITE > 2)
+                    {
+                        if (DT > 0.0001)
+                        {
+                            DELTA0 = DMOINS2;
+                            T1 = T - 2 * DT;
+                            T2 = T;
+                            DT = DT / 10d;
+                            ITE = 0;
+                            T = T1;
+                            continue;
+                        }
+
+                        if (DT > 0.0001)
+                        {
+                            T2 = T;
+                            DT = DT / 10d;
+                            ITE = 0;
+                            T = T1;
+                            continue;
+                        }
+                    }
+
+                    DELTT = DELTA0;
+                    break;
+                }
+
+                T2 = T2 * 2;
+                T1 = T1 * 2;
+
+                if (T2 < 16)
+                {
+                    ITE = 0;
+                    T = T1;
+                }
+            }
+            Console.WriteLine($" U= {U}  Z= {Z}  T= {T}  P= {P} ");
+        }
+  		
+        // SUBROUTINE MINIMU
+        // CALCUL DU U OPTIMAL
+        // EN FONCTION DE Z
+        private void MINIMU(double ITZ, double Z, double GRP, double[] ZC, double ZA, double UA, double U0, double NB, double DELTA00, out double DELTZ)
+        {
+            double[] X = new double[15 + 1];
+            double P, U, V, Q, U1, U2, DELTU, DELTU0, DELTU1, DELTU2;
+
+            DELTZ = 0;
+            DELTU0 = DELTA00;
+            DELTU1 = DELTU0;
+            DELTU2 = DELTU0;
+            DELTU = 0;
+
+            // INCREMENTS INITIAUX
+            double DU = 0.01;
+            U1 = 0d;
+            U = UA;
+            U2 = 1d - Z;
+            U = U1;
+            if (U0 == 0) U = 0d;
+
+            int ITU = 0;
+            for (; ; )
+            {
+                // VARIATION DES TOUJOURS       
+                V = 1d - Z - U;
+                if (V > 0d)
+                {
+                    P = (GRP - U) / V;
+                    ITU++; ;
+                    Q = 1d - P;
+                    X[1] = Q;
+
+                    MINITAU(ITZ, ITU, ZC, X, ZA, NB, U0, Q, Z, U, P, V,out DELTU, ref DELTA00);
+
+                    if (U0 == 0)
+                    {
+                        DELTZ = DELTU;
+                        return;
+                    }
+                    if (DELTU <= DELTU0)
+                    {
+                        // LA DISTANCE A DIMINUE
+                        DELTU2 = DELTU1;
+                        DELTU1 = DELTU0;
+                        DELTU0 = DELTU;
+                        if (U < U2 && U < (1d - Z))
+                        {
+                            U = U + DU;
+                            if (U >= (1d - Z))
+                            {
+                                DU = U - 1 - Z;
+                                U = 1d - Z - 0.00001;
+                            }
+                            continue;
+                        }
+                        if (DU <= 0.00001)
+                        {
+                            DELTZ = DELTU0;
+                            return;
+                        }
+                        U2 = U;
+                        if (U2 > (1d - Z)) U2 = 1d - Z;
+                        U1 = U - DU;
+                        if (U1 < 0) U1 = 0;
+                        U = U1;
+                        DU = DU / 10d;
+                        continue;
+                    }
+                    else
+                    {
+                        // LA DISTANCE A AUGMENTE
+                        if (DU > 0.00001)
+                        {
+                            DELTZ = DELTU0;
+                            return;
+                        }
+                        if (ITU >= 2) U1 = U - 2 * DU;
+                        if (ITU < 2)
+                        {
+                            U1 = U - DU;
+                            if (U >= (1d - Z)) DU = U - 1 - Z;
+                            if (U >= (1d - Z)) U = 1d - Z - 0.00001;
+                        }
+                        if (U1 < 0) U1 = 0;
+                        U2 = U;
+                        U = U1;
+                        DU = DU / 10d;
+
+                        if (ITU > 2) DELTU0 = DELTU2;
+                        if (ITU <= 2) DELTU0 = DELTU1;
+                        ITU = 0;
+                        continue;
+                    }
+                } // if (V > 0)
+                if (DU > 0.00001d)
+                {
+                    DU = DU / 10;
+                    U = U1;
+                    ITU = 0;
+                    continue;
+                }
+                break;
+            } // for (; ; )
         }
     }
 
