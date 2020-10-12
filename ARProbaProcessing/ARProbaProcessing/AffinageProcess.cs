@@ -80,7 +80,8 @@ namespace ARProbaProcessing
 
             double[] noteIndiv = caudtotp(NBINDIV, NB_STA_HAB_NOTO, JN, POIDSEGM, fushab09Indivs);
 
-            sav1qhpa(NBINDIV, NB_STA_HAB_NOTO, regrs, POIDSEGM, fushab09Indivs, JNByWeek, JN);
+            double [,,] ZUPTAUSE = sav1qhpa(NBINDIV, NB_STA_HAB_NOTO, regrs, POIDSEGM, fushab09Indivs, JNByWeek, JN); // [NBSTA + 1,4 + 1, 16 + 1];
+
             sav1qhps();
             sav1qhpd();
 
@@ -1150,7 +1151,7 @@ namespace ARProbaProcessing
             return NOTE;
         }
 
-        private void sav1qhpa(int NBIND, int NBSTA, int[,,,] regrs, int[,] KHI2, List<Fushab09Indiv> fushab09Indivs, VsorPoid[][][] JNByWeek, VsorPoid[][] JN)
+        private double[,,] sav1qhpa(int NBIND, int NBSTA, int[,,,] regrs, int[,] KHI2, List<Fushab09Indiv> fushab09Indivs, VsorPoid[][][] JNByWeek, VsorPoid[][] JN)
         {
             // PANEL RADIO 08 MEDIAMETRIE(nouveau format)
             // CALCUL DES PARAMETRES STATION 2 QUART d'HEURE 31
@@ -1163,7 +1164,7 @@ namespace ARProbaProcessing
 
             double[,] C = new double[15 + 1, 5 + 1];
             double[] NCOM = new double[15 + 1] { 999999d, 15d, 105d, 455d, 1365d, 3003d, 5005d, 6435d, 6435d, 5005d, 3003d, 1365d, 455d, 105d, 15d, 1d };
-            double[,] RESUL = new double[4 + 1, 16 + 1];
+            double[,,] RESUL = new double[NBSTA + 1,4 + 1, 16 + 1];
             double[] Z = new double[15 + 1];
             double[] YR = new double[15 + 1];
 
@@ -1275,6 +1276,7 @@ namespace ARProbaProcessing
 
                 // 120 
                 // BOUCLE 1 / 4h
+                bool noAudience = false;
                 for (int IQ = 1; IQ <= 96; IQ++)
                 {
                     sbSortie.Append($"IQ = {IQ}");
@@ -1284,7 +1286,11 @@ namespace ARProbaProcessing
                         TREG[I] = regrs[1, IP, IQ, I];
                     }
 
-                    if (TREG[1] == 5) break;
+                    if (TREG[1] == 5)
+                    {
+                        noAudience = true;
+                        break;
+                    }
 
                     // BOUCLE CELLULES
                     for (int N1 = 1; N1 <= 16; N1++)
@@ -1671,10 +1677,10 @@ namespace ARProbaProcessing
                                 GRP0 = GRP0 + Z[I];
                             }
                         } // if (((N1 == 1) || (NIV == 1) ) 
-                        RESUL[1, N1] = ZR;
-                        RESUL[2, N1] = UR;
-                        RESUL[3, N1] = PR;
-                        RESUL[4, N1] = TAU;
+                        RESUL[NOP, 1, N1] = ZR;
+                        RESUL[NOP, 2, N1] = UR;
+                        RESUL[NOP, 3, N1] = PR;
+                        RESUL[NOP, 4, N1] = TAU;
 
                         sbSortie.Append("N1 = " + N1.ToString());
                         sbSortie.Append("ZR = " + ZR.ToString());
@@ -1690,14 +1696,19 @@ namespace ARProbaProcessing
                 } // for (int IQ = 1; IQ <= 96; IQ++)
                   // 1001 
                   // 900  
-                sbSortie.Append(" ***PAS D AUDIENCE POUR CE 1 / 4h * **");
-                for (int N1 = 1; N1 <= 16; N1++)
+                if (noAudience)
                 {
-                    RESUL[1, N1] = 1d;
-                    RESUL[2, N1] = 0d;
-                    RESUL[3, N1] = 0d;
-                    RESUL[4, N1] = 0d;
+                    sbSortie.Append(" ***PAS D AUDIENCE POUR CE 1 / 4h * **");
+                    for (int N1 = 1; N1 <= 16; N1++)
+                    {
+                        RESUL[NOP,1, N1] = 1d;
+                        RESUL[NOP,2, N1] = 0d;
+                        RESUL[NOP,3, N1] = 0d;
+                        RESUL[NOP,4, N1] = 0d;
+                    }
                 }
+
+                
             } // for (int NOP = 1; NOP <= NBSTA; NOP++)
 
             Console.WriteLine($"TRAITEMENT 1/4h ----");
@@ -1706,7 +1717,7 @@ namespace ARProbaProcessing
             //    1 
             //FORMAT('CELLULE ',I2,' Z=',F9.7,' U=',F9.7,' P=',F9.7,' TAU=',F9.7) == ??? 
             //? Console.WriteLine($"CELLULE {I2} Z=', F9.7, ' U=', F9.7, ' P=', F9.7, ' TAU=', F9.7)
-
+            return RESUL;
         }
 
         private void sav1qhps()
