@@ -56,6 +56,17 @@ namespace ARProbaProcessing
             int NB_STA_HAB_NOTO = NbStation;
             #endregion entrees Calcregr
 
+            #region entrées cont75br
+            int popLV = 54439040;
+            int popS = 54438920;
+            int popD = 54439190;
+            string pathCouv = @"C:\AffinageART\France\Source\SFR04\OUTPUT\SORTIE9.TXT";
+            #endregion entrées cont75br
+
+            #region entrées cnzuptse
+            string pathCnzuptse = @"C:\AffinageART\France\Source\SFR04\OUTPUT\SORTIESE.COR";
+            #endregion entrées cnzuptse
+
             segpanel();
 
             VsorPoid[][] JN = ecrpan1j(pathF04, NbStation, nbStationTotal, ITS, year);   // [Jour 1..23][Individus 1..N] = {VOSR[,]?, Poid[]}
@@ -80,15 +91,18 @@ namespace ARProbaProcessing
 
             double[] noteIndiv = caudtotp(NBINDIV, NB_STA_HAB_NOTO, JN, POIDSEGM, fushab09Indivs);
 
-            double [,,] ZUPTAUSE = sav1qhpa(NBINDIV, NB_STA_HAB_NOTO, regrs, POIDSEGM, fushab09Indivs, JNByWeek, JN); // [NBSTA + 1,4 + 1, 16 + 1];
+            double[,,,] ZUPTAUSE = sav1qhpa(NBINDIV, NB_STA_HAB_NOTO, regrs, POIDSEGM, fushab09Indivs, JNByWeek, JN); // [NBSTA + 1, 96 + 1, 4 + 1, 16 + 1];
 
-            sav1qhps();
-            sav1qhpd();
+            double[,,,] ZUPTAUSA = sav1qhps(NBINDIV, NB_STA_HAB_NOTO, regrs, POIDSEGM, fushab09Indivs, JNByWeek, JN); // [NBSTA + 1, 96 + 1, 4 + 1, 16 + 1];
 
-            int[,,,] Couverture = cgrp75br(PathGRPWave, NbStation, NbGRPModulation, NbGRPStation, NotorieteStation);
-            cont75br();
+            double[,,,] ZUPTAUDI = sav1qhpd(NBINDIV, NB_STA_HAB_NOTO, regrs, POIDSEGM, fushab09Indivs, JNByWeek, JN); // [NBSTA + 1, 96 + 1, 4 + 1, 16 + 1];
 
-            cnzuptse();
+            double[,,,] Couverture = cgrp75br(PathGRPWave, NbStation, NbGRPModulation, NbGRPStation, NotorieteStation);
+
+            cont75br(NBINDIV, NB_STA_HAB_NOTO, popLV, popS, popD, Couverture, pathCouv);
+
+            double[,,,] ZUPTAUSECOR = cnzuptse(NBINDIV, NB_STA_HAB_NOTO, pathCnzuptse, Couverture, regrs, ZUPTAUSE);
+
             cnzuptsa();
             cnzuptdi();
 
@@ -1151,7 +1165,7 @@ namespace ARProbaProcessing
             return NOTE;
         }
 
-        private double[,,] sav1qhpa(int NBIND, int NBSTA, int[,,,] regrs, int[,] KHI2, List<Fushab09Indiv> fushab09Indivs, VsorPoid[][][] JNByWeek, VsorPoid[][] JN)
+        private double[,,,] sav1qhpa(int NBIND, int NBSTA, int[,,,] regrs, int[,] KHI2, List<Fushab09Indiv> fushab09Indivs, VsorPoid[][][] JNByWeek, VsorPoid[][] JN)
         {
             // PANEL RADIO 08 MEDIAMETRIE(nouveau format)
             // CALCUL DES PARAMETRES STATION 2 QUART d'HEURE 31
@@ -1164,7 +1178,7 @@ namespace ARProbaProcessing
 
             double[,] C = new double[15 + 1, 5 + 1];
             double[] NCOM = new double[15 + 1] { 999999d, 15d, 105d, 455d, 1365d, 3003d, 5005d, 6435d, 6435d, 5005d, 3003d, 1365d, 455d, 105d, 15d, 1d };
-            double[,,] RESUL = new double[NBSTA + 1,4 + 1, 16 + 1];
+            double[,,,] RESUL = new double[NBSTA + 1, 96 + 1, 4 + 1, 16 + 1];
             double[] Z = new double[15 + 1];
             double[] YR = new double[15 + 1];
 
@@ -1177,12 +1191,10 @@ namespace ARProbaProcessing
             int[,] SEGM = new int[16 + 1, 5 + 1];
             int[] NB = new int[5 + 1];
             int[] ITTL = new int[5 + 1];
-            int[] L1BIT;
             int[] ITOU = new int[5 + 1];
             int[] SEG2 = new int[16 + 1];
             int[] SEG3 = new int[10 + 1];
             int[] SEG4 = new int[6 + 1];
-            int NBIT;
             int[] COMB = new int[15 + 1];
             int[] IZAB = new int[5 + 1];
             int[] ITJR = new int[5 + 1];
@@ -1237,7 +1249,7 @@ namespace ARProbaProcessing
                         int IH = fushab09Indiv.KHAB[ITH[IQ], NOSH] - 48;
                         if (IH == 0) IH = 5;
                         int NJOU = 0;
-                        for (int IJ = 1; IJ <= 15; IJ++)
+                        for (int IJ = 1; IJ <= 4; IJ++)
                         {
                             PATRON[IQ, IJ, IG] = 0;
                         }
@@ -1271,7 +1283,7 @@ namespace ARProbaProcessing
                         if (NJOU == 0 && IH == 5) JATOU[IQ, 2, IG] = 1;
                         if (NJOU == 15) JATOU[IQ, 3, IG] = 1;
                         if (NJOU == 15 && IH == 1) JATOU[IQ, 4, IG] = 1;
-                    }
+                    } //  for (int IQ = 1; IQ <= 96; IQ++)
                 } // foreach (Fushab09Indiv fushab09Indiv in fushab09Indivs)
 
                 // 120 
@@ -1286,429 +1298,783 @@ namespace ARProbaProcessing
                         TREG[I] = regrs[1, IP, IQ, I];
                     }
 
-                    if (TREG[1] == 5)
+                    if (TREG[1] != 5)
                     {
-                        noAudience = true;
-                        break;
-                    }
 
-                    // BOUCLE CELLULES
-                    for (int N1 = 1; N1 <= 16; N1++)
-                    {
-                        double ZR = 0d;
-                        double UR = 0d;
-                        double PR = 0d;
-                        double TAU = 0d;
-
-                        int N2 = SEG1[N1];
-                        int N3 = SEG2[N2];
-                        int N4 = SEG3[N3];
-                        NB[1] = N1;
-                        NB[2] = N2;
-                        NB[3] = N3;
-                        NB[4] = N4;
-                        NB[5] = 1;
-                        int NIV = TREG[N1] + 1;
-                        if (((N1 == 1) || (NIV == 1))
-                            ||
-                           (!((NIV == 2 && SEG1[N1] == SEG1[N1 - 1]) ||
-                              (NIV == 3 && SEG2[SEG1[N1]] == SEG2[SEG1[N1 - 1]]) ||
-                              (NIV == 4 && SEG3[SEG2[SEG1[N1]]] == SEG3[SEG2[SEG1[N1 - 1]]]) ||
-                              (NIV == 5))))
+                        // BOUCLE CELLULES
+                        for (int N1 = 1; N1 <= 16; N1++)
                         {
-                            for (int I = 1; I <= 16; I++)
+                            double ZR = 0d;
+                            double UR = 0d;
+                            double PR = 0d;
+                            double TAU = 0d;
+
+                            int N2 = SEG1[N1];
+                            int N3 = SEG2[N2];
+                            int N4 = SEG3[N3];
+                            NB[1] = N1;
+                            NB[2] = N2;
+                            NB[3] = N3;
+                            NB[4] = N4;
+                            NB[5] = 1;
+                            int NIV = TREG[N1] + 1;
+                            if (((N1 == 1) || (NIV == 1))
+                                ||
+                               (!((NIV == 2 && SEG1[N1] == SEG1[N1 - 1]) ||
+                                  (NIV == 3 && SEG2[SEG1[N1]] == SEG2[SEG1[N1 - 1]]) ||
+                                  (NIV == 4 && SEG3[SEG2[SEG1[N1]]] == SEG3[SEG2[SEG1[N1 - 1]]]) ||
+                                  (NIV == 5))))
                             {
+                                for (int I = 1; I <= 16; I++)
+                                {
+                                    for (int J = 1; J <= 5; J++)
+                                    {
+                                        SEGM[I, J] = 0;
+                                        COMPT[I, J] = 0;
+                                        if (I <= 15) C[I, J] = 0d;
+                                    }
+                                }
+
                                 for (int J = 1; J <= 5; J++)
                                 {
-                                    SEGM[I, J] = 0;
-                                    COMPT[I, J] = 0;
-                                    if (I <= 15) C[I, J] = 0d;
+                                    IM[J] = 0;
+                                    IPPS[J] = 0;
+                                    ITOU[J] = 0;
+                                    ITPO[J] = 0;
+                                    ITTL[J] = 0;
+                                    ITTP[J] = 0;
+                                    IZAB[J] = 0;
+                                    IZAP[J] = 0;
+                                    ITJR[J] = 0;
+                                    ITJP[J] = 0;
                                 }
-                            }
 
-                            for (int J = 1; J <= 5; J++)
-                            {
-                                IM[J] = 0;
-                                IPPS[J] = 0;
-                                ITOU[J] = 0;
-                                ITPO[J] = 0;
-                                ITTL[J] = 0;
-                                ITTP[J] = 0;
-                                IZAB[J] = 0;
-                                IZAP[J] = 0;
-                                ITJR[J] = 0;
-                                ITJP[J] = 0;
-                            }
-
-                            // BOUCLE INDIVIDUS
-                            for (IG = 1; IG <= NBIND; IG++)
-                            {
-                                int IPERS = KHI2[IG, 1];
-                                KHI2[IG, 6] = 1;
-                                IPERS = IPERS * 10;
-                                if (KHI2[IG, NIV + 1] == NB[NIV]) IM[NIV] = IM[NIV] + 1;
-                                if (KHI2[IG, NIV + 1] == NB[NIV]) IPPS[NIV] = IPPS[NIV] + IPERS;
-                                int IAUD = 0;
-                                int NJOU = 0;
-                                for (int I = 1; I <= 15; I++)
+                                // BOUCLE INDIVIDUS
+                                for (IG = 1; IG <= NBIND; IG++)
                                 {
-                                    COMB[I] = PATRON[IQ, I, IG];
-                                    if (COMB[I] == 1)
+                                    int IPERS = KHI2[IG, 1];
+                                    KHI2[IG, 6] = 1;
+                                    IPERS = IPERS * 10;
+                                    if (KHI2[IG, NIV + 1] == NB[NIV]) IM[NIV] = IM[NIV] + 1;
+                                    if (KHI2[IG, NIV + 1] == NB[NIV]) IPPS[NIV] = IPPS[NIV] + IPERS;
+                                    int IAUD = 0;
+                                    int NJOU = 0;
+                                    for (int I = 1; I <= 15; I++)
                                     {
-                                        IAUD = 1;
-                                        NJOU = NJOU + 1;
+                                        COMB[I] = PATRON[IQ, I, IG];
+                                        if (COMB[I] == 1)
+                                        {
+                                            IAUD = 1;
+                                            NJOU = NJOU + 1;
+                                        }
                                     }
-                                }
-                                if (IAUD == 0)
-                                {
-                                    if (KHI2[IG, NIV + 1] == NB[NIV])
-                                    {
-                                        COMPT[1, NIV] = COMPT[1, NIV] + IPERS;
-                                        SEGM[1, NIV] = SEGM[1, NIV] + 1;
-                                        if (JATOU[IQ, 2, IG] == 1) IZAB[NIV] = IZAB[NIV] + 1;
-                                        if (JATOU[IQ, 2, IG] == 1) IZAP[NIV] = IZAP[NIV] + IPERS;
-                                    }
-                                }
-                                if (IAUD == 1)
-                                {
-                                    int IJ = NJOU + 1;
-                                    if (KHI2[IG, NIV + 1] == NB[NIV])
-                                    {
-                                        COMPT[IJ, NIV] = COMPT[IJ, NIV] + IPERS;
-                                        SEGM[IJ, NIV] = SEGM[IJ, NIV] + 1;
-
-                                        ITOU[NIV] = ITOU[NIV] + 1;
-                                        ITPO[NIV] = ITPO[NIV] + IPERS;
-                                    }
-                                    if (NJOU == 15)
+                                    if (IAUD == 0)
                                     {
                                         if (KHI2[IG, NIV + 1] == NB[NIV])
                                         {
-                                            ITTL[NIV] = ITTL[NIV] + 1;
-                                            ITTP[NIV] = ITTP[NIV] + IPERS;
-                                            if (JATOU[IQ, 4, IG] == 1)
-                                            {
-                                                ITJR[NIV] = ITJR[NIV] + 1;
-                                                ITJP[NIV] = ITJP[NIV] + IPERS;
-                                            }
+                                            COMPT[1, NIV] = COMPT[1, NIV] + IPERS;
+                                            SEGM[1, NIV] = SEGM[1, NIV] + 1;
+                                            if (JATOU[IQ, 2, IG] == 1) IZAB[NIV] = IZAB[NIV] + 1;
+                                            if (JATOU[IQ, 2, IG] == 1) IZAP[NIV] = IZAP[NIV] + IPERS;
                                         }
                                     }
-
-                                    if (KHI2[IG, NIV + 1] == NB[NIV])
+                                    if (IAUD == 1)
                                     {
-                                        #region CALCUL DES MOYENNES
+                                        int IJ = NJOU + 1;
+                                        if (KHI2[IG, NIV + 1] == NB[NIV])
+                                        {
+                                            COMPT[IJ, NIV] = COMPT[IJ, NIV] + IPERS;
+                                            SEGM[IJ, NIV] = SEGM[IJ, NIV] + 1;
 
-                                        // PREMIER JOUR
-                                        double TOT = 0d;
-                                        for (int I01 = 1; I01 <= 15; I01++)
-                                            if (COMB[I01] == 1) TOT = TOT + IPERS;
-                                        C[1, NIV] = C[1, NIV] + TOT;
+                                            ITOU[NIV] = ITOU[NIV] + 1;
+                                            ITPO[NIV] = ITPO[NIV] + IPERS;
+                                        }
+                                        if (NJOU == 15)
+                                        {
+                                            if (KHI2[IG, NIV + 1] == NB[NIV])
+                                            {
+                                                ITTL[NIV] = ITTL[NIV] + 1;
+                                                ITTP[NIV] = ITTP[NIV] + IPERS;
+                                                if (JATOU[IQ, 4, IG] == 1)
+                                                {
+                                                    ITJR[NIV] = ITJR[NIV] + 1;
+                                                    ITJP[NIV] = ITJP[NIV] + IPERS;
+                                                }
+                                            }
+                                        }
 
-                                        // 2eme JOUR
-                                        TOT = 0d;
-                                        for (int I01 = 1; I01 <= 14; I01++)
-                                            for (int I02 = I01 + 1; I02 <= 15; I02++)
-                                                if (COMB[I01] == 1 || COMB[I02] == 1) TOT = TOT + IPERS;
-                                        C[2, NIV] = C[2, NIV] + TOT;
+                                        if (KHI2[IG, NIV + 1] == NB[NIV])
+                                        {
+                                            #region CALCUL DES MOYENNES
 
-                                        // 3eme JOUR
-                                        TOT = 0d;
-                                        for (int I01 = 1; I01 <= 13; I01++)
-                                            for (int I02 = I01 + 1; I02 <= 14; I02++)
-                                                for (int I03 = I02 + 1; I03 <= 15; I03++)
-                                                    if (COMB[I01] == 1 || COMB[I02] == 1 || COMB[I03] == 1) TOT = TOT + IPERS;
+                                            // PREMIER JOUR
+                                            double TOT = 0d;
+                                            for (int I01 = 1; I01 <= 15; I01++)
+                                                if (COMB[I01] == 1) TOT += IPERS;
+                                            C[1, NIV] += TOT;
 
-                                        C[3, NIV] = C[3, NIV] + TOT;
+                                            // 2eme JOUR
+                                            TOT = 0d;
+                                            for (int I01 = 1; I01 <= 14; I01++)
+                                                for (int I02 = I01 + 1; I02 <= 15; I02++)
+                                                    if (COMB[I01] == 1 || COMB[I02] == 1) TOT += IPERS;
+                                            C[2, NIV] += TOT;
 
-                                        // 4eme JOUR
-                                        TOT = 0d;
-                                        for (int I01 = 1; I01 <= 12; I01++)
-                                            for (int I02 = I01 + 1; I02 <= 13; I02++)
-                                                for (int I03 = I02 + 1; I03 <= 14; I03++)
-                                                    for (int I04 = I03 + 1; I04 <= 15; I04++)
-                                                        if (COMB[I01] == 1 || COMB[I02] == 1 || COMB[I03] == 1 ||
-                                                            COMB[I04] == 1) TOT = TOT + IPERS;
-                                        C[4, NIV] = C[4, NIV] + TOT;
+                                            // 3eme JOUR
+                                            TOT = 0d;
+                                            for (int I01 = 1; I01 <= 13; I01++)
+                                                for (int I02 = I01 + 1; I02 <= 14; I02++)
+                                                    for (int I03 = I02 + 1; I03 <= 15; I03++)
+                                                        if (COMB[I01] == 1 || COMB[I02] == 1 || COMB[I03] == 1) TOT += IPERS;
 
-                                        // 5eme JOUR
-                                        TOT = 0d;
-                                        for (int I01 = 1; I01 <= 11; I01++)
-                                            for (int I02 = I01 + 1; I02 <= 12; I02++)
-                                                for (int I03 = I02 + 1; I03 <= 13; I03++)
-                                                    for (int I04 = I03 + 1; I04 <= 14; I04++)
-                                                        for (int I05 = I04 + 1; I05 <= 15; I05++)
+                                            C[3, NIV] += TOT;
+
+                                            // 4eme JOUR
+                                            TOT = 0d;
+                                            for (int I01 = 1; I01 <= 12; I01++)
+                                                for (int I02 = I01 + 1; I02 <= 13; I02++)
+                                                    for (int I03 = I02 + 1; I03 <= 14; I03++)
+                                                        for (int I04 = I03 + 1; I04 <= 15; I04++)
                                                             if (COMB[I01] == 1 || COMB[I02] == 1 || COMB[I03] == 1 ||
-                                                                COMB[I04] == 1 || COMB[I05] == 1) TOT = TOT + IPERS;
-                                        C[5, NIV] = C[5, NIV] + TOT;
+                                                                COMB[I04] == 1) TOT += IPERS;
+                                            C[4, NIV] += TOT;
 
-                                        // 6eme JOUR
-                                        TOT = 0d;
-                                        for (int I01 = 1; I01 <= 10; I01++)
-                                            for (int I02 = I01 + 1; I02 <= 11; I02++)
-                                                for (int I03 = I02 + 1; I03 <= 12; I03++)
-                                                    for (int I04 = I03 + 1; I04 <= 13; I04++)
-                                                        for (int I05 = I04 + 1; I05 <= 14; I05++)
-                                                            for (int I06 = I05 + 1; I06 <= 15; I06++)
+                                            // 5eme JOUR
+                                            TOT = 0d;
+                                            for (int I01 = 1; I01 <= 11; I01++)
+                                                for (int I02 = I01 + 1; I02 <= 12; I02++)
+                                                    for (int I03 = I02 + 1; I03 <= 13; I03++)
+                                                        for (int I04 = I03 + 1; I04 <= 14; I04++)
+                                                            for (int I05 = I04 + 1; I05 <= 15; I05++)
                                                                 if (COMB[I01] == 1 || COMB[I02] == 1 || COMB[I03] == 1 ||
-                                                                        COMB[I04] == 1 || COMB[I05] == 1 || COMB[I06] == 1) TOT = TOT + IPERS;
+                                                                    COMB[I04] == 1 || COMB[I05] == 1) TOT += IPERS;
+                                            C[5, NIV] += TOT;
 
-                                        C[6, NIV] = C[6, NIV] + TOT;
-
-                                        // 7eme JOUR
-                                        TOT = 0d;
-                                        for (int I01 = 1; I01 <= 9; I01++)
-                                            for (int I02 = I01 + 1; I02 <= 10; I02++)
-                                                for (int I03 = I02 + 1; I03 <= 11; I03++)
-                                                    for (int I04 = I03 + 1; I04 <= 12; I04++)
-                                                        for (int I05 = I04 + 1; I05 <= 13; I05++)
-                                                            for (int I06 = I05 + 1; I06 <= 14; I06++)
-                                                                for (int I07 = I06 + 1; I07 <= 15; I07++)
+                                            // 6eme JOUR
+                                            TOT = 0d;
+                                            for (int I01 = 1; I01 <= 10; I01++)
+                                                for (int I02 = I01 + 1; I02 <= 11; I02++)
+                                                    for (int I03 = I02 + 1; I03 <= 12; I03++)
+                                                        for (int I04 = I03 + 1; I04 <= 13; I04++)
+                                                            for (int I05 = I04 + 1; I05 <= 14; I05++)
+                                                                for (int I06 = I05 + 1; I06 <= 15; I06++)
                                                                     if (COMB[I01] == 1 || COMB[I02] == 1 || COMB[I03] == 1 ||
-                                                                            COMB[I04] == 1 || COMB[I05] == 1 || COMB[I06] == 1 ||
-                                                                            COMB[I07] == 1) TOT = TOT + IPERS;
-                                        C[7, NIV] = C[7, NIV] + TOT;
+                                                                            COMB[I04] == 1 || COMB[I05] == 1 || COMB[I06] == 1) TOT += IPERS;
 
-                                        // 8eme JOUR
-                                        TOT = 0d;
-                                        for (int I01 = 1; I01 <= 8; I01++)
-                                            for (int I02 = I01 + 1; I02 <= 9; I02++)
-                                                for (int I03 = I02 + 1; I03 <= 10; I03++)
-                                                    for (int I04 = I03 + 1; I04 <= 11; I04++)
-                                                        for (int I05 = I04 + 1; I05 <= 12; I05++)
-                                                            for (int I06 = I05 + 1; I06 <= 13; I06++)
-                                                                for (int I07 = I06 + 1; I07 <= 14; I07++)
-                                                                    for (int I08 = I07 + 1; I08 <= 15; I08++)
+                                            C[6, NIV] += TOT;
+
+                                            // 7eme JOUR
+                                            TOT = 0d;
+                                            for (int I01 = 1; I01 <= 9; I01++)
+                                                for (int I02 = I01 + 1; I02 <= 10; I02++)
+                                                    for (int I03 = I02 + 1; I03 <= 11; I03++)
+                                                        for (int I04 = I03 + 1; I04 <= 12; I04++)
+                                                            for (int I05 = I04 + 1; I05 <= 13; I05++)
+                                                                for (int I06 = I05 + 1; I06 <= 14; I06++)
+                                                                    for (int I07 = I06 + 1; I07 <= 15; I07++)
                                                                         if (COMB[I01] == 1 || COMB[I02] == 1 || COMB[I03] == 1 ||
                                                                                 COMB[I04] == 1 || COMB[I05] == 1 || COMB[I06] == 1 ||
-                                                                                COMB[I07] == 1 || COMB[I08] == 1) TOT = TOT + IPERS;
+                                                                                COMB[I07] == 1) TOT += IPERS;
+                                            C[7, NIV] += TOT;
 
-                                        C[8, NIV] = C[8, NIV] + TOT;
-
-                                        // 9eme JOUR
-                                        TOT = 0d;
-                                        for (int I01 = 1; I01 <= 7; I01++)
-                                            for (int I02 = I01 + 1; I02 <= 8; I02++)
-                                                for (int I03 = I02 + 1; I03 <= 9; I03++)
-                                                    for (int I04 = I03 + 1; I04 <= 10; I04++)
-                                                        for (int I05 = I04 + 1; I05 <= 11; I05++)
-                                                            for (int I06 = I05 + 1; I06 <= 12; I06++)
-                                                                for (int I07 = I06 + 1; I07 <= 13; I07++)
-                                                                    for (int I08 = I07 + 1; I08 <= 14; I08++)
-                                                                        for (int I09 = I08 + 1; I09 <= 15; I09++)
+                                            // 8eme JOUR
+                                            TOT = 0d;
+                                            for (int I01 = 1; I01 <= 8; I01++)
+                                                for (int I02 = I01 + 1; I02 <= 9; I02++)
+                                                    for (int I03 = I02 + 1; I03 <= 10; I03++)
+                                                        for (int I04 = I03 + 1; I04 <= 11; I04++)
+                                                            for (int I05 = I04 + 1; I05 <= 12; I05++)
+                                                                for (int I06 = I05 + 1; I06 <= 13; I06++)
+                                                                    for (int I07 = I06 + 1; I07 <= 14; I07++)
+                                                                        for (int I08 = I07 + 1; I08 <= 15; I08++)
                                                                             if (COMB[I01] == 1 || COMB[I02] == 1 || COMB[I03] == 1 ||
                                                                                     COMB[I04] == 1 || COMB[I05] == 1 || COMB[I06] == 1 ||
-                                                                                    COMB[I07] == 1 || COMB[I08] == 1 || COMB[I09] == 1) TOT = TOT + IPERS;
+                                                                                    COMB[I07] == 1 || COMB[I08] == 1) TOT += IPERS;
 
-                                        C[9, NIV] = C[9, NIV] + TOT;
+                                            C[8, NIV] += TOT;
 
-                                        // 10eme JOUR
-                                        TOT = 0d;
-                                        for (int I01 = 1; I01 <= 6; I01++)
-                                            for (int I02 = I01 + 1; I02 <= 7; I02++)
-                                                for (int I03 = I02 + 1; I03 <= 8; I03++)
-                                                    for (int I04 = I03 + 1; I04 <= 9; I04++)
-                                                        for (int I05 = I04 + 1; I05 <= 10; I05++)
-                                                            for (int I06 = I05 + 1; I06 <= 11; I06++)
-                                                                for (int I07 = I06 + 1; I07 <= 12; I07++)
-                                                                    for (int I08 = I07 + 1; I08 <= 13; I08++)
-                                                                        for (int I09 = I08 + 1; I09 <= 14; I09++)
-                                                                            for (int I10 = I09 + 1; I10 <= 15; I10++)
+                                            // 9eme JOUR
+                                            TOT = 0d;
+                                            for (int I01 = 1; I01 <= 7; I01++)
+                                                for (int I02 = I01 + 1; I02 <= 8; I02++)
+                                                    for (int I03 = I02 + 1; I03 <= 9; I03++)
+                                                        for (int I04 = I03 + 1; I04 <= 10; I04++)
+                                                            for (int I05 = I04 + 1; I05 <= 11; I05++)
+                                                                for (int I06 = I05 + 1; I06 <= 12; I06++)
+                                                                    for (int I07 = I06 + 1; I07 <= 13; I07++)
+                                                                        for (int I08 = I07 + 1; I08 <= 14; I08++)
+                                                                            for (int I09 = I08 + 1; I09 <= 15; I09++)
                                                                                 if (COMB[I01] == 1 || COMB[I02] == 1 || COMB[I03] == 1 ||
                                                                                         COMB[I04] == 1 || COMB[I05] == 1 || COMB[I06] == 1 ||
-                                                                                        COMB[I07] == 1 || COMB[I08] == 1 || COMB[I09] == 1 ||
-                                                                                        COMB[I10] == 1) TOT = TOT + IPERS;
+                                                                                        COMB[I07] == 1 || COMB[I08] == 1 || COMB[I09] == 1) TOT += IPERS;
 
-                                        C[10, NIV] = C[10, NIV] + TOT;
+                                            C[9, NIV] += TOT;
 
-                                        // 11eme JOUR
-                                        TOT = 0d;
-                                        for (int I01 = 1; I01 <= 5; I01++)
-                                            for (int I02 = I01 + 1; I02 <= 6; I02++)
-                                                for (int I03 = I02 + 1; I03 <= 7; I03++)
-                                                    for (int I04 = I03 + 1; I04 <= 8; I04++)
-                                                        for (int I05 = I04 + 1; I05 <= 9; I05++)
-                                                            for (int I06 = I05 + 1; I06 <= 10; I06++)
-                                                                for (int I07 = I06 + 1; I07 <= 11; I07++)
-                                                                    for (int I08 = I07 + 1; I08 <= 12; I08++)
-                                                                        for (int I09 = I08 + 1; I09 <= 13; I09++)
-                                                                            for (int I10 = I09 + 1; I10 <= 14; I10++)
-                                                                                for (int I11 = I10 + 1; I11 <= 15; I11++)
+                                            // 10eme JOUR
+                                            TOT = 0d;
+                                            for (int I01 = 1; I01 <= 6; I01++)
+                                                for (int I02 = I01 + 1; I02 <= 7; I02++)
+                                                    for (int I03 = I02 + 1; I03 <= 8; I03++)
+                                                        for (int I04 = I03 + 1; I04 <= 9; I04++)
+                                                            for (int I05 = I04 + 1; I05 <= 10; I05++)
+                                                                for (int I06 = I05 + 1; I06 <= 11; I06++)
+                                                                    for (int I07 = I06 + 1; I07 <= 12; I07++)
+                                                                        for (int I08 = I07 + 1; I08 <= 13; I08++)
+                                                                            for (int I09 = I08 + 1; I09 <= 14; I09++)
+                                                                                for (int I10 = I09 + 1; I10 <= 15; I10++)
                                                                                     if (COMB[I01] == 1 || COMB[I02] == 1 || COMB[I03] == 1 ||
                                                                                             COMB[I04] == 1 || COMB[I05] == 1 || COMB[I06] == 1 ||
                                                                                             COMB[I07] == 1 || COMB[I08] == 1 || COMB[I09] == 1 ||
-                                                                                            COMB[I10] == 1 || COMB[I11] == 1) TOT = TOT + IPERS;
-                                        C[11, NIV] = C[11, NIV] + TOT;
+                                                                                            COMB[I10] == 1) TOT += IPERS;
 
-                                        // 12eme JOUR
-                                        TOT = 0d;
-                                        for (int I01 = 1; I01 <= 4; I01++)
-                                            for (int I02 = I01 + 1; I02 <= 5; I02++)
-                                                for (int I03 = I02 + 1; I03 <= 6; I03++)
-                                                    for (int I04 = I03 + 1; I04 <= 7; I04++)
-                                                        for (int I05 = I04 + 1; I05 <= 8; I05++)
-                                                            for (int I06 = I05 + 1; I06 <= 9; I06++)
-                                                                for (int I07 = I06 + 1; I07 <= 10; I07++)
-                                                                    for (int I08 = I07 + 1; I08 <= 11; I08++)
-                                                                        for (int I09 = I08 + 1; I09 <= 12; I09++)
-                                                                            for (int I10 = I09 + 1; I10 <= 13; I10++)
-                                                                                for (int I11 = I10 + 1; I11 <= 14; I11++)
-                                                                                    for (int I12 = I11 + 1; I12 <= 15; I12++)
+                                            C[10, NIV] = C[10, NIV] + TOT;
+
+                                            // 11eme JOUR
+                                            TOT = 0d;
+                                            for (int I01 = 1; I01 <= 5; I01++)
+                                                for (int I02 = I01 + 1; I02 <= 6; I02++)
+                                                    for (int I03 = I02 + 1; I03 <= 7; I03++)
+                                                        for (int I04 = I03 + 1; I04 <= 8; I04++)
+                                                            for (int I05 = I04 + 1; I05 <= 9; I05++)
+                                                                for (int I06 = I05 + 1; I06 <= 10; I06++)
+                                                                    for (int I07 = I06 + 1; I07 <= 11; I07++)
+                                                                        for (int I08 = I07 + 1; I08 <= 12; I08++)
+                                                                            for (int I09 = I08 + 1; I09 <= 13; I09++)
+                                                                                for (int I10 = I09 + 1; I10 <= 14; I10++)
+                                                                                    for (int I11 = I10 + 1; I11 <= 15; I11++)
                                                                                         if (COMB[I01] == 1 || COMB[I02] == 1 || COMB[I03] == 1 ||
                                                                                                 COMB[I04] == 1 || COMB[I05] == 1 || COMB[I06] == 1 ||
                                                                                                 COMB[I07] == 1 || COMB[I08] == 1 || COMB[I09] == 1 ||
-                                                                                                COMB[I10] == 1 || COMB[I11] == 1 || COMB[I12] == 1) TOT = TOT + IPERS;
+                                                                                                COMB[I10] == 1 || COMB[I11] == 1) TOT += IPERS;
+                                            C[11, NIV] = C[11, NIV] + TOT;
 
-
-                                        C[12, NIV] = C[12, NIV] + TOT;
-
-                                        // 13eme JOUR
-                                        TOT = 0d;
-                                        for (int I01 = 1; I01 <= 3; I01++)
-                                            for (int I02 = I01 + 1; I02 <= 4; I02++)
-                                                for (int I03 = I02 + 1; I03 <= 5; I03++)
-                                                    for (int I04 = I03 + 1; I04 <= 6; I04++)
-                                                        for (int I05 = I04 + 1; I05 <= 7; I05++)
-                                                            for (int I06 = I05 + 1; I06 <= 8; I06++)
-                                                                for (int I07 = I06 + 1; I07 <= 9; I07++)
-                                                                    for (int I08 = I07 + 1; I08 <= 10; I08++)
-                                                                        for (int I09 = I08 + 1; I09 <= 11; I09++)
-                                                                            for (int I10 = I09 + 1; I10 <= 12; I10++)
-                                                                                for (int I11 = I10 + 1; I11 <= 13; I11++)
-                                                                                    for (int I12 = I11 + 1; I12 <= 14; I12++)
-                                                                                        for (int I13 = I12 + 1; I13 <= 15; I13++)
+                                            // 12eme JOUR
+                                            TOT = 0d;
+                                            for (int I01 = 1; I01 <= 4; I01++)
+                                                for (int I02 = I01 + 1; I02 <= 5; I02++)
+                                                    for (int I03 = I02 + 1; I03 <= 6; I03++)
+                                                        for (int I04 = I03 + 1; I04 <= 7; I04++)
+                                                            for (int I05 = I04 + 1; I05 <= 8; I05++)
+                                                                for (int I06 = I05 + 1; I06 <= 9; I06++)
+                                                                    for (int I07 = I06 + 1; I07 <= 10; I07++)
+                                                                        for (int I08 = I07 + 1; I08 <= 11; I08++)
+                                                                            for (int I09 = I08 + 1; I09 <= 12; I09++)
+                                                                                for (int I10 = I09 + 1; I10 <= 13; I10++)
+                                                                                    for (int I11 = I10 + 1; I11 <= 14; I11++)
+                                                                                        for (int I12 = I11 + 1; I12 <= 15; I12++)
                                                                                             if (COMB[I01] == 1 || COMB[I02] == 1 || COMB[I03] == 1 ||
                                                                                                     COMB[I04] == 1 || COMB[I05] == 1 || COMB[I06] == 1 ||
                                                                                                     COMB[I07] == 1 || COMB[I08] == 1 || COMB[I09] == 1 ||
-                                                                                                    COMB[I10] == 1 || COMB[I11] == 1 || COMB[I12] == 1 ||
-                                                                                                    COMB[I13] == 1) TOT = TOT + IPERS;
+                                                                                                    COMB[I10] == 1 || COMB[I11] == 1 || COMB[I12] == 1) TOT += IPERS;
 
-                                        C[13, NIV] = C[13, NIV] + TOT;
 
-                                        // 14eme JOUR
-                                        TOT = 0d;
-                                        for (int I01 = 1; I01 <= 2; I01++)
-                                            for (int I02 = I01 + 1; I02 <= 3; I02++)
-                                                for (int I03 = I02 + 1; I03 <= 4; I03++)
-                                                    for (int I04 = I03 + 1; I04 <= 5; I04++)
-                                                        for (int I05 = I04 + 1; I05 <= 6; I05++)
-                                                            for (int I06 = I05 + 1; I06 <= 7; I06++)
-                                                                for (int I07 = I06 + 1; I07 <= 8; I07++)
-                                                                    for (int I08 = I07 + 1; I08 <= 9; I08++)
-                                                                        for (int I09 = I08 + 1; I09 <= 10; I09++)
-                                                                            for (int I10 = I09 + 1; I10 <= 11; I10++)
-                                                                                for (int I11 = I10 + 1; I11 <= 12; I11++)
-                                                                                    for (int I12 = I11 + 1; I12 <= 13; I12++)
-                                                                                        for (int I13 = I12 + 1; I13 <= 14; I13++)
-                                                                                            for (int I14 = I13 + 1; I14 <= 15; I14++)
+                                            C[12, NIV] = C[12, NIV] + TOT;
+
+                                            // 13eme JOUR
+                                            TOT = 0d;
+                                            for (int I01 = 1; I01 <= 3; I01++)
+                                                for (int I02 = I01 + 1; I02 <= 4; I02++)
+                                                    for (int I03 = I02 + 1; I03 <= 5; I03++)
+                                                        for (int I04 = I03 + 1; I04 <= 6; I04++)
+                                                            for (int I05 = I04 + 1; I05 <= 7; I05++)
+                                                                for (int I06 = I05 + 1; I06 <= 8; I06++)
+                                                                    for (int I07 = I06 + 1; I07 <= 9; I07++)
+                                                                        for (int I08 = I07 + 1; I08 <= 10; I08++)
+                                                                            for (int I09 = I08 + 1; I09 <= 11; I09++)
+                                                                                for (int I10 = I09 + 1; I10 <= 12; I10++)
+                                                                                    for (int I11 = I10 + 1; I11 <= 13; I11++)
+                                                                                        for (int I12 = I11 + 1; I12 <= 14; I12++)
+                                                                                            for (int I13 = I12 + 1; I13 <= 15; I13++)
                                                                                                 if (COMB[I01] == 1 || COMB[I02] == 1 || COMB[I03] == 1 ||
-                                                                                                    COMB[I04] == 1 || COMB[I05] == 1 || COMB[I06] == 1 ||
-                                                                                                    COMB[I07] == 1 || COMB[I08] == 1 || COMB[I09] == 1 ||
-                                                                                                    COMB[I10] == 1 || COMB[I11] == 1 || COMB[I12] == 1 ||
-                                                                                                    COMB[I13] == 1 || COMB[I14] == 1)
-                                                                                                    TOT = TOT + IPERS;
+                                                                                                        COMB[I04] == 1 || COMB[I05] == 1 || COMB[I06] == 1 ||
+                                                                                                        COMB[I07] == 1 || COMB[I08] == 1 || COMB[I09] == 1 ||
+                                                                                                        COMB[I10] == 1 || COMB[I11] == 1 || COMB[I12] == 1 ||
+                                                                                                        COMB[I13] == 1) TOT += IPERS;
 
-                                        C[14, NIV] = C[14, NIV] + TOT;
+                                            C[13, NIV] = C[13, NIV] + TOT;
 
-                                        // 15eme JOUR
-                                        TOT = 0d;
-                                        if (COMB[1] == 1 || COMB[2] == 1 || COMB[3] == 1 ||
-                                            COMB[4] == 1 || COMB[5] == 1 || COMB[6] == 1 ||
-                                            COMB[7] == 1 || COMB[8] == 1 || COMB[9] == 1 ||
-                                            COMB[10] == 1 || COMB[11] == 1 || COMB[12] == 1 ||
-                                            COMB[13] == 1 || COMB[14] == 1 || COMB[15] == 1) TOT = IPERS;
+                                            // 14eme JOUR
+                                            TOT = 0d;
+                                            for (int I01 = 1; I01 <= 2; I01++)
+                                                for (int I02 = I01 + 1; I02 <= 3; I02++)
+                                                    for (int I03 = I02 + 1; I03 <= 4; I03++)
+                                                        for (int I04 = I03 + 1; I04 <= 5; I04++)
+                                                            for (int I05 = I04 + 1; I05 <= 6; I05++)
+                                                                for (int I06 = I05 + 1; I06 <= 7; I06++)
+                                                                    for (int I07 = I06 + 1; I07 <= 8; I07++)
+                                                                        for (int I08 = I07 + 1; I08 <= 9; I08++)
+                                                                            for (int I09 = I08 + 1; I09 <= 10; I09++)
+                                                                                for (int I10 = I09 + 1; I10 <= 11; I10++)
+                                                                                    for (int I11 = I10 + 1; I11 <= 12; I11++)
+                                                                                        for (int I12 = I11 + 1; I12 <= 13; I12++)
+                                                                                            for (int I13 = I12 + 1; I13 <= 14; I13++)
+                                                                                                for (int I14 = I13 + 1; I14 <= 15; I14++)
+                                                                                                    if (COMB[I01] == 1 || COMB[I02] == 1 || COMB[I03] == 1 ||
+                                                                                                        COMB[I04] == 1 || COMB[I05] == 1 || COMB[I06] == 1 ||
+                                                                                                        COMB[I07] == 1 || COMB[I08] == 1 || COMB[I09] == 1 ||
+                                                                                                        COMB[I10] == 1 || COMB[I11] == 1 || COMB[I12] == 1 ||
+                                                                                                        COMB[I13] == 1 || COMB[I14] == 1)
+                                                                                                        TOT += IPERS;
 
-                                        C[15, NIV] = C[15, NIV] + TOT;
-                                        #endregion Calcul des mioyennes
+                                            C[14, NIV] = C[14, NIV] + TOT;
+
+                                            // 15eme JOUR
+                                            TOT = 0d;
+                                            if (COMB[1] == 1 || COMB[2] == 1 || COMB[3] == 1 ||
+                                                COMB[4] == 1 || COMB[5] == 1 || COMB[6] == 1 ||
+                                                COMB[7] == 1 || COMB[8] == 1 || COMB[9] == 1 ||
+                                                COMB[10] == 1 || COMB[11] == 1 || COMB[12] == 1 ||
+                                                COMB[13] == 1 || COMB[14] == 1 || COMB[15] == 1) TOT = IPERS;
+
+                                            C[15, NIV] = C[15, NIV] + TOT;
+                                            #endregion Calcul des mioyennes
+                                        }
+                                    } // FIN BOUCLE INDIVIDUS
+                                } // FOR IG
+
+                                // IMPRESSION DES RESULTATS
+                                int IN = TREG[N1] + 1;
+                                double POPS = 0d;
+                                for (int I = 1; I <= NBIND; I++)
+                                {
+                                    if (KHI2[I, IN + 1] == NB[IN]) POPS = POPS + KHI2[I, 1];
+                                }
+                                POPS = POPS * 10d;
+                                double DIRAC0 = COMPT[1, IN] / POPS;
+                                double DIRAC1 = ITTP[IN] / POPS;
+                                double PC1 = IZAP[IN] / POPS;
+                                int IPOP = 0;
+                                for (int I = 2; I <= 16; I++)
+                                {
+                                    IPOP = IPOP + COMPT[I, IN] * (I - 1);
+                                }
+
+                                for (int I = 2; I <= 16; I++)
+                                {
+                                    if (I != 16) SEGM[I + 1, IN] = SEGM[I + 1, IN] + SEGM[I, IN];
+                                    if (I != 16) COMPT[I + 1, IN] = COMPT[I + 1, IN] + COMPT[I, IN];
+                                }
+
+                                double GRP = IPOP * 100;
+                                GRP = GRP / POPS / 15d;
+                                PR = (IPOP - ITTP[IN] * 15) / 14d;
+                                PR = PR / (POPS - COMPT[1, IN] - ITTP[IN]);
+                                for (int I = 1; I <= 15; I++)
+                                {
+                                    Z[I] = C[I, IN] / NCOM[I] / POPS * 100d;
+                                }
+
+                                // APPEL DE LA FONCTION DIFFERENCE
+
+                                GRP = GRP / 100d;
+                                double ZA = DIRAC0;
+                                ZR = IZAP[IN] / POPS;
+                                double UA = ITJP[IN] / POPS;
+                                UR = DIRAC1;
+
+                                //WRITE(16, *) GRP, ZA, ZR, UA, UR
+                                sbSortie.Append("{GRP}  {ZA}  {ZR}  {UA}  {UR}" + $"{GRP}  {ZA}  {ZR}  {UA}  {UR}");
+
+                                double ND = 15;
+                                MINIMISE(GRP, Z, ref PR, ref UR, ref ZR, out TAU, ZA, UA, ND); // double GRP, double[] ZC, ref double PR, ref double UR, ref double ZR, out double TAU, double ZA, double UA, double NB)
+
+                                double GRP0 = 0d;
+                                double GRPC = 0d;
+                                for (int I = 1; I <= 15; I++)
+                                {
+                                    GRPC = GRPC + YR[I];
+                                    GRP0 = GRP0 + Z[I];
+                                }
+                            } // if (((N1 == 1) || (NIV == 1) ) 
+                            RESUL[NOP, IQ, 1, N1] = ZR;
+                            RESUL[NOP, IQ, 2, N1] = UR;
+                            RESUL[NOP, IQ, 3, N1] = PR;
+                            RESUL[NOP, IQ, 4, N1] = TAU;
+
+                            sbSortie.Append("N1 = " + N1.ToString());
+                            sbSortie.Append("ZR = " + ZR.ToString());
+                            sbSortie.Append("UR = " + UR.ToString());
+                            sbSortie.Append("PR = " + PR.ToString());
+                            sbSortie.Append("TAU = " + TAU.ToString());
+
+                        } // for (int N1 = 1; N1 <= 16; N1++)
+                    }
+                    else
+                    {
+                        sbSortie.Append(" ***PAS D AUDIENCE POUR CE 1 / 4h * **");
+                        for (int N1 = 1; N1 <= 16; N1++)
+                        {
+                            RESUL[NOP, IQ, 1, N1] = 1d;
+                            RESUL[NOP, IQ, 2, N1] = 0d;
+                            RESUL[NOP, IQ, 3, N1] = 0d;
+                            RESUL[NOP, IQ, 4, N1] = 0d;
+                        }
+                    }// if (TREG[1] != 5)
+                    // FIN DE TRAITEMENT CELLULE
+                } // for (int IQ = 1; IQ <= 96; IQ++)
+            } // for (int NOP = 1; NOP <= NBSTA; NOP++)
+
+            Console.WriteLine($"TRAITEMENT 1/4h ----");
+            Console.WriteLine($"------- STATION ----");
+            //FORMAT('CELLULE ',I2,' Z=',F9.7,' U=',F9.7,' P=',F9.7,' TAU=',F9.7) == ??? 
+            //? Console.WriteLine($"CELLULE {I2} Z=', F9.7, ' U=', F9.7, ' P=', F9.7, ' TAU=', F9.7)
+            return RESUL;
+        }
+
+        private double[,,,] sav1qhps(int NBIND, int NBSTA, int[,,,] regrs, int[,] KHI2, List<Fushab09Indiv> fushab09Indivs, VsorPoid[][][] JNByWeek, VsorPoid[][] JN)
+        {
+            // PANEL RADIO 08 MEDIAMETRIE(nouveau format)
+            // CALCUL DES PARAMETRES z,u,p,tau
+            // SAMEDI
+            // VERSION 2
+            // Le nombre de station correspond au nombre de stations(#NB_STA_HAB_NOTO_TOTAL#) - #NB_STA_TOTAL_ONLY# pour Total Radio (et Total TV)
+
+            int NBJOUR = 23;
+
+            double[,] C = new double[15 + 1, 5 + 1];
+            double[] NCOM = new double[4 + 1] { 999999d, 4, 6, 4, 1 };
+            double[,,,] RESUL = new double[NBSTA + 1, 96 + 1, 4 + 1, 16 + 1];
+            double[] Z = new double[15 + 1];
+            double[] YR = new double[15 + 1];
+
+            int[,] COMPT = new int[16 + 1, 5 + 1];
+            int[] ITPO = new int[5 + 1];
+            int[] ITTP = new int[5 + 1];
+            int[] IZAP = new int[5 + 1];
+            int[] IPPS = new int[5 + 1];
+            int[] ITJP = new int[5 + 1];
+            int[,] SEGM = new int[16 + 1, 5 + 1];
+            int[] NB = new int[5 + 1];
+            int[] ITTL = new int[5 + 1];
+            int[] ITOU = new int[5 + 1];
+            int[] SEG2 = new int[16 + 1];
+            int[] SEG3 = new int[10 + 1];
+            int[] SEG4 = new int[6 + 1];
+            int[] COMB = new int[15 + 1];
+            int[] IZAB = new int[5 + 1];
+            int[] ITJR = new int[5 + 1];
+            int[] IM = new int[5 + 1];
+            //int[,] POIQH = new int[96 + 1, NBJOUR + 1];
+            int[,,] PATRON = new int[96 + 1, 15 + 1, NBIND + 1];
+            int[,,] JATOU = new int[96 + 1, 4 + 1, NBIND + 1];
+            int[] TREG = new int[16 + 1];
+
+            int[] ITH = new int[96 + 1];
+            int[] ITHInit = new int[] { 999999, 20 * 9, 4 * 1, 12 * 2, 12 * 3, 8 * 4, 8 * 5, 8 * 6, 8 * 7, 16 * 8 };
+            for (int i = 0; i < ITHInit.Length; i++) ITH[i] = ITHInit[i];
+
+            //  id  time
+            //  1     05h00 - 06h00 = 4
+            //  2     06h00 - 09h00 = 12
+            //  3     09h00 - 12h00 = 12
+            //  4     12h00 - 14h00 = 8
+            //  5     14h00 - 16h00 = 8
+            //  6     16h00 - 18h00 = 8
+            //  7     18h00 - 20h00 = 8
+            //  8     20h00 - 24h00 = 16
+            //  9     24h00 - 05h00 = 20
+
+            StringBuilder sbSortie = new StringBuilder();
+
+            // OPEN(18, FILE = '#OUTPUT#ZUPTAUSA',
+            //-RECORDTYPE = 'FIXED', FORM = 'UNFORMATTED')
+
+
+            // BOUCLE STATIONS
+            for (int NOP = 1; NOP <= NBSTA; NOP++)
+            {
+                //??  WRITE(16, 11) NOP
+
+                // INITIALISATIONS
+                int IP = NOP;
+                int IPO = 6 * (IP - 1) + 1;
+                int NOSH = NOP;
+
+                // BOUCLE INDIVIDUS
+                // 30
+                int IG = 0;
+                foreach (Fushab09Indiv fushab09Indiv in fushab09Indivs)
+                {
+                    IG = IG + 1;
+
+                    // BOUCLE 1 / 4h
+                    for (int IQ = 1; IQ <= 96; IQ++)
+                    {
+                        int IH = fushab09Indiv.KHSA[ITH[IQ], NOSH] - 48;
+                        if (IH == 0) IH = 5;
+                        int NJOU = 0;
+                        for (int IJ = 1; IJ <= 15; IJ++)
+                        {
+                            PATRON[IQ, IJ, IG] = 0;
+                        }
+                        for (int IJ = 1; IJ <= 4; IJ++)
+                        {
+                            JATOU[IQ, IJ, IG] = 0;
+                        }
+                        for (int I = 1; I <= 16; I++)
+                        {
+                            TREG[I] = regrs[2, IP, IQ, I];
+                        }
+
+                        if (TREG[1] == 5) continue;
+                        int IJK = 1;
+                        for (int I = 1; I <= 22; I += 7)
+                        {
+                            int[] bits = new int[7];
+                            for (int b = 1; b <= 6; b++)
+                                bits[b] = JN[I][IG].VSor[b, NOP];
+
+                            if (L1BITFCT(bits, IQ))
+                            {
+                                PATRON[IQ, IJK, IG] = 1;
+                                NJOU = NJOU + 1;
+                            }
+                            IJK = IJK + 1;
+                        }
+                        if (NJOU == 0) JATOU[IQ, 1, IG] = 1;
+                        if (NJOU == 0 && IH == 5) JATOU[IQ, 2, IG] = 1;
+                        if (NJOU == 4) JATOU[IQ, 3, IG] = 1;
+                        if (NJOU == 4 && IH == 1) JATOU[IQ, 4, IG] = 1;
+                    } //  for (int IQ = 1; IQ <= 96; IQ++)
+                } // foreach (Fushab09Indiv fushab09Indiv in fushab09Indivs)
+
+                // 120 
+                // BOUCLE 1 / 4h
+                for (int IQ = 1; IQ <= 96; IQ++)
+                {
+                    sbSortie.Append($"IQ = {IQ}");
+                    Console.WriteLine($"--------STATION {NOP} --------1/4h {IQ} ");
+                    for (int I = 1; I <= 16; I++)
+                    {
+                        TREG[I] = regrs[2, IP, IQ, I];
+                    }
+
+                    if (TREG[1] != 5)
+                    {
+
+                        // BOUCLE CELLULES
+                        for (int N1 = 1; N1 <= 16; N1++)
+                        {
+                            double ZR = 0d;
+                            double UR = 0d;
+                            double PR = 0d;
+                            double TAU = 0d;
+
+                            int N2 = SEG1[N1];
+                            int N3 = SEG2[N2];
+                            int N4 = SEG3[N3];
+                            NB[1] = N1;
+                            NB[2] = N2;
+                            NB[3] = N3;
+                            NB[4] = N4;
+                            NB[5] = 1;
+                            int NIV = TREG[N1] + 1;
+                            if (((N1 == 1) || (NIV == 1))
+                                ||
+                               (!((NIV == 2 && SEG2[N1] == SEG2[N1 - 1]) ||
+                                  (NIV == 3 && SEG3[SEG2[N1]] == SEG3[SEG2[N1 - 1]]) ||
+                                  (NIV == 4 && SEG4[SEG3[SEG2[N1]]] == SEG4[SEG3[SEG2[N1 - 1]]]) ||
+                                  (NIV == 5))))
+                            {
+                                for (int I = 1; I <= 16; I++)
+                                {
+                                    for (int J = 1; J <= 5; J++)
+                                    {
+                                        SEGM[I, J] = 0;
+                                        COMPT[I, J] = 0;
+                                        if (I <= 4) C[I, J] = 0d;
                                     }
                                 }
-                            } // FOR IG
 
-                            // IMPRESSION DES RESULTATS
-                            int IN = TREG[N1] + 1;
-                            double POPS = 0d;
-                            for (int I = 1; I <= NBIND; I++)
-                            {
-                                if (KHI2[I, IN + 1] == NB[IN]) POPS = POPS + KHI2[I, 1];
-                            }
-                            POPS = POPS * 10d;
-                            double DIRAC0 = COMPT[1, IN] / POPS;
-                            double DIRAC1 = ITTP[IN] / POPS;
-                            double PC1 = IZAP[IN] / POPS;
-                            int IPOP = 0;
-                            for (int I = 2; I <= 16; I++)
-                            {
-                                IPOP = IPOP + COMPT[I, IN] * (I - 1);
-                            }
+                                for (int J = 1; J <= 5; J++)
+                                {
+                                    IM[J] = 0;
+                                    IPPS[J] = 0;
+                                    ITOU[J] = 0;
+                                    ITPO[J] = 0;
+                                    ITTL[J] = 0;
+                                    ITTP[J] = 0;
+                                    IZAB[J] = 0;
+                                    IZAP[J] = 0;
+                                    ITJR[J] = 0;
+                                    ITJP[J] = 0;
+                                }
 
-                            for (int I = 2; I <= 16; I++)
-                            {
-                                if (I != 16) SEGM[I + 1, IN] = SEGM[I + 1, IN] + SEGM[I, IN];
-                                if (I != 16) COMPT[I + 1, IN] = COMPT[I + 1, IN] + COMPT[I, IN];
-                            }
+                                // BOUCLE INDIVIDUS
+                                for (IG = 1; IG <= NBIND; IG++)
+                                {
+                                    int IPERS = KHI2[IG, 1];
+                                    KHI2[IG, 6] = 1;
+                                    IPERS = IPERS * 10;
+                                    if (KHI2[IG, NIV + 1] == NB[NIV]) IM[NIV] = IM[NIV] + 1;
+                                    if (KHI2[IG, NIV + 1] == NB[NIV]) IPPS[NIV] = IPPS[NIV] + IPERS;
+                                    int IAUD = 0;
+                                    int NJOU = 0;
+                                    for (int I = 1; I <= 4; I++)
+                                    {
+                                        COMB[I] = PATRON[IQ, I, IG];
+                                        if (COMB[I] == 1)
+                                        {
+                                            IAUD = 1;
+                                            NJOU = NJOU + 1;
+                                        }
+                                    }
+                                    if (IAUD == 0)
+                                    {
+                                        if (KHI2[IG, NIV + 1] == NB[NIV])
+                                        {
+                                            COMPT[1, NIV] = COMPT[1, NIV] + IPERS;
+                                            SEGM[1, NIV] = SEGM[1, NIV] + 1;
+                                            if (JATOU[IQ, 2, IG] == 1) IZAB[NIV] = IZAB[NIV] + 1;
+                                            if (JATOU[IQ, 2, IG] == 1) IZAP[NIV] = IZAP[NIV] + IPERS;
+                                        }
+                                    }
+                                    if (IAUD == 1)
+                                    {
+                                        int IJ = NJOU + 1;
+                                        if (KHI2[IG, NIV + 1] == NB[NIV])
+                                        {
+                                            COMPT[IJ, NIV] = COMPT[IJ, NIV] + IPERS;
+                                            SEGM[IJ, NIV] = SEGM[IJ, NIV] + 1;
 
-                            double GRP = IPOP * 100;
-                            GRP = GRP / POPS / 15d;
-                            PR = (IPOP - ITTP[IN] * 15) / 14d;
-                            PR = PR / (POPS - COMPT[1, IN] - ITTP[IN]);
-                            for (int I = 1; I <= 15; I++)
-                            {
-                                Z[I] = C[I, IN] / NCOM[I] / POPS * 100d;
-                            }
+                                            ITOU[NIV] = ITOU[NIV] + 1;
+                                            ITPO[NIV] = ITPO[NIV] + IPERS;
+                                        }
+                                        if (NJOU == 4)
+                                        {
+                                            if (KHI2[IG, NIV + 1] == NB[NIV])
+                                            {
+                                                ITTL[NIV] = ITTL[NIV] + 1;
+                                                ITTP[NIV] = ITTP[NIV] + IPERS;
+                                                if (JATOU[IQ, 4, IG] == 1)
+                                                {
+                                                    ITJR[NIV] = ITJR[NIV] + 1;
+                                                    ITJP[NIV] = ITJP[NIV] + IPERS;
+                                                }
+                                            }
+                                        }
 
-                            // APPEL DE LA FONCTION DIFFERENCE
+                                        if (KHI2[IG, NIV + 1] == NB[NIV])
+                                        {
+                                            #region CALCUL DES MOYENNES
 
-                            GRP = GRP / 100d;
-                            double ZA = DIRAC0;
-                            ZR = IZAP[IN] / POPS;
-                            double UA = ITJP[IN] / POPS;
-                            UR = DIRAC1;
+                                            // PREMIER JOUR
+                                            double TOT = 0d;
+                                            for (int I01 = 1; I01 <= 4; I01++)
+                                                if (COMB[I01] == 1) TOT += IPERS;
+                                            C[1, NIV] += TOT;
 
-                            //WRITE(16, *) GRP, ZA, ZR, UA, UR
-                            sbSortie.Append("{GRP}  {ZA}  {ZR}  {UA}  {UR}" + $"{GRP}  {ZA}  {ZR}  {UA}  {UR}");
+                                            // 2eme JOUR
+                                            TOT = 0d;
+                                            for (int I01 = 1; I01 <= 3; I01++)
+                                                for (int I02 = I01 + 1; I02 <= 4; I02++)
+                                                    if (COMB[I01] == 1 || COMB[I02] == 1) TOT += IPERS;
+                                            C[2, NIV] += TOT;
 
-                            double ND = 15;
-                            MINIMISE(GRP, Z, ref PR, ref UR, ref ZR, out TAU, ZA, UA, ND); // double GRP, double[] ZC, ref double PR, ref double UR, ref double ZR, out double TAU, double ZA, double UA, double NB)
+                                            // 3eme JOUR
+                                            TOT = 0d;
+                                            for (int I01 = 1; I01 <= 2; I01++)
+                                                for (int I02 = I01 + 1; I02 <= 3; I02++)
+                                                    for (int I03 = I02 + 1; I03 <= 4; I03++)
+                                                        if (COMB[I01] == 1 || COMB[I02] == 1 || COMB[I03] == 1) TOT += IPERS;
+                                            C[3, NIV] += TOT;
 
-                            double GRP0 = 0d;
-                            double GRPC = 0d;
-                            for (int I = 1; I <= 15; I++)
-                            {
-                                GRPC = GRPC + YR[I];
-                                GRP0 = GRP0 + Z[I];
-                            }
-                        } // if (((N1 == 1) || (NIV == 1) ) 
-                        RESUL[NOP, 1, N1] = ZR;
-                        RESUL[NOP, 2, N1] = UR;
-                        RESUL[NOP, 3, N1] = PR;
-                        RESUL[NOP, 4, N1] = TAU;
+                                            // 4eme JOUR
+                                            TOT = 0d;
+                                            if (COMB[1] == 1 || COMB[2] == 1 || COMB[3] == 1 || COMB[4] == 1) TOT += IPERS;
+                                            C[4, NIV] += TOT;
 
-                        sbSortie.Append("N1 = " + N1.ToString());
-                        sbSortie.Append("ZR = " + ZR.ToString());
-                        sbSortie.Append("UR = " + UR.ToString());
-                        sbSortie.Append("PR = " + PR.ToString());
-                        sbSortie.Append("TAU = " + TAU.ToString());
+                                            #endregion Calcul des mioyennes
+                                        }
+                                    } // FIN BOUCLE INDIVIDUS
+                                } // FOR IG
 
-                    } // for (int N1 = 1; N1 <= 16; N1++)
+                                // IMPRESSION DES RESULTATS
+                                int IN = TREG[N1] + 1;
+                                double POPS = 0d;
+                                for (int I = 1; I <= NBIND; I++)
+                                {
+                                    if (KHI2[I, IN + 1] == NB[IN]) POPS = POPS + KHI2[I, 1];
+                                }
+                                POPS = POPS * 10d;
+                                double DIRAC0 = COMPT[1, IN] / POPS;
+                                double DIRAC1 = ITTP[IN] / POPS;
+                                double PC1 = IZAP[IN] / POPS;
+                                int IPOP = 0;
+                                for (int I = 2; I <= 5; I++)
+                                {
+                                    IPOP = IPOP + COMPT[I, IN] * (I - 1);
+                                }
 
+                                for (int I = 2; I <= 5; I++)
+                                {
+                                    if (I != 5) SEGM[I + 1, IN] = SEGM[I + 1, IN] + SEGM[I, IN];
+                                    if (I != 5) COMPT[I + 1, IN] = COMPT[I + 1, IN] + COMPT[I, IN];
+                                }
+
+                                double GRP = IPOP * 100;
+                                GRP = GRP / POPS / 4d;
+                                PR = (IPOP - ITTP[IN] * 4d) / 3d;
+                                if (POPS == (COMPT[1, IN] + ITTP[IN]))
+                                {
+                                    ZR = COMPT[1, IN] / POPS;
+                                    UR = ITTP[IN] / POPS;
+                                    PR = 1d;
+                                    TAU = 0d;
+                                }
+                                else
+                                {
+                                    PR = PR / (POPS - COMPT[1, IN] - ITTP[IN]);
+                                    for (int I = 1; I <= 4; I++)
+                                    {
+                                        Z[I] = C[I, IN] / NCOM[I] / POPS * 100d;
+                                    }
+
+                                    // APPEL DE LA FONCTION DIFFERENCE
+
+                                    GRP = GRP / 100d;
+                                    double ZA = DIRAC0;
+                                    ZR = IZAP[IN] / POPS;
+                                    double UA = ITJP[IN] / POPS;
+                                    UR = DIRAC1;
+
+                                    //WRITE(16, *) GRP, ZA, ZR, UA, UR
+                                    sbSortie.Append("{GRP}  {ZA}  {ZR}  {UA}  {UR}" + $"{GRP}  {ZA}  {ZR}  {UA}  {UR}");
+
+                                    double ND = 4;
+                                    MINIMISE(GRP, Z, ref PR, ref UR, ref ZR, out TAU, ZA, UA, ND, qhps: true); // double GRP, double[] ZC, ref double PR, ref double UR, ref double ZR, out double TAU, double ZA, double UA, double NB)
+                                }
+                            } // if (((N1 == 1) || (NIV == 1) ) 
+                            RESUL[NOP, IQ, 1, N1] = ZR;
+                            RESUL[NOP, IQ, 2, N1] = UR;
+                            RESUL[NOP, IQ, 3, N1] = PR;
+                            RESUL[NOP, IQ, 4, N1] = TAU;
+
+                            sbSortie.Append("N1 = " + N1.ToString());
+                            sbSortie.Append("ZR = " + ZR.ToString());
+                            sbSortie.Append("UR = " + UR.ToString());
+                            sbSortie.Append("PR = " + PR.ToString());
+                            sbSortie.Append("TAU = " + TAU.ToString());
+
+                        } // for (int N1 = 1; N1 <= 16; N1++)
+                    }
+                    else
+                    {
+                        sbSortie.Append(" ***PAS D AUDIENCE POUR CE 1 / 4h * **");
+                        for (int N1 = 1; N1 <= 16; N1++)
+                        {
+                            RESUL[NOP, IQ, 1, N1] = 1d;
+                            RESUL[NOP, IQ, 2, N1] = 0d;
+                            RESUL[NOP, IQ, 3, N1] = 0d;
+                            RESUL[NOP, IQ, 4, N1] = 0d;
+                        }
+                    }
                     // FIN DE TRAITEMENT CELLULE
                     // 1000 
 
                 } // for (int IQ = 1; IQ <= 96; IQ++)
                   // 1001 
                   // 900  
-                if (noAudience)
-                {
-                    sbSortie.Append(" ***PAS D AUDIENCE POUR CE 1 / 4h * **");
-                    for (int N1 = 1; N1 <= 16; N1++)
-                    {
-                        RESUL[NOP,1, N1] = 1d;
-                        RESUL[NOP,2, N1] = 0d;
-                        RESUL[NOP,3, N1] = 0d;
-                        RESUL[NOP,4, N1] = 0d;
-                    }
-                }
-
-                
             } // for (int NOP = 1; NOP <= NBSTA; NOP++)
 
             Console.WriteLine($"TRAITEMENT 1/4h ----");
@@ -1720,14 +2086,364 @@ namespace ARProbaProcessing
             return RESUL;
         }
 
-        private void sav1qhps()
+        private double[,,,] sav1qhpd(int NBIND, int NBSTA, int[,,,] regrs, int[,] KHI2, List<Fushab09Indiv> fushab09Indivs, VsorPoid[][][] JNByWeek, VsorPoid[][] JN)
         {
+            // PANEL RADIO 08 MEDIAMETRIE(nouveau format)
+            // CALCUL DES PARAMETRES z,u,p,tau
+            // SAMEDI
+            // VERSION 2
+            // Le nombre de station correspond au nombre de stations(#NB_STA_HAB_NOTO_TOTAL#) - #NB_STA_TOTAL_ONLY# pour Total Radio (et Total TV)
 
-        }
-        private void sav1qhpd()
-        {
+            int NBJOUR = 23;
 
+            double[,] C = new double[15 + 1, 5 + 1];
+            double[] NCOM = new double[4 + 1] { 999999d, 4, 6, 4, 1 };
+            double[,,,] RESUL = new double[NBSTA + 1, 96 + 1, 4 + 1, 16 + 1];
+            double[] Z = new double[15 + 1];
+            double[] YR = new double[15 + 1];
+
+            int[,] COMPT = new int[16 + 1, 5 + 1];
+            int[] ITPO = new int[5 + 1];
+            int[] ITTP = new int[5 + 1];
+            int[] IZAP = new int[5 + 1];
+            int[] IPPS = new int[5 + 1];
+            int[] ITJP = new int[5 + 1];
+            int[,] SEGM = new int[16 + 1, 5 + 1];
+            int[] NB = new int[5 + 1];
+            int[] ITTL = new int[5 + 1];
+            int[] ITOU = new int[5 + 1];
+            int[] SEG2 = new int[16 + 1];
+            int[] SEG3 = new int[10 + 1];
+            int[] SEG4 = new int[6 + 1];
+            int[] COMB = new int[15 + 1];
+            int[] IZAB = new int[5 + 1];
+            int[] ITJR = new int[5 + 1];
+            int[] IM = new int[5 + 1];
+            //int[,] POIQH = new int[96 + 1, NBJOUR + 1];
+            int[,,] PATRON = new int[96 + 1, 15 + 1, NBIND + 1];
+            int[,,] JATOU = new int[96 + 1, 4 + 1, NBIND + 1];
+            int[] TREG = new int[16 + 1];
+
+            int[] ITH = new int[96 + 1];
+            int[] ITHInit = new int[] { 999999, 20 * 9, 4 * 1, 12 * 2, 12 * 3, 8 * 4, 8 * 5, 8 * 6, 8 * 7, 16 * 8 };
+            for (int i = 0; i < ITHInit.Length; i++) ITH[i] = ITHInit[i];
+
+            //  id  time
+            //  1     05h00 - 06h00 = 4
+            //  2     06h00 - 09h00 = 12
+            //  3     09h00 - 12h00 = 12
+            //  4     12h00 - 14h00 = 8
+            //  5     14h00 - 16h00 = 8
+            //  6     16h00 - 18h00 = 8
+            //  7     18h00 - 20h00 = 8
+            //  8     20h00 - 24h00 = 16
+            //  9     24h00 - 05h00 = 20
+
+            StringBuilder sbSortie = new StringBuilder();
+
+            // OPEN(18, FILE = '#OUTPUT#ZUPTAUSA',
+            //-RECORDTYPE = 'FIXED', FORM = 'UNFORMATTED')
+
+
+            // BOUCLE STATIONS
+            for (int NOP = 1; NOP <= NBSTA; NOP++)
+            {
+                //??  WRITE(16, 11) NOP
+
+                // INITIALISATIONS
+                int IP = NOP;
+                int IPO = 6 * (IP - 1) + 1;
+                int NOSH = NOP;
+
+                // BOUCLE INDIVIDUS
+                // 30
+                int IG = 0;
+                foreach (Fushab09Indiv fushab09Indiv in fushab09Indivs)
+                {
+                    IG = IG + 1;
+
+                    // BOUCLE 1 / 4h
+                    for (int IQ = 1; IQ <= 96; IQ++)
+                    {
+                        int IH = fushab09Indiv.KHDI[ITH[IQ], NOSH] - 48;
+                        if (IH == 0) IH = 5;
+                        int NJOU = 0;
+                        for (int IJ = 1; IJ <= 4; IJ++)
+                        {
+                            PATRON[IQ, IJ, IG] = 0;
+                        }
+                        for (int IJ = 1; IJ <= 4; IJ++)
+                        {
+                            JATOU[IQ, IJ, IG] = 0;
+                        }
+                        for (int I = 1; I <= 16; I++)
+                        {
+                            TREG[I] = regrs[3, IP, IQ, I];
+                        }
+
+                        if (TREG[1] == 5) continue;
+                        int IJK = 1;
+                        for (int I = 2; I <= 23; I += 7)
+                        {
+                            int[] bits = new int[7];
+                            for (int b = 1; b <= 6; b++)
+                                bits[b] = JN[I][IG].VSor[b, NOP];
+
+                            if (L1BITFCT(bits, IQ))
+                            {
+                                PATRON[IQ, IJK, IG] = 1;
+                                NJOU = NJOU + 1;
+                            }
+                            IJK = IJK + 1;
+                        }
+                        if (NJOU == 0) JATOU[IQ, 1, IG] = 1;
+                        if (NJOU == 0 && IH == 5) JATOU[IQ, 2, IG] = 1;
+                        if (NJOU == 4) JATOU[IQ, 3, IG] = 1;
+                        if (NJOU == 4 && IH == 1) JATOU[IQ, 4, IG] = 1;
+                    } //  for (int IQ = 1; IQ <= 96; IQ++)
+                } // foreach (Fushab09Indiv fushab09Indiv in fushab09Indivs)
+
+                // 120 
+                // BOUCLE 1 / 4h
+                for (int IQ = 1; IQ <= 96; IQ++)
+                {
+                    sbSortie.Append($"IQ = {IQ}");
+                    Console.WriteLine($"--------STATION {NOP} --------1/4h {IQ} ");
+                    for (int I = 1; I <= 16; I++)
+                    {
+                        TREG[I] = regrs[3, IP, IQ, I];
+                    }
+
+                    if (TREG[1] != 5)
+                    {
+
+                        // BOUCLE CELLULES
+                        for (int N1 = 1; N1 <= 16; N1++)
+                        {
+                            double ZR = 0d;
+                            double UR = 0d;
+                            double PR = 0d;
+                            double TAU = 0d;
+
+                            int N2 = SEG1[N1];
+                            int N3 = SEG2[N2];
+                            int N4 = SEG3[N3];
+                            NB[1] = N1;
+                            NB[2] = N2;
+                            NB[3] = N3;
+                            NB[4] = N4;
+                            NB[5] = 1;
+                            int NIV = TREG[N1] + 1;
+                            if (((N1 == 1) || (NIV == 1))
+                                ||
+                               (!((NIV == 2 && SEG2[N1] == SEG2[N1 - 1]) ||
+                                  (NIV == 3 && SEG3[SEG2[N1]] == SEG3[SEG2[N1 - 1]]) ||
+                                  (NIV == 4 && SEG4[SEG3[SEG2[N1]]] == SEG4[SEG3[SEG2[N1 - 1]]]) ||
+                                  (NIV == 5))))
+                            {
+                                for (int I = 1; I <= 16; I++)
+                                {
+                                    for (int J = 1; J <= 5; J++)
+                                    {
+                                        SEGM[I, J] = 0;
+                                        COMPT[I, J] = 0;
+                                        if (I <= 4) C[I, J] = 0d;
+                                    }
+                                }
+
+                                for (int J = 1; J <= 5; J++)
+                                {
+                                    IM[J] = 0;
+                                    IPPS[J] = 0;
+                                    ITOU[J] = 0;
+                                    ITPO[J] = 0;
+                                    ITTL[J] = 0;
+                                    ITTP[J] = 0;
+                                    IZAB[J] = 0;
+                                    IZAP[J] = 0;
+                                    ITJR[J] = 0;
+                                    ITJP[J] = 0;
+                                }
+
+                                // BOUCLE INDIVIDUS
+                                for (IG = 1; IG <= NBIND; IG++)
+                                {
+                                    int IPERS = KHI2[IG, 1];
+                                    KHI2[IG, 6] = 1;
+                                    IPERS = IPERS * 10;
+                                    if (KHI2[IG, NIV + 1] == NB[NIV]) IM[NIV] = IM[NIV] + 1;
+                                    if (KHI2[IG, NIV + 1] == NB[NIV]) IPPS[NIV] = IPPS[NIV] + IPERS;
+                                    int IAUD = 0;
+                                    int NJOU = 0;
+                                    for (int I = 1; I <= 4; I++)
+                                    {
+                                        COMB[I] = PATRON[IQ, I, IG];
+                                        if (COMB[I] == 1)
+                                        {
+                                            IAUD = 1;
+                                            NJOU = NJOU + 1;
+                                        }
+                                    }
+                                    if (IAUD == 0)
+                                    {
+                                        if (KHI2[IG, NIV + 1] == NB[NIV])
+                                        {
+                                            COMPT[1, NIV] = COMPT[1, NIV] + IPERS;
+                                            SEGM[1, NIV] = SEGM[1, NIV] + 1;
+                                            if (JATOU[IQ, 2, IG] == 1) IZAB[NIV] = IZAB[NIV] + 1;
+                                            if (JATOU[IQ, 2, IG] == 1) IZAP[NIV] = IZAP[NIV] + IPERS;
+                                        }
+                                    }
+                                    if (IAUD == 1)
+                                    {
+                                        int IJ = NJOU + 1;
+                                        if (KHI2[IG, NIV + 1] == NB[NIV])
+                                        {
+                                            COMPT[IJ, NIV] = COMPT[IJ, NIV] + IPERS;
+                                            SEGM[IJ, NIV] = SEGM[IJ, NIV] + 1;
+
+                                            ITOU[NIV] = ITOU[NIV] + 1;
+                                            ITPO[NIV] = ITPO[NIV] + IPERS;
+                                        }
+                                        if (NJOU == 4)
+                                        {
+                                            if (KHI2[IG, NIV + 1] == NB[NIV])
+                                            {
+                                                ITTL[NIV] = ITTL[NIV] + 1;
+                                                ITTP[NIV] = ITTP[NIV] + IPERS;
+                                                if (JATOU[IQ, 4, IG] == 1)
+                                                {
+                                                    ITJR[NIV] = ITJR[NIV] + 1;
+                                                    ITJP[NIV] = ITJP[NIV] + IPERS;
+                                                }
+                                            }
+                                        }
+
+                                        if (KHI2[IG, NIV + 1] == NB[NIV])
+                                        {
+                                            #region CALCUL DES MOYENNES
+
+                                            // PREMIER JOUR
+                                            double TOT = 0d;
+                                            for (int I01 = 1; I01 <= 4; I01++)
+                                                if (COMB[I01] == 1) TOT += IPERS;
+                                            C[1, NIV] += TOT;
+
+                                            // 2eme JOUR
+                                            TOT = 0d;
+                                            for (int I01 = 1; I01 <= 3; I01++)
+                                                for (int I02 = I01 + 1; I02 <= 4; I02++)
+                                                    if (COMB[I01] == 1 || COMB[I02] == 1) TOT += IPERS;
+                                            C[2, NIV] += TOT;
+
+                                            // 3eme JOUR
+                                            TOT = 0d;
+                                            for (int I01 = 1; I01 <= 2; I01++)
+                                                for (int I02 = I01 + 1; I02 <= 3; I02++)
+                                                    for (int I03 = I02 + 1; I03 <= 4; I03++)
+                                                        if (COMB[I01] == 1 || COMB[I02] == 1 || COMB[I03] == 1) TOT += IPERS;
+                                            C[3, NIV] += TOT;
+
+                                            // 4eme JOUR
+                                            TOT = 0d;
+                                            if (COMB[1] == 1 || COMB[2] == 1 || COMB[3] == 1 || COMB[4] == 1) TOT += IPERS;
+                                            C[4, NIV] += TOT;
+
+                                            #endregion Calcul des mioyennes
+                                        }
+                                    } // FIN BOUCLE INDIVIDUS
+                                } // FOR IG
+
+                                // IMPRESSION DES RESULTATS
+                                int IN = TREG[N1] + 1;
+                                double POPS = 0d;
+                                for (int I = 1; I <= NBIND; I++)
+                                {
+                                    if (KHI2[I, IN + 1] == NB[IN]) POPS = POPS + KHI2[I, 1];
+                                }
+                                POPS = POPS * 10d;
+                                double DIRAC0 = COMPT[1, IN] / POPS;
+                                double DIRAC1 = ITTP[IN] / POPS;
+                                double PC1 = IZAP[IN] / POPS;
+                                int IPOP = 0;
+                                for (int I = 2; I <= 5; I++)
+                                {
+                                    IPOP = IPOP + COMPT[I, IN] * (I - 1);
+                                }
+
+                                for (int I = 2; I <= 5; I++)
+                                {
+                                    if (I != 5) SEGM[I + 1, IN] = SEGM[I + 1, IN] + SEGM[I, IN];
+                                    if (I != 5) COMPT[I + 1, IN] = COMPT[I + 1, IN] + COMPT[I, IN];
+                                }
+
+                                double GRP = IPOP * 100;
+                                GRP = GRP / POPS / 4d;
+                                PR = (IPOP - ITTP[IN] * 4d) / 3d;
+                                if (POPS == (COMPT[1, IN] + ITTP[IN]))
+                                {
+                                    ZR = COMPT[1, IN] / POPS;
+                                    UR = ITTP[IN] / POPS;
+                                    PR = 1d;
+                                    TAU = 0d;
+                                }
+                                else
+                                {
+                                    PR = PR / (POPS - COMPT[1, IN] - ITTP[IN]);
+                                    for (int I = 1; I <= 4; I++)
+                                    {
+                                        Z[I] = C[I, IN] / NCOM[I] / POPS * 100d;
+                                    }
+
+                                    // APPEL DE LA FONCTION DIFFERENCE
+
+                                    GRP = GRP / 100d;
+                                    double ZA = DIRAC0;
+                                    ZR = IZAP[IN] / POPS;
+                                    double UA = ITJP[IN] / POPS;
+                                    UR = DIRAC1;
+
+                                    //WRITE(16, *) GRP, ZA, ZR, UA, UR
+                                    sbSortie.Append("{GRP}  {ZA}  {ZR}  {UA}  {UR}" + $"{GRP}  {ZA}  {ZR}  {UA}  {UR}");
+
+                                    double ND = 4;
+                                    MINIMISE(GRP, Z, ref PR, ref UR, ref ZR, out TAU, ZA, UA, ND); // double GRP, double[] ZC, ref double PR, ref double UR, ref double ZR, out double TAU, double ZA, double UA, double NB)
+                                }
+                            } // if (((N1 == 1) || (NIV == 1) ) 
+                            RESUL[NOP, IQ, 1, N1] = ZR;
+                            RESUL[NOP, IQ, 2, N1] = UR;
+                            RESUL[NOP, IQ, 3, N1] = PR;
+                            RESUL[NOP, IQ, 4, N1] = TAU;
+
+                            sbSortie.Append("N1 = " + N1.ToString());
+                            sbSortie.Append("ZR = " + ZR.ToString());
+                            sbSortie.Append("UR = " + UR.ToString());
+                            sbSortie.Append("PR = " + PR.ToString());
+                            sbSortie.Append("TAU = " + TAU.ToString());
+
+                        } // for (int N1 = 1; N1 <= 16; N1++)
+                    } // if (TREG[1] != 5)
+                    else
+                    {
+                        sbSortie.Append(" ***PAS D AUDIENCE POUR CE 1 / 4h * **");
+                        for (int N1 = 1; N1 <= 16; N1++)
+                        {
+                            RESUL[NOP, IQ, 1, N1] = 1d;
+                            RESUL[NOP, IQ, 2, N1] = 0d;
+                            RESUL[NOP, IQ, 3, N1] = 0d;
+                            RESUL[NOP, IQ, 4, N1] = 0d;
+                        }
+                    }
+                } // for (int IQ = 1; IQ <= 96; IQ++)
+            } // for (int NOP = 1; NOP <= NBSTA; NOP++)
+
+            Console.WriteLine($"TRAITEMENT 1/4h ----");
+            Console.WriteLine($"------- STATION ----");
+            //FORMAT('CELLULE ',I2,' Z=',F9.7,' U=',F9.7,' P=',F9.7,' TAU=',F9.7) == ??? 
+            //? Console.WriteLine($"CELLULE {I2} Z=', F9.7, ' U=', F9.7, ' P=', F9.7, ' TAU=', F9.7)
+            return RESUL;
         }
+
 
         /// <summary>
         /// 
@@ -1738,7 +2454,7 @@ namespace ARProbaProcessing
         /// <param name="NbGRPStation">Nombre de station dans la fichier de GRP U109</param>
         /// <param name="NotorieteStation"></param>
         /// <returns></returns>
-        private int[,,,] cgrp75br(string PathGRPWave, int NbStation, int NbGRPModulation, int NbGRPStation, int[] NotorieteStation)
+        private double[,,,] cgrp75br(string PathGRPWave, int NbStation, int NbGRPModulation, int NbGRPStation, int[] NotorieteStation)
         {
             if (NbStation == 0
                 || NbGRPModulation == 0
@@ -1750,7 +2466,7 @@ namespace ARProbaProcessing
             // PANEL RADIO 08 MEDIAMETRIE(nouveau format)
             // CALCUL DES GRP 75000 POUR CALAGE
 
-            int[,,,] COUV = new int[37 + 1, 3 + 1, NbStation + 1, 96 + 1];
+            double[,,,] COUV = new double[37 + 1, 3 + 1, NbStation + 1, 96 + 1];
             int[,] IPOP = new int[37 + 1, 3 + 1];
 
             int[] KHI2 = new int[NbGRPModulation + 1];
@@ -1960,15 +2676,202 @@ namespace ARProbaProcessing
 
             return COUV;
         }
-        private void cont75br()
-        {
 
+        private void cont75br(int NBIND, int NBSTA, int popLV, int popS, int popD, double[,,,] Couverture, string pathCouv)
+        {
+            // PANEL RADIO 08 MEDIAMETRIE(nouveau format)
+            // CONTROLE DES GRP 75000 POUR CALAGE
+            //
+            // Le nombre de station correspond au nombre de stations(#NB_STA_HAB_NOTO_TOTAL#) - #NB_STA_TOTAL_ONLY# pour Total Radio (et Total TV)
+
+            int[] POP = new int[3 + 1];
+            double[] VAL = new double[3 + 1];
+            int[] IVAL = new int[3 + 1];
+
+            StringBuilder sb = new StringBuilder();
+            for (int IP = 1; IP <= NBSTA; IP++)
+            {
+                sb.AppendLine($"----- STATION {IP} -----");
+                for (int I = 1; I <= 96; I++)
+                {
+                    sb.Append($"{I.ToString("0000")} ");
+                    for (int J = 1; I <= 3; J++)
+                    {
+                        VAL[J] = Couverture[37, J, IP, I] * POP[J];
+                        IVAL[J] = Convert.ToInt32((VAL[J] + 500) / 1000);
+                        sb.Append($"{IVAL[J].ToString("000.000000000")} ");
+                    }
+                    sb.AppendLine();
+                }
+            }
+            File.AppendAllText(pathCouv, sb.ToString());
         }
 
-        private void cnzuptse()
+        // RESUL = ZUPTAUSE
+        private double[,,,] cnzuptse(int NBIND, int NBSTA, string pathCnzuptse, double[,,,] COUV, int[,,,] REGRS, double[,,,] RESUL)
         {
+            // PANEL RADIO 08 MEDIAMETRIE(nouveau format)
+            // CALAGE SUR GRP 75000 + ET RECALCUL DES PARAMETRES STATION
+            //
+            //        LUNDI - VENDREDI
+            //
+            int IDSUDRAD = 19;
 
+            double[,,,] RESULCOR = new double[NBSTA + 1, 96 + 1, 4 + 1, 16 + 1];
+            int[] SEG2 = new int[16 + 1];
+            int[] SEG3 = new int[10 + 1];
+            int[] SEG4 = new int[6 + 1];
+            int[] TREG = new int[16 + 1];
+
+
+            // OPEN(15, FILE = 'C:\Affinage\PANEL_~1\Panfra20\Output\NIVEAUX',
+            //-RECORDTYPE = 'FIXED', FORM = 'UNFORMATTED')
+            // READ(15)REGRS
+            // CLOSE(15)
+            // OPEN(15, FILE = 'C:\Affinage\PANEL_~1\Panfra20\Output\NOUVOGRP.SEM',
+            //-RECORDTYPE = 'FIXED', FORM = 'UNFORMATTED')
+            // READ(15)COUV
+            // CLOSE(15)
+            // OPEN(16, FILE = 'C:\Affinage\PANEL_~1\Panfra20\Output\SORTIESE.COR',
+            //-RECORDTYPE = 'TEXT')
+            // OPEN(17, FILE = 'C:\Affinage\PANEL_~1\Panfra20\Output\ZUPTAUSE',
+            //-RECORDTYPE = 'FIXED', FORM = 'UNFORMATTED')
+            // OPEN(18, FILE = 'C:\Affinage\PANEL_~1\Panfra20\Output\ZUPTAUSE.COR',
+            //-RECORDTYPE = 'FIXED', FORM = 'UNFORMATTED')
+
+            // BOUCLE STATIONS
+            StringBuilder sortie = new StringBuilder();
+            for (int IP = 1; IP <= NBSTA; IP++)
+            {
+                sortie.AppendLine(IP.ToString());
+                Console.WriteLine($"--------STATION {IP} --------");
+
+                // BOUCLE 1 / 4h
+                for (int IQ = 1; IQ <= 96; IQ++)
+                {
+                    int NQ = IQ + 76;
+                    if (NQ > 96) NQ = NQ - 96;
+                    sortie.AppendLine(IP.ToString());
+                    Console.WriteLine($"Traitement 1/4h {IQ}");
+
+                    // AUCUNE AUDIENCE POUR CE 1 / 4h
+                    for (int I = 1; I <= 16; I++)
+                    {
+                        TREG[I] = REGRS[1, IP, IQ, I];
+                    }
+
+                    if (TREG[1] != 5)
+                    {
+
+                        // BOUCLE CELLULES
+                        for (int N1 = 1; N1 <= 16; N1++)
+                        {
+                            double ZR = 0d;
+                            double UR = 0d;
+                            double PR = 0d;
+                            double TAU = 0d;
+                            int N2 = SEG1[N1];
+                            int N3 = SEG2[N2];
+                            int N4 = SEG3[N3];
+                            int IN = TREG[N1] + 1;
+                            if (((N1 == 1) || (IN == 1))
+                                ||
+                               (!((IN == 2 && SEG1[N1] == SEG1[N1 - 1]) ||
+                                  (IN == 3 && SEG2[SEG1[N1]] == SEG2[SEG1[N1 - 1]]) ||
+                                  (IN == 4 && SEG3[SEG2[SEG1[N1]]] == SEG3[SEG2[SEG1[N1 - 1]]]) ||
+                                  (IN == 5))))
+                            {
+
+                                // LECTURE DES Z, U, P, TAU ORIGINAUX
+                                //   20
+                                ZR = RESUL[IP, IQ, 1, N1];
+                                UR = RESUL[IP, IQ, 2, N1];
+                                PR = RESUL[IP, IQ, 3, N1];
+                                TAU = RESUL[IP, IQ, 4, N1];
+                                double VA = 1d - ZR - UR;
+                                double GRPA = VA * PR + UR;
+
+                                if (IP != IDSUDRAD)
+                                {
+                                    int ISEG = N1;
+                                    if (IN == 2) ISEG = 16 + SEG1[N1];
+                                    if (IN == 3) ISEG = 26 + SEG2[SEG1[N1]];
+                                    if (IN == 4) ISEG = 32 + SEG3[SEG2[SEG1[N1]]];
+                                    if (IN == 5) ISEG = 37;
+                                    // CALCUL NOUVEAU P
+                                    double GRPN = COUV[ISEG, 1, IP, NQ];
+                                    bool process = false;
+                                    if (GRPA != 0d && GRPN != 0d)
+                                    {
+                                        double V = 1d - ZR - UR;
+                                        if (V <= 0d)
+                                        {
+                                            UR = GRPN;
+                                            ZR = 1d - UR;
+                                            process = true;
+                                        }
+                                        else if (GRPN > 1d - ZR)
+                                        {
+                                            ZR = 1d - GRPN;
+                                            V = 1d - ZR - UR;
+                                            PR = GRPN - UR;
+                                            if (V > 0) PR = PR / V;
+                                            process = true;
+                                        }
+                                        if (!process)
+                                        {
+                                            if (GRPN >= GRPA)
+                                            {
+                                                PR = GRPN - UR;
+                                                if (V > 0) PR = PR / V;
+                                            }
+                                            else
+                                            {
+                                                UR = UR * GRPN / GRPA;
+                                                V = 1d - ZR - UR;
+                                                PR = GRPN - UR;
+                                                if (V > 0) PR = PR / V;
+                                            }
+                                        }
+                                    }
+                                } // if (IP != IDSUDRAD)
+                            }
+                            // FIN DE TRAITEMENT CELLULE 1000
+                            RESULCOR[IP, IQ, 1, N1] = ZR;
+                            RESULCOR[IP, IQ, 2, N1] = UR;
+                            RESULCOR[IP, IQ, 3, N1] = PR;
+                            RESULCOR[IP, IQ, 4, N1] = TAU;
+
+                            sortie.Append("N1 = " + N1.ToString());
+                            sortie.Append("ZR = " + ZR.ToString());
+                            sortie.Append("UR = " + UR.ToString());
+                            sortie.Append("PR = " + PR.ToString());
+                            sortie.Append("TAU = " + TAU.ToString());
+
+                        } // for (int N1 = 1; N1 <= 16; N1++)
+
+                    } 
+                    else
+                    {
+                        sortie.Append(" ***PAS D AUDIENCE POUR CE 1 / 4h * **");
+                        for (int N1 = 1; N1 <= 16; N1++)
+                        {
+                            RESULCOR[IP, IQ, 1, N1] = 1d;
+                            RESULCOR[IP, IQ, 2, N1] = 0d;
+                            RESULCOR[IP, IQ, 3, N1] = 0d;
+                            RESULCOR[IP, IQ, 4, N1] = 0d;
+                        }
+                    }// if (TREG[1] != 5)
+                } // for (int IQ = 1; IQ <= 96; IQ++)
+            } // for (int IP = 1; IP <= NBSTA; IP++)
+
+            Console.WriteLine($"TRAITEMENT 1/4h ----");
+            Console.WriteLine($"------- STATION ----");
+            // FORMAT('CELLULE ', I2, ' Z=', F9.7, ' U=', F9.7, ' P=', F9.7, ' TAU=', F9.7, ' GRP=', F9.7, ' GRP''=', F9.7)
+
+            return RESULCOR;
         }
+
         private void cnzuptsa()
         {
 
@@ -2014,11 +2917,10 @@ namespace ARProbaProcessing
         }
 
 
-
         // SUBROUTINE MINIMISE
         // optimisation de la courbe theorique de montee en audience
         // suivant la beta binomiale
-        private void MINIMISE(double GRP, double[] ZC, ref double PR, ref double UR, ref double ZR, out double TAU, double ZA, double UA, double NB)
+        private void MINIMISE(double GRP, double[] ZC, ref double PR, ref double UR, ref double ZR, out double TAU, double ZA, double UA, double NB, bool qhps = false)
         {
             double Z, Z1, Z2, DELTA0, DELTZ0, DELTZ1, DELTZ2, DELTA00, DELTATO;
             double[] RES = new double[5] { 0, ZA, UA, 0d, 0d };
@@ -2039,79 +2941,90 @@ namespace ARProbaProcessing
                 DZ0 = DT0 = DZ = DU = 0.1;
 
                 Z = ZA + (1d - ZA) / 2;
-                if ((1d - Z) < DZ) DZ = 1d - Z - 0.00001;
-                Z1 = Z;
-                Z2 = ZR;
-                double U0 = UR;
-                //5 
-                bool sortie = false;
-                for (; ; )
+                if (!qhps || Z >= ZR)
                 {
-                    double ITZ = 0;
-                    if (Z >= ZR)
+                    if ((1d - Z) < DZ) DZ = 1d - Z - 0.00001;
+                    Z1 = Z;
+                    Z2 = ZR;
+                    double U0 = UR;
+                    //5 
+                    bool sortie = false;
+                    for (; ; )
                     {
-                        if (DZ > (Z1 - Z2)) DZ = Z1 - Z2;
-                        // VARIATION DES JAMAIS
-                        //10 
-                        for (; ; )
+                        double ITZ = 0;
+                        if (Z >= ZR)
                         {
-                            ITZ = ITZ + 1;
-
-                            MINIMU(ITZ, Z, GRP, ZC, ZA, UA, U0, NB, DELTA00, out double DELTZ);
-
-                            if (DELTZ <= DELTZ0)
+                            if (DZ > (Z1 - Z2)) DZ = Z1 - Z2;
+                            // VARIATION DES JAMAIS
+                            //10 
+                            for (; ; )
                             {
-                                // LA DISTANCE A DIMINUE
-                                DELTZ2 = DELTZ1;
-                                DELTZ1 = DELTZ0;
-                                DELTZ0 = DELTZ;
-                                if (Z > Z2)
-                                {
-                                    Z = Z - DZ;
-                                    continue; // GOTO 10
-                                }
-                                if (DZ <= 0.0001)
-                                {
-                                    sortie = true;
-                                    break;
-                                }
+                                ITZ = ITZ + 1;
 
-                                Z2 = Z;
-                                Z = Z + DZ * 2;
-                                DZ = DZ / 10d;
-                                continue; // GOTO 10
-                            }
-                            else
-                            {
-                                // LA DISTANCE A AUGMENTE
-                                if (ITZ > 2)
+                                MINIMU(ITZ, Z, GRP, ZC, ZA, UA, U0, NB, DELTA00, out double DELTZ);
+
+                                if (DELTZ <= DELTZ0)
                                 {
+                                    if (!qhps || (DELTZ != DELTZ0 || DELTZ0 != DELTZ1 || DELTZ1 != DELTZ2))
+                                    {
+                                        // LA DISTANCE A DIMINUE
+                                        DELTZ2 = DELTZ1;
+                                        DELTZ1 = DELTZ0;
+                                        DELTZ0 = DELTZ;
+                                        if (Z > Z2)
+                                        {
+                                            Z = Z - DZ;
+                                            continue; // GOTO 10
+                                        }
+                                        if (DZ <= 0.0001)
+                                        {
+                                            sortie = true;
+                                            break;
+                                        }
+
+                                        Z2 = Z;
+                                        Z = Z + DZ * 2;
+                                        DZ = DZ / 10d;
+                                        continue; // GOTO 10
+                                    }
+                                    else
+                                    {
+                                        sortie = true;
+                                        break;
+                                    }
+                                }
+                                else
+                                {
+                                    // LA DISTANCE A AUGMENTE
+                                    if (ITZ > 2)
+                                    {
+                                        if (DZ <= 0.0001)
+                                        {
+                                            sortie = true;
+                                            break;
+                                        }
+                                        Z2 = Z;
+                                        Z = Z + 2 * DZ;
+                                        DZ = DZ / 10d;
+                                        DELTZ0 = DELTZ2;
+                                        break; // GOTO 5
+                                    }
                                     if (DZ <= 0.0001)
                                     {
                                         sortie = true;
                                         break;
                                     }
                                     Z2 = Z;
-                                    Z = Z + 2 * DZ;
+                                    Z = Z1;
                                     DZ = DZ / 10d;
-                                    DELTZ0 = DELTZ2;
+                                    DELTZ0 = DELTZ1;
                                     break; // GOTO 5
                                 }
-                                if (DZ <= 0.0001)
-                                {
-                                    sortie = true;
-                                    break;
-                                }
-                                Z2 = Z;
-                                Z = Z1;
-                                DZ = DZ / 10d;
-                                DELTZ0 = DELTZ1;
-                                break; // GOTO 5
-                            }
-                        } // for (; ; )  du 10
-                    }// if (Z >= ZR)
-                    if (sortie) break; // GOTO 5 suite...
-                } // for (; ; )  du 5
+                            } // for (; ; )  du 10
+                        }// if (Z >= ZR)
+                        if (sortie) break; // GOTO 5 suite...
+                    } // for (; ; )  du 5
+                }
                 ZR = RES[1];
                 UR = RES[2];
                 PR = RES[3];
@@ -2125,7 +3038,7 @@ namespace ARProbaProcessing
 
         // SUBROUTINE MINITAU
         // CALCUL DE LA VALEUR OPTIMALE DE TAU
-        private void MINITAU(double ITZ, double ITU, double[] ZC, double[] X, double ZA, double NB, double U0, double Q, double Z, double U, double P, double V, out double DELTT, ref double DELTA00)
+        private void MINITAU(double[] ZC, double[] X, double ZA, double NB, double U0, double Q, double Z, double U, double P, double V, out double DELTT, ref double DELTA00)
         {
             double[] Y = new double[15];
             double[] RES = new double[5];
@@ -2263,7 +3176,7 @@ namespace ARProbaProcessing
                     Q = 1d - P;
                     X[1] = Q;
 
-                    MINITAU(ITZ, ITU, ZC, X, ZA, NB, U0, Q, Z, U, P, V, out DELTU, ref DELTA00);
+                    MINITAU(ZC, X, ZA, NB, U0, Q, Z, U, P, V, out DELTU, ref DELTA00);
 
                     if (U0 == 0)
                     {
