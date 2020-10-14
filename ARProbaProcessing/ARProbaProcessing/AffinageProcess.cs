@@ -5,7 +5,7 @@ using System.Text;
 
 namespace ARProbaProcessing
 {
-    public class AffinageProcess
+    public partial class AffinageProcess
     {
         private int[] NOTE = new int[25 + 1] { 999999, 0, 12, 6, 4, 3, 3, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
         private int[] NBIT = new int[] { 999999, 0, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1 };
@@ -83,21 +83,21 @@ namespace ARProbaProcessing
             ecrsegpa(pathSig, COL_PIAB, COL_CSCI, COL_SEX, COL_AGE, COL_RUDA, NbStation, NBINDIV, SIGN_LINE_LEN_FULL,
                      out int[,] POIDSEGM, out int IPOP);
 
-            int[,,,] cellules = calcregr(NBINDIV, NB_STA_HAB_NOTO, NINI_IND_STA, POIDSEGM, JN); // int[3 + 1, NBSTA + 1, 96 + 1, NBCEL + 1];
+            int[,,,] cellules = calcregr(NBINDIV, NB_STA_HAB_NOTO, NINI_IND_STA, POIDSEGM, JN); // int[LV/Sa/Di, STATIONS, QH, CELL];
 
-            int[,,,] regrs = calcnivo(NBINDIV, NbStation, cellules); // [1..3, Station, Qh, Cellules de 1 à 16 ?]
+            int[,,,] regrs = calcnivo(NBINDIV, NbStation, cellules); // [LV/Sa/Di, STATIONS, QH, CELL]
 
-            int[,,,] audiences = caud1qhp(NBINDIV, NB_STA_HAB_NOTO, JN, POIDSEGM); // audiences[Station, INdiv, Qh, 1..3]
+            int[,,,] audiences = caud1qhp(NBINDIV, NB_STA_HAB_NOTO, JN, POIDSEGM); // audiences[STATIONS, INdiv, QH, 1..3]
 
             double[] noteIndiv = caudtotp(NBINDIV, NB_STA_HAB_NOTO, JN, POIDSEGM, fushab09Indivs);
 
-            double[,,,] ZUPTAUSE = sav1qhpa(NBINDIV, NB_STA_HAB_NOTO, regrs, POIDSEGM, fushab09Indivs, JNByWeek, JN); // [NBSTA + 1, 96 + 1, 4 + 1, 16 + 1];
+            double[,,,] ZUPTAUSE = sav1qhpa(NBINDIV, NB_STA_HAB_NOTO, regrs, POIDSEGM, fushab09Indivs, JNByWeek, JN); // [STATIONS, QH, DATAS ZR-UR-PR-TAUX, CELL];
 
-            double[,,,] ZUPTAUSA = sav1qhps(NBINDIV, NB_STA_HAB_NOTO, regrs, POIDSEGM, fushab09Indivs, JNByWeek, JN); // [NBSTA + 1, 96 + 1, 4 + 1, 16 + 1];
+            double[,,,] ZUPTAUSA = sav1qhps(NBINDIV, NB_STA_HAB_NOTO, regrs, POIDSEGM, fushab09Indivs, JNByWeek, JN); // [STATIONS, QH, DATAS ZR-UR-PR-TAUX, CELL];
 
-            double[,,,] ZUPTAUDI = sav1qhpd(NBINDIV, NB_STA_HAB_NOTO, regrs, POIDSEGM, fushab09Indivs, JNByWeek, JN); // [NBSTA + 1, 96 + 1, 4 + 1, 16 + 1];
+            double[,,,] ZUPTAUDI = sav1qhpd(NBINDIV, NB_STA_HAB_NOTO, regrs, POIDSEGM, fushab09Indivs, JNByWeek, JN); // [STATIONS, QH, DATAS ZR-UR-PR-TAUX, CELL];
 
-            double[,,,] Couverture = cgrp75br(PathGRPWave, NbStation, NbGRPModulation, NbGRPStation, NotorieteStation);
+            double[,,,] Couverture = cgrp75br(PathGRPWave, NbStation, NbGRPModulation, NbGRPStation, NotorieteStation);  // [LV/Sa/Di, QH, 4 + 1, CELL];
 
             cont75br(NBINDIV, NB_STA_HAB_NOTO, popLV, popS, popD, Couverture, pathCouv);
 
