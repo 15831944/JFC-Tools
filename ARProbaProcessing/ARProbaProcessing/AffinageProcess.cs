@@ -9,8 +9,6 @@ namespace ARProbaProcessing
     {
         private int[] NOTE = new int[25 + 1] { 999999, 0, 12, 6, 4, 3, 3, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
         private int[] NBIT = new int[] { 999999, 0, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1 };
-
-
         private int[] SEG1 = new int[] { 999999, 1, 1, 2, 3, 3, 4, 4, 5, 6, 6, 7, 8, 9, 9, 10, 10 };
         private int[] SEG2 = new int[] { 999999, 1, 1, 2, 3, 3, 4, 4, 5, 6, 6 };
         private int[] SEG3 = new int[] { 999999, 1, 2, 2, 3, 3, 4 };
@@ -65,6 +63,8 @@ namespace ARProbaProcessing
 
             #region entrées cnzuptse
             string pathCnzuptse = @"C:\AffinageART\France\Source\SFR04\OUTPUT\SORTIESE.COR";
+            string pathCnzuptsa = @"C:\AffinageART\France\Source\SFR04\OUTPUT\SORTIESA.COR";
+            string pathCnzuptdi = @"C:\AffinageART\France\Source\SFR04\OUTPUT\SORTIEDI.COR";
             #endregion entrées cnzuptse
 
             segpanel();
@@ -103,8 +103,9 @@ namespace ARProbaProcessing
 
             double[,,,] ZUPTAUSECOR = cnzuptse(NBINDIV, NB_STA_HAB_NOTO, pathCnzuptse, Couverture, regrs, ZUPTAUSE);
 
-            cnzuptsa();
-            cnzuptdi();
+            double[,,,] ZUPTAUSACOR = cnzuptsa(NBINDIV, NB_STA_HAB_NOTO, pathCnzuptsa, Couverture, regrs, ZUPTAUSE);
+
+            double[,,,] ZUPTAUDICOR = cnzuptdi(NBINDIV, NB_STA_HAB_NOTO, pathCnzuptdi, Couverture, regrs, ZUPTAUSE);
 
             attribp2();
 
@@ -2695,7 +2696,7 @@ namespace ARProbaProcessing
                 for (int I = 1; I <= 96; I++)
                 {
                     sb.Append($"{I.ToString("0000")} ");
-                    for (int J = 1; I <= 3; J++)
+                    for (int J = 1; J <= 3; J++)
                     {
                         VAL[J] = Couverture[37, J, IP, I] * POP[J];
                         IVAL[J] = Convert.ToInt32((VAL[J] + 500) / 1000);
@@ -2718,11 +2719,7 @@ namespace ARProbaProcessing
             int IDSUDRAD = 19;
 
             double[,,,] RESULCOR = new double[NBSTA + 1, 96 + 1, 4 + 1, 16 + 1];
-            int[] SEG2 = new int[16 + 1];
-            int[] SEG3 = new int[10 + 1];
-            int[] SEG4 = new int[6 + 1];
             int[] TREG = new int[16 + 1];
-
 
             // OPEN(15, FILE = 'C:\Affinage\PANEL_~1\Panfra20\Output\NIVEAUX',
             //-RECORDTYPE = 'FIXED', FORM = 'UNFORMATTED')
@@ -2869,18 +2866,335 @@ namespace ARProbaProcessing
             Console.WriteLine($"------- STATION ----");
             // FORMAT('CELLULE ', I2, ' Z=', F9.7, ' U=', F9.7, ' P=', F9.7, ' TAU=', F9.7, ' GRP=', F9.7, ' GRP''=', F9.7)
 
+            if (File.Exists(pathCnzuptse)) File.Delete(pathCnzuptse);
+            File.AppendAllText(pathCnzuptse, sortie.ToString());
+
             return RESULCOR;
         }
 
-        private void cnzuptsa()
+        private double[,,,] cnzuptsa(int NBIND, int NBSTA, string pathCnzuptsa, double[,,,] COUV, int[,,,] REGRS, double[,,,] RESUL)
         {
+            // PANEL RADIO 08 MEDIAMETRIE(nouveau format)
+            // CALAGE SUR GRP 75000 + ET RECALCUL DES PARAMETRES STATION
+            //
+            //        SAMEDI
+            //
+            int IDSUDRAD = 19;
 
+            double[,,,] RESULCOR = new double[NBSTA + 1, 96 + 1, 4 + 1, 16 + 1];
+            int[] TREG = new int[16 + 1];
+
+            // OPEN(15, FILE = 'C:\Affinage\PANEL_~1\Panfra20\Output\NIVEAUX',
+            //-RECORDTYPE = 'FIXED', FORM = 'UNFORMATTED')
+            // READ(15)REGRS
+            // CLOSE(15)
+            // OPEN(15, FILE = 'C:\Affinage\PANEL_~1\Panfra20\Output\NOUVOGRP.SEM',
+            //-RECORDTYPE = 'FIXED', FORM = 'UNFORMATTED')
+            // READ(15)COUV
+            // CLOSE(15)
+            // OPEN(16, FILE = 'C:\Affinage\PANEL_~1\Panfra20\Output\SORTIESE.COR',
+            //-RECORDTYPE = 'TEXT')
+            // OPEN(17, FILE = 'C:\Affinage\PANEL_~1\Panfra20\Output\ZUPTAUSE',
+            //-RECORDTYPE = 'FIXED', FORM = 'UNFORMATTED')
+            // OPEN(18, FILE = 'C:\Affinage\PANEL_~1\Panfra20\Output\ZUPTAUSE.COR',
+            //-RECORDTYPE = 'FIXED', FORM = 'UNFORMATTED')
+
+            // BOUCLE STATIONS
+            StringBuilder sortie = new StringBuilder();
+            for (int IP = 1; IP <= NBSTA; IP++)
+            {
+                sortie.AppendLine(IP.ToString());
+                Console.WriteLine($"--------STATION {IP} --------");
+
+                // BOUCLE 1 / 4h
+                for (int IQ = 1; IQ <= 96; IQ++)
+                {
+                    int NQ = IQ + 76;
+                    if (NQ > 96) NQ = NQ - 96;
+                    sortie.AppendLine(IP.ToString());
+                    Console.WriteLine($"Traitement 1/4h {IQ}");
+
+                    // AUCUNE AUDIENCE POUR CE 1 / 4h
+                    for (int I = 1; I <= 16; I++)
+                    {
+                        TREG[I] = REGRS[3, IP, IQ, I];
+                    }
+
+                    if (TREG[1] != 5)
+                    {
+
+                        // BOUCLE CELLULES
+                        for (int N1 = 1; N1 <= 16; N1++)
+                        {
+                            double ZR = 0d;
+                            double UR = 0d;
+                            double PR = 0d;
+                            double TAU = 0d;
+                            int N2 = SEG1[N1];
+                            int N3 = SEG2[N2];
+                            int N4 = SEG3[N3];
+                            int IN = TREG[N1] + 1;
+                            if (((N1 == 1) || (IN == 1))
+                                ||
+                               (!((IN == 2 && SEG1[N1] == SEG1[N1 - 1]) ||
+                                  (IN == 3 && SEG2[SEG1[N1]] == SEG2[SEG1[N1 - 1]]) ||
+                                  (IN == 4 && SEG3[SEG2[SEG1[N1]]] == SEG3[SEG2[SEG1[N1 - 1]]]) ||
+                                  (IN == 5))))
+                            {
+
+                                // LECTURE DES Z, U, P, TAU ORIGINAUX
+                                //   20
+                                ZR = RESUL[IP, IQ, 1, N1];
+                                UR = RESUL[IP, IQ, 2, N1];
+                                PR = RESUL[IP, IQ, 3, N1];
+                                TAU = RESUL[IP, IQ, 4, N1];
+                                double GRPA = (1d - ZR - UR) * PR + UR;
+
+                                if (IP != IDSUDRAD)
+                                {
+                                    int ISEG = N1;
+                                    if (IN == 2) ISEG = 16 + SEG1[N1];
+                                    if (IN == 3) ISEG = 26 + SEG2[SEG1[N1]];
+                                    if (IN == 4) ISEG = 32 + SEG3[SEG2[SEG1[N1]]];
+                                    if (IN == 5) ISEG = 37;
+                                    // CALCUL NOUVEAU P
+                                    double GRPN = COUV[ISEG, 3, IP, NQ];
+                                    bool process = false;
+                                    if (GRPA != 0d && GRPN != 0d)
+                                    {
+                                        double V = 1d - ZR - UR;
+                                        if (V <= 0d)
+                                        {
+                                            UR = GRPN;
+                                            ZR = 1d - UR;
+                                            process = true;
+                                        }
+                                        else if (GRPN > 1d - ZR)
+                                        {
+                                            ZR = 1d - GRPN;
+                                            V = 1d - ZR - UR;
+                                            PR = GRPN - UR;
+                                            if (V > 0) PR = PR / V;
+                                            process = true;
+                                        }
+                                        if (!process)
+                                        {
+                                            if (GRPN >= GRPA)
+                                            {
+                                                PR = GRPN - UR;
+                                                if (V > 0) PR = PR / V;
+                                            }
+                                            else
+                                            {
+                                                UR = UR * GRPN / GRPA;
+                                                V = 1d - ZR - UR;
+                                                PR = GRPN - UR;
+                                                if (V > 0) PR = PR / V;
+                                            }
+                                        }
+                                    }
+                                } // if (IP != IDSUDRAD)
+                            }
+                            // FIN DE TRAITEMENT CELLULE 1000
+                            RESULCOR[IP, IQ, 1, N1] = ZR;
+                            RESULCOR[IP, IQ, 2, N1] = UR;
+                            RESULCOR[IP, IQ, 3, N1] = PR;
+                            RESULCOR[IP, IQ, 4, N1] = TAU;
+
+                            sortie.Append("N1 = " + N1.ToString());
+                            sortie.Append("ZR = " + ZR.ToString());
+                            sortie.Append("UR = " + UR.ToString());
+                            sortie.Append("PR = " + PR.ToString());
+                            sortie.Append("TAU = " + TAU.ToString());
+
+                        } // for (int N1 = 1; N1 <= 16; N1++)
+
+                    }
+                    else
+                    {
+                        sortie.Append(" ***PAS D AUDIENCE POUR CE 1 / 4h * **");
+                        for (int N1 = 1; N1 <= 16; N1++)
+                        {
+                            RESULCOR[IP, IQ, 1, N1] = 1d;
+                            RESULCOR[IP, IQ, 2, N1] = 0d;
+                            RESULCOR[IP, IQ, 3, N1] = 0d;
+                            RESULCOR[IP, IQ, 4, N1] = 0d;
+                        }
+                    }// if (TREG[1] != 5)
+                } // for (int IQ = 1; IQ <= 96; IQ++)
+            } // for (int IP = 1; IP <= NBSTA; IP++)
+
+            Console.WriteLine($"TRAITEMENT 1/4h ----");
+            Console.WriteLine($"------- STATION ----");
+            // FORMAT('CELLULE ', I2, ' Z=', F9.7, ' U=', F9.7, ' P=', F9.7, ' TAU=', F9.7, ' GRP=', F9.7, ' GRP''=', F9.7)
+
+            if (File.Exists(pathCnzuptsa)) File.Delete(pathCnzuptsa);
+            File.AppendAllText(pathCnzuptsa, sortie.ToString());
+
+            return RESULCOR;
         }
-        private void cnzuptdi()
+
+        private double[,,,] cnzuptdi(int NBIND, int NBSTA, string pathCnzuptdi, double[,,,] COUV, int[,,,] REGRS, double[,,,] RESUL)
         {
+            // PANEL RADIO 08 MEDIAMETRIE(nouveau format)
+            // CALAGE SUR GRP 75000 + ET RECALCUL DES PARAMETRES STATION
+            //
+            //        DIMANCHE
+            //
+            int IDSUDRAD = 19;
 
+            double[,,,] RESULCOR = new double[NBSTA + 1, 96 + 1, 4 + 1, 16 + 1];
+            int[] TREG = new int[16 + 1];
+
+            // OPEN(15, FILE = 'C:\Affinage\PANEL_~1\Panfra20\Output\NIVEAUX',
+            //-RECORDTYPE = 'FIXED', FORM = 'UNFORMATTED')
+            // READ(15)REGRS
+            // CLOSE(15)
+            // OPEN(15, FILE = 'C:\Affinage\PANEL_~1\Panfra20\Output\NOUVOGRP.SEM',
+            //-RECORDTYPE = 'FIXED', FORM = 'UNFORMATTED')
+            // READ(15)COUV
+            // CLOSE(15)
+            // OPEN(16, FILE = 'C:\Affinage\PANEL_~1\Panfra20\Output\SORTIESE.COR',
+            //-RECORDTYPE = 'TEXT')
+            // OPEN(17, FILE = 'C:\Affinage\PANEL_~1\Panfra20\Output\ZUPTAUSE',
+            //-RECORDTYPE = 'FIXED', FORM = 'UNFORMATTED')
+            // OPEN(18, FILE = 'C:\Affinage\PANEL_~1\Panfra20\Output\ZUPTAUSE.COR',
+            //-RECORDTYPE = 'FIXED', FORM = 'UNFORMATTED')
+
+            // BOUCLE STATIONS
+            StringBuilder sortie = new StringBuilder();
+            for (int IP = 1; IP <= NBSTA; IP++)
+            {
+                sortie.AppendLine(IP.ToString());
+                Console.WriteLine($"--------STATION {IP} --------");
+
+                // BOUCLE 1 / 4h
+                for (int IQ = 1; IQ <= 96; IQ++)
+                {
+                    int NQ = IQ + 76;
+                    if (NQ > 96) NQ = NQ - 96;
+                    sortie.AppendLine(IP.ToString());
+                    Console.WriteLine($"Traitement 1/4h {IQ}");
+
+                    // AUCUNE AUDIENCE POUR CE 1 / 4h
+                    for (int I = 1; I <= 16; I++)
+                    {
+                        TREG[I] = REGRS[2, IP, IQ, I];
+                    }
+
+                    if (TREG[1] != 5)
+                    {
+
+                        // BOUCLE CELLULES
+                        for (int N1 = 1; N1 <= 16; N1++)
+                        {
+                            double ZR = 0d;
+                            double UR = 0d;
+                            double PR = 0d;
+                            double TAU = 0d;
+                            int N2 = SEG1[N1];
+                            int N3 = SEG2[N2];
+                            int N4 = SEG3[N3];
+                            int IN = TREG[N1] + 1;
+                            if (((N1 == 1) || (IN == 1))
+                                ||
+                               (!((IN == 2 && SEG1[N1] == SEG1[N1 - 1]) ||
+                                  (IN == 3 && SEG2[SEG1[N1]] == SEG2[SEG1[N1 - 1]]) ||
+                                  (IN == 4 && SEG3[SEG2[SEG1[N1]]] == SEG3[SEG2[SEG1[N1 - 1]]]) ||
+                                  (IN == 5))))
+                            {
+
+                                // LECTURE DES Z, U, P, TAU ORIGINAUX
+                                //   20
+                                ZR = RESUL[IP, IQ, 1, N1];
+                                UR = RESUL[IP, IQ, 2, N1];
+                                PR = RESUL[IP, IQ, 3, N1];
+                                TAU = RESUL[IP, IQ, 4, N1];
+                                double GRPA = (1d - ZR - UR) * PR + UR;
+
+                                if (IP != IDSUDRAD)
+                                {
+                                    int ISEG = N1;
+                                    if (IN == 2) ISEG = 16 + SEG1[N1];
+                                    if (IN == 3) ISEG = 26 + SEG2[SEG1[N1]];
+                                    if (IN == 4) ISEG = 32 + SEG3[SEG2[SEG1[N1]]];
+                                    if (IN == 5) ISEG = 37;
+                                    // CALCUL NOUVEAU P
+                                    double GRPN = COUV[ISEG, 2, IP, NQ];
+                                    bool process = false;
+                                    if (GRPA != 0d && GRPN != 0d)
+                                    {
+                                        double V = 1d - ZR - UR;
+                                        if (V <= 0d)
+                                        {
+                                            UR = GRPN;
+                                            ZR = 1d - UR;
+                                            process = true;
+                                        }
+                                        else if (GRPN > 1d - ZR)
+                                        {
+                                            ZR = 1d - GRPN;
+                                            V = 1d - ZR - UR;
+                                            PR = GRPN - UR;
+                                            if (V > 0) PR = PR / V;
+                                            process = true;
+                                        }
+                                        if (!process)
+                                        {
+                                            if (GRPN >= GRPA)
+                                            {
+                                                PR = GRPN - UR;
+                                                if (V > 0) PR = PR / V;
+                                            }
+                                            else
+                                            {
+                                                UR = UR * GRPN / GRPA;
+                                                V = 1d - ZR - UR;
+                                                PR = GRPN - UR;
+                                                if (V > 0) PR = PR / V;
+                                            }
+                                        }
+                                    }
+                                } // if (IP != IDSUDRAD)
+                            }
+                            // FIN DE TRAITEMENT CELLULE 1000
+                            RESULCOR[IP, IQ, 1, N1] = ZR;
+                            RESULCOR[IP, IQ, 2, N1] = UR;
+                            RESULCOR[IP, IQ, 3, N1] = PR;
+                            RESULCOR[IP, IQ, 4, N1] = TAU;
+
+                            sortie.Append("N1 = " + N1.ToString());
+                            sortie.Append("ZR = " + ZR.ToString());
+                            sortie.Append("UR = " + UR.ToString());
+                            sortie.Append("PR = " + PR.ToString());
+                            sortie.Append("TAU = " + TAU.ToString());
+
+                        } // for (int N1 = 1; N1 <= 16; N1++)
+
+                    }
+                    else
+                    {
+                        sortie.Append(" ***PAS D AUDIENCE POUR CE 1 / 4h * **");
+                        for (int N1 = 1; N1 <= 16; N1++)
+                        {
+                            RESULCOR[IP, IQ, 1, N1] = 1d;
+                            RESULCOR[IP, IQ, 2, N1] = 0d;
+                            RESULCOR[IP, IQ, 3, N1] = 0d;
+                            RESULCOR[IP, IQ, 4, N1] = 0d;
+                        }
+                    }// if (TREG[1] != 5)
+                } // for (int IQ = 1; IQ <= 96; IQ++)
+            } // for (int IP = 1; IP <= NBSTA; IP++)
+
+            Console.WriteLine($"TRAITEMENT 1/4h ----");
+            Console.WriteLine($"------- STATION ----");
+            // FORMAT('CELLULE ', I2, ' Z=', F9.7, ' U=', F9.7, ' P=', F9.7, ' TAU=', F9.7, ' GRP=', F9.7, ' GRP''=', F9.7)
+
+            if (File.Exists(pathCnzuptdi)) File.Delete(pathCnzuptdi);
+            File.AppendAllText(pathCnzuptdi, sortie.ToString());
+
+            return RESULCOR;
         }
-
         private void attribp2()
         {
 
