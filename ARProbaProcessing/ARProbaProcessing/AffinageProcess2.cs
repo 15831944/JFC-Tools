@@ -364,8 +364,11 @@ namespace ARProbaProcessing
             int[] RIEN = new int[NIND + 1];
 
             //      INITIALISATIONS
-            FileStream fs = null;
-            //Ecriture d'octets dans le fichier
+
+            if (File.Exists(pathYearNat)) File.Delete(pathYearNat);
+            if (File.Exists(pathYearIdf)) File.Delete(pathYearIdf);
+            if (File.Exists(pathYearSup)) File.Delete(pathYearSup);
+
             BinaryWriter bwNat = new BinaryWriter(File.Create(pathYearNat));
             BinaryWriter bwIdf = new BinaryWriter(File.Create(pathYearIdf));
             BinaryWriter bwSup = new BinaryWriter(File.Create(pathYearSup));
@@ -469,6 +472,156 @@ namespace ARProbaProcessing
             bwNat.Close();
             bwIdf.Close();
             bwSup.Close();
+        }
+
+
+
+
+        private int[,] crecib08(int NIND, List<Fushab09Indiv> fushab09Indivs, int COL_AGE, int COL_MENA, string pathPan20Cib)
+        {
+            // PANEL RADIO 08 MEDIAMETRIE
+            // CREATION DE VECTEURS DE CIBLES DE CONTROLE ASYMPTOTES
+            // Le nombre de station correspond au nombre de stations(#NB_STA_HAB_NOTO_TOTAL#) - #NB_STA_TOTAL_ONLY# pour Total Radio (et Total TV)
+
+            //C Attention AVANT(#SIGN_LINE_LEN_BEFORE_HAB#) et le buffer de lecture pour se caler au début des données de HAB
+            //C Attention APRES(#SIGN_LINE_LEN_AFTER_HAB#) et le buffer de lecture pour se caler à la fin de la ligne des données
+
+            int[,] KECR = new int[3 + 1, NIND + 1];
+
+            // INITIALISATIONS
+            int IG = 0;
+            int CPT2 = 0;
+            int CPT3 = 0;
+
+            foreach (Fushab09Indiv fushab09Indiv in fushab09Indivs)
+            {
+                IG = IG + 1;
+                int IND = IG;
+                // Ensemble(13 ans et +)
+                KECR[1, IND] = 1;
+                //C Ménagères moins de 50 ans
+                KECR[2, IND] = 0;
+                //C 13 - 29 ans
+                KECR[3, IND] = 0;
+
+                // Construction de la cible des Ménagères moins de 50 ans
+                int AGE = 10 * (fushab09Indiv.AVANT[COL_AGE] - 48) + (fushab09Indiv.AVANT[COL_AGE + 1] - 48);
+                if (((fushab09Indiv.AVANT[COL_MENA] - 48) == 1) && (AGE <= 7))
+                {
+                    KECR[2, IND] = 1;
+                    CPT2 = CPT2 + 1;
+                }
+
+                // Construction de la cible des 13 - 29 ans
+                if (AGE <= 3)
+                {
+                    KECR[3, IND] = 1;
+                    CPT3 = CPT3 + 1;
+                }
+            }
+
+            Console.WriteLine(IG.ToString());
+
+            if (File.Exists(pathPan20Cib)) File.Delete(pathPan20Cib);
+            BinaryWriter bwNat = new BinaryWriter(File.Create(pathPan20Cib));
+            for (int I = 1; I <= 3; I++)
+            {
+                for (int J = 1; J <= NIND; J++)
+                {
+                    bwNat.Write(Convert.ToInt16(KECR[I, J]));
+                }
+            }
+
+            bwNat.Close();
+            Console.WriteLine($"CPT2 = {CPT2}");
+            Console.WriteLine($"CPT3 = {CPT3}");
+
+            return KECR;
+        }
+
+
+        private void penetr()
+        {
+            //            C PANEL RADIO 08 MEDIAMETRIE
+            //     C        ACCUMULATION D'AUDIENCE 3 SEMAINES (0-24h)
+
+
+            //C Le nombre de station correspond au nombre de stations(#NB_STA_HAB_NOTO_TOTAL#) (avec Total Radio et Total TV)
+            //      PARAMETER (NBSTA=#NB_STA_HAB_NOTO_TOTAL#)
+            //      PARAMETER(NBJOUR = 23)
+            //      PARAMETER (NBIND=#NB_INDIV#)
+
+            //      COMMON / NUBIT / NBIT
+            //      SAVE / NUBIT /
+            //      INTEGER * 2 NBIT(0:15),L1BIT
+            //      INTEGER * 2 POID(96),VSOR(6, NBSTA),VSOR2(NBJOUR, 6, NBSTA),FLAG(NBSTA, NBIND),POIDS(NBIND)
+            //      INTEGER * 4 ITAP(NBSTA)
+            //      CHARACTER C2*2
+
+            //C INITIALISATIONS
+
+            //      DATA NBIT/ 0,15,14,13,12,11,10,9,8,7,6,5,4,3,2,1 /
+
+            // C         OUVERTURE FICHIERS
+            //      OPEN(15, FILE = '#OUTPUT#POIDSEGS',
+            //     -FORM = 'UNFORMATTED', RECORDTYPE = 'FIXED')
+            //      READ(15) POIDS
+
+            //      OPEN(13, FILE = '#OUTPUT#penetr',
+            //     -RECORDTYPE = 'TEXT')
+
+
+            //      DO I = 1, NBJOUR
+            //        WRITE(C2, '(I2.2)') I
+            //        OPEN(14, FILE = '#OUTPUT#jfc\JN'//C2//'NIV.JFC',
+            //     - FORM = 'UNFORMATTED', RECORDTYPE = 'FIXED')
+
+            //C BOUCLE INDIVIDUS
+            //DO IG = 1,NBIND
+            //          READ(14) VSOR,POID
+            //          DO J = 1,6
+            //            DO K = 1, NBSTA
+            //              VSOR2(I, J, K) = VSOR(J, K)
+            //            ENDDO
+            //          ENDDO
+
+            //          DO K = 1, NBSTA
+            //            DO M = 1,6
+            //              DO L = 1,16
+            //                IF(L1BIT(VSOR2(I, M, K), L).EQ.1) FLAG(K, IG) = 1
+            //              ENDDO
+            //            ENDDO
+            //          ENDDO
+            //        ENDDO
+            //        CLOSE(14)
+
+            //      ENDDO
+
+            //C                                                FIN DE FICHIER
+            //      WRITE(6, 1) IG - 1
+            //      DO K = 1, NBSTA
+            //        DO IG = 1, NBIND
+            //          ITAP(K) = ITAP(K) + FLAG(K, IG) * 10 * POIDS(IG)
+            //        ENDDO
+
+            //# PENETRE_WRITE_ALL_STATION_HANDLING#
+
+            //      ENDDO
+            //      STOP
+            //    1 FORMAT('    NBGUS:', I6)
+
+            //# PENETRE_FORMAT_ALL_STATION_HANDLING#
+
+            //            END
+            //C----------------------------------------------------------------------
+            //      INTEGER * 2 FUNCTION L1BIT(ZLEC, IND)
+            //      COMMON / NUBIT / NBIT
+            //      SAVE / NUBIT /
+            //      INTEGER * 2 ZLEC(*),NBIT(0:15)
+            //      L1BIT = 0
+            //      IF(BTEST(ZLEC((IND + 15) / 16), NBIT(MOD(IND, 16)))) L1BIT = 1
+            //      RETURN
+            //      END
         }
 
         public void SORTF(int I1, int IFIN, int[] RANG, double[] SCORE)

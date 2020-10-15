@@ -81,6 +81,13 @@ namespace ARProbaProcessing
             int[] ISTA = new int[] { 999999, 0, 1, 0, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1 };
             #endregion entrées Transp08
 
+            #region entrées crecib08
+            int COL_MENA = 15;
+            string pathPan20Cib = @"C:\AffinageART\France\Source\SFR04\OUTPUT\PAN20CIB";
+            
+            #endregion entrées crecib08
+
+
             segpanel();
 
             VsorPoid[][] JN = ecrpan1j(pathF04, NbStation, nbStationTotal, ITS, year);   // [Jour 1..23][Individus 1..N] = {VOSR[,]?, Poid[]}
@@ -126,9 +133,11 @@ namespace ARProbaProcessing
 
             transp08(NBINDIV, NB_STA_HAB_NOTO, NB_STA_IDF, ISTA, POIDSEGM ,lstFiltreIDF, lstPoids, PROBAS, pathTransp08, pathYearNat, pathYearIdf, pathYearSup);
 
-            crecib08();
+            int[,] PANCIB = crecib08(NBINDIV, fushab09Indivs, COL_AGE, COL_MENA, pathPan20Cib);
+
             penetr();
-            asympt();
+
+            //asympt(NBINDIV, NB_STA_HAB_NOTO);
         }
 
         private void lecpanel(int SIGN_LINE_LEN_FULL, string Path_SIGJFC_BDE, int COL_AGE3, int COL_RUDA, int COL_PIAB_0, int COL_PIAB_1, int COL_PIAB_2, int COL_PIAB_3, int COL_PIAB_4, out List<int> lstPoids, out List<int> lstAges, out List<int> lstFiltreIDF)
@@ -3209,14 +3218,6 @@ namespace ARProbaProcessing
             return RESULCOR;
         }
 
-        private void crecib08()
-        {
-
-        }
-        private void penetr()
-        {
-
-        }
         private void asympt()
         {
 
