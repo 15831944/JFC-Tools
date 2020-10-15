@@ -29,7 +29,7 @@ namespace ARProbaProcessing
             double XJ, LAMBDA, DELTA, PCUM, NG, GRPN, X, Y;
             double[] SCORE = new double[NBIND + 1];
             int[] TAB = new int[NBIND + 1];
-            double REAL, NOTI, SGN, SGN0;
+            double NOTI, SGN, SGN0;
             int[] POIDS = new int[NBIND + 1];
             int[] IPPS = new int[5 + 1];
             int R, RSAVE, RP, H, HCR, PR;
@@ -292,7 +292,7 @@ namespace ARProbaProcessing
                                             // TEST SI GRP COHERENT
                                             if (Math.Abs(Z) >= (K / 4 + 1) && (DELTA >= 1E-3))
                                             {
-                                                SGN= Z < 0?-1d:1d;
+                                                SGN = Z < 0 ? -1d : 1d;
 
                                                 if (SGN == -SGN0) DELTA *= 0.3;
                                                 LAMBDA += SGN * DELTA;
@@ -352,279 +352,241 @@ namespace ARProbaProcessing
         }
 
 
-        private void transp08()
+        private void transp08(int NIND, int NBSTA, int NBSTAIDF, int[] ISTA, int[,] POIDSEGS, List<int> FILT, List<int> POIDS, int[,,,] KHI2,
+            string pathSortie, string pathYearNat, string pathYearIdf, string pathYearSup)
         {
-//            C PANEL RADIO 08 MEDIAMETRIE(nouveau format)
-//C TRANSFORMATION DES PROBABILITES INDIVIDUELLES
-//C        DE 100e EN 1000e ET DE 1 / 4h EN 1 / 2h
+            // PANEL RADIO 08 MEDIAMETRIE(nouveau format)
+            // TRANSFORMATION DES PROBABILITES INDIVIDUELLES
+            //   DE 100e EN 1000e ET DE 1 / 4h EN 1 / 2h
 
-//   INCLUDE 'FSUBLIB.FI'
-//      PARAMETER(NIND =#NB_INDIV#)
-      
-//C Le nombre de station correspond au nombre de stations(#NB_STA_HAB_NOTO_TOTAL#) - #NB_STA_TOTAL_ONLY# pour Total Radio (et Total TV)
-//C Il ne nous reste plus que #NB_STA_HAB_NOTO,0# stations puisqu'on a supprimé SUD RADIO
-//      PARAMETER(NBSTA =#NB_STA_HAB_NOTO,0#)
-      
-//      PARAMETER(NBSTAIF =#NB_STA_IDF#)
-            
-//      INTEGER * 1 KHI2(NIND, 96), ISTA(NBSTA)
-//      INTEGER * 2 KECR(NIND), FILT(NIND), POIDS(NIND), RIEN(NIND)
+            int[,,,] KECR = new int[NBSTA + 1, 3 + 1, 96 + 1, NIND + 1];
+            int[,,,] KECRIDF = new int[NBSTAIDF + 1, 3 + 1, 96 + 1, NIND + 1];
+            int[] RIEN = new int[NIND + 1];
 
-//#STA_IDF_LIST_COMMENT#
+            //      INITIALISATIONS
+            FileStream fs = null;
+            //Ecriture d'octets dans le fichier
+            BinaryWriter bwNat = new BinaryWriter(File.Create(pathYearNat));
+            BinaryWriter bwIdf = new BinaryWriter(File.Create(pathYearIdf));
+            BinaryWriter bwSup = new BinaryWriter(File.Create(pathYearSup));
 
-//      DATA ISTA /#STA_IDF_LIST_NO_SUDRAD_MASK#/
-
-//C                  INITIALISATIONS
-//      OPEN(17, FILE = '#OUTPUT#FILTREIF',
-//     -RECORDTYPE = 'FIXED', FORM = 'UNFORMATTED')
-//      READ(17) FILT
-//      CLOSE(17)
-//      OPEN(17, FILE = '#OUTPUT#POIDSEGS',
-//     -RECORDTYPE = 'FIXED', FORM = 'UNFORMATTED')
-//      READ(17) POIDS
-//      CLOSE(17)
-
-//      OPEN(13, FILE = '#OUTPUT#PANECR#YEAR#',
-//     -RECORDTYPE = 'FIXED', FORM = 'UNFORMATTED')
-//      OPEN(14, FILE = '#OUTPUT#PANRA1#YEAR#.NAT',
-//     -RECORDTYPE = 'FIXED', FORM = 'UNFORMATTED')
-//      OPEN(15, FILE = '#OUTPUT#PANRA1#YEAR#.IDF',
-//     -RECORDTYPE = 'FIXED', FORM = 'UNFORMATTED')
-//      OPEN(16, FILE = '#OUTPUT#PANRA1#YEAR#.SUP',
-//     -RECORDTYPE = 'FIXED', FORM = 'UNFORMATTED')
-
-
-//C                  COEFF.ET DEPARTEMENT
-//      DO IND = 1, NIND
-//        IPOI = POIDS(IND)
-
-//    IPOI = IPOI * 10
-
-//    POIDS(IND) = IPOI
-
-//    RIEN(IND) = 0
-//      ENDDO
-//      WRITE(14) POIDS
-//      WRITE(14) RIEN
-//C                  BOUCLE STATIONS
-
-//      DO IS = 1, NBSTA
-//        IFO = ISTA(IS)
-
-//    print *, 'Traitement station', IS
-//C                  BOUCLE UNIVERS
-
-//    DO IU = 1, 3
-//C                  BOUCLE 1 / 4h - LECTURE
-//          DO IQ = 1, 96
-
-//        READ(13)(KHI2(IND, IQ), IND = 1, NIND)
-
-//      ENDDO
-//C                  BOUCLE 1 / 4h - PASSAGE A LA 1 / 2h
-//          DO IQ = 1, 96, 2
-
-//        IH = IQ + 20
-
-//        IF(IH.GT.96) IH = IH - 96
-//C                  BOUCLE INDIVIDUS
-//            DO II = 1, NIND
-
-//          KECR(II) = KHI2(II, IH)
-
-//          KECR(II) = KECR(II) + KHI2(II, IH + 1)
-
-//            KECR(II) = KECR(II) * 5
-
-//          IF(KECR(II).LT.0) print *, IS, IU, IQ
-
-//        ENDDO
-//C                  ECRITURE FICHIER TOTAL
-//            WRITE(14) KECR
-//C                  ECRITURE FICHIER IDF
-//            IF(IFO.EQ.1) THEN
-
-//          DO IN = 1, NIND
-
-//            IF(FILT(IN).EQ.0) KECR(IN) = 0
-
-//          ENDDO
-
-//          WRITE(15) KECR
-
-//        ENDIF
-
-//      ENDDO
-//        ENDDO
-//      ENDDO
-//      CLOSE(14)
-//      CLOSE(15)
-
-
-//      OPEN(14, FILE = '#OUTPUT#PANRA1#YEAR#.NAT',
-//     -RECORDTYPE = 'FIXED', FORM = 'UNFORMATTED')
-//      OPEN(15, FILE = '#OUTPUT#PANRA1#YEAR#.IDF',
-//     -RECORDTYPE = 'FIXED', FORM = 'UNFORMATTED')
-
-
-//C     POIDS
-//            READ(14) KECR
-
-//        WRITE(16) KECR
-//C     VECTEUR VIDE
-
-//        READ(14) KECR
-
-//        WRITE(16) KECR
-//      DO IS = 1, NBSTA
-//C                  BOUCLE UNIVERS
-//C Le 144 dans la ligne suivante correspond à 3 univers * 48 demi - heures
-
-//    DO IU = 1, 144
-
-//        READ(14) KECR
-
-//        WRITE(16) KECR
-
-//    ENDDO
-//      ENDDO
-//      DO IS = 1, NBSTAIF
-//C                  BOUCLE UNIVERS
-
-//    DO IU = 1, 144
-
-//        READ(15) KECR
-
-//        WRITE(16) KECR
-
-//    ENDDO
-//      ENDDO
-//      CLOSE(14)
-//      CLOSE(15)
-//      CLOSE(16)
-
-
-
-//      STOP
-//      END
-
-        }
-        public void SORTF(int I1, int IFIN, int[] RANG, double[] SCORE)
+            // COEFF.ET DEPARTEMENT
+            for (int IND = 1; IND <= NIND; IND++)
             {
-                double X;
-                int I = I1;
-                int J = IFIN;
+                int IPOI = POIDS[IND];
+                IPOI = IPOI * 10;
+                POIDS[IND] = IPOI;
+                RIEN[IND] = 0;
+            }
+            for (int IND = 1; IND <= NIND; IND++) bwNat.Write(Convert.ToInt16(POIDS[IND]));
+            for (int IND = 1; IND <= NIND; IND++) bwNat.Write(Convert.ToInt16(RIEN[IND]));
 
-                X = SCORE[RANG[(I1 + IFIN) / 2]];
-                do
+            // BOUCLE STATIONS
+            int IDF = 0;
+            for (int IS = 1; IS <= NBSTA; IS++)
+            {
+                int IFO = ISTA[IS];
+
+                Console.WriteLine($"Traitement station {IS}");
+
+                // BOUCLE UNIVERS
+
+                for (int IU = 1; IU <= 3; IU++)
                 {
-                    while (SCORE[RANG[I]] < X)
-                        I = I + 1;
-
-                    while (SCORE[RANG[J]] > X)
-                        J = J - 1;
-
-                    if (I <= J)
+                    // BOUCLE 1 / 4h - PASSAGE A LA 1 / 2h
+                    for (int IQ = 1; IQ <= 96; IQ += 2)
                     {
-                        int K = RANG[I];
-                        RANG[I] = RANG[J];
-                        RANG[J] = K;
-                        I = I + 1;
-                        J = J - 1;
+                        int IH = IQ + 20;
+                        if (IH > 96) IH = IH - 96;
+
+                        // BOUCLE INDIVIDUS
+                        for (int II = 1; II <= NIND; II++)
+                        {
+                            KECR[IS, IU, IQ, II] = KHI2[IS, IU, IH, II];      //  [STATIONS, LV/Sa/Di, QH, INDIVS]
+
+                            KECR[IS, IU, IQ, II] = KECR[IS, IU, IQ, II] + KHI2[IS, IU, IH + 1, II];
+
+                            KECR[IS, IU, IQ, II] *= 5;
+
+                            if (KECR[IS, IU, IQ, II] < 0) Console.WriteLine($"{IS}, {IU}, {IQ}");
+
+                            bwNat.Write(Convert.ToInt16(KECR[IS, IU, IQ, II]));
+                        }
+
+                        // ECRITURE FICHIER IDF
+                        if (IFO == 1)
+                        {
+                            IDF++;
+                            for (int IN = 1; IN <= NIND; IN++)
+                            {
+                                if (FILT[IN] == 0)
+                                    KECRIDF[IS, IU, IQ, IN] = 0;
+                                else
+                                    KECRIDF[IS, IU, IQ, IN] = KECR[IS, IU, IQ, IN];
+
+                                bwIdf.Write(Convert.ToInt16(KECRIDF[IDF, IU, IQ, IN]));
+                            }
+                        }
                     }
                 }
-                while (I <= J);
-
-                if (I1 < J) SORTF(I1, J, RANG, SCORE);
-                if (I < IFIN) SORTF(I, IFIN, RANG, SCORE);
             }
 
-            // CALCUL DE LA REPARTITION DES PROBAS
-            public void CALDISTR(double ZR, double UR, double PO, double TAUX, out double[] DISTR, out double[] REP)
+            //      OPEN(15, FILE = '#OUTPUT#PANRA1#YEAR#.IDF',
+            //     -RECORDTYPE = 'FIXED', FORM = 'UNFORMATTED')
+
+            for (int IND = 1; IND <= NIND; IND++) bwSup.Write(Convert.ToInt16(POIDS[IND]));
+            for (int IND = 1; IND <= NIND; IND++) bwSup.Write(Convert.ToInt16(RIEN[IND]));
+
+            for (int IS = 1; IS <= NBSTA; IS++)
             {
-                int NSEG = 100;
-                int JMAX = JMAX = NSEG * 2;
-                int JSUP = JMAX + 2;
-                double ALPHA, BETA, X, V, Q, Y, BAB, LEBND, Z, U, P, TAU;
-                double[] LOGS = new double[JMAX + 1];
-                double[] BUFS = new double[JMAX + 1];
-                DISTR = new double[NSEG + 1];
-                REP = new double[NSEG + 1];
-
-                Z = ZR;
-                U = UR;
-                P = PO;
-                TAU = TAUX;
-
-                // ECRETAGES
-                if (P < 1E-4) TAU = 0;
-                if (P < 1E-4) P = 0;
-                if (P > (1d - (1E-4))) TAU = 0;
-                if (P > (1d - (1E-4))) P = 1;
-
-                // CALCUL DES PARAMETRES DU MODELE
-                Q = 1d - P;
-                if (TAU <= 1E-4)
+                // BOUCLE UNIVERS
+                for (int IU = 1; IU <= 3; IU++)
                 {
-                    TAU = 0;
-                    ALPHA = P * 1E4;
-                    BETA = Q * 1E4;
+                    for (int IQ = 1; IQ <= 96; IQ += 2)
+                    {
+                        for (int II = 1; II <= NIND; II++)
+                        {
+                            bwSup.Write(Convert.ToInt16(KECR[IS, IU, IQ, II]));
+                        }
+                    }
                 }
-                else
-                {
-                    ALPHA = P / TAU;
-                    BETA = Q / TAU;
-                }
-
-                if (TAU < 0.003)
-                {
-                    for (int I = 0; I <= NSEG; I++)
-                        DISTR[I] = 0;
-
-                    if (P > 0.998)
-                        DISTR[NSEG] = 1;
-                    else if (P < 0.002)
-                        DISTR[0] = 1;
-                    else
-                        DISTR[(int)Math.Truncate(P * (NSEG + 1))] = 1;
-                }
-                // TAU > ou = 0.003
-                else
-                {
-                    for (int J = 2; J <= JMAX; J++)
-                        BUFS[J] = Math.Exp((ALPHA - 1) * LOGS[J] + (BETA - 1) * LOGS[JSUP - J]);
-                    // ASTUCE POUR LES EXTREMITES
-                    LEBND = LOGS[2];
-                    X = 1d / (6 * (NSEG + 1));
-                    Y = 1d - (BETA - 1d) / JSUP;
-                    if (Y < 0.8) Y = 0.8;
-                    if (Y > 1.2) Y = 1.2;
-                    DISTR[0] = Y * Math.Exp(ALPHA * LEBND) / ALPHA;
-                    Y = 1d - (ALPHA - 1d) / JSUP;
-
-                    if (Y < 0.8) Y = 0.8;
-                    if (Y > 1.2) Y = 1.2;
-                    DISTR[NSEG] = Y * Math.Exp(BETA * LEBND) / BETA;
-                    // SEGMENTS INTERMEDIAIRES
-                    for (int I = 1; I <= NSEG - 1; I++)
-                        DISTR[I] = (BUFS[2 * I] + BUFS[2 + 2 * I] + 4 * BUFS[1 + 2 * I]) * X;
-                    // NORMALISATION DE DISTR
-                    BAB = 0d;
-                    for (int I = 0; I <= NSEG; I++)
-                        BAB = BAB + DISTR[I];
-                    for (int I = 0; I <= NSEG; I++)
-                        DISTR[I] = DISTR[I] / BAB;
-                }
-
-                // CORRECTION DES Z ET U
-                V = 1d - Z - U;
-                for (int I = 0; I <= NSEG; I++)
-                    DISTR[I] = DISTR[I] * V;
-                DISTR[0] = DISTR[0] + Z;
-                DISTR[NSEG] = DISTR[NSEG] + U;
-                REP[0] = DISTR[0];
-                for (int I = 1; I <= NSEG; I++)
-                    REP[I] = REP[I - 1] + DISTR[I];
             }
+            for (int IS = 1; IS <= NBSTAIDF; IS++)
+            {
+                // BOUCLE UNIVERS IDF
+                for (int IU = 1; IU <= 3; IU++)
+                {
+                    for (int IQ = 1; IQ <= 96; IQ += 2)
+                    {
+                        for (int II = 1; II <= NIND; II++)
+                        {
+                            bwSup.Write(Convert.ToInt16(KECRIDF[IS, IU, IQ, II]));
+                        }
+                    }
+                }
+            }
+
+            bwNat.Close();
+            bwIdf.Close();
+            bwSup.Close();
+        }
+
+        public void SORTF(int I1, int IFIN, int[] RANG, double[] SCORE)
+        {
+            double X;
+            int I = I1;
+            int J = IFIN;
+
+            X = SCORE[RANG[(I1 + IFIN) / 2]];
+            do
+            {
+                while (SCORE[RANG[I]] < X)
+                    I = I + 1;
+
+                while (SCORE[RANG[J]] > X)
+                    J = J - 1;
+
+                if (I <= J)
+                {
+                    int K = RANG[I];
+                    RANG[I] = RANG[J];
+                    RANG[J] = K;
+                    I = I + 1;
+                    J = J - 1;
+                }
+            }
+            while (I <= J);
+
+            if (I1 < J) SORTF(I1, J, RANG, SCORE);
+            if (I < IFIN) SORTF(I, IFIN, RANG, SCORE);
+        }
+
+        // CALCUL DE LA REPARTITION DES PROBAS
+        public void CALDISTR(double ZR, double UR, double PO, double TAUX, out double[] DISTR, out double[] REP)
+        {
+            int NSEG = 100;
+            int JMAX = JMAX = NSEG * 2;
+            int JSUP = JMAX + 2;
+            double ALPHA, BETA, X, V, Q, Y, BAB, LEBND, Z, U, P, TAU;
+            double[] LOGS = new double[JMAX + 1];
+            double[] BUFS = new double[JMAX + 1];
+            DISTR = new double[NSEG + 1];
+            REP = new double[NSEG + 1];
+
+            Z = ZR;
+            U = UR;
+            P = PO;
+            TAU = TAUX;
+
+            // ECRETAGES
+            if (P < 1E-4) TAU = 0;
+            if (P < 1E-4) P = 0;
+            if (P > (1d - (1E-4))) TAU = 0;
+            if (P > (1d - (1E-4))) P = 1;
+
+            // CALCUL DES PARAMETRES DU MODELE
+            Q = 1d - P;
+            if (TAU <= 1E-4)
+            {
+                TAU = 0;
+                ALPHA = P * 1E4;
+                BETA = Q * 1E4;
+            }
+            else
+            {
+                ALPHA = P / TAU;
+                BETA = Q / TAU;
+            }
+
+            if (TAU < 0.003)
+            {
+                for (int I = 0; I <= NSEG; I++)
+                    DISTR[I] = 0;
+
+                if (P > 0.998)
+                    DISTR[NSEG] = 1;
+                else if (P < 0.002)
+                    DISTR[0] = 1;
+                else
+                    DISTR[(int)Math.Truncate(P * (NSEG + 1))] = 1;
+            }
+            // TAU > ou = 0.003
+            else
+            {
+                for (int J = 2; J <= JMAX; J++)
+                    BUFS[J] = Math.Exp((ALPHA - 1) * LOGS[J] + (BETA - 1) * LOGS[JSUP - J]);
+                // ASTUCE POUR LES EXTREMITES
+                LEBND = LOGS[2];
+                X = 1d / (6 * (NSEG + 1));
+                Y = 1d - (BETA - 1d) / JSUP;
+                if (Y < 0.8) Y = 0.8;
+                if (Y > 1.2) Y = 1.2;
+                DISTR[0] = Y * Math.Exp(ALPHA * LEBND) / ALPHA;
+                Y = 1d - (ALPHA - 1d) / JSUP;
+
+                if (Y < 0.8) Y = 0.8;
+                if (Y > 1.2) Y = 1.2;
+                DISTR[NSEG] = Y * Math.Exp(BETA * LEBND) / BETA;
+                // SEGMENTS INTERMEDIAIRES
+                for (int I = 1; I <= NSEG - 1; I++)
+                    DISTR[I] = (BUFS[2 * I] + BUFS[2 + 2 * I] + 4 * BUFS[1 + 2 * I]) * X;
+                // NORMALISATION DE DISTR
+                BAB = 0d;
+                for (int I = 0; I <= NSEG; I++)
+                    BAB = BAB + DISTR[I];
+                for (int I = 0; I <= NSEG; I++)
+                    DISTR[I] = DISTR[I] / BAB;
+            }
+
+            // CORRECTION DES Z ET U
+            V = 1d - Z - U;
+            for (int I = 0; I <= NSEG; I++)
+                DISTR[I] = DISTR[I] * V;
+            DISTR[0] = DISTR[0] + Z;
+            DISTR[NSEG] = DISTR[NSEG] + U;
+            REP[0] = DISTR[0];
+            for (int I = 1; I <= NSEG; I++)
+                REP[I] = REP[I - 1] + DISTR[I];
         }
     }
+}

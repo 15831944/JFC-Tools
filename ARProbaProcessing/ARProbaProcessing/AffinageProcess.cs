@@ -71,6 +71,16 @@ namespace ARProbaProcessing
             string pathAttribp2 = @"C:\AffinageART\France\Source\SFR04\OUTPUT\SORTIE10.TXT";
             #endregion entrées attribp2
 
+            #region entrées Transp08
+            int NB_STA_IDF = 14;
+            string pathTransp08 = @"C:\AffinageART\France\Source\SFR04\OUTPUT\2020.SUP";
+            string pathYearNat = @"C:\AffinageART\France\Source\SFR04\OUTPUT\PANRA120.NAT";
+            string pathYearIdf = @"C:\AffinageART\France\Source\SFR04\OUTPUT\PANRA120.IDF";
+            string pathYearSup = @"C:\AffinageART\France\Source\SFR04\OUTPUT\PANRA120.SUP";
+
+            int[] ISTA = new int[] { 999999, 0, 1, 0, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1 };
+            #endregion entrées Transp08
+
             segpanel();
 
             VsorPoid[][] JN = ecrpan1j(pathF04, NbStation, nbStationTotal, ITS, year);   // [Jour 1..23][Individus 1..N] = {VOSR[,]?, Poid[]}
@@ -114,7 +124,8 @@ namespace ARProbaProcessing
             int[,,,] PROBAS = attribp2(NBINDIV, NB_STA_HAB_NOTO, regrs, POIDSEGM, NINI_IND_STA, noteIndiv, audiences, NINI_IND_QH_W,
                 ZUPTAUSECOR, ZUPTAUSACOR, ZUPTAUDICOR, pathAttribp2); // [STATIONS, LV/Sa/Di, QH, INDIVS]
 
-            transp08();
+            transp08(NBINDIV, NB_STA_HAB_NOTO, NB_STA_IDF, ISTA, POIDSEGM ,lstFiltreIDF, lstPoids, PROBAS, pathTransp08, pathYearNat, pathYearIdf, pathYearSup);
+
             crecib08();
             penetr();
             asympt();
