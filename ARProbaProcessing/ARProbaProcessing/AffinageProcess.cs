@@ -61,11 +61,15 @@ namespace ARProbaProcessing
             string pathCouv = @"C:\AffinageART\France\Source\SFR04\OUTPUT\SORTIE9.TXT";
             #endregion entrées cont75br
 
-            #region entrées cnzuptse
+            #region entrées attribp2
             string pathCnzuptse = @"C:\AffinageART\France\Source\SFR04\OUTPUT\SORTIESE.COR";
             string pathCnzuptsa = @"C:\AffinageART\France\Source\SFR04\OUTPUT\SORTIESA.COR";
             string pathCnzuptdi = @"C:\AffinageART\France\Source\SFR04\OUTPUT\SORTIEDI.COR";
-            #endregion entrées cnzuptse
+            #endregion entrées cnzuptse..
+
+            #region entrées attribp2
+            string pathAttribp2 = @"C:\AffinageART\France\Source\SFR04\OUTPUT\SORTIE10.TXT";
+            #endregion entrées attribp2
 
             segpanel();
 
@@ -76,9 +80,9 @@ namespace ARProbaProcessing
             List<Fushab09Indiv> fushab09Indivs = Fushab09(NbStation, SIGN_LINE_LEN_BEFORE_HAB, NB_STA_ALL_HAB, TABRH);
             int NBINDIV = fushab09Indivs.Count;
 
-            int[,,] NINI_IND_QH_W = chab1qhp(NbStation, fushab09Indivs); // Habitude
+            int[,,] NINI_IND_QH_W = chab1qhp(NbStation, fushab09Indivs); // Habitude [INDIV, QH, LV/Sa/Di];
 
-            int[,] NINI_IND_STA = crenonin(nbJour, NbStation, fushab09Indivs, JN);
+            int[,] NINI_IND_STA = crenonin(nbJour, NbStation, fushab09Indivs, JN); // [INDIV, STATIONS] 
 
             ecrsegpa(pathSig, COL_PIAB, COL_CSCI, COL_SEX, COL_AGE, COL_RUDA, NbStation, NBINDIV, SIGN_LINE_LEN_FULL,
                      out int[,] POIDSEGM, out int IPOP);
@@ -101,13 +105,14 @@ namespace ARProbaProcessing
 
             cont75br(NBINDIV, NB_STA_HAB_NOTO, popLV, popS, popD, Couverture, pathCouv);
 
-            double[,,,] ZUPTAUSECOR = cnzuptse(NBINDIV, NB_STA_HAB_NOTO, pathCnzuptse, Couverture, regrs, ZUPTAUSE);
+            double[,,,] ZUPTAUSECOR = cnzuptse(NBINDIV, NB_STA_HAB_NOTO, pathCnzuptse, Couverture, regrs, ZUPTAUSE);  // double[STATIONS, QH, DATAS ZR-UR-PR-TAUX, CELL];
 
             double[,,,] ZUPTAUSACOR = cnzuptsa(NBINDIV, NB_STA_HAB_NOTO, pathCnzuptsa, Couverture, regrs, ZUPTAUSE);
 
             double[,,,] ZUPTAUDICOR = cnzuptdi(NBINDIV, NB_STA_HAB_NOTO, pathCnzuptdi, Couverture, regrs, ZUPTAUSE);
 
-            attribp2();
+            int[,,,] PROBAS = attribp2(NBINDIV, NB_STA_HAB_NOTO, regrs, POIDSEGM, NINI_IND_STA, noteIndiv, audiences, NINI_IND_QH_W,
+                ZUPTAUSECOR, ZUPTAUSACOR, ZUPTAUDICOR, pathAttribp2); // [STATIONS, LV/Sa/Di, QH, INDIVS]
 
             transp08();
             crecib08();
@@ -1748,9 +1753,6 @@ namespace ARProbaProcessing
             int[] NB = new int[5 + 1];
             int[] ITTL = new int[5 + 1];
             int[] ITOU = new int[5 + 1];
-            int[] SEG2 = new int[16 + 1];
-            int[] SEG3 = new int[10 + 1];
-            int[] SEG4 = new int[6 + 1];
             int[] COMB = new int[15 + 1];
             int[] IZAB = new int[5 + 1];
             int[] ITJR = new int[5 + 1];
@@ -1872,9 +1874,9 @@ namespace ARProbaProcessing
                             int NIV = TREG[N1] + 1;
                             if (((N1 == 1) || (NIV == 1))
                                 ||
-                               (!((NIV == 2 && SEG2[N1] == SEG2[N1 - 1]) ||
-                                  (NIV == 3 && SEG3[SEG2[N1]] == SEG3[SEG2[N1 - 1]]) ||
-                                  (NIV == 4 && SEG4[SEG3[SEG2[N1]]] == SEG4[SEG3[SEG2[N1 - 1]]]) ||
+                               (!((NIV == 2 && SEG1[N1] == SEG1[N1 - 1]) ||
+                                  (NIV == 3 && SEG2[SEG1[N1]] == SEG2[SEG1[N1 - 1]]) ||
+                                  (NIV == 4 && SEG3[SEG2[SEG1[N1]]] == SEG3[SEG2[SEG1[N1 - 1]]]) ||
                                   (NIV == 5))))
                             {
                                 for (int I = 1; I <= 16; I++)
@@ -3195,15 +3197,7 @@ namespace ARProbaProcessing
 
             return RESULCOR;
         }
-        private void attribp2()
-        {
 
-        }
-
-        private void transp08()
-        {
-
-        }
         private void crecib08()
         {
 
