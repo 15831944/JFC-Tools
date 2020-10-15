@@ -540,7 +540,7 @@ namespace ARProbaProcessing
         }
 
 
-        private void penetr(int NBIND, int NBSTA, VsorPoid[][] JN, List<int> POIDS, string pathPenetr, int population, int[] idStations)
+        private void penetr(int NBIND, int NBSTA, VsorPoid[][] JN, List<int> POIDS, string pathPenetr, int population, string[] idStations)
         {
             // PANEL RADIO 08 MEDIAMETRIE
             // ACCUMULATION D'AUDIENCE 3 SEMAINES (0-24h)
@@ -550,16 +550,8 @@ namespace ARProbaProcessing
             int[,,] VSOR2 = new int[NBJOUR + 1, 6, NBSTA + 1];
             int[] ITAP = new int[NBSTA + 1];
             int[,] FLAG = new int[NBSTA + 1, NBIND + 1];
-
-            //      INTEGER * 2 NBIT(0:15),L1BIT
-            //      INTEGER * 2 POID(96),VSOR(6, NBSTA),VSOR2(NBJOUR, 6, NBSTA),FLAG(NBSTA, NBIND),POIDS(NBIND)
-            //      INTEGER * 4 ITAP(NBSTA)
-            //      CHARACTER C2*2
-
+            
             // INITIALISATIONS
-
-            //      OPEN(13, FILE = '#OUTPUT#penetr',
-
 
             for (int I = 1; I <= NBJOUR; I++)
             {
@@ -595,17 +587,6 @@ namespace ARProbaProcessing
                 }
             }
 
-            //TODO ?????  AControler
-            //DO K = 1, NBSTA
-            // DO IG = 1, NBIND
-            //   ITAP(K) = ITAP(K) + FLAG(K, IG) * 10 * POIDS(IG)
-            // ENDDO
-            // IF(K.EQ.1) THEN
-            // WRITE(13, 101) 100.* REAL(ITAP(K)) / 54439040
-            // ELSE IF(K.EQ.2) THEN
-            // WRITE(13, 102) 100.* REAL(ITAP(K)) / 54439040
-            // ELSE IF(K.EQ.3) THEN.............................................
-
             if (File.Exists(pathPenetr)) File.Delete(pathPenetr);
             StreamWriter swPenetr = new StreamWriter(File.Create(pathPenetr));
             for (int K = 1; K <= NBSTA; K++)
@@ -614,7 +595,7 @@ namespace ARProbaProcessing
                 {
                     ITAP[K] = ITAP[K] + FLAG[K, IG] * 10 * POIDS[IG];
                 }
-                swPenetr.WriteLine(idStations[K].ToString() + "; " + (100d * ITAP[K]) / population);
+                swPenetr.WriteLine(idStations[K].PadLeft(50,' ') + "," + ((100d * ITAP[K]) / population).ToString("0.00"));
             }
             swPenetr.Close();
         }
