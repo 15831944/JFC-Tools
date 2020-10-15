@@ -89,8 +89,38 @@ namespace ARProbaProcessing
             #region entrées penetr
             string pathPenetr = @"C:\AffinageART\France\Source\SFR04\OUTPUT\penetr";
             int NB_STA_HAB_NOTO_TOTAL = 30;
-            int[] idStations = new int[NB_STA_HAB_NOTO_TOTAL + 1];
-            for (int i = 1; i < NB_STA_HAB_NOTO_TOTAL; i++) idStations[i] = 100 + i;
+            List<string> strStations = new List<string>();
+            strStations.Add("                                Les Indés Radios ");
+            strStations.Add("                                        Chérie FM");
+            strStations.Add("                                         Europe 1");
+            strStations.Add("                                     Virgin Radio");
+            strStations.Add("                                   France Culture");
+            strStations.Add("                                      France Info");
+            strStations.Add("                                     France Inter");
+            strStations.Add("                                   France Musique");
+            strStations.Add("                                        Fun Radio");
+            strStations.Add("                                          M Radio");
+            strStations.Add("                                        Nostalgie");
+            strStations.Add("                                              NRJ");
+            strStations.Add("                                      France Bleu");
+            strStations.Add("                                              RFM");
+            strStations.Add("                                              RMC");
+            strStations.Add("                                              RTL");
+            strStations.Add("                                             RTL2");
+            strStations.Add("                                          Skyrock");
+            strStations.Add("                                 Rire et Chansons");
+            strStations.Add("                     NRJ Global Proximité Premium");
+            strStations.Add("                                 Nova and Friends");
+            strStations.Add("                     Lagardère Publicité News IDF");
+            strStations.Add("                                       Radio Nova");
+            strStations.Add("                                            Lip !");
+            strStations.Add("                                    Paris – IDF +");
+            strStations.Add("                                  Radio Classique");
+            strStations.Add("                               Les Indés Capitale");
+            strStations.Add("                                   TF1 Pub Radios");
+            strStations.Add("                                         TSF JAZZ");
+            strStations.Add("                                      Total Radio");
+
             int population = 54439040;
             #endregion entrées penetr
 
@@ -141,7 +171,7 @@ namespace ARProbaProcessing
 
             int[,] PANCIB = crecib08(NBINDIV, fushab09Indivs, COL_AGE, COL_MENA, pathPan20Cib);
 
-            penetr(NBINDIV, NB_STA_HAB_NOTO_TOTAL, JN, lstPoids, pathPenetr, population, idStations);
+            penetr(NBINDIV, NB_STA_HAB_NOTO_TOTAL, JN, lstPoids, pathPenetr, population, strStations);
 
             //asympt(NBINDIV, NB_STA_HAB_NOTO);
         }

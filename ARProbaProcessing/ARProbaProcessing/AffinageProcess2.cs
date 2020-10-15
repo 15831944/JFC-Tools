@@ -540,7 +540,7 @@ namespace ARProbaProcessing
         }
 
 
-        private void penetr(int NBIND, int NBSTA, VsorPoid[][] JN, List<int> POIDS, string pathPenetr, int population, string[] idStations)
+        private void penetr(int NBIND, int NBSTA, VsorPoid[][] JN, List<int> POIDS, string pathPenetr, int population, List<string> strStations)
         {
             // PANEL RADIO 08 MEDIAMETRIE
             // ACCUMULATION D'AUDIENCE 3 SEMAINES (0-24h)
@@ -562,7 +562,7 @@ namespace ARProbaProcessing
                     {
                         for (int K = 1; K <= NBSTA; K++)
                         {
-                            VSOR2[I, J, K] = JN[I][IG].VSor[JN, K];  // [Jour 1..23][Individus 1..N] . VSor[1..6, STATIONS]
+                            VSOR2[I, J, K] = JN[I][IG].VSor[J, K];  // [Jour 1..23][Individus 1..N] . VSor[1..6, STATIONS]
                         }
                     }
 
@@ -595,7 +595,7 @@ namespace ARProbaProcessing
                 {
                     ITAP[K] = ITAP[K] + FLAG[K, IG] * 10 * POIDS[IG];
                 }
-                swPenetr.WriteLine(idStations[K].PadLeft(50,' ') + "," + ((100d * ITAP[K]) / population).ToString("0.00"));
+                swPenetr.WriteLine(strStations[K-1].PadLeft(50,' ') + "," + ((100d * ITAP[K]) / population).ToString("0.00"));
             }
             swPenetr.Close();
         }
