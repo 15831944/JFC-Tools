@@ -531,8 +531,8 @@ namespace ARProbaProcessing
                     bwNat.Write(Convert.ToInt16(KECR[I, J]));
                 }
             }
-
             bwNat.Close();
+
             Console.WriteLine($"CPT2 = {CPT2}");
             Console.WriteLine($"CPT3 = {CPT3}");
 
@@ -540,88 +540,83 @@ namespace ARProbaProcessing
         }
 
 
-        private void penetr()
+        private void penetr(int NBIND, int NBSTA, VsorPoid[][] JN, List<int> POIDS, string pathPenetr, int population, int[] idStations)
         {
-            //            C PANEL RADIO 08 MEDIAMETRIE
-            //     C        ACCUMULATION D'AUDIENCE 3 SEMAINES (0-24h)
+            // PANEL RADIO 08 MEDIAMETRIE
+            // ACCUMULATION D'AUDIENCE 3 SEMAINES (0-24h)
 
+            // Le nombre de station correspond au nombre de stations(#NB_STA_HAB_NOTO_TOTAL#) (avec Total Radio et Total TV)
+            int NBJOUR = 23;
+            int[,,] VSOR2 = new int[NBJOUR + 1, 6, NBSTA + 1];
+            int[] ITAP = new int[NBSTA + 1];
+            int[,] FLAG = new int[NBSTA + 1, NBIND + 1];
 
-            //C Le nombre de station correspond au nombre de stations(#NB_STA_HAB_NOTO_TOTAL#) (avec Total Radio et Total TV)
-            //      PARAMETER (NBSTA=#NB_STA_HAB_NOTO_TOTAL#)
-            //      PARAMETER(NBJOUR = 23)
-            //      PARAMETER (NBIND=#NB_INDIV#)
-
-            //      COMMON / NUBIT / NBIT
-            //      SAVE / NUBIT /
             //      INTEGER * 2 NBIT(0:15),L1BIT
             //      INTEGER * 2 POID(96),VSOR(6, NBSTA),VSOR2(NBJOUR, 6, NBSTA),FLAG(NBSTA, NBIND),POIDS(NBIND)
             //      INTEGER * 4 ITAP(NBSTA)
             //      CHARACTER C2*2
 
-            //C INITIALISATIONS
-
-            //      DATA NBIT/ 0,15,14,13,12,11,10,9,8,7,6,5,4,3,2,1 /
-
-            // C         OUVERTURE FICHIERS
-            //      OPEN(15, FILE = '#OUTPUT#POIDSEGS',
-            //     -FORM = 'UNFORMATTED', RECORDTYPE = 'FIXED')
-            //      READ(15) POIDS
+            // INITIALISATIONS
 
             //      OPEN(13, FILE = '#OUTPUT#penetr',
-            //     -RECORDTYPE = 'TEXT')
 
 
-            //      DO I = 1, NBJOUR
-            //        WRITE(C2, '(I2.2)') I
-            //        OPEN(14, FILE = '#OUTPUT#jfc\JN'//C2//'NIV.JFC',
-            //     - FORM = 'UNFORMATTED', RECORDTYPE = 'FIXED')
+            for (int I = 1; I <= NBJOUR; I++)
+            {
+                // BOUCLE INDIVIDUS
+                for (int IG = 1; IG <= NBIND; IG++)
+                {
+                    for (int J = 1; J <= 6; J++)
+                    {
+                        for (int K = 1; K <= NBSTA; K++)
+                        {
+                            VSOR2[I, J, K] = JN[I][IG].VSor[JN, K];  // [Jour 1..23][Individus 1..N] . VSor[1..6, STATIONS]
+                        }
+                    }
 
-            //C BOUCLE INDIVIDUS
-            //DO IG = 1,NBIND
-            //          READ(14) VSOR,POID
-            //          DO J = 1,6
-            //            DO K = 1, NBSTA
-            //              VSOR2(I, J, K) = VSOR(J, K)
-            //            ENDDO
-            //          ENDDO
+                    for (int K = 1; K <= NBSTA; K++)
+                    {
+                        for (int M = 1; M <= 6; M++)
+                        {
+                            for (int L = 1; L <= 16; L++)
+                            {
+                                int[] bits = new int[7];
+                                for (int b = 1; b <= 6; b++)
+                                    bits[b] = JN[I][IG].VSor[b, K];
 
-            //          DO K = 1, NBSTA
-            //            DO M = 1,6
-            //              DO L = 1,16
-            //                IF(L1BIT(VSOR2(I, M, K), L).EQ.1) FLAG(K, IG) = 1
-            //              ENDDO
-            //            ENDDO
-            //          ENDDO
-            //        ENDDO
-            //        CLOSE(14)
+                                if (L1BITFCT(bits, L))
+                                {
+                                    FLAG[K, IG] = 1;
+                                }
+                            }
+                        }
+                    }
 
-            //      ENDDO
+                }
+            }
 
-            //C                                                FIN DE FICHIER
-            //      WRITE(6, 1) IG - 1
-            //      DO K = 1, NBSTA
-            //        DO IG = 1, NBIND
-            //          ITAP(K) = ITAP(K) + FLAG(K, IG) * 10 * POIDS(IG)
-            //        ENDDO
+            //TODO ?????  AControler
+            //DO K = 1, NBSTA
+            // DO IG = 1, NBIND
+            //   ITAP(K) = ITAP(K) + FLAG(K, IG) * 10 * POIDS(IG)
+            // ENDDO
+            // IF(K.EQ.1) THEN
+            // WRITE(13, 101) 100.* REAL(ITAP(K)) / 54439040
+            // ELSE IF(K.EQ.2) THEN
+            // WRITE(13, 102) 100.* REAL(ITAP(K)) / 54439040
+            // ELSE IF(K.EQ.3) THEN.............................................
 
-            //# PENETRE_WRITE_ALL_STATION_HANDLING#
-
-            //      ENDDO
-            //      STOP
-            //    1 FORMAT('    NBGUS:', I6)
-
-            //# PENETRE_FORMAT_ALL_STATION_HANDLING#
-
-            //            END
-            //C----------------------------------------------------------------------
-            //      INTEGER * 2 FUNCTION L1BIT(ZLEC, IND)
-            //      COMMON / NUBIT / NBIT
-            //      SAVE / NUBIT /
-            //      INTEGER * 2 ZLEC(*),NBIT(0:15)
-            //      L1BIT = 0
-            //      IF(BTEST(ZLEC((IND + 15) / 16), NBIT(MOD(IND, 16)))) L1BIT = 1
-            //      RETURN
-            //      END
+            if (File.Exists(pathPenetr)) File.Delete(pathPenetr);
+            StreamWriter swPenetr = new StreamWriter(File.Create(pathPenetr));
+            for (int K = 1; K <= NBSTA; K++)
+            {
+                for (int IG = 1; IG <= NBIND; IG++)
+                {
+                    ITAP[K] = ITAP[K] + FLAG[K, IG] * 10 * POIDS[IG];
+                }
+                swPenetr.WriteLine(idStations[K].ToString() + "; " + (100d * ITAP[K]) / population);
+            }
+            swPenetr.Close();
         }
 
         public void SORTF(int I1, int IFIN, int[] RANG, double[] SCORE)

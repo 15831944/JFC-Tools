@@ -84,9 +84,15 @@ namespace ARProbaProcessing
             #region entrées crecib08
             int COL_MENA = 15;
             string pathPan20Cib = @"C:\AffinageART\France\Source\SFR04\OUTPUT\PAN20CIB";
-            
             #endregion entrées crecib08
 
+            #region entrées penetr
+            string pathPenetr = @"C:\AffinageART\France\Source\SFR04\OUTPUT\penetr";
+            int NB_STA_HAB_NOTO_TOTAL = 30;
+            int[] idStations = new int[NB_STA_HAB_NOTO_TOTAL + 1];
+            for (int i = 1; i < NB_STA_HAB_NOTO_TOTAL; i++) idStations[i] = 100 + i;
+            int population = 54439040;
+            #endregion entrées penetr
 
             segpanel();
 
@@ -135,7 +141,7 @@ namespace ARProbaProcessing
 
             int[,] PANCIB = crecib08(NBINDIV, fushab09Indivs, COL_AGE, COL_MENA, pathPan20Cib);
 
-            penetr();
+            penetr(NBINDIV, NB_STA_HAB_NOTO_TOTAL, JN, lstPoids, pathPenetr, population, idStations);
 
             //asympt(NBINDIV, NB_STA_HAB_NOTO);
         }
