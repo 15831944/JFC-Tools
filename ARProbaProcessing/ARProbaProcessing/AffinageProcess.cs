@@ -33,6 +33,11 @@ namespace ARProbaProcessing
             int[] TABRH = null;
             #endregion
 
+            #region entrées segpanel
+            string pathSIGJFC_BDE = @"c:\Affinage\Panel_National\PanFra20\Input\F04\sig20jfc2.bde";
+            string pathSortie1 = @"C:\AffinageART\France\Source\SFR04\OUTPUT\SORTIE1.TXT";
+            #endregion entrées segpanel
+
             #region entrées ecrpan1
             string pathF04 = @"c:\Affinage\Panel_National\PanFra20\Input\F04\";
             int nbStationTotal = NbStation;
@@ -58,7 +63,7 @@ namespace ARProbaProcessing
             int popLV = 54439040;
             int popS = 54438920;
             int popD = 54439190;
-            string pathCouv = @"C:\AffinageART\France\Source\SFR04\OUTPUT\SORTIE9.TXT";
+            string pathSortie9 = @"C:\AffinageART\France\Source\SFR04\OUTPUT\SORTIE9.TXT";
             #endregion entrées cont75br
 
             #region entrées attribp2
@@ -90,7 +95,7 @@ namespace ARProbaProcessing
             string pathPenetr = @"C:\AffinageART\France\Source\SFR04\OUTPUT\penetr";
             int NB_STA_HAB_NOTO_TOTAL = 30;
             List<string> strStations = new List<string>();
-            strStations.Add("x!x"); 
+            strStations.Add("x!x");
             strStations.Add("                                Les Indés Radios ");
             strStations.Add("                                        Chérie FM");
             strStations.Add("                                         Europe 1");
@@ -137,14 +142,13 @@ namespace ARProbaProcessing
             #endregion entrées Asymp
 
 
-            segpanel();
+            int NBINDIV = segpanel(COL_PIAB, COL_CSCI, COL_SEX, COL_AGE, COL_RUDA, pathSIGJFC_BDE,  pathSortie1);
 
             VsorPoid[][] JN = ecrpan1j(pathF04, NbStation, nbStationTotal, ITS, year);   // [Jour 1..23][Individus 1..N] = {VOSR[,]?, Poid[]}
 
             VsorPoid[][][] JNByWeek = regr5jp2(JN); // [Semaine 1..3][Jour de semaine Lundi à vendredi 1..5][indiv]
 
             List<Fushab09Indiv> fushab09Indivs = Fushab09(NbStation, SIGN_LINE_LEN_BEFORE_HAB, NB_STA_ALL_HAB, TABRH);
-            int NBINDIV = fushab09Indivs.Count;
 
             int[,,] NINI_IND_QH_W = chab1qhp(NbStation, fushab09Indivs); // Habitude [INDIV, QH, LV/Sa/Di];
 
@@ -169,7 +173,7 @@ namespace ARProbaProcessing
 
             double[,,,] Couverture = cgrp75br(PathGRPWave, NbStation, NbGRPModulation, NbGRPStation, NotorieteStation);  // [LV/Sa/Di, QH, 4 + 1, CELL];
 
-            cont75br(NBINDIV, NB_STA_HAB_NOTO, popLV, popS, popD, Couverture, pathCouv);
+            cont75br(NBINDIV, NB_STA_HAB_NOTO, popLV, popS, popD, Couverture, pathSortie9);
 
             double[,,,] ZUPTAUSECOR = cnzuptse(NBINDIV, NB_STA_HAB_NOTO, pathCnzuptse, Couverture, regrs, ZUPTAUSE);  // double[STATIONS, QH, DATAS ZR-UR-PR-TAUX, CELL];
 
@@ -180,7 +184,7 @@ namespace ARProbaProcessing
             int[,,,] PROBAS = attribp2(NBINDIV, NB_STA_HAB_NOTO, regrs, POIDSEGM, NINI_IND_STA, noteIndiv, audiences, NINI_IND_QH_W,
                 ZUPTAUSECOR, ZUPTAUSACOR, ZUPTAUDICOR, pathAttribp2); // [STATIONS, LV/Sa/Di, QH, INDIVS]
 
-            BSupport BSUP = transp08(NBINDIV, NB_STA_HAB_NOTO, NB_STA_IDF, ISTA, POIDSEGM ,lstFiltreIDF, lstPoids, PROBAS, pathTransp08, pathYearNat, pathYearIdf, pathYearSup);
+            BSupport BSUP = transp08(NBINDIV, NB_STA_HAB_NOTO, NB_STA_IDF, ISTA, POIDSEGM, lstFiltreIDF, lstPoids, PROBAS, pathTransp08, pathYearNat, pathYearIdf, pathYearSup);
 
             int[,] PANCIB = crecib08(NBINDIV, fushab09Indivs, COL_AGE, COL_MENA, pathPan20Cib); // [3 + 1, NIND + 1]
 
@@ -311,9 +315,146 @@ namespace ARProbaProcessing
 
         }
 
-        private void segpanel()
+        private int segpanel(int COL_PIAB, int COL_CSCI, int COL_SEX, int COL_AGE, int COL_RUDA, string pathSIGJFC_BDE, string pathSortie1)
         {
+            // PANEL RADIO 08 MEDIAMETRIE(nouveau format)
+            // CONTROLE DES VOLUMES DES SEGMENTS
+            //
+            // Longueur d'une ligne: 599 + 2 car de fin
+            int[] SEGM = new int[16];
+            int ICSP, IREG, ISEX, IAGE, ISEG, IPERS, AGE;
 
+            // Nous avons besoin de la variable AGE pour le calcul de l'age qui est sur deux colonnes
+
+            int IG = 0;
+            int IPOP = 0;
+            IEnumerable<string> KHI2 = File.ReadLines(pathSIGJFC_BDE);
+            foreach (string strIndiv in KHI2)
+            {
+                // CALCUL DU POIDS(Colonnes 9 à 13 inclues)
+                IPERS = int.Parse(strIndiv.Substring(COL_PIAB, 5));
+
+                if (IPERS <= 0) continue;
+                IG++;
+                IPOP += IPERS * 10;
+
+                //  DETERMINATION DU SEGMENT
+                //  ------------------ -
+                //   CSP de l'interviewé
+                //  ------------------ -
+                //   La CSP de l'individu est codé sur une colonne (colonne 18)
+                //   ICSP = 1 correspond aux CSP +
+                //   ICSP = 2 correspond aux CSP -
+                //   ICSP = 3 correspond aux inactifs
+
+                ICSP = 1;
+                if ((strIndiv[COL_CSCI] == '1') || (int.Parse(strIndiv[COL_CSCI].ToString()) > 4)) ICSP = 2;
+                if (int.Parse(strIndiv[COL_CSCI].ToString()) > 6) ICSP = 3;
+
+                //  --------------------
+                //   Sexe de l'interviewé
+                //  --------------------
+                //   Le sexe de l'interviewé est codé sur une colonne (colonne 14)
+                //   ISEX = 1 correspond aux Hommes
+                //   ISEX = 2 correspond aux Femmes
+
+                ISEX = int.Parse(strIndiv[COL_SEX].ToString());
+
+                //  ----------------- -
+                //   Age de l'interviewé
+                //  ------------------ -
+                //  L'Age de l'interviewé est codé sur deux colonnes(colonne 24 et 25)
+                //  IAGE = 1 correspond aux 13 - 34 ans
+                //  IAGE = 2 correspond aux 35 - 59 ans
+                //  IAGE = 3 correspond aux 60 ans et +
+                AGE = int.Parse(strIndiv.Substring(COL_AGE, 2));
+                IAGE = 1;
+                if (AGE > 4) IAGE = 2;
+                if (AGE > 9) IAGE = 3;
+
+                //  --------------------------
+                //   Région UDA de l'interviewé
+                //  --------------------------
+                //   La région UDA de l'interviewé est codé sur une colonne (colonne 20)
+                //   IREG = 1 correspond aux 6 UDA Nord
+                //   IREG = 2 correspond aux 3 UDA Sud
+
+                IREG = 1;
+                if (int.Parse(strIndiv[COL_RUDA].ToString()) > 6) IREG = 2;
+
+                //C-------------------------------------------------------------------------- -
+                //  C On fonction des variables précédemment calculées, on détermine les segments
+                //  C-------------------------------------------------------------------------- -
+                if (IAGE != 3)
+                {
+                    if (ICSP == 1)
+                    {
+                        ISEG = 3;
+                        if (IREG == 1 && ISEX == 1) ISEG = 1;
+                        if (IREG == 1 && ISEX == 2) ISEG = 2;
+                    }
+                    else
+                    {
+                        if (ICSP != 3)
+                        {
+                            if (IAGE != 2)
+                            {
+                                ISEG = 4;
+                                if (ISEX == 2) ISEG = 5;
+                            }
+                            else
+                            {
+                                ISEG = 11;
+                                if (IREG == 1 && ISEX == 1) ISEG = 9;
+                                if (IREG == 1 && ISEX == 2) ISEG = 10;
+                            }
+                        }
+                        else
+                        {
+                            if (IAGE != 2)
+                            {
+                                ISEG = 8;
+                                if (IREG == 1 && ISEX == 1) ISEG = 6;
+                                if (IREG == 1 && ISEX == 2) ISEG = 7;
+                            }
+                            else
+                            {
+                                ISEG = 12;
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    ISEG = 13;
+                    if (IREG == 2) ISEG = 14;
+                    if (ISEX == 2) ISEG = ISEG + 2;
+                }
+
+                if (ISEG < 1 || ISEG > 16)
+                {
+                    Console.WriteLine($" ISEG= {ISEG}");
+                    return -1;
+                }
+                else
+                {
+                    SEGM[ISEG]++;
+                }
+
+            } // foreach (string strIndiv in KHI2)
+
+            if (File.Exists(pathSortie1)) File.Delete(pathSortie1);
+            StreamWriter swSortie1 = new StreamWriter(File.Create(pathSortie1));
+            swSortie1.WriteLine($"NBGUS: {IG}   POPULATION: {IPOP}");
+
+            for (int I = 1; I <= 16; I++)
+            {
+                double PEN = SEGM[I];
+                PEN = PEN * 100d / IG;
+                swSortie1.WriteLine($"CLASSE: {I}   VOLUME : {SEGM[I]}   POURCENTAGE: {PEN} ");
+            }
+
+            return IG;
         }
 
         private VsorPoid[][] ecrpan1j(string pathF04, int NBSTA, int NB_STA_TOTAL, int[] ITS, int year)
@@ -732,7 +873,7 @@ namespace ARProbaProcessing
             // PARAMETER(NBIND =#NB_INDIV#)
 
             // Longueur d'une ligne: 599 + 2 car de fin
-            int[] KHI2 = new int[SIGN_LINE_LEN_FULL + 1];
+            //int[] KHI2 = new int[SIGN_LINE_LEN_FULL + 1];
             SEGM = new int[NBIND + 1, 5 + 1];
             int ICSP, IREG, ISEX, IAGE, ISEG;
             int[] SEG2 = new int[16 + 1] { 999999, 1, 1, 2, 3, 3, 4, 4, 5, 6, 6, 7, 8, 9, 9, 10, 10 };
@@ -742,20 +883,17 @@ namespace ARProbaProcessing
             IPOP = 0;
 
             // OUVERTURE FICHIER
-            FileStream fs = File.Open(Path.Combine(pathSig, "sig20jfc.bde"), FileMode.Open);
-            fs.Seek(0, SeekOrigin.Begin);
-            BinaryReader br = new BinaryReader(fs);
+            IEnumerable<string> KHI2 = File.ReadLines(pathSig);
 
             // BOUCLE INDIVIDUS
             int IG = 0;
-            while (fs.Position != fs.Length)
+            //while (fs.Position != fs.Length)
+            foreach (string strIndiv in KHI2)
             {
-                for (int i = 1; i <= SIGN_LINE_LEN_FULL; i++)
-                    KHI2[i] = br.ReadByte();
-
                 ISEG = 0;
                 // CALCUL DU POIDS(Colonnes 9 à 13 inclues)
-                int IPERS = 10000 * (KHI2[COL_PIAB] - 48) + 1000 * (KHI2[COL_PIAB + 1] - 48) + 100 * (KHI2[COL_PIAB + 2] - 48) + 10 * (KHI2[COL_PIAB + 3] - 48) + (KHI2[COL_PIAB + 4] - 48);
+                int IPERS = int.Parse(strIndiv.Substring(COL_PIAB, 5));
+
                 if (IPERS > 0)
                 {
                     IG = IG + 1;
@@ -772,8 +910,8 @@ namespace ARProbaProcessing
                     // ICSP = 2 correspond aux CSP -
                     // ICSP = 3 correspond aux inactifs
                     ICSP = 1;
-                    if ((KHI2[COL_CSCI] - 48) == 1 || (KHI2[COL_CSCI] - 48) > 4) ICSP = 2;
-                    if ((KHI2[COL_CSCI] - 48) > 6) ICSP = 3;
+                    if ((strIndiv[COL_CSCI] == '1') || (int.Parse(strIndiv[COL_CSCI].ToString()) > 4)) ICSP = 2;
+                    if (int.Parse(strIndiv[COL_CSCI].ToString()) > 6) ICSP = 3;
 
                     //--------------------
                     // Sexe de l'interviewé
@@ -781,7 +919,7 @@ namespace ARProbaProcessing
                     // Le sexe de l'interviewé est codé sur une colonne (colonne #COL,SEXE#)
                     // ISEX = 1 correspond aux Hommes
                     // ISEX = 2 correspond aux Femmes
-                    ISEX = KHI2[COL_SEX] - 48;
+                    ISEX = int.Parse(strIndiv[COL_SEX].ToString());
 
                     //------------------ -
                     // Age de l'interviewé
@@ -790,7 +928,7 @@ namespace ARProbaProcessing
                     // IAGE = 1 correspond aux 13 - 34 ans
                     // IAGE = 2 correspond aux 35 - 59 ans
                     // IAGE = 3 correspond aux 60 ans et +
-                    int AGE = 10 * (KHI2[COL_AGE] - 48) + (KHI2[COL_AGE + 1] - 48);
+                    int AGE = int.Parse(strIndiv.Substring(COL_AGE, 2));
                     IAGE = 1;
                     if (AGE > 4) IAGE = 2;
                     if (AGE > 9) IAGE = 3;
@@ -801,8 +939,9 @@ namespace ARProbaProcessing
                     // La région UDA de l'interviewé est codé sur une colonne (colonne #COL,RUDA#)
                     // IREG = 1 correspond aux 6 UDA Nord
                     // IREG = 2 correspond aux 3 UDA Sud
+
                     IREG = 1;
-                    if ((KHI2[COL_RUDA] - 48) > 6) IREG = 2;
+                    if (int.Parse(strIndiv[COL_RUDA].ToString()) > 6) IREG = 2;
 
                     //-------------------------------------------------------------------------- -
                     // On fonction des variables précédemment calculées, on détermine les segments
@@ -2918,7 +3057,7 @@ namespace ARProbaProcessing
 
                         } // for (int N1 = 1; N1 <= 16; N1++)
 
-                    } 
+                    }
                     else
                     {
                         sortie.Append(" ***PAS D AUDIENCE POUR CE 1 / 4h * **");
