@@ -595,8 +595,128 @@ namespace ARProbaProcessing
                 {
                     ITAP[K] = ITAP[K] + FLAG[K, IG] * 10 * POIDS[IG];
                 }
-                swPenetr.WriteLine(strStations[K-1].PadLeft(50,' ') + "," + ((100d * ITAP[K]) / population).ToString("0.00"));
+                swPenetr.WriteLine(strStations[K].PadLeft(49,' ') + "," + ((100d * ITAP[K]) / population).ToString("0.00"));
             }
+            swPenetr.Close();
+        }
+
+
+        private void asympt(int NIND, int NBSTA, int NBSTATOTAL, string pathAS5H5H, string headerAS5H5H, List<string> stations)
+        {
+            // PANEL RADIO 08 MEDIAMETRIE
+            // PROGRAMME ASYMPT
+            // PENETRATIONS CUMULEES MAXI 5H - 29H LUNDI-DIMANCHE
+
+            int N = 3;
+
+            // Le nombre de station correspond au nombre de stations(#NB_STA_HAB_NOTO_TOTAL#) - #NB_STA_TOTAL_ONLY# pour Total Radio (et Total TV)
+            // Il ne nous reste plus que #NB_STA_HAB_NOTO,0# stations puisqu'on a supprimé SUD RADIO
+            int[] IPOI = new int[NIND + 1];
+            int[,] TABCI = new int[N + 1, NIND + 1];
+            int[] IPO2 = new int[NIND + 1];
+            int[] IPOPS = new int[N + 1];
+            double[] COUV = new double[N + 1];
+            int[] VECT = new int[NIND + 1];
+            int[,,] TABRES = new int[N + 1, NBSTATOTAL  + 1, NIND + 1];
+            int[] IG = new int[N + 1];
+
+            // OUVERTURE DES FICHIERS
+
+            //      OPEN(16, FILE = '#OUTPUT#AS5H5H',
+            //     -RECORDTYPE = 'TEXT')
+            //      OPEN(7, FILE = '#OUTPUT#PANRA1#YEAR#.SUP',
+            //     -FORM = 'UNFORMATTED', RECORDTYPE = 'FIXED', RECL = 2 * NIND)
+            //      READ(7) IPO2
+            //      READ(7) VECT
+
+            for (int IND = 1; IND <= NIND; IND++)
+            {
+                IPOI[IND] = IPO2[IND];
+                if (IPOI[IND] < 0) IPOI[IND] = IPOI[IND] + 65536;
+            }
+
+            // FICHIER DES SEGMENTS
+            //      OPEN(8, FILE = '#OUTPUT#PAN#YEAR#CIB',
+            //     -FORM = 'UNFORMATTED', RECORDTYPE = 'FIXED', RECL = 2 * NIND)
+            for (int I = 1; I <= N; I++)
+            {
+                //      READ(8)(TABCI(I, IND), IND = 1, NIND)
+                IPOPS[I] = 0;
+                IG[I] = 0;
+                for (int IND = 1; IND <= NIND; IND++)
+                {
+                    if (TABCI[I, IND] == 1)
+                    {
+                        IPOPS[I] += IPOI[IND];
+                        IG[I] = IG[I] + 1;
+                    }
+                }
+            }
+            //      CLOSE(8)
+
+
+            // BOUCLE STATIONS
+            for (int IS = 1; IS <= NBSTA; IS++)
+            { 
+                // BOUCLE SEMAINE SAMEDI DIMANCHE
+                for (int IU = 1; IU <= 3; IU++)
+                { 
+                    // BOUCLE TRANCHES HORAIRES(EN 1 / 2 HEURE)
+                    for (int ITR = 1; ITR <= 48; ITR++)
+                    { 
+                        //      READ(7) VECT
+                        //  TRANCHE HORAIRE 5h 29h
+                        if (ITR <= 48) 
+                        {
+                            // BOUCLE INDIVIDUS
+                            for (int IND = 1; IND <= NIND; IND++)
+                            {
+                                if (VECT[IND] > 0)
+                                {
+                                    for (int IN = 1; IN <= N; IN++)
+                                    {
+                                        if (TABCI[IN, IND] == 1) TABRES[IN, IS, IND] = 1;
+                                        if (TABCI[IN, IND] == 1) TABRES[IN, NBSTATOTAL, IND] = 1;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            Console.WriteLine("IPOPS");
+            for (int I = 1; I <= N; I++)
+                Console.WriteLine(IPOPS[I].ToString());
+
+            if (File.Exists(pathAS5H5H)) File.Delete(pathAS5H5H);
+            StreamWriter swPenetr = new StreamWriter(File.Create(pathAS5H5H));
+            // Header
+            swPenetr.WriteLine(headerAS5H5H);
+
+            for (int STA = 1; STA <= NBSTA; STA++)
+            {
+                for (int I = 1; I < N; I++)
+                {
+                    for (int IND = 1; IND <= NIND; IND++)
+                    {
+                        if (TABRES[I, 1, IND] == 1) COUV[I] += IPOI[IND];
+                    }
+                    COUV[I] *= 100d / IPOPS[I];
+                }
+                swPenetr.WriteLine(stations[STA].PadLeft(49) + COUV[1].ToString("0.00").PadLeft(8) + " " + COUV[2].ToString("0.00").PadLeft(8) + " " + COUV[3].ToString("0.00").PadLeft(8));
+            }
+
+
+            for (int I = 1; I <= N; I++)
+            {
+                for (int IND = 1; IND <= NIND; IND++)
+                {
+                    if (TABRES[I, NBSTATOTAL, IND] == 1) COUV[I] += IPOI[IND];
+                }
+                COUV[I] *= 100d / IPOPS[I];
+            }
+            swPenetr.WriteLine(" Total".PadRight(49) + COUV[1].ToString("0.00").PadLeft(8) + " " + COUV[2].ToString("0.00").PadLeft(8) + " " + COUV[3].ToString("0.00").PadLeft(8));
             swPenetr.Close();
         }
 

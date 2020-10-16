@@ -77,7 +77,7 @@ namespace ARProbaProcessing
             string pathYearNat = @"C:\AffinageART\France\Source\SFR04\OUTPUT\PANRA120.NAT";
             string pathYearIdf = @"C:\AffinageART\France\Source\SFR04\OUTPUT\PANRA120.IDF";
             string pathYearSup = @"C:\AffinageART\France\Source\SFR04\OUTPUT\PANRA120.SUP";
-
+            // ISTA : IDF & No Sud Radio ...
             int[] ISTA = new int[] { 999999, 0, 1, 0, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1 };
             #endregion entrées Transp08
 
@@ -90,6 +90,7 @@ namespace ARProbaProcessing
             string pathPenetr = @"C:\AffinageART\France\Source\SFR04\OUTPUT\penetr";
             int NB_STA_HAB_NOTO_TOTAL = 30;
             List<string> strStations = new List<string>();
+            strStations.Add("x!x"); 
             strStations.Add("                                Les Indés Radios ");
             strStations.Add("                                        Chérie FM");
             strStations.Add("                                         Europe 1");
@@ -123,6 +124,18 @@ namespace ARProbaProcessing
 
             int population = 54439040;
             #endregion entrées penetr
+
+            #region entrées Asymp
+            string pathAS5H5H = @"C:\AffinageART\France\Source\SFR04\OUTPUT\AS5H5H";
+            string headerAS5H5H = "             PANEL MEDIAMETRIE RADIO 2008" +
+                Environment.NewLine +
+                " PENETRATIONS CUMULEES MAXIMALES 5H-29H LUNDI-DIMANCHE " +
+                Environment.NewLine + Environment.NewLine + Environment.NewLine +
+                " STATIONS/AGREGATS      ENSEMBLE  HOMMES FEMMES     13-34 ANS";
+            // TODO: différence entre le fichier template quer j'ai avec la sortie du fichier donné par Fred
+            // Template : ...."STATIONS/AGREGATS      ENSEMBLE  MENAGERES    13-28'-/ 24X,'13 ANS +   - 50 ANS'
+            #endregion entrées Asymp
+
 
             segpanel();
 
@@ -173,7 +186,7 @@ namespace ARProbaProcessing
 
             penetr(NBINDIV, NB_STA_HAB_NOTO_TOTAL, JN, lstPoids, pathPenetr, population, strStations);
 
-            //asympt(NBINDIV, NB_STA_HAB_NOTO);
+            asympt(NBINDIV, NB_STA_HAB_NOTO, NB_STA_HAB_NOTO_TOTAL, pathAS5H5H, headerAS5H5H, strStations);
         }
 
         private void lecpanel(int SIGN_LINE_LEN_FULL, string Path_SIGJFC_BDE, int COL_AGE3, int COL_RUDA, int COL_PIAB_0, int COL_PIAB_1, int COL_PIAB_2, int COL_PIAB_3, int COL_PIAB_4, out List<int> lstPoids, out List<int> lstAges, out List<int> lstFiltreIDF)
@@ -3254,10 +3267,6 @@ namespace ARProbaProcessing
             return RESULCOR;
         }
 
-        private void asympt()
-        {
-
-        }
 
         private bool L1BITFCT(int[] ZLEC, int ind)
         {
