@@ -359,8 +359,8 @@ namespace ARProbaProcessing
             // TRANSFORMATION DES PROBABILITES INDIVIDUELLES
             //   DE 100e EN 1000e ET DE 1 / 4h EN 1 / 2h
 
-            int[,,,] KECR = new int[NBSTA + 1, 3 + 1, 96 + 1, NIND + 1];
-            int[,,,] KECRIDF = new int[NBSTAIDF + 1, 3 + 1, 96 + 1, NIND + 1];
+            int[,,,] KECR = new int[NBSTA + 1, 3 + 1, 48 + 1, NIND + 1];
+            int[,,,] KECRIDF = new int[NBSTAIDF + 1, 3 + 1, 48 + 1, NIND + 1];
             int[] RIEN = new int[NIND + 1];
             BSupport BSUP = new BSupport();
 
@@ -400,19 +400,17 @@ namespace ARProbaProcessing
                     {
                         int IH = IQ + 20;
                         if (IH > 96) IH = IH - 96;
-
+                        int IQ4 = (IQ + 1) / 2; 
                         // BOUCLE INDIVIDUS
                         for (int II = 1; II <= NIND; II++)
                         {
-                            KECR[IS, IU, IQ, II] = KHI2[IS, IU, IH, II];      //  [STATIONS, LV/Sa/Di, QH, INDIVS]
+                            KECR[IS, IU, IQ4, II] = KHI2[IS, IU, IH, II] + KHI2[IS, IU, IH + 1, II];      //  [STATIONS, LV/Sa/Di, QH, INDIVS]
 
-                            KECR[IS, IU, IQ, II] = KECR[IS, IU, IQ, II] + KHI2[IS, IU, IH + 1, II];
+                            KECR[IS, IU, IQ4, II] *= 5;
 
-                            KECR[IS, IU, IQ, II] *= 5;
+                            if (KECR[IS, IU, IQ4, II] < 0) Console.WriteLine($"{IS}, {IU}, {IQ4}");
 
-                            if (KECR[IS, IU, IQ, II] < 0) Console.WriteLine($"{IS}, {IU}, {IQ}");
-
-                            bwNat.Write(Convert.ToInt16(KECR[IS, IU, IQ, II]));
+                            bwNat.Write(Convert.ToInt16(KECR[IS, IU, IQ4, II]));
                         }
 
                         // ECRITURE FICHIER IDF
@@ -422,11 +420,11 @@ namespace ARProbaProcessing
                             for (int IN = 1; IN <= NIND; IN++)
                             {
                                 if (FILT[IN] == 0)
-                                    KECRIDF[IS, IU, IQ, IN] = 0;
+                                    KECRIDF[IS, IU, IQ4, IN] = 0;
                                 else
-                                    KECRIDF[IS, IU, IQ, IN] = KECR[IS, IU, IQ, IN];
+                                    KECRIDF[IS, IU, IQ4, IN] = KECR[IS, IU, IQ4, IN];
 
-                                bwIdf.Write(Convert.ToInt16(KECRIDF[IDF, IU, IQ, IN]));
+                                bwIdf.Write(Convert.ToInt16(KECRIDF[IDF, IU, IQ4, IN]));
                             }
                         }
                     }
@@ -446,7 +444,7 @@ namespace ARProbaProcessing
                 // BOUCLE UNIVERS
                 for (int IU = 1; IU <= 3; IU++)
                 {
-                    for (int IQ = 1; IQ <= 96; IQ += 2)
+                    for (int IQ = 1; IQ <= 48; IQ ++)
                     {
                         for (int II = 1; II <= NIND; II++)
                         {
@@ -460,7 +458,7 @@ namespace ARProbaProcessing
                 // BOUCLE UNIVERS IDF
                 for (int IU = 1; IU <= 3; IU++)
                 {
-                    for (int IQ = 1; IQ <= 96; IQ += 2)
+                    for (int IQ = 1; IQ <= 48; IQ ++)
                     {
                         for (int II = 1; II <= NIND; II++)
                         {
@@ -660,20 +658,16 @@ namespace ARProbaProcessing
                     // BOUCLE TRANCHES HORAIRES(EN 1 / 2 HEURE)
                     for (int ITR = 1; ITR <= 48; ITR++)
                     { 
-                        //      READ(7) VECT
                         //  TRANCHE HORAIRE 5h 29h
-                        if (ITR <= 48) 
+                        // BOUCLE INDIVIDUS
+                        for (int IND = 1; IND <= NIND; IND++)
                         {
-                            // BOUCLE INDIVIDUS
-                            for (int IND = 1; IND <= NIND; IND++)
+                            if (BSUP.KECR[IS, IU, ITR, IND] > 0)  // [NBSTA + 1, 3 + 1, 48 + 1, NIND + 1]
                             {
-                                if (BSUP.RIEN[IND] > 0)
+                                for (int IN = 1; IN <= N; IN++)
                                 {
-                                    for (int IN = 1; IN <= N; IN++)
-                                    {
-                                        if (TABCI[IN, IND] == 1) TABRES[IN, IS, IND] = 1;
-                                        if (TABCI[IN, IND] == 1) TABRES[IN, NBSTATOTAL, IND] = 1;
-                                    }
+                                    if (TABCI[IN, IND] == 1) TABRES[IN, IS, IND] = 1;
+                                    if (TABCI[IN, IND] == 1) TABRES[IN, NBSTATOTAL, IND] = 1;
                                 }
                             }
                         }
