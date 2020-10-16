@@ -46,12 +46,11 @@ namespace ARProbaProcessing
             #endregion entrées ecrpan1
 
             #region entrées ecrsegpa
-            string pathSig = @"C:\AffinageART\France\Source\SFR04\U120\";
-            int COL_PIAB = 9;
-            int COL_CSCI = 18;
-            int COL_SEX = 14;
-            int COL_AGE = 24;
-            int COL_RUDA = 20;
+            int COL_PIAB = 9-1;
+            int COL_CSCI = 18 - 1;
+            int COL_SEX = 14 - 1;
+            int COL_AGE = 24 - 1;
+            int COL_RUDA = 20 - 1;
             int SIGN_LINE_LEN_FULL = 694;
             #endregion entrées ecrsegpa
 
@@ -154,7 +153,7 @@ namespace ARProbaProcessing
 
             int[,] NINI_IND_STA = crenonin(nbJour, NbStation, fushab09Indivs, JN); // [INDIV, STATIONS] 
 
-            ecrsegpa(pathSig, COL_PIAB, COL_CSCI, COL_SEX, COL_AGE, COL_RUDA, NbStation, NBINDIV, SIGN_LINE_LEN_FULL,
+            ecrsegpa(pathSIGJFC_BDE, COL_PIAB, COL_CSCI, COL_SEX, COL_AGE, COL_RUDA, NbStation, NBINDIV, SIGN_LINE_LEN_FULL,
                      out int[,] POIDSEGM, out int IPOP);
 
             int[,,,] cellules = calcregr(NBINDIV, NB_STA_HAB_NOTO, NINI_IND_STA, POIDSEGM, JN); // int[LV/Sa/Di, STATIONS, QH, CELL];
