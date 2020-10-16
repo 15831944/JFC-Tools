@@ -180,13 +180,13 @@ namespace ARProbaProcessing
             int[,,,] PROBAS = attribp2(NBINDIV, NB_STA_HAB_NOTO, regrs, POIDSEGM, NINI_IND_STA, noteIndiv, audiences, NINI_IND_QH_W,
                 ZUPTAUSECOR, ZUPTAUSACOR, ZUPTAUDICOR, pathAttribp2); // [STATIONS, LV/Sa/Di, QH, INDIVS]
 
-            transp08(NBINDIV, NB_STA_HAB_NOTO, NB_STA_IDF, ISTA, POIDSEGM ,lstFiltreIDF, lstPoids, PROBAS, pathTransp08, pathYearNat, pathYearIdf, pathYearSup);
+            BSupport BSUP = transp08(NBINDIV, NB_STA_HAB_NOTO, NB_STA_IDF, ISTA, POIDSEGM ,lstFiltreIDF, lstPoids, PROBAS, pathTransp08, pathYearNat, pathYearIdf, pathYearSup);
 
-            int[,] PANCIB = crecib08(NBINDIV, fushab09Indivs, COL_AGE, COL_MENA, pathPan20Cib);
+            int[,] PANCIB = crecib08(NBINDIV, fushab09Indivs, COL_AGE, COL_MENA, pathPan20Cib); // [3 + 1, NIND + 1]
 
             penetr(NBINDIV, NB_STA_HAB_NOTO_TOTAL, JN, lstPoids, pathPenetr, population, strStations);
 
-            asympt(NBINDIV, NB_STA_HAB_NOTO, NB_STA_HAB_NOTO_TOTAL, pathAS5H5H, headerAS5H5H, strStations);
+            asympt(NBINDIV, NB_STA_HAB_NOTO, NB_STA_HAB_NOTO_TOTAL, BSUP, PANCIB, pathAS5H5H, headerAS5H5H, strStations);
         }
 
         private void lecpanel(int SIGN_LINE_LEN_FULL, string Path_SIGJFC_BDE, int COL_AGE3, int COL_RUDA, int COL_PIAB_0, int COL_PIAB_1, int COL_PIAB_2, int COL_PIAB_3, int COL_PIAB_4, out List<int> lstPoids, out List<int> lstAges, out List<int> lstFiltreIDF)

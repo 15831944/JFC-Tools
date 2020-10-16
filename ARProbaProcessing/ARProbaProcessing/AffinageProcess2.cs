@@ -352,7 +352,7 @@ namespace ARProbaProcessing
         }
 
 
-        private void transp08(int NIND, int NBSTA, int NBSTAIDF, int[] ISTA, int[,] POIDSEGS, List<int> FILT, List<int> POIDS, int[,,,] KHI2,
+        private BSupport transp08(int NIND, int NBSTA, int NBSTAIDF, int[] ISTA, int[,] POIDSEGS, List<int> FILT, List<int> POIDS, int[,,,] KHI2,
             string pathSortie, string pathYearNat, string pathYearIdf, string pathYearSup)
         {
             // PANEL RADIO 08 MEDIAMETRIE(nouveau format)
@@ -362,6 +362,7 @@ namespace ARProbaProcessing
             int[,,,] KECR = new int[NBSTA + 1, 3 + 1, 96 + 1, NIND + 1];
             int[,,,] KECRIDF = new int[NBSTAIDF + 1, 3 + 1, 96 + 1, NIND + 1];
             int[] RIEN = new int[NIND + 1];
+            BSupport BSUP = new BSupport();
 
             //      INITIALISATIONS
 
@@ -376,9 +377,7 @@ namespace ARProbaProcessing
             // COEFF.ET DEPARTEMENT
             for (int IND = 1; IND <= NIND; IND++)
             {
-                int IPOI = POIDS[IND];
-                IPOI = IPOI * 10;
-                POIDS[IND] = IPOI;
+                POIDS[IND] *= 10;
                 RIEN[IND] = 0;
             }
             for (int IND = 1; IND <= NIND; IND++) bwNat.Write(Convert.ToInt16(POIDS[IND]));
@@ -434,8 +433,10 @@ namespace ARProbaProcessing
                 }
             }
 
-            //      OPEN(15, FILE = '#OUTPUT#PANRA1#YEAR#.IDF',
-            //     -RECORDTYPE = 'FIXED', FORM = 'UNFORMATTED')
+            BSUP.POIDS = POIDS;
+            BSUP.RIEN = RIEN;
+            BSUP.KECR = KECR;
+            BSUP.KECRIDF = KECRIDF;
 
             for (int IND = 1; IND <= NIND; IND++) bwSup.Write(Convert.ToInt16(POIDS[IND]));
             for (int IND = 1; IND <= NIND; IND++) bwSup.Write(Convert.ToInt16(RIEN[IND]));
@@ -472,10 +473,9 @@ namespace ARProbaProcessing
             bwNat.Close();
             bwIdf.Close();
             bwSup.Close();
+
+            return BSUP;
         }
-
-
-
 
         private int[,] crecib08(int NIND, List<Fushab09Indiv> fushab09Indivs, int COL_AGE, int COL_MENA, string pathPan20Cib)
         {
@@ -601,7 +601,7 @@ namespace ARProbaProcessing
         }
 
 
-        private void asympt(int NIND, int NBSTA, int NBSTATOTAL, string pathAS5H5H, string headerAS5H5H, List<string> stations)
+        private void asympt(int NIND, int NBSTA, int NBSTATOTAL, BSupport BSUP, int[,] PANCIB, string pathAS5H5H, string headerAS5H5H, List<string> stations)
         {
             // PANEL RADIO 08 MEDIAMETRIE
             // PROGRAMME ASYMPT
@@ -613,17 +613,13 @@ namespace ARProbaProcessing
             // Il ne nous reste plus que #NB_STA_HAB_NOTO,0# stations puisqu'on a supprimé SUD RADIO
             int[] IPOI = new int[NIND + 1];
             int[,] TABCI = new int[N + 1, NIND + 1];
-            int[] IPO2 = new int[NIND + 1];
             int[] IPOPS = new int[N + 1];
             double[] COUV = new double[N + 1];
-            int[] VECT = new int[NIND + 1];
             int[,,] TABRES = new int[N + 1, NBSTATOTAL  + 1, NIND + 1];
             int[] IG = new int[N + 1];
 
             // OUVERTURE DES FICHIERS
 
-            //      OPEN(16, FILE = '#OUTPUT#AS5H5H',
-            //     -RECORDTYPE = 'TEXT')
             //      OPEN(7, FILE = '#OUTPUT#PANRA1#YEAR#.SUP',
             //     -FORM = 'UNFORMATTED', RECORDTYPE = 'FIXED', RECL = 2 * NIND)
             //      READ(7) IPO2
@@ -631,8 +627,8 @@ namespace ARProbaProcessing
 
             for (int IND = 1; IND <= NIND; IND++)
             {
-                IPOI[IND] = IPO2[IND];
-                if (IPOI[IND] < 0) IPOI[IND] = IPOI[IND] + 65536;
+                IPOI[IND] = BSUP.POIDS[IND];
+                //if (IPOI[IND] < 0) IPOI[IND] += 65536;  /// ???
             }
 
             // FICHIER DES SEGMENTS
@@ -645,7 +641,7 @@ namespace ARProbaProcessing
                 IG[I] = 0;
                 for (int IND = 1; IND <= NIND; IND++)
                 {
-                    if (TABCI[I, IND] == 1)
+                    if (PANCIB[I, IND] == 1)
                     {
                         IPOPS[I] += IPOI[IND];
                         IG[I] = IG[I] + 1;
@@ -671,7 +667,7 @@ namespace ARProbaProcessing
                             // BOUCLE INDIVIDUS
                             for (int IND = 1; IND <= NIND; IND++)
                             {
-                                if (VECT[IND] > 0)
+                                if (BSUP.RIEN[IND] > 0)
                                 {
                                     for (int IN = 1; IN <= N; IN++)
                                     {
@@ -837,5 +833,13 @@ namespace ARProbaProcessing
             for (int I = 1; I <= NSEG; I++)
                 REP[I] = REP[I - 1] + DISTR[I];
         }
+    }
+
+    public struct BSupport
+    {
+        public List<int> POIDS;
+        public int[] RIEN;
+        public int[,,,] KECR;
+        public int[,,,] KECRIDF;
     }
 }
