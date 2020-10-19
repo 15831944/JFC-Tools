@@ -65,11 +65,17 @@ namespace ARProbaProcessing
             //return;
 
             // PANEL NATIONAL
-            // var process = new ARProba(@"C:\Affinage\Panel_National\Panfra", "20", "");
+            var process = new ARProba(@"C:\Affinage\Panel_National\Panfra", "19", "");
 
             // PANEL IDF
-            var process = new ARProba(@"C:\Affinage\Panel_Idf\Panfra", "20", "");
-            
+            //var process = new ARProba(@"C:\Affinage\Panel_Idf\Panfra", "20", "");
+
+            new AffinageProcess().Run(process,
+                @"c:\Affinage\Panel_National\Panfra19\Input",
+                @"c:\Affinage\Panel_National\Panfra19\Output"
+                );
+
+            return;
             process.Run();
             if (!ModeDebug)
                 process.TestCouv();    // en 1ere phase en commentaire (Debug) et mettre en 2eme phase en mode Release
@@ -477,8 +483,8 @@ namespace ARProbaProcessing
 
             // Read Uxx Audience file
             //   string uxxFile = InputPath + string.Format(@"U1" + YearName + ".sup.desc");
-            /// string uxxFile = InputPath + string.Format(@"U" + YearName + "1.sup.desc");
-            string uxxFile = InputPath + string.Format(@"C1" + YearName + ".sup.desc");
+            string uxxFile = InputPath + string.Format(@"U" + YearName + "1.sup.desc");
+            //string uxxFile = InputPath + string.Format(@"C1" + YearName + ".sup.desc");
 
             var grpStaFile = File.ReadAllLines(uxxFile, Encoding.GetEncoding("Windows-1252"));
 
@@ -516,9 +522,9 @@ namespace ARProbaProcessing
 
             List<string> exceptionList = new List<string>();
 
-            // string uxxExceptFile = InputPath + string.Format(@"U" + YearName + "1_sta_exception.desc");
-            // string uxxExceptFile = InputPath + string.Format(@"U1" + YearName + "_sta_exception.desc");
-            string uxxExceptFile = InputPath + string.Format(@"C1" + YearName + "_sta_exception.desc");
+            string uxxExceptFile = InputPath + string.Format(@"U" + YearName + "1_sta_exception.desc");
+            //string uxxExceptFile = InputPath + string.Format(@"U1" + YearName + "_sta_exception.desc");
+            //string uxxExceptFile = InputPath + string.Format(@"C1" + YearName + "_sta_exception.desc");
 
 
             if (!File.Exists(uxxExceptFile))
@@ -683,9 +689,9 @@ namespace ARProbaProcessing
             // Load population txt
             U1xxPopTxt = new List<string>();
 
-            // string uxxPopFile = InputPath + string.Format(@"U" + YearName + "1_Pop.txt");
+            string uxxPopFile = InputPath + string.Format(@"U" + YearName + "1_Pop.txt");
             // string uxxPopFile = InputPath + string.Format(@"U1" + YearName + "_Pop.txt");
-            string uxxPopFile = InputPath + string.Format(@"C1" + YearName + "_Pop.txt");
+            //string uxxPopFile = InputPath + string.Format(@"C1" + YearName + "_Pop.txt");
 
             var popTxtFile = File.ReadAllLines(uxxPopFile, Encoding.GetEncoding("Windows-1252"));
 

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 
 namespace ARProbaProcessing
@@ -13,9 +14,39 @@ namespace ARProbaProcessing
         private int[] SEG2 = new int[] { 999999, 1, 1, 2, 3, 3, 4, 4, 5, 6, 6 };
         private int[] SEG3 = new int[] { 999999, 1, 2, 2, 3, 3, 4 };
 
-        public void Run()
+        public void Run(ARProba arProba, string inputPath, string OutputPath)
         {
-            int NbStation = 0;
+            #region BeginProcess
+            bool ModeDebug = false;
+
+            // Create Output JFC folder if it does not exist
+            if (!Directory.Exists(OutputPath + "jfc"))
+                Directory.CreateDirectory(OutputPath + "jfc");
+
+            //// Generate the F04 files
+            // mettre en commentaire en mode Debug 
+            // enlever commentaire en mode Release
+            //////////////////// pour ces 2 lignes /////////////////////
+            if (!ModeDebug)
+            {
+                var f04Processor = new F04Processor(arProba);
+                f04Processor.ConvertBDEFiles();
+            }
+            ////////////////////////////////////////////////////////////
+
+            var fortranProcessor = new FortranProcessor(arProba);
+            FortranProcessor.VarHandlers varHandlers = new FortranProcessor.VarHandlers(arProba, fortranProcessor);
+
+            // false : en mode Debug
+            // true  : en mode Release
+            bool run = false;
+            if (!ModeDebug)
+                run = true;
+            #endregion EndProcess
+
+
+            int NbStation = arProba.HabAndNotoStationCount;
+            int NB_STA_HAB_NOTO = arProba.HabAndNotoStationCount;
             int NbGRPModulation = 0;
             int NbGRPStation = 0;
             int[] NotorieteStation = null;
@@ -25,73 +56,83 @@ namespace ARProbaProcessing
             List<int> lstFiltreIDF;
             int nbJour = 23;
 
-            lecpanel(0, "", 0, 0, 0, 0, 0, 0, 0, out lstPoids, out lstAges, out lstFiltreIDF);
+            int COL_AGE3 = 648-1;
+            int COL_RUDA = 20 - 1;
+            int COL_PIAB = 9 - 1;
+            string pathSIGJFC_BDE = Path.Combine( inputPath,@"Bde\sig19jfc.bde");
+            lecpanel(pathSIGJFC_BDE, COL_AGE3, COL_RUDA, COL_PIAB, out lstPoids, out lstAges, out lstFiltreIDF);
 
             #region entrées Fushab09
-            int SIGN_LINE_LEN_BEFORE_HAB = 0;
-            int NB_STA_ALL_HAB = 0;
-            int[] TABRH = null;
+            int SIGN_LINE_LEN_BEFORE_HAB = SIGN_LINE_LEN_BEFORE_HAB_FCT(arProba);
+            int SIGN_LINE_LEN_AFTER_HAB = SIGN_LINE_LEN_AFTER_HAB_FCT(arProba);
+            int NB_STA_ALL_HAB = arProba.AllHabStationCount; 
+            int[] TABRH = HAB_STA_LIST_ID_NOTO_SET_TO_TOTAL_RADIO(arProba);
             #endregion
 
             #region entrées segpanel
-            string pathSIGJFC_BDE = @"c:\Affinage\Panel_National\PanFra20\Input\F04\sig20jfc2.bde";
-            string pathSortie1 = @"C:\AffinageART\France\Source\SFR04\OUTPUT\SORTIE1.TXT";
+
+            string pathSortie1 = Path.Combine(OutputPath, "SORTIE1.TXT");
             #endregion entrées segpanel
 
             #region entrées ecrpan1
-            string pathF04 = @"c:\Affinage\Panel_National\PanFra20\Input\F04\";
-            int nbStationTotal = NbStation;
-            int year = 2020;
-            int[] ITS = new int[] { 999999, 16, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, -35, 36, 37, 39, 47, 50, 53, 54, 55, 56, 59, 60, 61, 64, 1 };
+            string pathF04 = Path.Combine(inputPath, "F04");
+            int nbStationTotal = arProba.StationCount;
+            int nbStationHabNotoTotal = arProba.HabAndNotoStationCount + arProba.HabAndNotoTotalStationListCount;
+            int nbStationHabNoto = arProba.HabAndNotoStationCount;
+            int year = 2000 + int.Parse(arProba.YearName);
+            
+            int[] ITS = new int[nbStationHabNotoTotal+1];
+            int i = 1;
+            foreach (var x in arProba.HabAndNotoStationList)
+                ITS[i++] = x.Id;
+            foreach (var x in arProba.HabAndNotoTotalStationList)
+                ITS[i++] = x.Id;
             #endregion entrées ecrpan1
 
             #region entrées ecrsegpa
-            int COL_PIAB = 9-1;
             int COL_CSCI = 18 - 1;
             int COL_SEX = 14 - 1;
             int COL_AGE = 24 - 1;
-            int COL_RUDA = 20 - 1;
+            
             int SIGN_LINE_LEN_FULL = 694;
+            string pathSortie5 = Path.Combine(OutputPath, "SORTIE5.TXT");
             #endregion entrées ecrsegpa
 
-            #region entrees Calcregr
-            int NB_STA_HAB_NOTO = NbStation;
-            #endregion entrees Calcregr
 
             #region entrées cont75br
             int popLV = 54439040;
             int popS = 54438920;
             int popD = 54439190;
-            string pathSortie9 = @"C:\AffinageART\France\Source\SFR04\OUTPUT\SORTIE9.TXT";
+            string pathSortie9 = Path.Combine(OutputPath, "SORTIE9.TXT");
             #endregion entrées cont75br
 
             #region entrées attribp2
-            string pathCnzuptse = @"C:\AffinageART\France\Source\SFR04\OUTPUT\SORTIESE.COR";
-            string pathCnzuptsa = @"C:\AffinageART\France\Source\SFR04\OUTPUT\SORTIESA.COR";
-            string pathCnzuptdi = @"C:\AffinageART\France\Source\SFR04\OUTPUT\SORTIEDI.COR";
+            string pathCnzuptse = Path.Combine(OutputPath, "SORTIESE.COR");
+            string pathCnzuptsa = Path.Combine(OutputPath, "SORTIESA.COR");
+            string pathCnzuptdi = Path.Combine(OutputPath, "SORTIEDI.COR");
             #endregion entrées cnzuptse..
 
             #region entrées attribp2
-            string pathAttribp2 = @"C:\AffinageART\France\Source\SFR04\OUTPUT\SORTIE10.TXT";
+            string pathAttribp2 = Path.Combine(OutputPath, "SORTIE10.TXT");
             #endregion entrées attribp2
 
             #region entrées Transp08
             int NB_STA_IDF = 14;
-            string pathTransp08 = @"C:\AffinageART\France\Source\SFR04\OUTPUT\2020.SUP";
-            string pathYearNat = @"C:\AffinageART\France\Source\SFR04\OUTPUT\PANRA120.NAT";
-            string pathYearIdf = @"C:\AffinageART\France\Source\SFR04\OUTPUT\PANRA120.IDF";
-            string pathYearSup = @"C:\AffinageART\France\Source\SFR04\OUTPUT\PANRA120.SUP";
+            string pathTransp08 = Path.Combine(OutputPath, "2020.SUP");
+            string pathYearNat = Path.Combine(OutputPath, "PANRA120.NAT");
+            string pathYearIdf = Path.Combine(OutputPath, "PANRA120.IDF");
+            string pathYearSup = Path.Combine(OutputPath, "PANRA120.SUP");
             // ISTA : IDF & No Sud Radio ...
             int[] ISTA = new int[] { 999999, 0, 1, 0, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1 };
             #endregion entrées Transp08
 
             #region entrées crecib08
             int COL_MENA = 15;
-            string pathPan20Cib = @"C:\AffinageART\France\Source\SFR04\OUTPUT\PAN20CIB";
+            string pathPan20Cib = Path.Combine(OutputPath, "PAN20CIB");
             #endregion entrées crecib08
 
             #region entrées penetr
-            string pathPenetr = @"C:\AffinageART\France\Source\SFR04\OUTPUT\penetr";
+            string pathPenetr = Path.Combine(OutputPath, "penetr");
             int NB_STA_HAB_NOTO_TOTAL = 30;
             List<string> strStations = new List<string>();
             strStations.Add("x!x");
@@ -130,7 +171,7 @@ namespace ARProbaProcessing
             #endregion entrées penetr
 
             #region entrées Asymp
-            string pathAS5H5H = @"C:\AffinageART\France\Source\SFR04\OUTPUT\AS5H5H";
+            string pathAS5H5H = Path.Combine(OutputPath, "AS5H5H");
             string headerAS5H5H = "             PANEL MEDIAMETRIE RADIO 2008" +
                 Environment.NewLine +
                 " PENETRATIONS CUMULEES MAXIMALES 5H-29H LUNDI-DIMANCHE " +
@@ -143,22 +184,23 @@ namespace ARProbaProcessing
 
             int NBINDIV = segpanel(COL_PIAB, COL_CSCI, COL_SEX, COL_AGE, COL_RUDA, pathSIGJFC_BDE,  pathSortie1);
 
-            VsorPoid[][] JN = ecrpan1j(pathF04, NbStation, nbStationTotal, ITS, year);   // [Jour 1..23][Individus 1..N] = {VOSR[,]?, Poid[]}
+            //NbStation = arProba.HabAndNotoTotalStationListCount;
+            VsorPoid[][] JN = ecrpan1j(pathF04, NBINDIV, nbStationHabNotoTotal, nbStationTotal, ITS, year);   // [Jour 1..23][Individus 1..N] = {VOSR[,]?, Poid[]}
 
-            VsorPoid[][][] JNByWeek = regr5jp2(JN); // [Semaine 1..3][Jour de semaine Lundi à vendredi 1..5][indiv]
+            VsorPoid[][][] JNByWeek = regr5jp2(NBINDIV, JN); // [Semaine 1..3][Jour de semaine Lundi à vendredi 1..5][indiv]
 
-            List<Fushab09Indiv> fushab09Indivs = Fushab09(NbStation, SIGN_LINE_LEN_BEFORE_HAB, NB_STA_ALL_HAB, TABRH);
+            List<Fushab09Indiv> fushab09Indivs = Fushab09(NB_STA_HAB_NOTO, SIGN_LINE_LEN_BEFORE_HAB, SIGN_LINE_LEN_AFTER_HAB, NB_STA_ALL_HAB, TABRH, pathSIGJFC_BDE);
 
-            int[,,] NINI_IND_QH_W = chab1qhp(NbStation, fushab09Indivs); // Habitude [INDIV, QH, LV/Sa/Di];
+            int[,,] NINI_IND_QH_W = chab1qhp(NB_STA_HAB_NOTO, fushab09Indivs); // Habitude [INDIV, QH, LV/Sa/Di];
 
-            int[,] NINI_IND_STA = crenonin(nbJour, NbStation, fushab09Indivs, JN); // [INDIV, STATIONS] 
+            int[,] NINI_IND_STA = crenonin(nbJour, NB_STA_HAB_NOTO, fushab09Indivs, JN); // [INDIV, STATIONS] 
 
-            ecrsegpa(pathSIGJFC_BDE, COL_PIAB, COL_CSCI, COL_SEX, COL_AGE, COL_RUDA, NbStation, NBINDIV, SIGN_LINE_LEN_FULL,
+            ecrsegpa(pathSIGJFC_BDE, COL_PIAB, COL_CSCI, COL_SEX, COL_AGE, COL_RUDA, NbStation, NBINDIV, SIGN_LINE_LEN_FULL, pathSortie5,
                      out int[,] POIDSEGM, out int IPOP);
 
             int[,,,] cellules = calcregr(NBINDIV, NB_STA_HAB_NOTO, NINI_IND_STA, POIDSEGM, JN); // int[LV/Sa/Di, STATIONS, QH, CELL];
 
-            int[,,,] regrs = calcnivo(NBINDIV, NbStation, cellules); // [LV/Sa/Di, STATIONS, QH, CELL]
+            int[,,,] regrs = calcnivo(NBINDIV, NB_STA_HAB_NOTO, cellules); // [LV/Sa/Di, STATIONS, QH, CELL]
 
             int[,,,] audiences = caud1qhp(NBINDIV, NB_STA_HAB_NOTO, JN, POIDSEGM); // audiences[STATIONS, INdiv, QH, 1..3]
 
@@ -190,9 +232,35 @@ namespace ARProbaProcessing
             penetr(NBINDIV, NB_STA_HAB_NOTO_TOTAL, JN, lstPoids, pathPenetr, population, strStations);
 
             asympt(NBINDIV, NB_STA_HAB_NOTO, NB_STA_HAB_NOTO_TOTAL, BSUP, PANCIB, pathAS5H5H, headerAS5H5H, strStations);
+
+
+
+            #region Endprocess
+
+            // Make station list
+            StringBuilder staList = new StringBuilder();
+            staList.AppendLine("=====Nat=======");
+            foreach (var station in arProba.HabAndNotoStationList)
+            {
+                if (!station.Name.ToUpper().Equals("SUD RADIO"))
+                {
+                    staList.AppendLine(station.Name + "; " + station.Comment);
+                }
+            }
+            staList.AppendLine("=====IDF=======");
+            foreach (var station in arProba.HabAndNotoStationList)
+            {
+                if (!station.Name.ToUpper().Equals("SUD RADIO") && station.IsIdf)
+                {
+                    staList.AppendLine(station.Name + "; " + station.Comment);
+                }
+            }
+
+            File.WriteAllText(OutputPath + "StationList.txt", staList.ToString());
+            #endregion Endprocess
         }
 
-        private void lecpanel(int SIGN_LINE_LEN_FULL, string Path_SIGJFC_BDE, int COL_AGE3, int COL_RUDA, int COL_PIAB_0, int COL_PIAB_1, int COL_PIAB_2, int COL_PIAB_3, int COL_PIAB_4, out List<int> lstPoids, out List<int> lstAges, out List<int> lstFiltreIDF)
+        private void lecpanel(string Path_SIGJFC_BDE, int COL_AGE3, int COL_RUDA, int COL_PIAB, out List<int> lstPoids, out List<int> lstAges, out List<int> lstFiltreIDF)
         {
             // PANEL RADIO 08 MEDIAMETRIE(nouveau format)
             // CONTROLE DES POIDS DE REDRESSEMENT
@@ -204,25 +272,20 @@ namespace ARProbaProcessing
 
             int IPERS, IAGE, ICL, COMPTIDF;
             // Attention, le nombre de caractÃ¨res rÃ©el est de 599 colonnes(on en rajoute 2 pour le retour Chariot)
-            int[] KHI2 = new int[SIGN_LINE_LEN_FULL + 1];
 
             //                  INITIALISATIONS
-
             int IG = 0;
             int I15 = 0;
             int IPOP = 0;
-
             COMPTIDF = 0;
 
-
             //         OUVERTURE FICHIERS
-
             //WRITE(*, *) 'Hello World!'
             Console.WriteLine("Hello World!");
 
             //OPEN(13, FILE = '#SIGJFC_BDE#',
             //    -RECORDTYPE = 'FIXED', FORM = 'UNFORMATTED')
-
+            IEnumerable<string> KHI2 = File.ReadLines(Path_SIGJFC_BDE);
 
             //OPEN(14, FILE = '#OUTPUT#POIDS',
             //    -FORM = 'UNFORMATTED', RECORDTYPE = 'FIXED')
@@ -235,83 +298,41 @@ namespace ARProbaProcessing
 
             lstAges = new List<int>();
 
-
             //OPEN(16, FILE = '#OUTPUT#FILTREIF',
             //    -FORM = 'UNFORMATTED', RECORDTYPE = 'FIXED')
 
             lstFiltreIDF = new List<int>();
 
-
-            //                              BOUCLE INDIVIDUS
-
-            FileStream fs = File.Open(Path_SIGJFC_BDE, FileMode.Open);
-            fs.Seek(0, SeekOrigin.Begin);
-            BinaryReader br = new BinaryReader(fs);
-
-            while (fs.Position != fs.Length)
-            {
-
-                //30
-
-                for (int i = 1; i < KHI2.Length; i++)
-                    KHI2[i] = br.ReadUInt16();
-
+            // BOUCLE INDIVIDUS
+            foreach (string strIndiv in KHI2)
+            { 
                 IAGE = 1;
-
-                if ((KHI2[COL_AGE3] - 48) == 1)
+                if (strIndiv[COL_AGE3] == '1')
                     IAGE = 2;
 
                 // Filtre REGION PARISIENNE(RÃ©gion Uda)
-
                 ICL = 0;
-
-                if ((KHI2[COL_RUDA] - 48) == 1)
+                if (strIndiv[COL_RUDA] == '1')
                 {
                     ICL = 1;
                     COMPTIDF = COMPTIDF + 1;
                 }
 
-
-
-                // CALCUL DU POIDS(Colonnes 9 Ã  13 inclues)
-
-                IPERS = 10000 * (KHI2[COL_PIAB_0] - 48) + 1000 * (KHI2[COL_PIAB_1] - 48) + 100 * (KHI2[COL_PIAB_2] - 48) + 10 * (KHI2[COL_PIAB_3] - 48) + (KHI2[COL_PIAB_4] - 48);
-
+                IPERS = int.Parse(strIndiv.Substring(COL_PIAB,5));
                 if (IPERS <= 0) continue;
-
-
-                //if (IPERS > 3276) PRINT * , ' IPERS= ', IPERS
+                if (IPERS > 3276) Console.WriteLine($"IPERS= {IPERS}");
 
                 // On comptabilise les individus
-
                 IG = IG + 1;
-
-
                 IPOP = IPOP + IPERS * 10;
 
-
-                //WRITE(14) IPERS
                 lstPoids.Add(IPERS);
-
-
-                //WRITE(15) IAGE
                 lstAges.Add(IAGE);
-
-
-                //WRITE(16) ICL
                 lstFiltreIDF.Add(ICL);
-
-
             }
-            //                                                FIN DE FICHIER
 
             //120 WRITE(6, 1) IG, IPOP, COMPTIDF
             Console.WriteLine("NbIndiv : " + IG + " Population : " + IPOP + " NbIndivIDF : " + COMPTIDF);
-
-
-            //1 FORMAT('1   NBGUS:', I6, ' POPULATION:', I9, ' Individus IDF:', I12)
-
-
         }
 
         private int segpanel(int COL_PIAB, int COL_CSCI, int COL_SEX, int COL_AGE, int COL_RUDA, string pathSIGJFC_BDE, string pathSortie1)
@@ -320,7 +341,7 @@ namespace ARProbaProcessing
             // CONTROLE DES VOLUMES DES SEGMENTS
             //
             // Longueur d'une ligne: 599 + 2 car de fin
-            int[] SEGM = new int[16];
+            int[] SEGM = new int[16 + 1];
             int ICSP, IREG, ISEX, IAGE, ISEG, IPERS, AGE;
 
             // Nous avons besoin de la variable AGE pour le calcul de l'age qui est sur deux colonnes
@@ -450,17 +471,18 @@ namespace ARProbaProcessing
             {
                 double PEN = SEGM[I];
                 PEN = PEN * 100d / IG;
-                swSortie1.WriteLine($"CLASSE: {I}   VOLUME : {SEGM[I]}   POURCENTAGE: {PEN} ");
+                swSortie1.WriteLine($"CLASSE: {I.ToString("00")}   VOLUME : {SEGM[I]}   POURCENTAGE: {PEN.ToString("0.00")} ");
             }
+            swSortie1.Close();
 
             return IG;
         }
 
-        private VsorPoid[][] ecrpan1j(string pathF04, int NBSTA, int NB_STA_TOTAL, int[] ITS, int year)
+        private VsorPoid[][] ecrpan1j(string pathF04, int NBIND,  int NBSTA, int NB_STA_TOTAL, int[] ITS, int year)
         {
             VsorPoid[][] resultJn = new VsorPoid[23 + 1][];
-            for (int sor = 1; sor <= 24; sor++)
-                resultJn[sor] = new VsorPoid[NBSTA];
+            for (int sor = 1; sor <= 23; sor++)
+                resultJn[sor] = new VsorPoid[NBIND + 1];
 
             // PANEL RADIO 08 MEDIAMETRIE(Nouveau format)
             // CREATION DU POIDS DES 1 / 4H POUR 1 JOUR
@@ -499,13 +521,14 @@ namespace ARProbaProcessing
                     for (int i = 1; i <= 3; i++)
                         KHI2[i] = br.ReadInt16();
 
-                    for (int i = 1; i <= 6; i++)
-                        for (int j = 1; j <= NB_STA_TOTAL; j++)
+                    for (int j = 1; j <= NB_STA_TOTAL; j++)
+                        for (int i = 1; i <= 6; i++)
                             VRAD[i, j] = br.ReadInt16();
 
                     if (KHI2[1] == 1)
                     {
                         IG = IG + 1;
+                        for (int I = 1; I <= 96; I++) ITAP[I] = 0;
 
                         int[,] VSOR = new int[6 + 1, NBSTA + 1];
                         for (int IS = 1; IS <= NBSTA; IS++)
@@ -531,33 +554,37 @@ namespace ARProbaProcessing
                         int[] POID = new int[96 + 1];
                         for (int I = 1; I <= 96; I++)
                         {
-                            POID[I] = NOTE[ITAP[I] + 1];
+                            POID[I] = NOTE[ITAP[I]];
                         }
 
                         resultJn[IJ][IG] = new VsorPoid(NBSTA) { Poid = POID, VSor = VSOR };
                     }
+                    else
+                    {
+                        break;
+                    }
                 }
 
+                br.Close();
                 // FIN DE FICHIER
                 Console.WriteLine(IJ.ToString() + " " + IG.ToString());
             }
-
+            
             // ???? Console.WriteLine($"JOUR : {I2}   NBGUS : {I6});
             return resultJn;
         }
 
 
-        private VsorPoid[][][] regr5jp2(VsorPoid[][] JN)
+        private VsorPoid[][][] regr5jp2(int nbIndiv, VsorPoid[][] JN)
         {
             VsorPoid[][][] JNByWeek = new VsorPoid[3 + 1][][];   // [Semaine 1..3][Jour de semaine Lundi à vendredi 1..5][indiv]
 
-            int nbIndiv = JN[0].Length;
             for (int week = 1; week <= 3; week++)
             {
                 JNByWeek[week] = new VsorPoid[5 + 1][];
                 for (int j = 1; j <= 5; j++)
                 {
-                    JNByWeek[week][j] = new VsorPoid[nbIndiv];
+                    JNByWeek[week][j] = new VsorPoid[nbIndiv + 1];
 
                     for (int indiv = 1; indiv <= nbIndiv; indiv++)
                     {
@@ -573,8 +600,10 @@ namespace ARProbaProcessing
         public List<Fushab09Indiv> Fushab09(
             int NBSTA,
             int SIGN_LINE_LEN_BEFORE_HAB,
+            int SIGN_LINE_LEN_AFTER_HAB,
             int NB_STA_ALL_HAB,
-            int[] TABRH)
+            int[] TABRH,
+            string pathSIGJFC_BDE)
         {
             // C PANEL RADIO 08 MEDIAMETRIE(nouveau format)
             // C fusion des Habitudes total RADIO oubliees dans SIGN2007.F04
@@ -606,8 +635,8 @@ namespace ARProbaProcessing
             int[,] KHAB = new int[9 + 1, NB_STA_ALL_HAB + 1];
             int[,] KHSA = new int[9 + 1, NB_STA_ALL_HAB + 1];
             int[,] KHDI = new int[9 + 1, NB_STA_ALL_HAB + 1];
-            int[] APRES = new int[SIGN_LINE_LEN_BEFORE_HAB + 1];
-            int[] CHARIOT = new int[2];
+            int[] APRES = new int[SIGN_LINE_LEN_AFTER_HAB + 1];
+            int[] CHARIOT = new int[2 + 1];
 
             // INITIALISATIONS
             int G = 0;
@@ -615,13 +644,14 @@ namespace ARProbaProcessing
             // OUVERTURE FICHIERS
             Console.WriteLine("NBSTA=" + NBSTA);
             Console.WriteLine("SIGN_LINE_LEN_BEFORE_HAB=" + SIGN_LINE_LEN_BEFORE_HAB);
+            Console.WriteLine("SIGN_LINE_LEN_AFTER_HAB=" + SIGN_LINE_LEN_AFTER_HAB);
             Console.WriteLine("NB_STA_ALL_HAB=" + NB_STA_ALL_HAB);
 
             //
             //                              OUVERTURE FICHIER
             //
             // OPEN(13, FILE = '#SIGJFC_BDE#', -FORM = 'UNFORMATTED', RECORDTYPE = 'FIXED')
-            FileStream fs = File.Open(@"C:\AffinageART\France\Source\SFR04\U120\sig20jfc.bde", FileMode.Open);
+            FileStream fs = File.Open(pathSIGJFC_BDE, FileMode.Open);
             fs.Seek(0, SeekOrigin.Begin);
             BinaryReader br = new BinaryReader(fs);
 
@@ -637,19 +667,19 @@ namespace ARProbaProcessing
                 for (int i = 1; i <= SIGN_LINE_LEN_BEFORE_HAB; i++)
                     AVANT[i] = br.ReadByte();
 
-                for (int i = 1; i <= 9; i++)
-                    for (int j = 1; j <= NB_STA_ALL_HAB; j++)
+                for (int j = 1; j <= NB_STA_ALL_HAB; j++)
+                    for (int i = 1; i <= 9; i++)
                         KHAB[i, j] = br.ReadByte();
 
-                for (int i = 1; i <= 9; i++)
-                    for (int j = 1; j <= NB_STA_ALL_HAB; j++)
+                for (int j = 1; j <= NB_STA_ALL_HAB; j++)
+                    for (int i = 1; i <= 9; i++)
                         KHSA[i, j] = br.ReadByte();
 
-                for (int i = 1; i <= 9; i++)
-                    for (int j = 1; j <= NB_STA_ALL_HAB; j++)
+                for (int j = 1; j <= NB_STA_ALL_HAB; j++)
+                    for (int i = 1; i <= 9; i++)
                         KHDI[i, j] = br.ReadByte();
 
-                for (int i = 1; i <= SIGN_LINE_LEN_BEFORE_HAB; i++)
+                for (int i = 1; i <= SIGN_LINE_LEN_AFTER_HAB; i++)
                     APRES[i] = br.ReadByte();
 
                 for (int i = 1; i <= 2; i++)
@@ -669,16 +699,17 @@ namespace ARProbaProcessing
                         KHD2[I, NOP] = KHDI[I, IP];
                     }
                 }
-                fushab09Indivs.Add(new Fushab09Indiv(SIGN_LINE_LEN_BEFORE_HAB, NB_STA_ALL_HAB)
+                fushab09Indivs.Add(new Fushab09Indiv(SIGN_LINE_LEN_BEFORE_HAB, NBSTA)
                 {
                     AVANT = AVANT,
-                    KHAB = KHAB,
-                    KHSA = KHSA,
-                    KHDI = KHDI,
+                    KHAB = KHA2,
+                    KHSA = KHS2,
+                    KHDI = KHD2,
                     APRES = APRES,
                     CHARIOT = CHARIOT,
                 });
             }
+            br.Close();
 
             // FIN DE FICHIER
             Console.WriteLine("NB.GUS=", IG);
@@ -711,7 +742,7 @@ namespace ARProbaProcessing
 
             // C On attribue 1 aux stations qui ne possèdent pas d'habitudes d'écoute.A mon avis, cela est maintenant
             // C inutile puisqu'on leur attribue leur notoriété.
-            int[] ITH = new int[] {
+            int[] ITH = new int[] { 999999,
                 9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,
                 1,1,1,1,
                 2,2,2,2,2,2,2,2,2,2,2,2,
@@ -863,7 +894,7 @@ namespace ARProbaProcessing
             return KHI2;
         }
 
-        private void ecrsegpa(string pathSig, int COL_PIAB, int COL_CSCI, int COL_SEX, int COL_AGE, int COL_RUDA, int NBSTA, int NBIND, int SIGN_LINE_LEN_FULL,
+        private void ecrsegpa(string pathSig, int COL_PIAB, int COL_CSCI, int COL_SEX, int COL_AGE, int COL_RUDA, int NBSTA, int NBIND, int SIGN_LINE_LEN_FULL, string pathSortie5,
             out int[,] SEGM, out int IPOP)
         {
             // PANEL RADIO 08 MEDIAMETRIE(nouveau format)
@@ -1007,6 +1038,9 @@ namespace ARProbaProcessing
             {
                 Console.WriteLine(C[i]);
             }
+
+            if (File.Exists(pathSortie5)) File.Delete(pathSortie5);
+            File.AppendAllText(pathSortie5, $"   NBGUS: {IG}   POPULATION:{IPOP}");
         }
 
         private int[,,,] calcregr(int NBIND, int NBSTA, int[,] NINI, int[,] POIDSEGM, VsorPoid[][] JN)
@@ -1022,7 +1056,7 @@ namespace ARProbaProcessing
             int[,,,] MINIS = new int[3 + 1, NBSTA + 1, 96 + 1, NBCEL + 1];
 
             // BOUCLE INDIVIDUS
-            for (int IG = 0; IG <= NBIND; IG++)
+            for (int IG = 1; IG <= NBIND; IG++)
             {
                 int IC = POIDSEGM[IG, 2];
 
@@ -1082,7 +1116,7 @@ namespace ARProbaProcessing
 
             // Le nombre de station correspond au nombre de stations(30) -1 pour Total Radio(et Total TV)
             int[,,,] REGRS = new int[3 + 1, NBSTA + 1, 96 + 1, NBCEL + 1];
-            int[] TREG = new int[NBCEL];
+            int[] TREG = new int[NBCEL + 1];
             int[,] NIVO = new int[,]  { {0, 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
                                    {999999, 1,1,2,3,3,4,4,5,6,6,7,8,9,9,10,10 },
                                    {999999,-1,1,1,2,2,3,3,3,4,4,4,5,6,6,6,6},
@@ -1207,7 +1241,7 @@ namespace ARProbaProcessing
             for (int STA = 1; STA <= NBSTA; STA++)
             {
                 // BOUCLE INDIVIDUS
-                for (int IG = 0; IG <= NBIND; IG++)
+                for (int IG = 1; IG <= NBIND; IG++)
                 {
 
                     for (int IJ = 1; IJ <= NBJOUR; IJ++)
@@ -1225,7 +1259,7 @@ namespace ARProbaProcessing
 
                             if (L1BITFCT(bits, IQ))
                             {
-                                NIN2[STA, IG, IQ, IU] = NIN2[STA, IG, IQ, IU] + POIDSEGM[IQ, IJ];
+                                NIN2[STA, IG, IQ, IU] = NIN2[STA, IG, IQ, IU] + JN[IJ][IG].Poid[IQ];
                             }
 
                         }
@@ -3101,7 +3135,7 @@ namespace ARProbaProcessing
             //-RECORDTYPE = 'FIXED', FORM = 'UNFORMATTED')
             // READ(15)COUV
             // CLOSE(15)
-            // OPEN(16, FILE = 'C:\Affinage\PANEL_~1\Panfra20\Output\SORTIESE.COR',
+            // OPEN(16, FILE = 'C:\Affinage\PANEL_~1\Panfra20\Output\SORTIESA.COR',
             //-RECORDTYPE = 'TEXT')
             // OPEN(17, FILE = 'C:\Affinage\PANEL_~1\Panfra20\Output\ZUPTAUSE',
             //-RECORDTYPE = 'FIXED', FORM = 'UNFORMATTED')
@@ -3762,12 +3796,12 @@ namespace ARProbaProcessing
         public int[] APRES;
         public int[] CHARIOT;
 
-        public Fushab09Indiv(int SIGN_LINE_LEN_BEFORE_HAB, int NB_STA_ALL_HAB)
+        public Fushab09Indiv(int SIGN_LINE_LEN_BEFORE_HAB, int NB_STA)
         {
             AVANT = new int[SIGN_LINE_LEN_BEFORE_HAB + 1];
-            KHAB = new int[9 + 1, NB_STA_ALL_HAB + 1];
-            KHSA = new int[9 + 1, NB_STA_ALL_HAB + 1];
-            KHDI = new int[9 + 1, NB_STA_ALL_HAB + 1];
+            KHAB = new int[9 + 1, NB_STA + 1];
+            KHSA = new int[9 + 1, NB_STA + 1];
+            KHDI = new int[9 + 1, NB_STA + 1];
             APRES = new int[SIGN_LINE_LEN_BEFORE_HAB + 1];
             CHARIOT = new int[2];
         }

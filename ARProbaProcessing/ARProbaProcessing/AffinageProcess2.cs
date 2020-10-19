@@ -827,6 +827,47 @@ namespace ARProbaProcessing
             for (int I = 1; I <= NSEG; I++)
                 REP[I] = REP[I - 1] + DISTR[I];
         }
+
+        public int[] HAB_STA_LIST_ID_NOTO_SET_TO_TOTAL_RADIO(ARProba arProba)
+        {
+            int[] sta = new int[arProba.HabAndNotoStationList.Count() + 1];
+            int totalidx = GetTotalRadioIndex(arProba);
+            int i = 1;
+            foreach (var station in arProba.HabAndNotoStationList)
+            {
+                if (station.Mode == ARProba.Station.eSignVariable.Habit)
+                    sta[i] = station.Index;
+                else
+                    sta[i] = totalidx;
+                i++;
+            }
+            return sta;
+
+        }
+        private int GetTotalRadioIndex(ARProba arProba)
+        {
+            var req = from sta in arProba.HabAndNotoTotalStationList
+                      where sta.Name.Equals("total radio", StringComparison.CurrentCultureIgnoreCase)
+                      select sta;
+
+            return req.First().Index;
+        }
+
+        private int SIGN_LINE_LEN_BEFORE_HAB_FCT(ARProba arProba)
+        {
+            int len = arProba.SignVars["LV01"].Position - 1;
+            return len;
+        }
+
+        private int SIGN_LINE_LEN_AFTER_HAB_FCT(ARProba arProba)
+        {
+            int len = arProba.SigLineLen;
+
+            var var = arProba.SignVars[string.Format("DI{0:00}", arProba.AllHabStationCount)];
+            len = len - (var.Position + var.Repetition) + 1;
+
+            return len;
+        }
     }
 
     public struct BSupport

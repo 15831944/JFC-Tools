@@ -179,7 +179,7 @@ namespace ARProbaProcessing
 
         private VarHandlers variableHandlers;
 
-        private class VarHandlers
+        public class VarHandlers
         {
             private ARProba aRProba;
 
