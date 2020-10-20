@@ -13,6 +13,16 @@ namespace ARProbaProcessing
         private int[] SEG1 = new int[] { 999999, 1, 1, 2, 3, 3, 4, 4, 5, 6, 6, 7, 8, 9, 9, 10, 10 };
         private int[] SEG2 = new int[] { 999999, 1, 1, 2, 3, 3, 4, 4, 5, 6, 6 };
         private int[] SEG3 = new int[] { 999999, 1, 2, 2, 3, 3, 4 };
+        private int[] ITH = new int[] { 999999,
+                9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,
+                1,1,1,1,
+                2,2,2,2,2,2,2,2,2,2,2,2,
+                3,3,3,3,3,3,3,3,3,3,3,3,
+                4,4,4,4,4,4,4,4,
+                5,5,5,5,5,5,5,5,
+                6,6,6,6,6,6,6,6,
+                7,7,7,7,7,7,7,7,
+                8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8};
 
         public void Run(ARProba arProba, string inputPath, string OutputPath)
         {
@@ -98,6 +108,16 @@ namespace ARProbaProcessing
             string pathSortie5 = Path.Combine(OutputPath, "SORTIE5.TXT");
             #endregion entrées ecrsegpa
 
+            #region entrées sav1qh..
+            string pathSortiesav1qhpa = Path.Combine(OutputPath, "SORTIE.sem");
+            string pathSortiesav1qhps = Path.Combine(OutputPath, "SORTIE.sam");
+            string pathSortiesav1qhpd = Path.Combine(OutputPath, "SORTIE.dim");
+            #endregion entrées sav1qh..
+
+            #region entrées cgrp75b
+            string pathSortie8 = Path.Combine(OutputPath, "SORTIE8.TXT");
+            string pathNOUVOGRP = Path.Combine(OutputPath, "NOUVOGRP.TXT");
+            #endregion entrées cgrp75b
 
             #region entrées cont75br
             int popLV = 54439040;
@@ -204,23 +224,23 @@ namespace ARProbaProcessing
 
             int[,,,] audiences = caud1qhp(NBINDIV, NB_STA_HAB_NOTO, JN, POIDSEGM); // audiences[STATIONS, INdiv, QH, 1..3]
 
-            double[] noteIndiv = caudtotp(NBINDIV, NB_STA_HAB_NOTO, JN, POIDSEGM, fushab09Indivs);
+            float[] noteIndiv = caudtotp(NBINDIV, NB_STA_HAB_NOTO, JN, POIDSEGM, fushab09Indivs);
 
-            double[,,,] ZUPTAUSE = sav1qhpa(NBINDIV, NB_STA_HAB_NOTO, regrs, POIDSEGM, fushab09Indivs, JNByWeek, JN); // [STATIONS, QH, DATAS ZR-UR-PR-TAUX, CELL];
+            float[,,,] ZUPTAUSE = sav1qhpa(NBINDIV, NB_STA_HAB_NOTO, regrs, POIDSEGM, fushab09Indivs, JNByWeek, JN, pathSortiesav1qhpa); // [STATIONS, QH, DATAS ZR-UR-PR-TAUX, CELL];
 
-            double[,,,] ZUPTAUSA = sav1qhps(NBINDIV, NB_STA_HAB_NOTO, regrs, POIDSEGM, fushab09Indivs, JNByWeek, JN); // [STATIONS, QH, DATAS ZR-UR-PR-TAUX, CELL];
+            float[,,,] ZUPTAUSA = sav1qhps(NBINDIV, NB_STA_HAB_NOTO, regrs, POIDSEGM, fushab09Indivs, JNByWeek, JN, pathSortiesav1qhps); // [STATIONS, QH, DATAS ZR-UR-PR-TAUX, CELL];
 
-            double[,,,] ZUPTAUDI = sav1qhpd(NBINDIV, NB_STA_HAB_NOTO, regrs, POIDSEGM, fushab09Indivs, JNByWeek, JN); // [STATIONS, QH, DATAS ZR-UR-PR-TAUX, CELL];
+            float[,,,] ZUPTAUDI = sav1qhpd(NBINDIV, NB_STA_HAB_NOTO, regrs, POIDSEGM, fushab09Indivs, JNByWeek, JN, pathSortiesav1qhpd); // [STATIONS, QH, DATAS ZR-UR-PR-TAUX, CELL];
 
-            double[,,,] Couverture = cgrp75br(PathGRPWave, NbStation, NbGRPModulation, NbGRPStation, NotorieteStation);  // [LV/Sa/Di, QH, 4 + 1, CELL];
+            float[,,,] Couverture = cgrp75br(PathGRPWave, NbStation, NbGRPModulation, NbGRPStation, NotorieteStation, pathSortie8, pathNOUVOGRP);  // [LV/Sa/Di, QH, 4 + 1, CELL];
 
             cont75br(NBINDIV, NB_STA_HAB_NOTO, popLV, popS, popD, Couverture, pathSortie9);
 
-            double[,,,] ZUPTAUSECOR = cnzuptse(NBINDIV, NB_STA_HAB_NOTO, pathCnzuptse, Couverture, regrs, ZUPTAUSE);  // double[STATIONS, QH, DATAS ZR-UR-PR-TAUX, CELL];
+            float[,,,] ZUPTAUSECOR = cnzuptse(NBINDIV, NB_STA_HAB_NOTO, pathCnzuptse, Couverture, regrs, ZUPTAUSE);  // float[STATIONS, QH, DATAS ZR-UR-PR-TAUX, CELL];
 
-            double[,,,] ZUPTAUSACOR = cnzuptsa(NBINDIV, NB_STA_HAB_NOTO, pathCnzuptsa, Couverture, regrs, ZUPTAUSE);
+            float[,,,] ZUPTAUSACOR = cnzuptsa(NBINDIV, NB_STA_HAB_NOTO, pathCnzuptsa, Couverture, regrs, ZUPTAUSE);
 
-            double[,,,] ZUPTAUDICOR = cnzuptdi(NBINDIV, NB_STA_HAB_NOTO, pathCnzuptdi, Couverture, regrs, ZUPTAUSE);
+            float[,,,] ZUPTAUDICOR = cnzuptdi(NBINDIV, NB_STA_HAB_NOTO, pathCnzuptdi, Couverture, regrs, ZUPTAUSE);
 
             int[,,,] PROBAS = attribp2(NBINDIV, NB_STA_HAB_NOTO, regrs, POIDSEGM, NINI_IND_STA, noteIndiv, audiences, NINI_IND_QH_W,
                 ZUPTAUSECOR, ZUPTAUSACOR, ZUPTAUDICOR, pathAttribp2); // [STATIONS, LV/Sa/Di, QH, INDIVS]
@@ -469,8 +489,8 @@ namespace ARProbaProcessing
 
             for (int I = 1; I <= 16; I++)
             {
-                double PEN = SEGM[I];
-                PEN = PEN * 100d / IG;
+                float PEN = SEGM[I];
+                PEN = PEN * 100f / IG;
                 swSortie1.WriteLine($"CLASSE: {I.ToString("00")}   VOLUME : {SEGM[I]}   POURCENTAGE: {PEN.ToString("0.00")} ");
             }
             swSortie1.Close();
@@ -1270,7 +1290,7 @@ namespace ARProbaProcessing
             return NIN2;
         }
 
-        private double[] caudtotp(int NBIND, int NBSTA, VsorPoid[][] JN, int[,] POIDS, List<Fushab09Indiv> fushab09Indivs)
+        private float[] caudtotp(int NBIND, int NBSTA, VsorPoid[][] JN, int[,] POIDS, List<Fushab09Indiv> fushab09Indivs)
         {
             // PANEL RADIO 08 MEDIAMETRIE(nouveau format)
             // CALCUL DES AUDIENCES TOTALES PAR INDIVIDUS / STATION
@@ -1281,8 +1301,8 @@ namespace ARProbaProcessing
 
             // Dans les fichier .jfc, chaque enregistrement(individu) est de 180 short = 6 short(96 qh) * 30 stations
 
-            double[] COUV = new double[NBIND + 1];
-            double[] NOTE = new double[NBIND + 1];
+            float[] COUV = new float[NBIND + 1];
+            float[] NOTE = new float[NBIND + 1];
             //int KHI3(LENENR, NBJOUR),POIDS(NBIND),AGE,INSEE,CELLULE,ETAPE,
 
             // Attention fushab09Indiv.AVANT[34) et le buffer de lecture pour se caler au début des données de HAB
@@ -1374,12 +1394,12 @@ namespace ARProbaProcessing
             }
 
             // CALCUL DE LA NOTE INDIVIDUELLE
-            double MINOT = 100000;
-            double MANOT = 0;
+            float MINOT = 100000;
+            float MANOT = 0;
             for (int I = 1; I <= NBIND; I++)
             {
-                double NUM = 0d;
-                double DEN = 0d;
+                float NUM = 0f;
+                float DEN = 0f;
 
                 for (int J = 1; J <= NBIND; J++)
                 {
@@ -1390,11 +1410,11 @@ namespace ARProbaProcessing
                         if (IC == 9) NO = 1;
                         if (NINI[I, IC] != NINI[J, IC]) DIF = DIF + NO;
                     }
-                    double D = -1d * ((DIF / 25) ^ 2);
-                    double A = POIDS[J, 1] * Math.Exp(D);   // A VOIR POIDS[J,1] : à priori on ne lirait que la premire zone de poiids dans fichier origine => tableau 1 dimension
+                    float D = -1f * ((DIF / 25) ^ 2);
+                    float A = POIDS[J, 1] * (float)Math.Exp(D);   // A VOIR POIDS[J,1] : à priori on ne lirait que la premire zone de poiids dans fichier origine => tableau 1 dimension
 
                     DEN = DEN + A;
-                    NUM = NUM + A * (COUV[J] / 12d);
+                    NUM = NUM + A * (COUV[J] / 12f);
                 }
 
                 NOTE[I] = NUM / DEN;
@@ -1412,7 +1432,7 @@ namespace ARProbaProcessing
             return NOTE;
         }
 
-        private double[,,,] sav1qhpa(int NBIND, int NBSTA, int[,,,] regrs, int[,] KHI2, List<Fushab09Indiv> fushab09Indivs, VsorPoid[][][] JNByWeek, VsorPoid[][] JN)
+        private float[,,,] sav1qhpa(int NBIND, int NBSTA, int[,,,] regrs, int[,] KHI2, List<Fushab09Indiv> fushab09Indivs, VsorPoid[][][] JNByWeek, VsorPoid[][] JN, string pathSortie)
         {
             // PANEL RADIO 08 MEDIAMETRIE(nouveau format)
             // CALCUL DES PARAMETRES STATION 2 QUART d'HEURE 31
@@ -1423,11 +1443,11 @@ namespace ARProbaProcessing
 
             int NBJOUR = 23;
 
-            double[,] C = new double[15 + 1, 5 + 1];
-            double[] NCOM = new double[15 + 1] { 999999d, 15d, 105d, 455d, 1365d, 3003d, 5005d, 6435d, 6435d, 5005d, 3003d, 1365d, 455d, 105d, 15d, 1d };
-            double[,,,] RESUL = new double[NBSTA + 1, 96 + 1, 4 + 1, 16 + 1];
-            double[] Z = new double[15 + 1];
-            double[] YR = new double[15 + 1];
+            float[,] C = new float[15 + 1, 5 + 1];
+            float[] NCOM = new float[15 + 1] { 999999, 15, 105, 455, 1365, 3003, 5005, 6435, 6435, 5005, 3003, 1365, 455, 105, 15, 1 };
+            float[,,,] RESUL = new float[NBSTA + 1, 96 + 1, 4 + 1, 16 + 1];
+            float[] Z = new float[15 + 1];
+            float[] YR = new float[15 + 1];
 
             int[,] COMPT = new int[16 + 1, 5 + 1];
             int[] ITPO = new int[5 + 1];
@@ -1452,10 +1472,8 @@ namespace ARProbaProcessing
             int[,,] REGRS = new int[3 + 1, NBSTA + 1, 16 + 1];
             int[] TREG = new int[16 + 1];
 
-            int[] ITH = new int[96 + 1];
-            int[] ITHInit = new int[] { 999999, 20 * 9, 4 * 1, 12 * 2, 12 * 3, 8 * 4, 8 * 5, 8 * 6, 8 * 7, 16 * 8 };
-            for (int i = 0; i < ITHInit.Length; i++) ITH[i] = ITHInit[i];
-
+            
+            
             //  id  time
             //  1     05h00 - 06h00 = 4
             //  2     06h00 - 09h00 = 12
@@ -1551,10 +1569,10 @@ namespace ARProbaProcessing
                         // BOUCLE CELLULES
                         for (int N1 = 1; N1 <= 16; N1++)
                         {
-                            double ZR = 0d;
-                            double UR = 0d;
-                            double PR = 0d;
-                            double TAU = 0d;
+                            float ZR = 0f;
+                            float UR = 0f;
+                            float PR = 0f;
+                            float TAU = 0f;
 
                             int N2 = SEG1[N1];
                             int N3 = SEG2[N2];
@@ -1578,7 +1596,7 @@ namespace ARProbaProcessing
                                     {
                                         SEGM[I, J] = 0;
                                         COMPT[I, J] = 0;
-                                        if (I <= 15) C[I, J] = 0d;
+                                        if (I <= 15) C[I, J] = 0f;
                                     }
                                 }
 
@@ -1600,10 +1618,14 @@ namespace ARProbaProcessing
                                 for (IG = 1; IG <= NBIND; IG++)
                                 {
                                     int IPERS = KHI2[IG, 1];
-                                    KHI2[IG, 6] = 1;
+                                    bool KHI2_IG_NIV_EQ_NB_NIV = (NIV == 5 && NB[NIV] == 1) || (KHI2[IG, NIV + 1] == NB[NIV]);
+                                    //KHI2[IG, 6] = 1;
                                     IPERS = IPERS * 10;
-                                    if (KHI2[IG, NIV + 1] == NB[NIV]) IM[NIV] = IM[NIV] + 1;
-                                    if (KHI2[IG, NIV + 1] == NB[NIV]) IPPS[NIV] = IPPS[NIV] + IPERS;
+                                    if (KHI2_IG_NIV_EQ_NB_NIV)
+                                    {
+                                        IM[NIV] = IM[NIV] + 1;
+                                        IPPS[NIV] = IPPS[NIV] + IPERS;
+                                    }
                                     int IAUD = 0;
                                     int NJOU = 0;
                                     for (int I = 1; I <= 15; I++)
@@ -1617,7 +1639,7 @@ namespace ARProbaProcessing
                                     }
                                     if (IAUD == 0)
                                     {
-                                        if (KHI2[IG, NIV + 1] == NB[NIV])
+                                        if (KHI2_IG_NIV_EQ_NB_NIV)
                                         {
                                             COMPT[1, NIV] = COMPT[1, NIV] + IPERS;
                                             SEGM[1, NIV] = SEGM[1, NIV] + 1;
@@ -1628,7 +1650,7 @@ namespace ARProbaProcessing
                                     if (IAUD == 1)
                                     {
                                         int IJ = NJOU + 1;
-                                        if (KHI2[IG, NIV + 1] == NB[NIV])
+                                        if (KHI2_IG_NIV_EQ_NB_NIV)
                                         {
                                             COMPT[IJ, NIV] = COMPT[IJ, NIV] + IPERS;
                                             SEGM[IJ, NIV] = SEGM[IJ, NIV] + 1;
@@ -1638,7 +1660,7 @@ namespace ARProbaProcessing
                                         }
                                         if (NJOU == 15)
                                         {
-                                            if (KHI2[IG, NIV + 1] == NB[NIV])
+                                            if (KHI2_IG_NIV_EQ_NB_NIV)
                                             {
                                                 ITTL[NIV] = ITTL[NIV] + 1;
                                                 ITTP[NIV] = ITTP[NIV] + IPERS;
@@ -1650,25 +1672,25 @@ namespace ARProbaProcessing
                                             }
                                         }
 
-                                        if (KHI2[IG, NIV + 1] == NB[NIV])
+                                        if (KHI2_IG_NIV_EQ_NB_NIV)
                                         {
                                             #region CALCUL DES MOYENNES
 
                                             // PREMIER JOUR
-                                            double TOT = 0d;
+                                            float TOT = 0f;
                                             for (int I01 = 1; I01 <= 15; I01++)
                                                 if (COMB[I01] == 1) TOT += IPERS;
                                             C[1, NIV] += TOT;
 
                                             // 2eme JOUR
-                                            TOT = 0d;
+                                            TOT = 0f;
                                             for (int I01 = 1; I01 <= 14; I01++)
                                                 for (int I02 = I01 + 1; I02 <= 15; I02++)
                                                     if (COMB[I01] == 1 || COMB[I02] == 1) TOT += IPERS;
                                             C[2, NIV] += TOT;
 
                                             // 3eme JOUR
-                                            TOT = 0d;
+                                            TOT = 0f;
                                             for (int I01 = 1; I01 <= 13; I01++)
                                                 for (int I02 = I01 + 1; I02 <= 14; I02++)
                                                     for (int I03 = I02 + 1; I03 <= 15; I03++)
@@ -1677,7 +1699,7 @@ namespace ARProbaProcessing
                                             C[3, NIV] += TOT;
 
                                             // 4eme JOUR
-                                            TOT = 0d;
+                                            TOT = 0f;
                                             for (int I01 = 1; I01 <= 12; I01++)
                                                 for (int I02 = I01 + 1; I02 <= 13; I02++)
                                                     for (int I03 = I02 + 1; I03 <= 14; I03++)
@@ -1687,7 +1709,7 @@ namespace ARProbaProcessing
                                             C[4, NIV] += TOT;
 
                                             // 5eme JOUR
-                                            TOT = 0d;
+                                            TOT = 0f;
                                             for (int I01 = 1; I01 <= 11; I01++)
                                                 for (int I02 = I01 + 1; I02 <= 12; I02++)
                                                     for (int I03 = I02 + 1; I03 <= 13; I03++)
@@ -1698,7 +1720,7 @@ namespace ARProbaProcessing
                                             C[5, NIV] += TOT;
 
                                             // 6eme JOUR
-                                            TOT = 0d;
+                                            TOT = 0f;
                                             for (int I01 = 1; I01 <= 10; I01++)
                                                 for (int I02 = I01 + 1; I02 <= 11; I02++)
                                                     for (int I03 = I02 + 1; I03 <= 12; I03++)
@@ -1711,7 +1733,7 @@ namespace ARProbaProcessing
                                             C[6, NIV] += TOT;
 
                                             // 7eme JOUR
-                                            TOT = 0d;
+                                            TOT = 0f;
                                             for (int I01 = 1; I01 <= 9; I01++)
                                                 for (int I02 = I01 + 1; I02 <= 10; I02++)
                                                     for (int I03 = I02 + 1; I03 <= 11; I03++)
@@ -1725,7 +1747,7 @@ namespace ARProbaProcessing
                                             C[7, NIV] += TOT;
 
                                             // 8eme JOUR
-                                            TOT = 0d;
+                                            TOT = 0f;
                                             for (int I01 = 1; I01 <= 8; I01++)
                                                 for (int I02 = I01 + 1; I02 <= 9; I02++)
                                                     for (int I03 = I02 + 1; I03 <= 10; I03++)
@@ -1741,7 +1763,7 @@ namespace ARProbaProcessing
                                             C[8, NIV] += TOT;
 
                                             // 9eme JOUR
-                                            TOT = 0d;
+                                            TOT = 0f;
                                             for (int I01 = 1; I01 <= 7; I01++)
                                                 for (int I02 = I01 + 1; I02 <= 8; I02++)
                                                     for (int I03 = I02 + 1; I03 <= 9; I03++)
@@ -1758,7 +1780,7 @@ namespace ARProbaProcessing
                                             C[9, NIV] += TOT;
 
                                             // 10eme JOUR
-                                            TOT = 0d;
+                                            TOT = 0f;
                                             for (int I01 = 1; I01 <= 6; I01++)
                                                 for (int I02 = I01 + 1; I02 <= 7; I02++)
                                                     for (int I03 = I02 + 1; I03 <= 8; I03++)
@@ -1777,7 +1799,7 @@ namespace ARProbaProcessing
                                             C[10, NIV] = C[10, NIV] + TOT;
 
                                             // 11eme JOUR
-                                            TOT = 0d;
+                                            TOT = 0f;
                                             for (int I01 = 1; I01 <= 5; I01++)
                                                 for (int I02 = I01 + 1; I02 <= 6; I02++)
                                                     for (int I03 = I02 + 1; I03 <= 7; I03++)
@@ -1796,7 +1818,7 @@ namespace ARProbaProcessing
                                             C[11, NIV] = C[11, NIV] + TOT;
 
                                             // 12eme JOUR
-                                            TOT = 0d;
+                                            TOT = 0f;
                                             for (int I01 = 1; I01 <= 4; I01++)
                                                 for (int I02 = I01 + 1; I02 <= 5; I02++)
                                                     for (int I03 = I02 + 1; I03 <= 6; I03++)
@@ -1818,7 +1840,7 @@ namespace ARProbaProcessing
                                             C[12, NIV] = C[12, NIV] + TOT;
 
                                             // 13eme JOUR
-                                            TOT = 0d;
+                                            TOT = 0f;
                                             for (int I01 = 1; I01 <= 3; I01++)
                                                 for (int I02 = I01 + 1; I02 <= 4; I02++)
                                                     for (int I03 = I02 + 1; I03 <= 5; I03++)
@@ -1841,7 +1863,7 @@ namespace ARProbaProcessing
                                             C[13, NIV] = C[13, NIV] + TOT;
 
                                             // 14eme JOUR
-                                            TOT = 0d;
+                                            TOT = 0f;
                                             for (int I01 = 1; I01 <= 2; I01++)
                                                 for (int I02 = I01 + 1; I02 <= 3; I02++)
                                                     for (int I03 = I02 + 1; I03 <= 4; I03++)
@@ -1866,7 +1888,7 @@ namespace ARProbaProcessing
                                             C[14, NIV] = C[14, NIV] + TOT;
 
                                             // 15eme JOUR
-                                            TOT = 0d;
+                                            TOT = 0f;
                                             if (COMB[1] == 1 || COMB[2] == 1 || COMB[3] == 1 ||
                                                 COMB[4] == 1 || COMB[5] == 1 || COMB[6] == 1 ||
                                                 COMB[7] == 1 || COMB[8] == 1 || COMB[9] == 1 ||
@@ -1881,15 +1903,15 @@ namespace ARProbaProcessing
 
                                 // IMPRESSION DES RESULTATS
                                 int IN = TREG[N1] + 1;
-                                double POPS = 0d;
+                                float POPS = 0f;
                                 for (int I = 1; I <= NBIND; I++)
                                 {
-                                    if (KHI2[I, IN + 1] == NB[IN]) POPS = POPS + KHI2[I, 1];
+                                    if ((IN == 5 && NB[IN] == 1) || KHI2[I, IN + 1] == NB[IN]) POPS = POPS + KHI2[I, 1];
                                 }
-                                POPS = POPS * 10d;
-                                double DIRAC0 = COMPT[1, IN] / POPS;
-                                double DIRAC1 = ITTP[IN] / POPS;
-                                double PC1 = IZAP[IN] / POPS;
+                                POPS = POPS * 10f;
+                                float DIRAC0 = COMPT[1, IN] / POPS;
+                                float DIRAC1 = ITTP[IN] / POPS;
+                                float PC1 = IZAP[IN] / POPS;
                                 int IPOP = 0;
                                 for (int I = 2; I <= 16; I++)
                                 {
@@ -1902,31 +1924,31 @@ namespace ARProbaProcessing
                                     if (I != 16) COMPT[I + 1, IN] = COMPT[I + 1, IN] + COMPT[I, IN];
                                 }
 
-                                double GRP = IPOP * 100;
-                                GRP = GRP / POPS / 15d;
-                                PR = (IPOP - ITTP[IN] * 15) / 14d;
+                                float GRP = IPOP * 100;
+                                GRP = GRP / POPS / 15f;
+                                PR = (IPOP - ITTP[IN] * 15) / 14f;
                                 PR = PR / (POPS - COMPT[1, IN] - ITTP[IN]);
                                 for (int I = 1; I <= 15; I++)
                                 {
-                                    Z[I] = C[I, IN] / NCOM[I] / POPS * 100d;
+                                    Z[I] = C[I, IN] / NCOM[I] / POPS * 100f;
                                 }
 
                                 // APPEL DE LA FONCTION DIFFERENCE
 
-                                GRP = GRP / 100d;
-                                double ZA = DIRAC0;
+                                GRP = GRP / 100f;
+                                float ZA = DIRAC0;
                                 ZR = IZAP[IN] / POPS;
-                                double UA = ITJP[IN] / POPS;
+                                float UA = ITJP[IN] / POPS;
                                 UR = DIRAC1;
 
                                 //WRITE(16, *) GRP, ZA, ZR, UA, UR
-                                sbSortie.Append("{GRP}  {ZA}  {ZR}  {UA}  {UR}" + $"{GRP}  {ZA}  {ZR}  {UA}  {UR}");
+                                sbSortie.Append($"{GRP}  {ZA}  {ZR}  {UA}  {UR}");
 
-                                double ND = 15;
-                                MINIMISE(GRP, Z, ref PR, ref UR, ref ZR, out TAU, ZA, UA, ND); // double GRP, double[] ZC, ref double PR, ref double UR, ref double ZR, out double TAU, double ZA, double UA, double NB)
+                                float ND = 15;
+                                MINIMISE(GRP, Z, ref PR, ref UR, ref ZR, out TAU, ZA, UA, ND); // float GRP, float[] ZC, ref float PR, ref float UR, ref float ZR, out float TAU, float ZA, float UA, float NB)
 
-                                double GRP0 = 0d;
-                                double GRPC = 0d;
+                                float GRP0 = 0f;
+                                float GRPC = 0f;
                                 for (int I = 1; I <= 15; I++)
                                 {
                                     GRPC = GRPC + YR[I];
@@ -1938,11 +1960,7 @@ namespace ARProbaProcessing
                             RESUL[NOP, IQ, 3, N1] = PR;
                             RESUL[NOP, IQ, 4, N1] = TAU;
 
-                            sbSortie.Append("N1 = " + N1.ToString());
-                            sbSortie.Append("ZR = " + ZR.ToString());
-                            sbSortie.Append("UR = " + UR.ToString());
-                            sbSortie.Append("PR = " + PR.ToString());
-                            sbSortie.Append("TAU = " + TAU.ToString());
+                            sbSortie.Append($"CELLULE {N1} Z {ZR} U {UR} P {PR} TAU {TAU}");
 
                         } // for (int N1 = 1; N1 <= 16; N1++)
                     }
@@ -1951,10 +1969,10 @@ namespace ARProbaProcessing
                         sbSortie.Append(" ***PAS D AUDIENCE POUR CE 1 / 4h * **");
                         for (int N1 = 1; N1 <= 16; N1++)
                         {
-                            RESUL[NOP, IQ, 1, N1] = 1d;
-                            RESUL[NOP, IQ, 2, N1] = 0d;
-                            RESUL[NOP, IQ, 3, N1] = 0d;
-                            RESUL[NOP, IQ, 4, N1] = 0d;
+                            RESUL[NOP, IQ, 1, N1] = 1f;
+                            RESUL[NOP, IQ, 2, N1] = 0f;
+                            RESUL[NOP, IQ, 3, N1] = 0f;
+                            RESUL[NOP, IQ, 4, N1] = 0f;
                         }
                     }// if (TREG[1] != 5)
                     // FIN DE TRAITEMENT CELLULE
@@ -1963,12 +1981,16 @@ namespace ARProbaProcessing
 
             Console.WriteLine($"TRAITEMENT 1/4h ----");
             Console.WriteLine($"------- STATION ----");
+
+            if (File.Exists(pathSortie)) File.Delete(pathSortie);
+            File.AppendAllText(pathSortie, sbSortie.ToString());
+
             //FORMAT('CELLULE ',I2,' Z=',F9.7,' U=',F9.7,' P=',F9.7,' TAU=',F9.7) == ??? 
             //? Console.WriteLine($"CELLULE {I2} Z=', F9.7, ' U=', F9.7, ' P=', F9.7, ' TAU=', F9.7)
             return RESUL;
         }
 
-        private double[,,,] sav1qhps(int NBIND, int NBSTA, int[,,,] regrs, int[,] KHI2, List<Fushab09Indiv> fushab09Indivs, VsorPoid[][][] JNByWeek, VsorPoid[][] JN)
+        private float[,,,] sav1qhps(int NBIND, int NBSTA, int[,,,] regrs, int[,] KHI2, List<Fushab09Indiv> fushab09Indivs, VsorPoid[][][] JNByWeek, VsorPoid[][] JN, string pathSortie)
         {
             // PANEL RADIO 08 MEDIAMETRIE(nouveau format)
             // CALCUL DES PARAMETRES z,u,p,tau
@@ -1978,11 +2000,11 @@ namespace ARProbaProcessing
 
             int NBJOUR = 23;
 
-            double[,] C = new double[15 + 1, 5 + 1];
-            double[] NCOM = new double[4 + 1] { 999999d, 4, 6, 4, 1 };
-            double[,,,] RESUL = new double[NBSTA + 1, 96 + 1, 4 + 1, 16 + 1];
-            double[] Z = new double[15 + 1];
-            double[] YR = new double[15 + 1];
+            float[,] C = new float[15 + 1, 5 + 1];
+            float[] NCOM = new float[4 + 1] { 999999f, 4, 6, 4, 1 };
+            float[,,,] RESUL = new float[NBSTA + 1, 96 + 1, 4 + 1, 16 + 1];
+            float[] Z = new float[15 + 1];
+            float[] YR = new float[15 + 1];
 
             int[,] COMPT = new int[16 + 1, 5 + 1];
             int[] ITPO = new int[5 + 1];
@@ -2003,9 +2025,7 @@ namespace ARProbaProcessing
             int[,,] JATOU = new int[96 + 1, 4 + 1, NBIND + 1];
             int[] TREG = new int[16 + 1];
 
-            int[] ITH = new int[96 + 1];
-            int[] ITHInit = new int[] { 999999, 20 * 9, 4 * 1, 12 * 2, 12 * 3, 8 * 4, 8 * 5, 8 * 6, 8 * 7, 16 * 8 };
-            for (int i = 0; i < ITHInit.Length; i++) ITH[i] = ITHInit[i];
+            StringBuilder sbSortie = new StringBuilder();
 
             //  id  time
             //  1     05h00 - 06h00 = 4
@@ -2017,9 +2037,7 @@ namespace ARProbaProcessing
             //  7     18h00 - 20h00 = 8
             //  8     20h00 - 24h00 = 16
             //  9     24h00 - 05h00 = 20
-
-            StringBuilder sbSortie = new StringBuilder();
-
+            
             // OPEN(18, FILE = '#OUTPUT#ZUPTAUSA',
             //-RECORDTYPE = 'FIXED', FORM = 'UNFORMATTED')
 
@@ -2099,10 +2117,10 @@ namespace ARProbaProcessing
                         // BOUCLE CELLULES
                         for (int N1 = 1; N1 <= 16; N1++)
                         {
-                            double ZR = 0d;
-                            double UR = 0d;
-                            double PR = 0d;
-                            double TAU = 0d;
+                            float ZR = 0f;
+                            float UR = 0f;
+                            float PR = 0f;
+                            float TAU = 0f;
 
                             int N2 = SEG1[N1];
                             int N3 = SEG2[N2];
@@ -2126,7 +2144,7 @@ namespace ARProbaProcessing
                                     {
                                         SEGM[I, J] = 0;
                                         COMPT[I, J] = 0;
-                                        if (I <= 4) C[I, J] = 0d;
+                                        if (I <= 4) C[I, J] = 0f;
                                     }
                                 }
 
@@ -2203,20 +2221,20 @@ namespace ARProbaProcessing
                                             #region CALCUL DES MOYENNES
 
                                             // PREMIER JOUR
-                                            double TOT = 0d;
+                                            float TOT = 0f;
                                             for (int I01 = 1; I01 <= 4; I01++)
                                                 if (COMB[I01] == 1) TOT += IPERS;
                                             C[1, NIV] += TOT;
 
                                             // 2eme JOUR
-                                            TOT = 0d;
+                                            TOT = 0f;
                                             for (int I01 = 1; I01 <= 3; I01++)
                                                 for (int I02 = I01 + 1; I02 <= 4; I02++)
                                                     if (COMB[I01] == 1 || COMB[I02] == 1) TOT += IPERS;
                                             C[2, NIV] += TOT;
 
                                             // 3eme JOUR
-                                            TOT = 0d;
+                                            TOT = 0f;
                                             for (int I01 = 1; I01 <= 2; I01++)
                                                 for (int I02 = I01 + 1; I02 <= 3; I02++)
                                                     for (int I03 = I02 + 1; I03 <= 4; I03++)
@@ -2224,7 +2242,7 @@ namespace ARProbaProcessing
                                             C[3, NIV] += TOT;
 
                                             // 4eme JOUR
-                                            TOT = 0d;
+                                            TOT = 0f;
                                             if (COMB[1] == 1 || COMB[2] == 1 || COMB[3] == 1 || COMB[4] == 1) TOT += IPERS;
                                             C[4, NIV] += TOT;
 
@@ -2235,15 +2253,15 @@ namespace ARProbaProcessing
 
                                 // IMPRESSION DES RESULTATS
                                 int IN = TREG[N1] + 1;
-                                double POPS = 0d;
+                                float POPS = 0f;
                                 for (int I = 1; I <= NBIND; I++)
                                 {
                                     if (KHI2[I, IN + 1] == NB[IN]) POPS = POPS + KHI2[I, 1];
                                 }
-                                POPS = POPS * 10d;
-                                double DIRAC0 = COMPT[1, IN] / POPS;
-                                double DIRAC1 = ITTP[IN] / POPS;
-                                double PC1 = IZAP[IN] / POPS;
+                                POPS = POPS * 10f;
+                                float DIRAC0 = COMPT[1, IN] / POPS;
+                                float DIRAC1 = ITTP[IN] / POPS;
+                                float PC1 = IZAP[IN] / POPS;
                                 int IPOP = 0;
                                 for (int I = 2; I <= 5; I++)
                                 {
@@ -2256,37 +2274,37 @@ namespace ARProbaProcessing
                                     if (I != 5) COMPT[I + 1, IN] = COMPT[I + 1, IN] + COMPT[I, IN];
                                 }
 
-                                double GRP = IPOP * 100;
-                                GRP = GRP / POPS / 4d;
-                                PR = (IPOP - ITTP[IN] * 4d) / 3d;
+                                float GRP = IPOP * 100;
+                                GRP = GRP / POPS / 4f;
+                                PR = (IPOP - ITTP[IN] * 4f) / 3f;
                                 if (POPS == (COMPT[1, IN] + ITTP[IN]))
                                 {
                                     ZR = COMPT[1, IN] / POPS;
                                     UR = ITTP[IN] / POPS;
-                                    PR = 1d;
-                                    TAU = 0d;
+                                    PR = 1f;
+                                    TAU = 0f;
                                 }
                                 else
                                 {
                                     PR = PR / (POPS - COMPT[1, IN] - ITTP[IN]);
                                     for (int I = 1; I <= 4; I++)
                                     {
-                                        Z[I] = C[I, IN] / NCOM[I] / POPS * 100d;
+                                        Z[I] = C[I, IN] / NCOM[I] / POPS * 100f;
                                     }
 
                                     // APPEL DE LA FONCTION DIFFERENCE
 
-                                    GRP = GRP / 100d;
-                                    double ZA = DIRAC0;
+                                    GRP = GRP / 100f;
+                                    float ZA = DIRAC0;
                                     ZR = IZAP[IN] / POPS;
-                                    double UA = ITJP[IN] / POPS;
+                                    float UA = ITJP[IN] / POPS;
                                     UR = DIRAC1;
 
                                     //WRITE(16, *) GRP, ZA, ZR, UA, UR
-                                    sbSortie.Append("{GRP}  {ZA}  {ZR}  {UA}  {UR}" + $"{GRP}  {ZA}  {ZR}  {UA}  {UR}");
+                                    sbSortie.Append($"{GRP}  {ZA}  {ZR}  {UA}  {UR}");
 
-                                    double ND = 4;
-                                    MINIMISE(GRP, Z, ref PR, ref UR, ref ZR, out TAU, ZA, UA, ND, qhps: true); // double GRP, double[] ZC, ref double PR, ref double UR, ref double ZR, out double TAU, double ZA, double UA, double NB)
+                                    float ND = 4;
+                                    MINIMISE(GRP, Z, ref PR, ref UR, ref ZR, out TAU, ZA, UA, ND, qhps: true); // float GRP, float[] ZC, ref float PR, ref float UR, ref float ZR, out float TAU, float ZA, float UA, float NB)
                                 }
                             } // if (((N1 == 1) || (NIV == 1) ) 
                             RESUL[NOP, IQ, 1, N1] = ZR;
@@ -2294,11 +2312,7 @@ namespace ARProbaProcessing
                             RESUL[NOP, IQ, 3, N1] = PR;
                             RESUL[NOP, IQ, 4, N1] = TAU;
 
-                            sbSortie.Append("N1 = " + N1.ToString());
-                            sbSortie.Append("ZR = " + ZR.ToString());
-                            sbSortie.Append("UR = " + UR.ToString());
-                            sbSortie.Append("PR = " + PR.ToString());
-                            sbSortie.Append("TAU = " + TAU.ToString());
+                            sbSortie.Append($"CELLULE {N1} Z {ZR} U {UR} P {PR} TAU {TAU}");
 
                         } // for (int N1 = 1; N1 <= 16; N1++)
                     }
@@ -2307,10 +2321,10 @@ namespace ARProbaProcessing
                         sbSortie.Append(" ***PAS D AUDIENCE POUR CE 1 / 4h * **");
                         for (int N1 = 1; N1 <= 16; N1++)
                         {
-                            RESUL[NOP, IQ, 1, N1] = 1d;
-                            RESUL[NOP, IQ, 2, N1] = 0d;
-                            RESUL[NOP, IQ, 3, N1] = 0d;
-                            RESUL[NOP, IQ, 4, N1] = 0d;
+                            RESUL[NOP, IQ, 1, N1] = 1f;
+                            RESUL[NOP, IQ, 2, N1] = 0f;
+                            RESUL[NOP, IQ, 3, N1] = 0f;
+                            RESUL[NOP, IQ, 4, N1] = 0f;
                         }
                     }
                     // FIN DE TRAITEMENT CELLULE
@@ -2322,15 +2336,17 @@ namespace ARProbaProcessing
             } // for (int NOP = 1; NOP <= NBSTA; NOP++)
 
             Console.WriteLine($"TRAITEMENT 1/4h ----");
-            //   11       
             Console.WriteLine($"------- STATION ----");
-            //    1 
+            
+            if (File.Exists(pathSortie)) File.Delete(pathSortie);
+            File.AppendAllText(pathSortie, sbSortie.ToString());
+
             //FORMAT('CELLULE ',I2,' Z=',F9.7,' U=',F9.7,' P=',F9.7,' TAU=',F9.7) == ??? 
             //? Console.WriteLine($"CELLULE {I2} Z=', F9.7, ' U=', F9.7, ' P=', F9.7, ' TAU=', F9.7)
             return RESUL;
         }
 
-        private double[,,,] sav1qhpd(int NBIND, int NBSTA, int[,,,] regrs, int[,] KHI2, List<Fushab09Indiv> fushab09Indivs, VsorPoid[][][] JNByWeek, VsorPoid[][] JN)
+        private float[,,,] sav1qhpd(int NBIND, int NBSTA, int[,,,] regrs, int[,] KHI2, List<Fushab09Indiv> fushab09Indivs, VsorPoid[][][] JNByWeek, VsorPoid[][] JN, string pathSortie)
         {
             // PANEL RADIO 08 MEDIAMETRIE(nouveau format)
             // CALCUL DES PARAMETRES z,u,p,tau
@@ -2340,11 +2356,11 @@ namespace ARProbaProcessing
 
             int NBJOUR = 23;
 
-            double[,] C = new double[15 + 1, 5 + 1];
-            double[] NCOM = new double[4 + 1] { 999999d, 4, 6, 4, 1 };
-            double[,,,] RESUL = new double[NBSTA + 1, 96 + 1, 4 + 1, 16 + 1];
-            double[] Z = new double[15 + 1];
-            double[] YR = new double[15 + 1];
+            float[,] C = new float[15 + 1, 5 + 1];
+            float[] NCOM = new float[4 + 1] { 999999f, 4, 6, 4, 1 };
+            float[,,,] RESUL = new float[NBSTA + 1, 96 + 1, 4 + 1, 16 + 1];
+            float[] Z = new float[15 + 1];
+            float[] YR = new float[15 + 1];
 
             int[,] COMPT = new int[16 + 1, 5 + 1];
             int[] ITPO = new int[5 + 1];
@@ -2368,9 +2384,7 @@ namespace ARProbaProcessing
             int[,,] JATOU = new int[96 + 1, 4 + 1, NBIND + 1];
             int[] TREG = new int[16 + 1];
 
-            int[] ITH = new int[96 + 1];
-            int[] ITHInit = new int[] { 999999, 20 * 9, 4 * 1, 12 * 2, 12 * 3, 8 * 4, 8 * 5, 8 * 6, 8 * 7, 16 * 8 };
-            for (int i = 0; i < ITHInit.Length; i++) ITH[i] = ITHInit[i];
+            StringBuilder sbSortie = new StringBuilder();
 
             //  id  time
             //  1     05h00 - 06h00 = 4
@@ -2382,8 +2396,7 @@ namespace ARProbaProcessing
             //  7     18h00 - 20h00 = 8
             //  8     20h00 - 24h00 = 16
             //  9     24h00 - 05h00 = 20
-
-            StringBuilder sbSortie = new StringBuilder();
+            
 
             // OPEN(18, FILE = '#OUTPUT#ZUPTAUSA',
             //-RECORDTYPE = 'FIXED', FORM = 'UNFORMATTED')
@@ -2464,10 +2477,10 @@ namespace ARProbaProcessing
                         // BOUCLE CELLULES
                         for (int N1 = 1; N1 <= 16; N1++)
                         {
-                            double ZR = 0d;
-                            double UR = 0d;
-                            double PR = 0d;
-                            double TAU = 0d;
+                            float ZR = 0f;
+                            float UR = 0f;
+                            float PR = 0f;
+                            float TAU = 0f;
 
                             int N2 = SEG1[N1];
                             int N3 = SEG2[N2];
@@ -2491,7 +2504,7 @@ namespace ARProbaProcessing
                                     {
                                         SEGM[I, J] = 0;
                                         COMPT[I, J] = 0;
-                                        if (I <= 4) C[I, J] = 0d;
+                                        if (I <= 4) C[I, J] = 0f;
                                     }
                                 }
 
@@ -2568,20 +2581,20 @@ namespace ARProbaProcessing
                                             #region CALCUL DES MOYENNES
 
                                             // PREMIER JOUR
-                                            double TOT = 0d;
+                                            float TOT = 0f;
                                             for (int I01 = 1; I01 <= 4; I01++)
                                                 if (COMB[I01] == 1) TOT += IPERS;
                                             C[1, NIV] += TOT;
 
                                             // 2eme JOUR
-                                            TOT = 0d;
+                                            TOT = 0f;
                                             for (int I01 = 1; I01 <= 3; I01++)
                                                 for (int I02 = I01 + 1; I02 <= 4; I02++)
                                                     if (COMB[I01] == 1 || COMB[I02] == 1) TOT += IPERS;
                                             C[2, NIV] += TOT;
 
                                             // 3eme JOUR
-                                            TOT = 0d;
+                                            TOT = 0f;
                                             for (int I01 = 1; I01 <= 2; I01++)
                                                 for (int I02 = I01 + 1; I02 <= 3; I02++)
                                                     for (int I03 = I02 + 1; I03 <= 4; I03++)
@@ -2589,7 +2602,7 @@ namespace ARProbaProcessing
                                             C[3, NIV] += TOT;
 
                                             // 4eme JOUR
-                                            TOT = 0d;
+                                            TOT = 0f;
                                             if (COMB[1] == 1 || COMB[2] == 1 || COMB[3] == 1 || COMB[4] == 1) TOT += IPERS;
                                             C[4, NIV] += TOT;
 
@@ -2600,15 +2613,15 @@ namespace ARProbaProcessing
 
                                 // IMPRESSION DES RESULTATS
                                 int IN = TREG[N1] + 1;
-                                double POPS = 0d;
+                                float POPS = 0f;
                                 for (int I = 1; I <= NBIND; I++)
                                 {
                                     if (KHI2[I, IN + 1] == NB[IN]) POPS = POPS + KHI2[I, 1];
                                 }
-                                POPS = POPS * 10d;
-                                double DIRAC0 = COMPT[1, IN] / POPS;
-                                double DIRAC1 = ITTP[IN] / POPS;
-                                double PC1 = IZAP[IN] / POPS;
+                                POPS = POPS * 10f;
+                                float DIRAC0 = COMPT[1, IN] / POPS;
+                                float DIRAC1 = ITTP[IN] / POPS;
+                                float PC1 = IZAP[IN] / POPS;
                                 int IPOP = 0;
                                 for (int I = 2; I <= 5; I++)
                                 {
@@ -2621,37 +2634,37 @@ namespace ARProbaProcessing
                                     if (I != 5) COMPT[I + 1, IN] = COMPT[I + 1, IN] + COMPT[I, IN];
                                 }
 
-                                double GRP = IPOP * 100;
-                                GRP = GRP / POPS / 4d;
-                                PR = (IPOP - ITTP[IN] * 4d) / 3d;
+                                float GRP = IPOP * 100;
+                                GRP = GRP / POPS / 4f;
+                                PR = (IPOP - ITTP[IN] * 4f) / 3f;
                                 if (POPS == (COMPT[1, IN] + ITTP[IN]))
                                 {
                                     ZR = COMPT[1, IN] / POPS;
                                     UR = ITTP[IN] / POPS;
-                                    PR = 1d;
-                                    TAU = 0d;
+                                    PR = 1f;
+                                    TAU = 0f;
                                 }
                                 else
                                 {
                                     PR = PR / (POPS - COMPT[1, IN] - ITTP[IN]);
                                     for (int I = 1; I <= 4; I++)
                                     {
-                                        Z[I] = C[I, IN] / NCOM[I] / POPS * 100d;
+                                        Z[I] = C[I, IN] / NCOM[I] / POPS * 100f;
                                     }
 
                                     // APPEL DE LA FONCTION DIFFERENCE
 
-                                    GRP = GRP / 100d;
-                                    double ZA = DIRAC0;
+                                    GRP = GRP / 100f;
+                                    float ZA = DIRAC0;
                                     ZR = IZAP[IN] / POPS;
-                                    double UA = ITJP[IN] / POPS;
+                                    float UA = ITJP[IN] / POPS;
                                     UR = DIRAC1;
 
                                     //WRITE(16, *) GRP, ZA, ZR, UA, UR
-                                    sbSortie.Append("{GRP}  {ZA}  {ZR}  {UA}  {UR}" + $"{GRP}  {ZA}  {ZR}  {UA}  {UR}");
+                                    sbSortie.Append($"{GRP}  {ZA}  {ZR}  {UA}  {UR}");
 
-                                    double ND = 4;
-                                    MINIMISE(GRP, Z, ref PR, ref UR, ref ZR, out TAU, ZA, UA, ND); // double GRP, double[] ZC, ref double PR, ref double UR, ref double ZR, out double TAU, double ZA, double UA, double NB)
+                                    float ND = 4;
+                                    MINIMISE(GRP, Z, ref PR, ref UR, ref ZR, out TAU, ZA, UA, ND); // float GRP, float[] ZC, ref float PR, ref float UR, ref float ZR, out float TAU, float ZA, float UA, float NB)
                                 }
                             } // if (((N1 == 1) || (NIV == 1) ) 
                             RESUL[NOP, IQ, 1, N1] = ZR;
@@ -2659,11 +2672,7 @@ namespace ARProbaProcessing
                             RESUL[NOP, IQ, 3, N1] = PR;
                             RESUL[NOP, IQ, 4, N1] = TAU;
 
-                            sbSortie.Append("N1 = " + N1.ToString());
-                            sbSortie.Append("ZR = " + ZR.ToString());
-                            sbSortie.Append("UR = " + UR.ToString());
-                            sbSortie.Append("PR = " + PR.ToString());
-                            sbSortie.Append("TAU = " + TAU.ToString());
+                            sbSortie.Append($"CELLULE {N1} Z {ZR} U {UR} P {PR} TAU {TAU}");
 
                         } // for (int N1 = 1; N1 <= 16; N1++)
                     } // if (TREG[1] != 5)
@@ -2672,10 +2681,10 @@ namespace ARProbaProcessing
                         sbSortie.Append(" ***PAS D AUDIENCE POUR CE 1 / 4h * **");
                         for (int N1 = 1; N1 <= 16; N1++)
                         {
-                            RESUL[NOP, IQ, 1, N1] = 1d;
-                            RESUL[NOP, IQ, 2, N1] = 0d;
-                            RESUL[NOP, IQ, 3, N1] = 0d;
-                            RESUL[NOP, IQ, 4, N1] = 0d;
+                            RESUL[NOP, IQ, 1, N1] = 1f;
+                            RESUL[NOP, IQ, 2, N1] = 0f;
+                            RESUL[NOP, IQ, 3, N1] = 0f;
+                            RESUL[NOP, IQ, 4, N1] = 0f;
                         }
                     }
                 } // for (int IQ = 1; IQ <= 96; IQ++)
@@ -2683,6 +2692,10 @@ namespace ARProbaProcessing
 
             Console.WriteLine($"TRAITEMENT 1/4h ----");
             Console.WriteLine($"------- STATION ----");
+
+            if (File.Exists(pathSortie)) File.Delete(pathSortie);
+            File.AppendAllText(pathSortie, sbSortie.ToString());
+
             //FORMAT('CELLULE ',I2,' Z=',F9.7,' U=',F9.7,' P=',F9.7,' TAU=',F9.7) == ??? 
             //? Console.WriteLine($"CELLULE {I2} Z=', F9.7, ' U=', F9.7, ' P=', F9.7, ' TAU=', F9.7)
             return RESUL;
@@ -2698,7 +2711,7 @@ namespace ARProbaProcessing
         /// <param name="NbGRPStation">Nombre de station dans la fichier de GRP U109</param>
         /// <param name="NotorieteStation"></param>
         /// <returns></returns>
-        private double[,,,] cgrp75br(string PathGRPWave, int NbStation, int NbGRPModulation, int NbGRPStation, int[] NotorieteStation)
+        private float[,,,] cgrp75br(string PathGRPWave,  int NbStation, int NbGRPModulation, int NbGRPStation, int[] NotorieteStation, string pathSortie8, string pathNOUVOGRP)
         {
             if (NbStation == 0
                 || NbGRPModulation == 0
@@ -2710,15 +2723,13 @@ namespace ARProbaProcessing
             // PANEL RADIO 08 MEDIAMETRIE(nouveau format)
             // CALCUL DES GRP 75000 POUR CALAGE
 
-            double[,,,] COUV = new double[37 + 1, 3 + 1, NbStation + 1, 96 + 1];
+            float[,,,] COUV = new float[37 + 1, 3 + 1, NbStation + 1, 96 + 1];
             int[,] IPOP = new int[37 + 1, 3 + 1];
 
             int[] KHI2 = new int[NbGRPModulation + 1];
             int[] ISTA = new int[NbStation + 1];
             int ICSP, IREG, ISEX, IAGE, ISEG, COMPT;
             int[,] ZLEC = new int[96 + 1, NbGRPStation + 1];
-
-
 
             //   id idx    sta
             //   16  101    Les IndÃ©s Radios
@@ -2903,8 +2914,17 @@ namespace ARProbaProcessing
                 if (ISEG == 2) COMPT = COMPT + 1;
             }
 
+            if (File.Exists(pathSortie8)) File.Delete(pathSortie8);
+            if (File.Exists(pathNOUVOGRP)) File.Delete(pathNOUVOGRP);
+            StringBuilder sbSortie8 = new StringBuilder();
+
+            sbSortie8.AppendLine(" NBGUS: " + IG.ToString());
             for (int I = 1; I <= 37; I++)
             {
+                string s = "";
+                for (int j = 1; j <= 3; j++) s += " " + IPOP[I, j].ToString("").PadLeft(9);
+                sbSortie8.AppendLine(I.ToString("000"));
+
                 for (int J = 1; J <= 3; J++)
                 {
                     for (int K = 1; K <= NbStation; K++)
@@ -2917,11 +2937,28 @@ namespace ARProbaProcessing
 
                 }
             }
+            File.AppendAllText(pathSortie8, sbSortie8.ToString());
+
+            using (BinaryWriter writer = new BinaryWriter(File.Open(pathNOUVOGRP, FileMode.Create)))
+            {
+                for (int L = 1; L <= 96; L++)
+                {
+                    for (int K = 1; K <= NbStation; K++)
+                    {
+
+                        for (int J = 1; J <= 3; J++)
+                        {
+                            for (int I = 1; I <= 37; I++)
+                                writer.Write( COUV[I, J, K, L]);
+                        }
+                    }
+                }
+            }
 
             return COUV;
         }
 
-        private void cont75br(int NBIND, int NBSTA, int popLV, int popS, int popD, double[,,,] Couverture, string pathCouv)
+        private void cont75br(int NBIND, int NBSTA, int popLV, int popS, int popD, float[,,,] Couverture, string pathCouv)
         {
             // PANEL RADIO 08 MEDIAMETRIE(nouveau format)
             // CONTROLE DES GRP 75000 POUR CALAGE
@@ -2929,7 +2966,7 @@ namespace ARProbaProcessing
             // Le nombre de station correspond au nombre de stations(#NB_STA_HAB_NOTO_TOTAL#) - #NB_STA_TOTAL_ONLY# pour Total Radio (et Total TV)
 
             int[] POP = new int[3 + 1];
-            double[] VAL = new double[3 + 1];
+            float[] VAL = new float[3 + 1];
             int[] IVAL = new int[3 + 1];
 
             StringBuilder sb = new StringBuilder();
@@ -2952,7 +2989,7 @@ namespace ARProbaProcessing
         }
 
         // RESUL = ZUPTAUSE
-        private double[,,,] cnzuptse(int NBIND, int NBSTA, string pathCnzuptse, double[,,,] COUV, int[,,,] REGRS, double[,,,] RESUL)
+        private float[,,,] cnzuptse(int NBIND, int NBSTA, string pathCnzuptse, float[,,,] COUV, int[,,,] REGRS, float[,,,] RESUL)
         {
             // PANEL RADIO 08 MEDIAMETRIE(nouveau format)
             // CALAGE SUR GRP 75000 + ET RECALCUL DES PARAMETRES STATION
@@ -2961,7 +2998,7 @@ namespace ARProbaProcessing
             //
             int IDSUDRAD = 19;
 
-            double[,,,] RESULCOR = new double[NBSTA + 1, 96 + 1, 4 + 1, 16 + 1];
+            float[,,,] RESULCOR = new float[NBSTA + 1, 96 + 1, 4 + 1, 16 + 1];
             int[] TREG = new int[16 + 1];
 
             // OPEN(15, FILE = 'C:\Affinage\PANEL_~1\Panfra20\Output\NIVEAUX',
@@ -3006,10 +3043,10 @@ namespace ARProbaProcessing
                         // BOUCLE CELLULES
                         for (int N1 = 1; N1 <= 16; N1++)
                         {
-                            double ZR = 0d;
-                            double UR = 0d;
-                            double PR = 0d;
-                            double TAU = 0d;
+                            float ZR = 0f;
+                            float UR = 0f;
+                            float PR = 0f;
+                            float TAU = 0f;
                             int N2 = SEG1[N1];
                             int N3 = SEG2[N2];
                             int N4 = SEG3[N3];
@@ -3028,8 +3065,8 @@ namespace ARProbaProcessing
                                 UR = RESUL[IP, IQ, 2, N1];
                                 PR = RESUL[IP, IQ, 3, N1];
                                 TAU = RESUL[IP, IQ, 4, N1];
-                                double VA = 1d - ZR - UR;
-                                double GRPA = VA * PR + UR;
+                                float VA = 1f - ZR - UR;
+                                float GRPA = VA * PR + UR;
 
                                 if (IP != IDSUDRAD)
                                 {
@@ -3039,21 +3076,21 @@ namespace ARProbaProcessing
                                     if (IN == 4) ISEG = 32 + SEG3[SEG2[SEG1[N1]]];
                                     if (IN == 5) ISEG = 37;
                                     // CALCUL NOUVEAU P
-                                    double GRPN = COUV[ISEG, 1, IP, NQ];
+                                    float GRPN = COUV[ISEG, 1, IP, NQ];
                                     bool process = false;
                                     if (GRPA != 0d && GRPN != 0d)
                                     {
-                                        double V = 1d - ZR - UR;
+                                        float V = 1f - ZR - UR;
                                         if (V <= 0d)
                                         {
                                             UR = GRPN;
-                                            ZR = 1d - UR;
+                                            ZR = 1f - UR;
                                             process = true;
                                         }
-                                        else if (GRPN > 1d - ZR)
+                                        else if (GRPN > 1f - ZR)
                                         {
-                                            ZR = 1d - GRPN;
-                                            V = 1d - ZR - UR;
+                                            ZR = 1f - GRPN;
+                                            V = 1f - ZR - UR;
                                             PR = GRPN - UR;
                                             if (V > 0) PR = PR / V;
                                             process = true;
@@ -3068,7 +3105,7 @@ namespace ARProbaProcessing
                                             else
                                             {
                                                 UR = UR * GRPN / GRPA;
-                                                V = 1d - ZR - UR;
+                                                V = 1f - ZR - UR;
                                                 PR = GRPN - UR;
                                                 if (V > 0) PR = PR / V;
                                             }
@@ -3096,10 +3133,10 @@ namespace ARProbaProcessing
                         sortie.Append(" ***PAS D AUDIENCE POUR CE 1 / 4h * **");
                         for (int N1 = 1; N1 <= 16; N1++)
                         {
-                            RESULCOR[IP, IQ, 1, N1] = 1d;
-                            RESULCOR[IP, IQ, 2, N1] = 0d;
-                            RESULCOR[IP, IQ, 3, N1] = 0d;
-                            RESULCOR[IP, IQ, 4, N1] = 0d;
+                            RESULCOR[IP, IQ, 1, N1] = 1f;
+                            RESULCOR[IP, IQ, 2, N1] = 0f;
+                            RESULCOR[IP, IQ, 3, N1] = 0f;
+                            RESULCOR[IP, IQ, 4, N1] = 0f;
                         }
                     }// if (TREG[1] != 5)
                 } // for (int IQ = 1; IQ <= 96; IQ++)
@@ -3115,7 +3152,7 @@ namespace ARProbaProcessing
             return RESULCOR;
         }
 
-        private double[,,,] cnzuptsa(int NBIND, int NBSTA, string pathCnzuptsa, double[,,,] COUV, int[,,,] REGRS, double[,,,] RESUL)
+        private float[,,,] cnzuptsa(int NBIND, int NBSTA, string pathCnzuptsa, float[,,,] COUV, int[,,,] REGRS, float[,,,] RESUL)
         {
             // PANEL RADIO 08 MEDIAMETRIE(nouveau format)
             // CALAGE SUR GRP 75000 + ET RECALCUL DES PARAMETRES STATION
@@ -3124,7 +3161,7 @@ namespace ARProbaProcessing
             //
             int IDSUDRAD = 19;
 
-            double[,,,] RESULCOR = new double[NBSTA + 1, 96 + 1, 4 + 1, 16 + 1];
+            float[,,,] RESULCOR = new float[NBSTA + 1, 96 + 1, 4 + 1, 16 + 1];
             int[] TREG = new int[16 + 1];
 
             // OPEN(15, FILE = 'C:\Affinage\PANEL_~1\Panfra20\Output\NIVEAUX',
@@ -3169,10 +3206,10 @@ namespace ARProbaProcessing
                         // BOUCLE CELLULES
                         for (int N1 = 1; N1 <= 16; N1++)
                         {
-                            double ZR = 0d;
-                            double UR = 0d;
-                            double PR = 0d;
-                            double TAU = 0d;
+                            float ZR = 0f;
+                            float UR = 0f;
+                            float PR = 0f;
+                            float TAU = 0f;
                             int N2 = SEG1[N1];
                             int N3 = SEG2[N2];
                             int N4 = SEG3[N3];
@@ -3191,7 +3228,7 @@ namespace ARProbaProcessing
                                 UR = RESUL[IP, IQ, 2, N1];
                                 PR = RESUL[IP, IQ, 3, N1];
                                 TAU = RESUL[IP, IQ, 4, N1];
-                                double GRPA = (1d - ZR - UR) * PR + UR;
+                                float GRPA = (1f - ZR - UR) * PR + UR;
 
                                 if (IP != IDSUDRAD)
                                 {
@@ -3201,21 +3238,21 @@ namespace ARProbaProcessing
                                     if (IN == 4) ISEG = 32 + SEG3[SEG2[SEG1[N1]]];
                                     if (IN == 5) ISEG = 37;
                                     // CALCUL NOUVEAU P
-                                    double GRPN = COUV[ISEG, 3, IP, NQ];
+                                    float GRPN = COUV[ISEG, 3, IP, NQ];
                                     bool process = false;
                                     if (GRPA != 0d && GRPN != 0d)
                                     {
-                                        double V = 1d - ZR - UR;
+                                        float V = 1f - ZR - UR;
                                         if (V <= 0d)
                                         {
                                             UR = GRPN;
-                                            ZR = 1d - UR;
+                                            ZR = 1f - UR;
                                             process = true;
                                         }
-                                        else if (GRPN > 1d - ZR)
+                                        else if (GRPN > 1f - ZR)
                                         {
-                                            ZR = 1d - GRPN;
-                                            V = 1d - ZR - UR;
+                                            ZR = 1f - GRPN;
+                                            V = 1f - ZR - UR;
                                             PR = GRPN - UR;
                                             if (V > 0) PR = PR / V;
                                             process = true;
@@ -3230,7 +3267,7 @@ namespace ARProbaProcessing
                                             else
                                             {
                                                 UR = UR * GRPN / GRPA;
-                                                V = 1d - ZR - UR;
+                                                V = 1f - ZR - UR;
                                                 PR = GRPN - UR;
                                                 if (V > 0) PR = PR / V;
                                             }
@@ -3258,10 +3295,10 @@ namespace ARProbaProcessing
                         sortie.Append(" ***PAS D AUDIENCE POUR CE 1 / 4h * **");
                         for (int N1 = 1; N1 <= 16; N1++)
                         {
-                            RESULCOR[IP, IQ, 1, N1] = 1d;
-                            RESULCOR[IP, IQ, 2, N1] = 0d;
-                            RESULCOR[IP, IQ, 3, N1] = 0d;
-                            RESULCOR[IP, IQ, 4, N1] = 0d;
+                            RESULCOR[IP, IQ, 1, N1] = 1f;
+                            RESULCOR[IP, IQ, 2, N1] = 0f;
+                            RESULCOR[IP, IQ, 3, N1] = 0f;
+                            RESULCOR[IP, IQ, 4, N1] = 0f;
                         }
                     }// if (TREG[1] != 5)
                 } // for (int IQ = 1; IQ <= 96; IQ++)
@@ -3277,7 +3314,7 @@ namespace ARProbaProcessing
             return RESULCOR;
         }
 
-        private double[,,,] cnzuptdi(int NBIND, int NBSTA, string pathCnzuptdi, double[,,,] COUV, int[,,,] REGRS, double[,,,] RESUL)
+        private float[,,,] cnzuptdi(int NBIND, int NBSTA, string pathCnzuptdi, float[,,,] COUV, int[,,,] REGRS, float[,,,] RESUL)
         {
             // PANEL RADIO 08 MEDIAMETRIE(nouveau format)
             // CALAGE SUR GRP 75000 + ET RECALCUL DES PARAMETRES STATION
@@ -3286,7 +3323,7 @@ namespace ARProbaProcessing
             //
             int IDSUDRAD = 19;
 
-            double[,,,] RESULCOR = new double[NBSTA + 1, 96 + 1, 4 + 1, 16 + 1];
+            float[,,,] RESULCOR = new float[NBSTA + 1, 96 + 1, 4 + 1, 16 + 1];
             int[] TREG = new int[16 + 1];
 
             // OPEN(15, FILE = 'C:\Affinage\PANEL_~1\Panfra20\Output\NIVEAUX',
@@ -3331,10 +3368,10 @@ namespace ARProbaProcessing
                         // BOUCLE CELLULES
                         for (int N1 = 1; N1 <= 16; N1++)
                         {
-                            double ZR = 0d;
-                            double UR = 0d;
-                            double PR = 0d;
-                            double TAU = 0d;
+                            float ZR = 0f;
+                            float UR = 0f;
+                            float PR = 0f;
+                            float TAU = 0f;
                             int N2 = SEG1[N1];
                             int N3 = SEG2[N2];
                             int N4 = SEG3[N3];
@@ -3353,7 +3390,7 @@ namespace ARProbaProcessing
                                 UR = RESUL[IP, IQ, 2, N1];
                                 PR = RESUL[IP, IQ, 3, N1];
                                 TAU = RESUL[IP, IQ, 4, N1];
-                                double GRPA = (1d - ZR - UR) * PR + UR;
+                                float GRPA = (1f - ZR - UR) * PR + UR;
 
                                 if (IP != IDSUDRAD)
                                 {
@@ -3363,21 +3400,21 @@ namespace ARProbaProcessing
                                     if (IN == 4) ISEG = 32 + SEG3[SEG2[SEG1[N1]]];
                                     if (IN == 5) ISEG = 37;
                                     // CALCUL NOUVEAU P
-                                    double GRPN = COUV[ISEG, 2, IP, NQ];
+                                    float GRPN = COUV[ISEG, 2, IP, NQ];
                                     bool process = false;
                                     if (GRPA != 0d && GRPN != 0d)
                                     {
-                                        double V = 1d - ZR - UR;
+                                        float V = 1f - ZR - UR;
                                         if (V <= 0d)
                                         {
                                             UR = GRPN;
-                                            ZR = 1d - UR;
+                                            ZR = 1f - UR;
                                             process = true;
                                         }
-                                        else if (GRPN > 1d - ZR)
+                                        else if (GRPN > 1f - ZR)
                                         {
-                                            ZR = 1d - GRPN;
-                                            V = 1d - ZR - UR;
+                                            ZR = 1f - GRPN;
+                                            V = 1f - ZR - UR;
                                             PR = GRPN - UR;
                                             if (V > 0) PR = PR / V;
                                             process = true;
@@ -3392,7 +3429,7 @@ namespace ARProbaProcessing
                                             else
                                             {
                                                 UR = UR * GRPN / GRPA;
-                                                V = 1d - ZR - UR;
+                                                V = 1f - ZR - UR;
                                                 PR = GRPN - UR;
                                                 if (V > 0) PR = PR / V;
                                             }
@@ -3420,10 +3457,10 @@ namespace ARProbaProcessing
                         sortie.Append(" ***PAS D AUDIENCE POUR CE 1 / 4h * **");
                         for (int N1 = 1; N1 <= 16; N1++)
                         {
-                            RESULCOR[IP, IQ, 1, N1] = 1d;
-                            RESULCOR[IP, IQ, 2, N1] = 0d;
-                            RESULCOR[IP, IQ, 3, N1] = 0d;
-                            RESULCOR[IP, IQ, 4, N1] = 0d;
+                            RESULCOR[IP, IQ, 1, N1] = 1f;
+                            RESULCOR[IP, IQ, 2, N1] = 0f;
+                            RESULCOR[IP, IQ, 3, N1] = 0f;
+                            RESULCOR[IP, IQ, 4, N1] = 0f;
                         }
                     }// if (TREG[1] != 5)
                 } // for (int IQ = 1; IQ <= 96; IQ++)
@@ -3457,15 +3494,15 @@ namespace ARProbaProcessing
         // SUBROUTINE MINIMISE
         // optimisation de la courbe theorique de montee en audience
         // suivant la beta binomiale
-        private void MINIMISE(double GRP, double[] ZC, ref double PR, ref double UR, ref double ZR, out double TAU, double ZA, double UA, double NB, bool qhps = false)
+        private void MINIMISE(float GRP, float[] ZC, ref float PR, ref float UR, ref float ZR, out float TAU, float ZA, float UA, float NB, bool qhps = false)
         {
-            double Z, Z1, Z2, DELTA0, DELTZ0, DELTZ1, DELTZ2, DELTA00, DELTATO;
-            double[] RES = new double[5] { 0, ZA, UA, 0d, 0d };
-            double DZ0, DT0, DZ, DU;
-            double V0 = 1d - ZA - UR;
+            float Z, Z1, Z2, DELTA0, DELTZ0, DELTZ1, DELTZ2, DELTA00, DELTATO;
+            float[] RES = new float[5] { 0, ZA, UA, 0f, 0f };
+            float DZ0, DT0, DZ, DU;
+            float V0 = 1f - ZA - UR;
             if (V0 > 0.00005)
             {
-                DELTA0 = 0d;
+                DELTA0 = 0f;
                 for (int I = 1; I <= NB; I++)
                 {
                     DELTA0 = DELTA0 + 2 * I * I * ZC[I] * ZC[I];
@@ -3475,20 +3512,20 @@ namespace ARProbaProcessing
                 DELTZ0 = DELTA0;
                 DELTZ1 = DELTA0;
                 DELTZ2 = DELTA0;
-                DZ0 = DT0 = DZ = DU = 0.1;
+                DZ0 = DT0 = DZ = DU = 0.1f;
 
-                Z = ZA + (1d - ZA) / 2;
+                Z = ZA + (1f - ZA) / 2;
                 if (!qhps || Z >= ZR)
                 {
-                    if ((1d - Z) < DZ) DZ = 1d - Z - 0.00001;
+                    if ((1f - Z) < DZ) DZ = 1f - Z - 0.00001f;
                     Z1 = Z;
                     Z2 = ZR;
-                    double U0 = UR;
+                    float U0 = UR;
                     //5 
                     bool sortie = false;
                     for (; ; )
                     {
-                        double ITZ = 0;
+                        float ITZ = 0;
                         if (Z >= ZR)
                         {
                             if (DZ > (Z1 - Z2)) DZ = Z1 - Z2;
@@ -3498,7 +3535,7 @@ namespace ARProbaProcessing
                             {
                                 ITZ = ITZ + 1;
 
-                                MINIMU(ITZ, Z, GRP, ZC, ZA, UA, U0, NB, DELTA00, out double DELTZ);
+                                MINIMU(ITZ, Z, GRP, ZC, ZA, UA, U0, NB, DELTA00, out float DELTZ);
 
                                 if (DELTZ <= DELTZ0)
                                 {
@@ -3513,16 +3550,14 @@ namespace ARProbaProcessing
                                             Z = Z - DZ;
                                             continue; // GOTO 10
                                         }
-                                        if (DZ <= 0.0001)
+                                        if (DZ > 0.0001)
                                         {
-                                            sortie = true;
-                                            break;
+                                            Z2 = Z;
+                                            Z = Z + DZ * 2;
+                                            DZ = DZ / 10f;
+                                            continue;
                                         }
-
-                                        Z2 = Z;
-                                        Z = Z + DZ * 2;
-                                        DZ = DZ / 10d;
-                                        continue; // GOTO 10
+                                        break; // GO TO 5
                                     }
                                     else
                                     {
@@ -3537,29 +3572,33 @@ namespace ARProbaProcessing
                                     {
                                         if (DZ <= 0.0001)
                                         {
-                                            sortie = true;
+                                            sortie = true; // GOTO 260 end
                                             break;
                                         }
                                         Z2 = Z;
                                         Z = Z + 2 * DZ;
-                                        DZ = DZ / 10d;
+                                        DZ = DZ / 10f;
                                         DELTZ0 = DELTZ2;
                                         break; // GOTO 5
                                     }
                                     if (DZ <= 0.0001)
                                     {
-                                        sortie = true;
+                                        sortie = true; // GOTO 260 end
                                         break;
                                     }
                                     Z2 = Z;
                                     Z = Z1;
-                                    DZ = DZ / 10d;
+                                    DZ = DZ / 10f;
                                     DELTZ0 = DELTZ1;
                                     break; // GOTO 5
                                 }
                             } // for (; ; )  du 10
+                            if (sortie) break; 
                         }// if (Z >= ZR)
-                        if (sortie) break; // GOTO 5 suite...
+                        else
+                        {
+                            break;
+                        }
                     } // for (; ; )  du 5
                 }
                 ZR = RES[1];
@@ -3570,23 +3609,23 @@ namespace ARProbaProcessing
             } // if (V0 > 0.00005)
 
             ZR = ZA;
-            TAU = 0d;
+            TAU = 0f;
         }
 
         // SUBROUTINE MINITAU
         // CALCUL DE LA VALEUR OPTIMALE DE TAU
-        private void MINITAU(double[] ZC, double[] X, double ZA, double NB, double U0, double Q, double Z, double U, double P, double V, out double DELTT, ref double DELTA00)
+        private void MINITAU(float[] ZC, float[] X, float ZA, float NB, float U0, float Q, float Z, float U, float P, float V, out float DELTT, ref float DELTA00)
         {
-            double[] Y = new double[15];
-            double[] RES = new double[5];
-            double T, DELTA0, T1, T2, DMOINS1 = 0, DMOINS2 = 0, DELTATO = 0, DT;
+            float[] Y = new float[15 + 1];
+            float[] RES = new float[5 + 1];
+            float T, DELTA0, T1, T2, DMOINS1 = 0, DMOINS2 = 0, DELTATO = 0, DT;
 
             // INCREMENTS INITIAUX
             DELTT = 0;
             DELTA0 = DELTA00;
-            DT = 0.1d;
-            T1 = 0d;
-            T2 = 2d;
+            DT = 0.1f;
+            T1 = 0f;
+            T2 = 2f;
 
             // VARIATION DE LA DISPERSION
             int ITE = 0;
@@ -3597,21 +3636,21 @@ namespace ARProbaProcessing
                 // EVALUATION DE LA DISTANCE
                 for (int N = 2; N <= NB; N++)
                 {
-                    double A = (N - 1) * T;
+                    float A = (N - 1) * T;
                     X[N] = X[N - 1] * (Q + A) / (1 + A);
                 }
                 for (int K = 1; K <= NB; K++)
                 {
-                    Y[K] = (1d - V * X[K] - Z);
+                    Y[K] = (1f - V * X[K] - Z);
                 }
-                double DELTA = 0d;
+                float DELTA = 0f;
                 for (int K = 1; K <= NB; K++)
                 {
-                    DELTA = DELTA + K * Math.Pow(ZC[K] * 0.01 - Y[K], 2d);
+                    DELTA = DELTA + K * (float)Math.Pow(ZC[K] * 0.01f - Y[K], 2);
                 }
-                DELTA = DELTA + 0.1 * Math.Pow(ZA - Z, 2) / ZA;
+                DELTA = DELTA + 0.1f * (float)Math.Pow(ZA - Z, 2) / ZA;
 
-                if (U0 > 0) DELTA = DELTA + 0.1 * Math.Pow(U0 - U, 2) / U0;
+                if (U0 > 0) DELTA = DELTA + 0.1f * (float)Math.Pow(U0 - U, 2) / U0;
 
                 if (DELTA <= DELTA0)
                 {
@@ -3647,7 +3686,7 @@ namespace ARProbaProcessing
                             DELTA0 = DMOINS2;
                             T1 = T - 2 * DT;
                             T2 = T;
-                            DT = DT / 10d;
+                            DT = DT / 10f;
                             ITE = 0;
                             T = T1;
                             continue;
@@ -3656,7 +3695,7 @@ namespace ARProbaProcessing
                         if (DT > 0.0001)
                         {
                             T2 = T;
-                            DT = DT / 10d;
+                            DT = DT / 10f;
                             ITE = 0;
                             T = T1;
                             continue;
@@ -3682,10 +3721,10 @@ namespace ARProbaProcessing
         // SUBROUTINE MINIMU
         // CALCUL DU U OPTIMAL
         // EN FONCTION DE Z
-        private void MINIMU(double ITZ, double Z, double GRP, double[] ZC, double ZA, double UA, double U0, double NB, double DELTA00, out double DELTZ)
+        private void MINIMU(float ITZ, float Z, float GRP, float[] ZC, float ZA, float UA, float U0, float NB, float DELTA00, out float DELTZ)
         {
-            double[] X = new double[15 + 1];
-            double P, U, V, Q, U1, U2, DELTU, DELTU0, DELTU1, DELTU2;
+            float[] X = new float[15 + 1];
+            float P, U, V, Q, U1, U2, DELTU, DELTU0, DELTU1, DELTU2;
 
             DELTZ = 0;
             DELTU0 = DELTA00;
@@ -3694,23 +3733,23 @@ namespace ARProbaProcessing
             DELTU = 0;
 
             // INCREMENTS INITIAUX
-            double DU = 0.01;
-            U1 = 0d;
+            float DU = 0.01f;
+            U1 = 0f;
             U = UA;
-            U2 = 1d - Z;
+            U2 = 1f - Z;
             U = U1;
-            if (U0 == 0) U = 0d;
+            if (U0 == 0) U = 0f;
 
             int ITU = 0;
             for (; ; )
             {
                 // VARIATION DES TOUJOURS       
-                V = 1d - Z - U;
+                V = 1f - Z - U;
                 if (V > 0d)
                 {
                     P = (GRP - U) / V;
                     ITU++; ;
-                    Q = 1d - P;
+                    Q = 1f - P;
                     X[1] = Q;
 
                     MINITAU(ZC, X, ZA, NB, U0, Q, Z, U, P, V, out DELTU, ref DELTA00);
@@ -3726,13 +3765,13 @@ namespace ARProbaProcessing
                         DELTU2 = DELTU1;
                         DELTU1 = DELTU0;
                         DELTU0 = DELTU;
-                        if (U < U2 && U < (1d - Z))
+                        if (U < U2 && U < (1f - Z))
                         {
                             U = U + DU;
-                            if (U >= (1d - Z))
+                            if (U >= (1f - Z))
                             {
                                 DU = U - 1 - Z;
-                                U = 1d - Z - 0.00001;
+                                U = 1f - Z - 0.00001f;
                             }
                             continue;
                         }
@@ -3742,11 +3781,11 @@ namespace ARProbaProcessing
                             return;
                         }
                         U2 = U;
-                        if (U2 > (1d - Z)) U2 = 1d - Z;
+                        if (U2 > (1f - Z)) U2 = 1f - Z;
                         U1 = U - DU;
                         if (U1 < 0) U1 = 0;
                         U = U1;
-                        DU = DU / 10d;
+                        DU = DU / 10f;
                         continue;
                     }
                     else
@@ -3761,13 +3800,13 @@ namespace ARProbaProcessing
                         if (ITU < 2)
                         {
                             U1 = U - DU;
-                            if (U >= (1d - Z)) DU = U - 1 - Z;
-                            if (U >= (1d - Z)) U = 1d - Z - 0.00001;
+                            if (U >= (1f - Z)) DU = U - 1 - Z;
+                            if (U >= (1f - Z)) U = 1f - Z - 0.00001f;
                         }
                         if (U1 < 0) U1 = 0;
                         U2 = U;
                         U = U1;
-                        DU = DU / 10d;
+                        DU = DU / 10f;
 
                         if (ITU > 2) DELTU0 = DELTU2;
                         if (ITU <= 2) DELTU0 = DELTU1;
@@ -3775,13 +3814,14 @@ namespace ARProbaProcessing
                         continue;
                     }
                 } // if (V > 0)
-                if (DU > 0.00001d)
+                if (DU > 0.00001f)
                 {
                     DU = DU / 10;
                     U = U1;
                     ITU = 0;
                     continue;
                 }
+                DELTZ = DELTU0;
                 break;
             } // for (; ; )
         }

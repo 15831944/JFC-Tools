@@ -8,8 +8,8 @@ namespace ARProbaProcessing
 {
     public partial class AffinageProcess
     {
-        private int[,,,] attribp2(int NBIND, int NBSTA, int[,,,] REGRS, int[,] KHI2, int[,] NINI, double[] NOTES, int[,,,] AUDI, int[,,] HABI,
-            double[,,,] ZUPTAUSECOR, double[,,,] ZUPTAUSACOR, double[,,,] ZUPTAUDICOR, string pathSortie)
+        private int[,,,] attribp2(int NBIND, int NBSTA, int[,,,] REGRS, int[,] KHI2, int[,] NINI, float[] NOTES, int[,,,] AUDI, int[,,] HABI,
+            float[,,,] ZUPTAUSECOR, float[,,,] ZUPTAUSACOR, float[,,,] ZUPTAUDICOR, string pathSortie)
         {
             // PANEL RADIO 08 MEDIAMETRIE(nouveau format)
             // ATTRIBUTION DES PROBAS 1/4h PAR 1/4h,L-V,SAM,DIM
@@ -20,16 +20,16 @@ namespace ARProbaProcessing
             int JMAX = NSEG * 2;
             int JSUP = JMAX + 2;
 
-            double[] LOGS = new double[JMAX + 1];
-            double[] DISTR = new double[NSEG + 1];
-            double[] REP = new double[NSEG + 1];
-            double[] VREP = new double[NSEG + 1];
-            double[] GT = new double[16 + 1];
+            float[] LOGS = new float[JMAX + 1];
+            float[] DISTR = new float[NSEG + 1];
+            float[] REP = new float[NSEG + 1];
+            float[] VREP = new float[NSEG + 1];
+            float[] GT = new float[16 + 1];
 
-            double XJ, LAMBDA, DELTA, PCUM, NG, GRPN, X, Y;
-            double[] SCORE = new double[NBIND + 1];
+            float XJ, LAMBDA, DELTA, PCUM, NG, GRPN, X, Y;
+            float[] SCORE = new float[NBIND + 1];
             int[] TAB = new int[NBIND + 1];
-            double NOTI, SGN, SGN0;
+            float NOTI, SGN, SGN0;
             int[] POIDS = new int[NBIND + 1];
             int[] IPPS = new int[5 + 1];
             int R, RSAVE, RP, H, HCR, PR;
@@ -48,7 +48,7 @@ namespace ARProbaProcessing
             LOGS[1] = 0;
             for (int J = 2; J <= JMAX; J++)
             {
-                LOGS[J] = Math.Log(Convert.ToDouble(J) / XJ);
+                LOGS[J] = (float)Math.Log(Convert.ToSingle(J) / XJ);
             }
 
             // OPEN(30, FILE= '#OUTPUT#PANECR#YEAR#',
@@ -69,7 +69,7 @@ namespace ARProbaProcessing
                 // BOUCLE UNIVERS
                 for (int IU = 1; IU <= 3; IU++)
                 {
-                    double[,,,] RESUL = null;
+                    float[,,,] RESUL = null;
                     // BOUCLE 1/4h
                     for (int IQ = 1; IQ <= 96; IQ++)
                     {
@@ -87,7 +87,7 @@ namespace ARProbaProcessing
                             SCORE[I] = 10 * SCORE[I] + HABI[I, IQ, IU];
 
                             NOTI = NOTES[I];
-                            if (NINI[I, NOP] == 1) NOTI = 0d;
+                            if (NINI[I, NOP] == 1) NOTI = 0f;
                             SCORE[I] = 1000 * SCORE[I] + NOTI;
                             RANG[I] = I;
                         }
@@ -159,9 +159,9 @@ namespace ARProbaProcessing
                                     PT1[N1] = 0;
                                     PTNSEG[N1] = 0;
                                     // LECTURE DES PARAMETRES Z,U,P,TAU    [STATIONS, QH, DATAS ZR-UR-PR-TAUX, CELL]
-                                    double ZR = RESUL[NOP, IQ, 1, N1];
-                                    double PGR = 0d;
-                                    double GRP = 0d;
+                                    float ZR = RESUL[NOP, IQ, 1, N1];
+                                    float PGR = 0f;
+                                    float GRP = 0f;
                                     int NPERR = 0;
 
                                     if (ZR >= 1d)
@@ -170,16 +170,16 @@ namespace ARProbaProcessing
                                         {
                                             H = RANK[I];
                                         }
-                                        PGR = 0d;
+                                        PGR = 0f;
                                         GRP = 0;
                                         NPERR = 0;
                                         break; // Fin parcours Cellules
                                     }
 
-                                    double UR = RESUL[NOP, IQ, 2, N1];
-                                    double P = RESUL[NOP, IQ, 3, N1];
-                                    double TAU = RESUL[NOP, IQ, 4, N1];
-                                    GRPN = UR + P * (1d - ZR - UR);
+                                    float UR = RESUL[NOP, IQ, 2, N1];
+                                    float P = RESUL[NOP, IQ, 3, N1];
+                                    float TAU = RESUL[NOP, IQ, 4, N1];
+                                    GRPN = UR + P * (1f - ZR - UR);
 
                                     CALDISTR(ZR, UR, P, TAU, out DISTR, out REP);
 
@@ -194,8 +194,8 @@ namespace ARProbaProcessing
 
                                     // AJUSTEMENT DU MILIEU DES MARCHES
                                     R = 1;
-                                    LAMBDA = 0.5;
-                                    DELTA = 0.05;
+                                    LAMBDA = 0.5f;
+                                    DELTA = 0.05f;
                                     SGN0 = 0;
                                     RSAVE = R;
 
@@ -203,11 +203,11 @@ namespace ARProbaProcessing
                                     //45               
                                     while (LAMBDA <= 0.05 || LAMBDA >= 0.95) //GO TO 75
                                     {
-                                        GT[N1] = 0d;
+                                        GT[N1] = 0f;
                                         R = RSAVE;
-                                        X = 1E-6;
+                                        X = (float)1E-6;
                                         RP = R - 1;
-                                        PCUM = 0d;
+                                        PCUM = 0f;
 
                                         // AFFECTATION DU SEGMENT ZERO
                                         bool bug = false;
@@ -286,15 +286,15 @@ namespace ARProbaProcessing
                                             }
 
                                             GT[N1] /= (NSEG * IPPS[IN]);
-                                            double Z = (GRPN - GT[N1]) * NSEG * IPPS[IN];
+                                            float Z = (GRPN - GT[N1]) * NSEG * IPPS[IN];
                                             int K = PTNSEG[N1] - PT1[N1];
 
                                             // TEST SI GRP COHERENT
                                             if (Math.Abs(Z) >= (K / 4 + 1) && (DELTA >= 1E-3))
                                             {
-                                                SGN = Z < 0 ? -1d : 1d;
+                                                SGN = Z < 0 ? -1f : 1f;
 
-                                                if (SGN == -SGN0) DELTA *= 0.3;
+                                                if (SGN == -SGN0) DELTA *= 0.3f;
                                                 LAMBDA += SGN * DELTA;
 
                                                 SGN0 = SGN;
@@ -311,8 +311,8 @@ namespace ARProbaProcessing
                                     } // while (LAMBDA <= 0.05 || LAMBDA >= 0.95)  ==> GO TO 45
 
                                     // 75
-                                    PGR = 0d;
-                                    GRP = 0d;
+                                    PGR = 0f;
+                                    GRP = 0f;
                                     NPERR = 0;
                                     for (int I = 1; I <= NICEL; I++)
                                     {
@@ -612,7 +612,7 @@ namespace ARProbaProcessing
             int[] IPOI = new int[NIND + 1];
             int[,] TABCI = new int[N + 1, NIND + 1];
             int[] IPOPS = new int[N + 1];
-            double[] COUV = new double[N + 1];
+            float[] COUV = new float[N + 1];
             int[,,] TABRES = new int[N + 1, NBSTATOTAL  + 1, NIND + 1];
             int[] IG = new int[N + 1];
 
@@ -692,7 +692,7 @@ namespace ARProbaProcessing
                     {
                         if (TABRES[I, 1, IND] == 1) COUV[I] += IPOI[IND];
                     }
-                    COUV[I] *= 100d / IPOPS[I];
+                    COUV[I] *= 100f / IPOPS[I];
                 }
                 swPenetr.WriteLine(stations[STA].PadLeft(49) + COUV[1].ToString("0.00").PadLeft(8) + " " + COUV[2].ToString("0.00").PadLeft(8) + " " + COUV[3].ToString("0.00").PadLeft(8));
             }
@@ -704,15 +704,15 @@ namespace ARProbaProcessing
                 {
                     if (TABRES[I, NBSTATOTAL, IND] == 1) COUV[I] += IPOI[IND];
                 }
-                COUV[I] *= 100d / IPOPS[I];
+                COUV[I] *= 100f / IPOPS[I];
             }
             swPenetr.WriteLine(" Total".PadRight(49) + COUV[1].ToString("0.00").PadLeft(8) + " " + COUV[2].ToString("0.00").PadLeft(8) + " " + COUV[3].ToString("0.00").PadLeft(8));
             swPenetr.Close();
         }
 
-        public void SORTF(int I1, int IFIN, int[] RANG, double[] SCORE)
+        public void SORTF(int I1, int IFIN, int[] RANG, float[] SCORE)
         {
-            double X;
+            float X;
             int I = I1;
             int J = IFIN;
 
@@ -741,16 +741,16 @@ namespace ARProbaProcessing
         }
 
         // CALCUL DE LA REPARTITION DES PROBAS
-        public void CALDISTR(double ZR, double UR, double PO, double TAUX, out double[] DISTR, out double[] REP)
+        public void CALDISTR(float ZR, float UR, float PO, float TAUX, out float[] DISTR, out float[] REP)
         {
             int NSEG = 100;
             int JMAX = JMAX = NSEG * 2;
             int JSUP = JMAX + 2;
-            double ALPHA, BETA, X, V, Q, Y, BAB, LEBND, Z, U, P, TAU;
-            double[] LOGS = new double[JMAX + 1];
-            double[] BUFS = new double[JMAX + 1];
-            DISTR = new double[NSEG + 1];
-            REP = new double[NSEG + 1];
+            float ALPHA, BETA, X, V, Q, Y, BAB, LEBND, Z, U, P, TAU;
+            float[] LOGS = new float[JMAX + 1];
+            float[] BUFS = new float[JMAX + 1];
+            DISTR = new float[NSEG + 1];
+            REP = new float[NSEG + 1];
 
             Z = ZR;
             U = UR;
@@ -764,12 +764,12 @@ namespace ARProbaProcessing
             if (P > (1d - (1E-4))) P = 1;
 
             // CALCUL DES PARAMETRES DU MODELE
-            Q = 1d - P;
+            Q = 1f - P;
             if (TAU <= 1E-4)
             {
                 TAU = 0;
-                ALPHA = P * 1E4;
-                BETA = Q * 1E4;
+                ALPHA = (float)(P * 1E4);
+                BETA = (float)(Q * 1E4);
             }
             else
             {
@@ -793,24 +793,24 @@ namespace ARProbaProcessing
             else
             {
                 for (int J = 2; J <= JMAX; J++)
-                    BUFS[J] = Math.Exp((ALPHA - 1) * LOGS[J] + (BETA - 1) * LOGS[JSUP - J]);
+                    BUFS[J] = (float) Math.Exp((ALPHA - 1) * LOGS[J] + (BETA - 1) * LOGS[JSUP - J]);
                 // ASTUCE POUR LES EXTREMITES
                 LEBND = LOGS[2];
-                X = 1d / (6 * (NSEG + 1));
-                Y = 1d - (BETA - 1d) / JSUP;
-                if (Y < 0.8) Y = 0.8;
-                if (Y > 1.2) Y = 1.2;
-                DISTR[0] = Y * Math.Exp(ALPHA * LEBND) / ALPHA;
-                Y = 1d - (ALPHA - 1d) / JSUP;
+                X = 1f / (6 * (NSEG + 1));
+                Y = 1f - (BETA - 1f) / JSUP;
+                if (Y < 0.8) Y = 0.8f;
+                if (Y > 1.2) Y = 1.2f;
+                DISTR[0] = Y * (float)Math.Exp(ALPHA * LEBND) / ALPHA;
+                Y = 1f - (ALPHA - 1f) / JSUP;
 
-                if (Y < 0.8) Y = 0.8;
-                if (Y > 1.2) Y = 1.2;
-                DISTR[NSEG] = Y * Math.Exp(BETA * LEBND) / BETA;
+                if (Y < 0.8) Y = 0.8f;
+                if (Y > 1.2) Y = 1.2f;
+                DISTR[NSEG] = Y * (float)Math.Exp(BETA * LEBND) / BETA;
                 // SEGMENTS INTERMEDIAIRES
                 for (int I = 1; I <= NSEG - 1; I++)
                     DISTR[I] = (BUFS[2 * I] + BUFS[2 + 2 * I] + 4 * BUFS[1 + 2 * I]) * X;
                 // NORMALISATION DE DISTR
-                BAB = 0d;
+                BAB = 0f;
                 for (int I = 0; I <= NSEG; I++)
                     BAB = BAB + DISTR[I];
                 for (int I = 0; I <= NSEG; I++)
@@ -818,7 +818,7 @@ namespace ARProbaProcessing
             }
 
             // CORRECTION DES Z ET U
-            V = 1d - Z - U;
+            V = 1f - Z - U;
             for (int I = 0; I <= NSEG; I++)
                 DISTR[I] = DISTR[I] * V;
             DISTR[0] = DISTR[0] + Z;
