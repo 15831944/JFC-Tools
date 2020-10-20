@@ -66,16 +66,16 @@ namespace ARProbaProcessing
             List<int> lstFiltreIDF;
             int nbJour = 23;
 
-            int COL_AGE3 = 648-1;
+            int COL_AGE3 = 648 - 1;
             int COL_RUDA = 20 - 1;
             int COL_PIAB = 9 - 1;
-            string pathSIGJFC_BDE = Path.Combine( inputPath,@"Bde\sig19jfc.bde");
+            string pathSIGJFC_BDE = Path.Combine(inputPath, @"Bde\sig19jfc.bde");
             lecpanel(pathSIGJFC_BDE, COL_AGE3, COL_RUDA, COL_PIAB, out lstPoids, out lstAges, out lstFiltreIDF);
 
             #region entrées Fushab09
             int SIGN_LINE_LEN_BEFORE_HAB = SIGN_LINE_LEN_BEFORE_HAB_FCT(arProba);
             int SIGN_LINE_LEN_AFTER_HAB = SIGN_LINE_LEN_AFTER_HAB_FCT(arProba);
-            int NB_STA_ALL_HAB = arProba.AllHabStationCount; 
+            int NB_STA_ALL_HAB = arProba.AllHabStationCount;
             int[] TABRH = HAB_STA_LIST_ID_NOTO_SET_TO_TOTAL_RADIO(arProba);
             #endregion
 
@@ -90,8 +90,8 @@ namespace ARProbaProcessing
             int nbStationHabNotoTotal = arProba.HabAndNotoStationCount + arProba.HabAndNotoTotalStationListCount;
             int nbStationHabNoto = arProba.HabAndNotoStationCount;
             int year = 2000 + int.Parse(arProba.YearName);
-            
-            int[] ITS = new int[nbStationHabNotoTotal+1];
+
+            int[] ITS = new int[nbStationHabNotoTotal + 1];
             int i = 1;
             foreach (var x in arProba.HabAndNotoStationList)
                 ITS[i++] = x.Id;
@@ -103,7 +103,7 @@ namespace ARProbaProcessing
             int COL_CSCI = 18 - 1;
             int COL_SEX = 14 - 1;
             int COL_AGE = 24 - 1;
-            
+
             int SIGN_LINE_LEN_FULL = 694;
             string pathSortie5 = Path.Combine(OutputPath, "SORTIE5.TXT");
             #endregion entrées ecrsegpa
@@ -202,7 +202,7 @@ namespace ARProbaProcessing
             #endregion entrées Asymp
 
 
-            int NBINDIV = segpanel(COL_PIAB, COL_CSCI, COL_SEX, COL_AGE, COL_RUDA, pathSIGJFC_BDE,  pathSortie1);
+            int NBINDIV = segpanel(COL_PIAB, COL_CSCI, COL_SEX, COL_AGE, COL_RUDA, pathSIGJFC_BDE, pathSortie1);
 
             //NbStation = arProba.HabAndNotoTotalStationListCount;
             VsorPoid[][] JN = ecrpan1j(pathF04, NBINDIV, nbStationHabNotoTotal, nbStationTotal, ITS, year);   // [Jour 1..23][Individus 1..N] = {VOSR[,]?, Poid[]}
@@ -325,7 +325,7 @@ namespace ARProbaProcessing
 
             // BOUCLE INDIVIDUS
             foreach (string strIndiv in KHI2)
-            { 
+            {
                 IAGE = 1;
                 if (strIndiv[COL_AGE3] == '1')
                     IAGE = 2;
@@ -338,7 +338,7 @@ namespace ARProbaProcessing
                     COMPTIDF = COMPTIDF + 1;
                 }
 
-                IPERS = int.Parse(strIndiv.Substring(COL_PIAB,5));
+                IPERS = int.Parse(strIndiv.Substring(COL_PIAB, 5));
                 if (IPERS <= 0) continue;
                 if (IPERS > 3276) Console.WriteLine($"IPERS= {IPERS}");
 
@@ -498,7 +498,7 @@ namespace ARProbaProcessing
             return IG;
         }
 
-        private VsorPoid[][] ecrpan1j(string pathF04, int NBIND,  int NBSTA, int NB_STA_TOTAL, int[] ITS, int year)
+        private VsorPoid[][] ecrpan1j(string pathF04, int NBIND, int NBSTA, int NB_STA_TOTAL, int[] ITS, int year)
         {
             VsorPoid[][] resultJn = new VsorPoid[23 + 1][];
             for (int sor = 1; sor <= 23; sor++)
@@ -589,7 +589,7 @@ namespace ARProbaProcessing
                 // FIN DE FICHIER
                 Console.WriteLine(IJ.ToString() + " " + IG.ToString());
             }
-            
+
             // ???? Console.WriteLine($"JOUR : {I2}   NBGUS : {I6});
             return resultJn;
         }
@@ -1327,7 +1327,7 @@ namespace ARProbaProcessing
                                 bits[b] = JN[IJ][IG].VSor[b, IPO];
                             if (L1BITFCT(bits, IQ))
                             {
-                                COUV[IG] = COUV[IG] + JN[IJ][IG].Poid[IQ];
+                                COUV[IG] += JN[IJ][IG].Poid[IQ];
                             }
                         }
                     }
@@ -1472,8 +1472,8 @@ namespace ARProbaProcessing
             int[,,] REGRS = new int[3 + 1, NBSTA + 1, 16 + 1];
             int[] TREG = new int[16 + 1];
 
-            
-            
+
+
             //  id  time
             //  1     05h00 - 06h00 = 4
             //  2     06h00 - 09h00 = 12
@@ -2037,7 +2037,7 @@ namespace ARProbaProcessing
             //  7     18h00 - 20h00 = 8
             //  8     20h00 - 24h00 = 16
             //  9     24h00 - 05h00 = 20
-            
+
             // OPEN(18, FILE = '#OUTPUT#ZUPTAUSA',
             //-RECORDTYPE = 'FIXED', FORM = 'UNFORMATTED')
 
@@ -2337,7 +2337,7 @@ namespace ARProbaProcessing
 
             Console.WriteLine($"TRAITEMENT 1/4h ----");
             Console.WriteLine($"------- STATION ----");
-            
+
             if (File.Exists(pathSortie)) File.Delete(pathSortie);
             File.AppendAllText(pathSortie, sbSortie.ToString());
 
@@ -2396,7 +2396,7 @@ namespace ARProbaProcessing
             //  7     18h00 - 20h00 = 8
             //  8     20h00 - 24h00 = 16
             //  9     24h00 - 05h00 = 20
-            
+
 
             // OPEN(18, FILE = '#OUTPUT#ZUPTAUSA',
             //-RECORDTYPE = 'FIXED', FORM = 'UNFORMATTED')
@@ -2711,7 +2711,7 @@ namespace ARProbaProcessing
         /// <param name="NbGRPStation">Nombre de station dans la fichier de GRP U109</param>
         /// <param name="NotorieteStation"></param>
         /// <returns></returns>
-        private float[,,,] cgrp75br(string PathGRPWave,  int NbStation, int NbGRPModulation, int NbGRPStation, int[] NotorieteStation, string pathSortie8, string pathNOUVOGRP)
+        private float[,,,] cgrp75br(string PathGRPWave, int NbStation, int NbGRPModulation, int NbGRPStation, int[] NotorieteStation, string pathSortie8, string pathNOUVOGRP)
         {
             if (NbStation == 0
                 || NbGRPModulation == 0
@@ -2949,7 +2949,7 @@ namespace ARProbaProcessing
                         for (int J = 1; J <= 3; J++)
                         {
                             for (int I = 1; I <= 37; I++)
-                                writer.Write( COUV[I, J, K, L]);
+                                writer.Write(COUV[I, J, K, L]);
                         }
                     }
                 }
@@ -3515,92 +3515,93 @@ namespace ARProbaProcessing
                 DZ0 = DT0 = DZ = DU = 0.1f;
 
                 Z = ZA + (1f - ZA) / 2;
-                if (!qhps || Z >= ZR)
+                //if (!qhps || Z >= ZR)  // NE PAS VIRER => petite variation remettre quand sav1qhpa marchera
+                //{
+                if ((1f - Z) < DZ) DZ = 1f - Z - 0.00001f;
+                Z1 = Z;
+                Z2 = ZR;
+                float U0 = UR;
+                //5 
+                bool sortie = false;
+                for (; ; )
                 {
-                    if ((1f - Z) < DZ) DZ = 1f - Z - 0.00001f;
-                    Z1 = Z;
-                    Z2 = ZR;
-                    float U0 = UR;
-                    //5 
-                    bool sortie = false;
-                    for (; ; )
+                    float ITZ = 0;
+                    if (Z >= ZR)
                     {
-                        float ITZ = 0;
-                        if (Z >= ZR)
+                        if (DZ > (Z1 - Z2)) DZ = Z1 - Z2;
+                        // VARIATION DES JAMAIS
+                        //10 
+                        for (; ; ITZ++)
                         {
-                            if (DZ > (Z1 - Z2)) DZ = Z1 - Z2;
-                            // VARIATION DES JAMAIS
-                            //10 
-                            for (; ; )
+                            float DELTZ = MINIMU(Z, GRP, ZC, ZA, UA, U0, NB, DELTA00);
+
+                            if (DELTZ <= DELTZ0)
                             {
-                                ITZ = ITZ + 1;
+                                //if (!qhps || (DELTZ != DELTZ0 || DELTZ0 != DELTZ1 || DELTZ1 != DELTZ2))
+                                //{ // NE PAS VIRER => petite variation remettre quand sav1qhpa marchera
 
-                                MINIMU(ITZ, Z, GRP, ZC, ZA, UA, U0, NB, DELTA00, out float DELTZ);
-
-                                if (DELTZ <= DELTZ0)
+                                // LA DISTANCE A DIMINUE
+                                DELTZ2 = DELTZ1;
+                                DELTZ1 = DELTZ0;
+                                DELTZ0 = DELTZ;
+                                if (Z > Z2)
                                 {
-                                    if (!qhps || (DELTZ != DELTZ0 || DELTZ0 != DELTZ1 || DELTZ1 != DELTZ2))
-                                    {
-                                        // LA DISTANCE A DIMINUE
-                                        DELTZ2 = DELTZ1;
-                                        DELTZ1 = DELTZ0;
-                                        DELTZ0 = DELTZ;
-                                        if (Z > Z2)
-                                        {
-                                            Z = Z - DZ;
-                                            continue; // GOTO 10
-                                        }
-                                        if (DZ > 0.0001)
-                                        {
-                                            Z2 = Z;
-                                            Z = Z + DZ * 2;
-                                            DZ = DZ / 10f;
-                                            continue;
-                                        }
-                                        break; // GO TO 5
-                                    }
-                                    else
-                                    {
-                                        sortie = true;
-                                        break;
-                                    }
+                                    Z -= DZ;
+                                    continue; // GOTO 10
                                 }
-                                else
+                                if (DZ <= 0.0001)
                                 {
-                                    // LA DISTANCE A AUGMENTE
-                                    if (ITZ > 2)
-                                    {
-                                        if (DZ <= 0.0001)
-                                        {
-                                            sortie = true; // GOTO 260 end
-                                            break;
-                                        }
-                                        Z2 = Z;
-                                        Z = Z + 2 * DZ;
-                                        DZ = DZ / 10f;
-                                        DELTZ0 = DELTZ2;
-                                        break; // GOTO 5
-                                    }
+                                    sortie = true;
+                                    break; // GO TO 260
+                                }
+                                Z2 = Z;
+                                Z += DZ * 2;
+                                DZ /= 10f;
+                                //}
+                                //else
+                                //{
+                                //    sortie = true;
+                                //    break;
+                                //}
+                            }
+                            else
+                            {
+                                // LA DISTANCE A AUGMENTE
+                                if (ITZ > 2)
+                                {
                                     if (DZ <= 0.0001)
                                     {
                                         sortie = true; // GOTO 260 end
                                         break;
                                     }
                                     Z2 = Z;
-                                    Z = Z1;
-                                    DZ = DZ / 10f;
-                                    DELTZ0 = DELTZ1;
+                                    Z += 2 * DZ;
+                                    DZ /= 10f;
+                                    DELTZ0 = DELTZ2;
                                     break; // GOTO 5
                                 }
-                            } // for (; ; )  du 10
-                            if (sortie) break; 
-                        }// if (Z >= ZR)
-                        else
-                        {
-                            break;
-                        }
-                    } // for (; ; )  du 5
-                }
+                                if (DZ <= 0.0001)
+                                {
+                                    sortie = true; // GOTO 260 end
+                                    break;
+                                }
+                                Z2 = Z;
+                                Z = Z1;
+                                DZ /= 10f;
+                                DELTZ0 = DELTZ1;
+                                break; // GOTO 5
+                            }
+                        } // for (; ; )  du 10
+                        if (sortie) break; // ==> goto 5
+                    }// if (Z >= ZR)
+                    else
+                    {
+                        sortie = true;
+                        break;
+                    }
+
+                } // for (; ; )  du 5
+                //}
                 ZR = RES[1];
                 UR = RES[2];
                 PR = RES[3];
@@ -3721,12 +3722,11 @@ namespace ARProbaProcessing
         // SUBROUTINE MINIMU
         // CALCUL DU U OPTIMAL
         // EN FONCTION DE Z
-        private void MINIMU(float ITZ, float Z, float GRP, float[] ZC, float ZA, float UA, float U0, float NB, float DELTA00, out float DELTZ)
+        private float MINIMU(float Z, float GRP, float[] ZC, float ZA, float UA, float U0, float NB, float DELTA00)
         {
             float[] X = new float[15 + 1];
             float P, U, V, Q, U1, U2, DELTU, DELTU0, DELTU1, DELTU2;
 
-            DELTZ = 0;
             DELTU0 = DELTA00;
             DELTU1 = DELTU0;
             DELTU2 = DELTU0;
@@ -3756,8 +3756,7 @@ namespace ARProbaProcessing
 
                     if (U0 == 0)
                     {
-                        DELTZ = DELTU;
-                        return;
+                        return DELTU;
                     }
                     if (DELTU <= DELTU0)
                     {
@@ -3777,8 +3776,7 @@ namespace ARProbaProcessing
                         }
                         if (DU <= 0.00001)
                         {
-                            DELTZ = DELTU0;
-                            return;
+                            return DELTU0;
                         }
                         U2 = U;
                         if (U2 > (1f - Z)) U2 = 1f - Z;
@@ -3793,8 +3791,7 @@ namespace ARProbaProcessing
                         // LA DISTANCE A AUGMENTE
                         if (DU > 0.00001)
                         {
-                            DELTZ = DELTU0;
-                            return;
+                            return DELTU0;
                         }
                         if (ITU >= 2) U1 = U - 2 * DU;
                         if (ITU < 2)
@@ -3821,8 +3818,7 @@ namespace ARProbaProcessing
                     ITU = 0;
                     continue;
                 }
-                DELTZ = DELTU0;
-                break;
+                return DELTU0;
             } // for (; ; )
         }
     }
