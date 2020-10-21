@@ -570,7 +570,7 @@ namespace ARProbaProcessing
                         {
                             for (int L = 1; L <= 16; L++)
                             {
-                                int[] bits = new int[7];
+                                System.UInt16[] bits = new System.UInt16[7];
                                 for (int b = 1; b <= 6; b++)
                                     bits[b] = JN[I][IG].VSor[b, K];
 
