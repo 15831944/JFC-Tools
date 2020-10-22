@@ -570,7 +570,7 @@ namespace ARProbaProcessing
                         {
                             for (int L = 1; L <= 16; L++)
                             {
-                                System.UInt16[] bits = new System.UInt16[7];
+                                ushort[] bits = new ushort[7];
                                 for (int b = 1; b <= 6; b++)
                                     bits[b] = JN[I][IG].VSor[b, K];
 
@@ -867,6 +867,47 @@ namespace ARProbaProcessing
             len = len - (var.Position + var.Repetition) + 1;
 
             return len;
+        }
+
+        public int[] HAB_0_NOTO_1_STA_LIST_MASK(ARProba arProba)
+        {
+            int[] res = new int[arProba.HabAndNotoStationCount + 1];
+            int count = 1;
+            foreach (var station in arProba.HabAndNotoStationList)
+            {
+                if (station.Mode == ARProba.Station.eSignVariable.Habit)
+                    res[count] = 0;
+                else
+                    res[count] = 1;
+                count++;
+            }
+            return res;
+        }
+
+        public List<Tuple<int,int>> CRENONIN_NOTO_HANDLING(ARProba arProba)
+        {
+            List<Tuple<int, int>> stationApres = new List<Tuple<int, int>>();
+
+            var varLastDI = arProba.SignVars[string.Format("DI{0:00}", arProba.AllHabStationCount)];
+            int offset = (varLastDI.Position + varLastDI.Repetition);
+
+            int count = 0;
+            foreach (var station in arProba.HabAndNotoStationList)
+            {
+                count++;
+                if (station.Mode == ARProba.Station.eSignVariable.Notoriety)
+                {
+                    int notoNum = station.Index / 100;
+                    int notoMod = station.Index % 100;
+
+                    var ques = arProba.SignVars[string.Format("NOTO{0}", notoNum)];
+
+                    int pos = ques.Position + notoMod - 1;
+
+                    stationApres.Add(new Tuple<int, int>(count, pos - offset + 1));
+                }
+            }
+            return stationApres;
         }
     }
 

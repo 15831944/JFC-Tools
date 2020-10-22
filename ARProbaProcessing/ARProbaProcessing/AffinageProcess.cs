@@ -9,7 +9,7 @@ namespace ARProbaProcessing
     public partial class AffinageProcess
     {
         private int[] NOTE = new int[25 + 1] { 999999, 0, 12, 6, 4, 3, 3, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
-        private int[] NBIT = new int[] { 999999, 0, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1 };
+        private int[] NBIT = new int[] { 0, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1 };
         private int[] SEG1 = new int[] { 999999, 1, 1, 2, 3, 3, 4, 4, 5, 6, 6, 7, 8, 9, 9, 10, 10 };
         private int[] SEG2 = new int[] { 999999, 1, 1, 2, 3, 3, 4, 4, 5, 6, 6 };
         private int[] SEG3 = new int[] { 999999, 1, 2, 2, 3, 3, 4 };
@@ -66,9 +66,9 @@ namespace ARProbaProcessing
             List<int> lstFiltreIDF;
             int nbJour = 23;
 
-            int COL_AGE3 = 648 - 1;
-            int COL_RUDA = 20 - 1;
-            int COL_PIAB = 9 - 1;
+            int COL_AGE3 = arProba.SignVars["AGE3"].Position- 1;
+            int COL_RUDA = arProba.SignVars["RUDA"].Position - 1;
+            int COL_PIAB = arProba.SignVars["PIAB"].Position - 1;
             string pathSIGJFC_BDE = Path.Combine(inputPath, @"Bde\sig19jfc.bde");
             lecpanel(pathSIGJFC_BDE, COL_AGE3, COL_RUDA, COL_PIAB, out lstPoids, out lstAges, out lstFiltreIDF);
 
@@ -81,6 +81,8 @@ namespace ARProbaProcessing
             int SIGN_LINE_LEN_AFTER_HAB = SIGN_LINE_LEN_AFTER_HAB_FCT(arProba);
             int NB_STA_ALL_HAB = arProba.AllHabStationCount;
             int[] TABRH = HAB_STA_LIST_ID_NOTO_SET_TO_TOTAL_RADIO(arProba);
+            string pathPANSIGN = Path.Combine(OutputPath, "PANSIGN");
+            string pathSIGJFC2_BDE = Path.Combine(inputPath, @"Bde\sig19jfc2.bde");
             #endregion
 
             #region entrées segpanel
@@ -103,9 +105,10 @@ namespace ARProbaProcessing
             #endregion entrées ecrpan1
 
             #region entrées ecrsegpa
-            int COL_CSCI = 18 - 1;
-            int COL_SEX = 14 - 1;
-            int COL_AGE = 24 - 1;
+            int COL_CSCI = arProba.SignVars["CSCI"].Position - 1;
+            int COL_SEX = arProba.SignVars["SEXE"].Position - 1;
+            int COL_AGE = arProba.SignVars["AGE"].Position - 1;
+            int COL_AGE11 = arProba.SignVars["AG11"].Position - 1;
 
             int SIGN_LINE_LEN_FULL = 694;
             string pathSortie5 = Path.Combine(OutputPath, "SORTIE5.TXT");
@@ -115,6 +118,11 @@ namespace ARProbaProcessing
             #region entrées calcnivo
             string pathNiveaux = Path.Combine(OutputPath, "NIVEAUX");
             #endregion entrées calcnivo
+
+            #region entrées crenonin
+            string pathNinities = Path.Combine(OutputPath, "NINITIES");
+            List<Tuple<int, int>> stationApres = CRENONIN_NOTO_HANDLING(arProba);
+            #endregion entrées crenonin
 
             #region entrées sav1qh..
             string pathSortiesav1qhpa = Path.Combine(OutputPath, "SORTIE.sem");
@@ -126,6 +134,11 @@ namespace ARProbaProcessing
             string pathSortie8 = Path.Combine(OutputPath, "SORTIE8.TXT");
             string pathNOUVOGRP = Path.Combine(OutputPath, "NOUVOGRP.TXT");
             #endregion entrées cgrp75b
+
+            #region entrées chab1qhp
+            string pathHab = Path.Combine(OutputPath, "habqhind");
+            int[] ISTA = HAB_0_NOTO_1_STA_LIST_MASK(arProba);
+            #endregion entrées chab1qhp
 
             #region entrées cont75br
             int popLV = 54439040;
@@ -150,8 +163,6 @@ namespace ARProbaProcessing
             string pathYearNat = Path.Combine(OutputPath, "PANRA120.NAT");
             string pathYearIdf = Path.Combine(OutputPath, "PANRA120.IDF");
             string pathYearSup = Path.Combine(OutputPath, "PANRA120.SUP");
-            // ISTA : IDF & No Sud Radio ...
-            int[] ISTA = new int[] { 999999, 0, 1, 0, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1 };
             #endregion entrées Transp08
 
             #region entrées crecib08
@@ -217,13 +228,13 @@ namespace ARProbaProcessing
 
             VsorPoid[][][] JNByWeek = regr5jp2(nbStationHabNotoTotal, NBINDIV, JN, pathPansem); // [Semaine 1..3][Jour de semaine Lundi à vendredi 1..5][indiv]
 
-            List<Fushab09Indiv> fushab09Indivs = Fushab09(NB_STA_HAB_NOTO, SIGN_LINE_LEN_BEFORE_HAB, SIGN_LINE_LEN_AFTER_HAB, NB_STA_ALL_HAB, TABRH, pathSIGJFC_BDE);
+            List<Fushab09Indiv> fushab09Indivs = Fushab09(NB_STA_HAB_NOTO, SIGN_LINE_LEN_BEFORE_HAB, SIGN_LINE_LEN_AFTER_HAB, NB_STA_ALL_HAB, TABRH, pathSIGJFC2_BDE, pathPANSIGN);
 
-            int[,,] NINI_IND_QH_W = chab1qhp(NB_STA_HAB_NOTO, fushab09Indivs); // Habitude [INDIV, QH, LV/Sa/Di];
+            int[,,] NINI_IND_QH_W = chab1qhp(NB_STA_HAB_NOTO, fushab09Indivs, ISTA, pathHab); // Habitude [INDIV, QH, LV/Sa/Di];
 
-            int[,] NINI_IND_STA = crenonin(nbJour, NB_STA_HAB_NOTO, fushab09Indivs, JN); // [INDIV, STATIONS] 
+            int[,] NINI_IND_STA = crenonin(nbJour, NB_STA_HAB_NOTO, fushab09Indivs, JN, stationApres , pathNinities); // [INDIV, STATIONS] 
 
-            ecrsegpa(pathSIGJFC_BDE, pathSegs, COL_PIAB, COL_CSCI, COL_SEX, COL_AGE, COL_RUDA, NbStation, NBINDIV, SIGN_LINE_LEN_FULL, pathSortie5,
+            ecrsegpa(pathSIGJFC_BDE, pathSegs, COL_PIAB, COL_CSCI, COL_SEX, COL_AGE11, COL_RUDA, NbStation, NBINDIV, SIGN_LINE_LEN_FULL, pathSortie5,
                      out int[,] POIDSEGM, out int IPOP);
 
             int[,,,] cellules = calcregr(NBINDIV, NB_STA_HAB_NOTO, NINI_IND_STA, POIDSEGM, JN); // int[LV/Sa/Di, STATIONS, QH, CELL];
@@ -523,14 +534,14 @@ namespace ARProbaProcessing
             // Attention: ne pas oublier de changer VRAD avec le nombre de stations totals
 
             int[] KDEB = new int[130 + 1];
-            System.UInt16[,] VRAD = new System.UInt16[6 + 1, NB_STA_TOTAL + 1];
+            ushort[,] VRAD = new ushort[6 + 1, NB_STA_TOTAL + 1];
             int[] ITAP = new int[96 + 1];
 
             // INITIALISATIONS
             int IG;
 
             // OUVERTURE FICHIERS
-            for (int IJ = 1; IJ <= 23; IJ++)
+            for (int IJ = 1; IJ <= 23; IJ++) 
             {
                 if (!Directory.Exists(pathNiv)) Directory.CreateDirectory(pathNiv);
                 FileStream writeStream = new FileStream(Path.Combine(pathNiv, "JN" + IJ.ToString("00") + "NIV.JFC"), FileMode.Create);
@@ -562,7 +573,7 @@ namespace ARProbaProcessing
                         IG = IG + 1;
                         for (int I = 1; I <= 96; I++) ITAP[I] = 0;
 
-                        System.UInt16[,] VSOR = new System.UInt16[6 + 1, NBSTA + 1];
+                        ushort[,] VSOR = new ushort[6 + 1, NBSTA + 1];
                         for (int IS = 1; IS <= NBSTA; IS++)
                         {
                             for (int I = 1; I <= 6; I++)
@@ -573,20 +584,20 @@ namespace ARProbaProcessing
 
                         for (int IS = 1; IS <= NBSTA - 2; IS++)
                         {
-                            int IC = ITS[IS];
-                            for (int I = 1; I <= 96; I++)
+                            //int IC = ITS[IS];
+                            for (int QH = 1; QH <= 96; QH++)
                             {
-                                System.UInt16[] bits = new System.UInt16[7];
+                                ushort[] bits = new ushort[7];
                                 for (int b = 1; b <= 6; b++)
-                                    bits[b] = VRAD[b, IC];
-                                if (L1BITFCT(bits, I)) ITAP[I] = ITAP[I] + 1;
+                                    bits[b] = VSOR[b, IS];
+                                if (L1BITFCT(bits, QH)) ITAP[QH] = ITAP[QH] + 1;
                             }
                         }
 
                         int[] POID = new int[96 + 1];
                         for (int I = 1; I <= 96; I++)
                         {
-                            POID[I] = NOTE[ITAP[I]+1];
+                            POID[I] = ITAP[I]+1 < NOTE.Length ? NOTE[ITAP[I]+1] : 1;
                         }
 
                         resultJn[IJ][IG] = new VsorPoid(NBSTA) { Poid = POID, VSor = VSOR };
@@ -598,13 +609,6 @@ namespace ARProbaProcessing
                                 writeBinaryJNOut.Write(Convert.ToUInt16(VSOR[I, IS]));
                             }
                         }
-                        //for (int I = 1; I <= 6; I++)
-                        //{
-                        //    for (int IS = 1; IS <= NBSTA; IS++)
-                        //    {
-                        //        writeBinaryJNOut.Write(Convert.ToInt16(VSOR[I, IS]));
-                        //    }
-                        //}
 
                         for (int I = 1; I <= 96; I++)
                         {
@@ -682,7 +686,8 @@ namespace ARProbaProcessing
             int SIGN_LINE_LEN_AFTER_HAB,
             int NB_STA_ALL_HAB,
             int[] TABRH,
-            string pathSIGJFC_BDE)
+            string pathSIGJFC_BDE,
+            string pathPANSIGN)
         {
             // C PANEL RADIO 08 MEDIAMETRIE(nouveau format)
             // C fusion des Habitudes total RADIO oubliees dans SIGN2007.F04
@@ -699,9 +704,6 @@ namespace ARProbaProcessing
 
             // INTEGER * 1 AVANT[#SIGN_LINE_LEN_BEFORE_HAB#),KHAB(9,#NB_STA_ALL_HAB#),KHSA(9,#NB_STA_ALL_HAB#),KHDI(9,#NB_STA_ALL_HAB#),APRES[#SIGN_LINE_LEN_AFTER_HAB#),CHARIOT(2)
             // INTEGER * 1 KHA2(9, NBSTA),KHS2(9, NBSTA),KHD2(9, NBSTA)
-            int[,] KHA2 = new int[9 + 1, NBSTA + 1];
-            int[,] KHS2 = new int[9 + 1, NBSTA + 1];
-            int[,] KHD2 = new int[9 + 1, NBSTA + 1];
 
             // => EN PARAMETRE
             // INTEGER * 2 TABRH(NBSTA)
@@ -710,12 +712,9 @@ namespace ARProbaProcessing
             // int[] TABRH /#HAB_STA_LIST_ID_NOTO_SET_TO_TOTAL_RADIO#/
 
             // INTEGER*1 int KHAB(9,NB_STA_ALL_HAB),KHSA(9,#NB_STA_ALL_HAB#),KHDI(9,#NB_STA_ALL_HAB#),APRES[#SIGN_LINE_LEN_AFTER_HAB#), CHARIOT(2)
-            int[] AVANT = new int[SIGN_LINE_LEN_BEFORE_HAB + 1];
-            int[,] KHAB = new int[9 + 1, NB_STA_ALL_HAB + 1];
-            int[,] KHSA = new int[9 + 1, NB_STA_ALL_HAB + 1];
-            int[,] KHDI = new int[9 + 1, NB_STA_ALL_HAB + 1];
-            int[] APRES = new int[SIGN_LINE_LEN_AFTER_HAB + 1];
-            int[] CHARIOT = new int[2 + 1];
+            byte[,] KHAB = new byte[9 + 1, NB_STA_ALL_HAB + 1];
+            byte[,] KHSA = new byte[9 + 1, NB_STA_ALL_HAB + 1];
+            byte[,] KHDI = new byte[9 + 1, NB_STA_ALL_HAB + 1];
 
             // INITIALISATIONS
             int G = 0;
@@ -740,6 +739,10 @@ namespace ARProbaProcessing
             // BOUCLE INDIVIDUS
             while (fs.Position != fs.Length)
             {
+                byte[] AVANT = new byte[SIGN_LINE_LEN_BEFORE_HAB + 1];
+                byte[] APRES = new byte[SIGN_LINE_LEN_AFTER_HAB + 1];
+                byte[] CHARIOT = new byte[2 + 1];
+
                 // 30 READ(13, END = 120) AVANT,((KHAB(I, J), I = 1, 9), J = 1,#NB_STA_ALL_HAB#),((KHSA(I,J),I=1,9),J=1,#NB_STA_ALL_HAB#),
                 // -((KHDI(I,J),I=1,9),J=1,#NB_STA_ALL_HAB#),APRES,CHARIOT
 
@@ -767,7 +770,9 @@ namespace ARProbaProcessing
                 IG = IG + 1;
 
                 // BOUCLE STATIONS
-
+                byte[,] KHA2 = new byte[9 + 1, NBSTA + 1];
+                byte[,] KHS2 = new byte[9 + 1, NBSTA + 1];
+                byte[,] KHD2 = new byte[9 + 1, NBSTA + 1];
                 for (int NOP = 1; NOP <= NBSTA; NOP++)
                 {
                     int IP = TABRH[NOP];
@@ -778,7 +783,7 @@ namespace ARProbaProcessing
                         KHD2[I, NOP] = KHDI[I, IP];
                     }
                 }
-                fushab09Indivs.Add(new Fushab09Indiv(SIGN_LINE_LEN_BEFORE_HAB, NBSTA)
+                fushab09Indivs.Add(new Fushab09Indiv()
                 {
                     AVANT = AVANT,
                     KHAB = KHA2,
@@ -791,12 +796,42 @@ namespace ARProbaProcessing
             br.Close();
 
             // FIN DE FICHIER
-            Console.WriteLine("NB.GUS=", IG);
+            Console.WriteLine("NB.GUS=" + IG.ToString());
+
+            // Ecriture Pansign
+            FileStream writeStream = new FileStream(pathPANSIGN, FileMode.Create);
+            BinaryWriter writeBinary = new BinaryWriter(writeStream);
+            foreach (Fushab09Indiv fushab09Indiv in fushab09Indivs)
+            {
+                for (int i = 1; i <= SIGN_LINE_LEN_BEFORE_HAB; i++)
+                    writeBinary.Write(fushab09Indiv.AVANT[i]);
+
+                for (int j = 1; j <= NBSTA; j++)
+                    for (int i = 1; i <= 9; i++)
+                        writeBinary.Write(fushab09Indiv.KHAB[i, j]);
+
+                for (int j = 1; j <= NBSTA; j++)
+                    for (int i = 1; i <= 9; i++)
+                        writeBinary.Write(fushab09Indiv.KHSA[i, j]);
+
+                for (int j = 1; j <= NBSTA; j++)
+                    for (int i = 1; i <= 9; i++)
+                        writeBinary.Write(fushab09Indiv.KHDI[i, j]);
+
+                for (int i = 1; i <= SIGN_LINE_LEN_AFTER_HAB; i++)
+                    writeBinary.Write(fushab09Indiv.APRES[i]);
+
+                for (int i = 1; i <= 2; i++)
+                    writeBinary.Write(fushab09Indiv.CHARIOT[i]);
+            }
+
+            writeBinary.Close();
+            writeStream.Close();
 
             return fushab09Indivs;
         }
 
-        private int[,,] chab1qhp(int NBSTA, List<Fushab09Indiv> fushab09Indivs)
+        private int[,,] chab1qhp(int NBSTA, List<Fushab09Indiv> fushab09Indivs, int[] ISTA, string pathHab)
         {
             // PANEL RADIO 08 MEDIAMETRIE(nouveau format)
             // CALCUL DES HABITUDES 1 / 4h PAR INDIVIDU
@@ -805,8 +840,11 @@ namespace ARProbaProcessing
 
             int NBIND = fushab09Indivs.Count;
             int[,,] NINI = new int[NBIND + 1, 96 + 1, 3 + 1];
-            int[] ISTA = new int[NBSTA + 1];
 
+
+            // Ecriture habitude
+            FileStream writeStream = new FileStream(pathHab, FileMode.Create);
+            BinaryWriter writeBinary = new BinaryWriter(writeStream);
 
             // id  time
             //   1     05h00 - 06h00 = 4
@@ -818,20 +856,7 @@ namespace ARProbaProcessing
             //   7     18h00 - 20h00 = 8
             //   8     20h00 - 24h00 = 16
             //   9     24h00 - 05h00 = 20
-
-            // C On attribue 1 aux stations qui ne possèdent pas d'habitudes d'écoute.A mon avis, cela est maintenant
-            // C inutile puisqu'on leur attribue leur notoriété.
-            int[] ITH = new int[] { 999999,
-                9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,
-                1,1,1,1,
-                2,2,2,2,2,2,2,2,2,2,2,2,
-                3,3,3,3,3,3,3,3,3,3,3,3,
-                4,4,4,4,4,4,4,4,
-                5,5,5,5,5,5,5,5,
-                6,6,6,6,6,6,6,6,
-                7,7,7,7,7,7,7,7,
-                8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8};
-
+            
             for (int IPO = 1; IPO <= NBSTA; IPO++)
             {
                 int IP = IPO;
@@ -856,12 +881,25 @@ namespace ARProbaProcessing
                         }
                     }
                 }
+                for (int IU = 1; IU <= 3; IU++)
+                {
+                    for (int IQ = 1; IQ <= 96; IQ++)
+                    {
+                        for (IG = 1; IG <= NBIND; IG++)
+                        {
+                            writeBinary.Write(Convert.ToByte(NINI[IG, IQ, IU]));
+                        }
+                    }
+                }
             }
+
+            writeBinary.Close();
+            writeStream.Close();
 
             return NINI;
         }
 
-        private int[,] crenonin(int NBJOUR, int NBSTA, List<Fushab09Indiv> fushab09Indivs, VsorPoid[][] JN)
+        private int[,] crenonin(int NBJOUR, int NBSTA, List<Fushab09Indiv> fushab09Indivs, VsorPoid[][] JN, List<Tuple<int, int>> stationApres, string pathNinities)
         {
             // PANEL RADIO 08 MEDIAMETRIE(nouveau format)
             // CREATION DU FICHIER DES NON INITIALISES AUX STATIONS
@@ -885,6 +923,7 @@ namespace ARProbaProcessing
             // BOUCLE INDIVIDUS
             foreach (Fushab09Indiv indiv in fushab09Indivs)
             {
+                if (IG % 100 == 0) Console.WriteLine($"IG {IG}");
                 IG = IG + 1;
                 // BOUCLE STATIONS
                 for (int NOP = 1; NOP <= NBSTA; NOP++)
@@ -910,7 +949,7 @@ namespace ARProbaProcessing
                         }
 
                     }
-
+                    if (sortie) continue;
                     // id  idx sta
                     // 16  101    Les Indés Radios 1
                     // 47  201    NRJ Global Proximité Premium 20
@@ -921,22 +960,14 @@ namespace ARProbaProcessing
                     // 60  310    Les Indés Capitale 27
                     // 61  311    TF1 Pub Radios 28
 
-                    // Les Indés Radios
-                    if (NOP == 1 && (indiv.APRES[1] - 48) == 1) sortie = true;
-                    // NRJ Global Proximité Premium
-                    if (NOP == 20 && (indiv.APRES[19] - 48) == 1) sortie = true;
-                    // Nova and Friends
-                    if (NOP == 21 && (indiv.APRES[28] - 48) == 1) sortie = true;
-                    // Lagardère Publicité News IDF
-                    if (NOP == 22 && (indiv.APRES[30] - 48) == 1) sortie = true;
-                    // Lip !
-                    if (NOP == 24 && (indiv.APRES[31] - 48) == 1) sortie = true;
-                    // Paris – IDF +
-                    if (NOP == 25 && (indiv.APRES[32] - 48) == 1) sortie = true;
-                    // Les Indés Capitale
-                    if (NOP == 27 && (indiv.APRES[35] - 48) == 1) sortie = true;
-                    // TF1 Pub Radios
-                    if (NOP == 28 && (indiv.APRES[36] - 48) == 1) sortie = true;
+                    foreach (Tuple<int,int> t in stationApres)
+                    {
+                        if (NOP == t.Item1 && (indiv.APRES[t.Item2] - 48) == 1)
+                        {
+                            sortie = true;
+                            break;
+                        }
+                    }
 
                     if (!sortie)
                     {
@@ -944,7 +975,7 @@ namespace ARProbaProcessing
                         {
                             for (int IQ = 1; IQ <= 96; IQ++)
                             {
-                                System.UInt16[] bits = new System.UInt16[7];
+                                ushort[] bits = new ushort[7];
                                 for (int b = 1; b <= 6; b++)
                                     bits[b] = JN[I][IG].VSor[b, NOP];
 
@@ -954,11 +985,29 @@ namespace ARProbaProcessing
                                     break;
                                 }
                             }
+                            if (sortie) break;
                         }
-                        KHI2[IG, NOP] = 1;
+                        if (!sortie)  KHI2[IG, NOP] = 1;
                     }
                 }
             }
+
+            // Ecriture ninities
+            FileStream writeStream = new FileStream(pathNinities, FileMode.Create);
+            BinaryWriter writeBinary = new BinaryWriter(writeStream);
+            // BOUCLE STATIONS
+            for (int NOP = 1; NOP <= NBSTA; NOP++)
+            {
+                // BOUCLE INDIVIDUS
+                IG = 0;
+                foreach (Fushab09Indiv indiv in fushab09Indivs)
+                {
+                    IG = IG + 1;
+                    writeBinary.Write(Convert.ToByte(KHI2[IG, NOP]));
+                }
+            }
+            writeBinary.Close();
+            writeStream.Close();
 
             for (int I = 1; I <= NBSTA; I++)
             {
@@ -985,9 +1034,6 @@ namespace ARProbaProcessing
             //int[] KHI2 = new int[SIGN_LINE_LEN_FULL + 1];
             SEGM = new int[NBIND + 1, 5 + 1];
             int ICSP, IREG, ISEX, IAGE, ISEG;
-            int[] SEG2 = new int[16 + 1] { 999999, 1, 1, 2, 3, 3, 4, 4, 5, 6, 6, 7, 8, 9, 9, 10, 10 };
-            int[] SEG3 = new int[10 + 1] { 999999, 1, 1, 2, 3, 3, 4, 4, 5, 6, 6 };
-            int[] SEG4 = new int[6 + 1] { 999999, 1, 2, 2, 3, 3, 4 };
             int[] C = new int[17];
             IPOP = 0;
 
@@ -1103,14 +1149,11 @@ namespace ARProbaProcessing
                     }
                 }
                 SEGM[IG, 2] = ISEG;
-                SEGM[IG, 3] = SEG2[ISEG];
-                SEGM[IG, 4] = SEG3[SEG2[ISEG]];
-                SEGM[IG, 5] = SEG4[SEG3[SEG2[ISEG]]];
+                SEGM[IG, 3] = SEG1[ISEG];
+                SEGM[IG, 4] = SEG2[SEG1[ISEG]];
+                SEGM[IG, 5] = SEG3[SEG2[SEG1[ISEG]]];
 
-                for (int i = 1; i <= 16; i++)
-                {
-                    if (ISEG == i) C[i]++;
-                }
+                C[ISEG]++;
             }
 
             FileStream writeStream = new FileStream(pathSegs, FileMode.Create);
@@ -1123,6 +1166,7 @@ namespace ARProbaProcessing
                 }
             }
             writeBinay.Close();
+            writeStream.Close();
 
             for (int i = 1; i <= 16; i++)
             {
@@ -1170,7 +1214,7 @@ namespace ARProbaProcessing
                                 if (I == 1 || I == 8 || I == 15 || I == 22) IU = 2;
                                 if (I == 2 || I == 9 || I == 16 || I == 23) IU = 3;
 
-                                System.UInt16[] bits = new System.UInt16[7];
+                                ushort[] bits = new ushort[7];
                                 for (int b = 1; b <= 6; b++)
                                     bits[b] = JN[I][IG].VSor[b, NOP];
 
@@ -1380,7 +1424,7 @@ namespace ARProbaProcessing
                         for (int IQ = 1; IQ <= 96; IQ++)
                         {
 
-                            System.UInt16[] bits = new System.UInt16[7];
+                            ushort[] bits = new ushort[7];
                             for (int b = 1; b <= 6; b++)
                                 bits[b] = JN[IJ][IG].VSor[b, STA];
 
@@ -1429,7 +1473,7 @@ namespace ARProbaProcessing
                     {
                         for (int IQ = 1; IQ <= 96; IQ++)
                         {
-                            System.UInt16[] bits = new System.UInt16[7];
+                            ushort[] bits = new ushort[7];
                             for (int b = 1; b <= 6; b++)
                                 bits[b] = JN[IJ][IG].VSor[b, IPO];
                             if (L1BITFCT(bits, IQ))
@@ -1640,7 +1684,7 @@ namespace ARProbaProcessing
                         {
                             if (I == 8 || I == 9 || I == 15 || I == 16) continue;
 
-                            System.UInt16[] bits = new System.UInt16[7];
+                            ushort[] bits = new ushort[7];
                             for (int b = 1; b <= 6; b++)
                                 bits[b] = JN[I][IG].VSor[b, NOP];
 
@@ -2189,7 +2233,7 @@ namespace ARProbaProcessing
                         int IJK = 1;
                         for (int I = 1; I <= 22; I += 7)
                         {
-                            System.UInt16[] bits = new System.UInt16[7];
+                            ushort[] bits = new ushort[7];
                             for (int b = 1; b <= 6; b++)
                                 bits[b] = JN[I][IG].VSor[b, NOP];
 
@@ -2549,7 +2593,7 @@ namespace ARProbaProcessing
                         int IJK = 1;
                         for (int I = 2; I <= 23; I += 7)
                         {
-                            System.UInt16[] bits = new System.UInt16[7];
+                            ushort[] bits = new ushort[7];
                             for (int b = 1; b <= 6; b++)
                                 bits[b] = JN[I][IG].VSor[b, NOP];
 
@@ -3583,20 +3627,20 @@ namespace ARProbaProcessing
             return RESULCOR;
         }
 
-
-        private bool L1BITFCT(System.UInt16[] ZLEC, int ind)
+        private bool L1BITFCT(ushort[] ZLEC, int ind)
         {
-            int sizeBit = (sizeof(System.UInt16) * 8);
+            int[] NBIT2 = new int[] { 0, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1 };
+            int sizeBit = (sizeof(ushort) * 8);
             int index = 1 + ((ind - 1) / sizeBit);
-            int pos = ind % sizeBit;
+            int pos = NBIT2[ind % sizeBit];
+            //int pos =ind % sizeBit;
             return BTEST(ZLEC[index], pos);
         }
 
-        private bool BTEST(int value, int pos)
+        private bool BTEST(ushort value, int pos)
         {
-            return (value & (1 << pos)) != 0;
+            return (value & (ushort)(1 << pos)) != 0;
         }
-
 
         // SUBROUTINE MINIMISE
         // optimisation de la courbe theorique de montee en audience
@@ -3932,22 +3976,12 @@ namespace ARProbaProcessing
 
     public struct Fushab09Indiv
     {
-        public int[] AVANT;
-        public int[,] KHAB;
-        public int[,] KHSA;
-        public int[,] KHDI;
-        public int[] APRES;
-        public int[] CHARIOT;
-
-        public Fushab09Indiv(int SIGN_LINE_LEN_BEFORE_HAB, int NB_STA)
-        {
-            AVANT = new int[SIGN_LINE_LEN_BEFORE_HAB + 1];
-            KHAB = new int[9 + 1, NB_STA + 1];
-            KHSA = new int[9 + 1, NB_STA + 1];
-            KHDI = new int[9 + 1, NB_STA + 1];
-            APRES = new int[SIGN_LINE_LEN_BEFORE_HAB + 1];
-            CHARIOT = new int[2];
-        }
+        public byte[] AVANT;
+        public byte[,] KHAB;
+        public byte[,] KHSA;
+        public byte[,] KHDI;
+        public byte[] APRES;
+        public byte[] CHARIOT;
     }
 
     #region Structures
@@ -3966,11 +4000,11 @@ namespace ARProbaProcessing
 
     public struct VsorPoid
     {
-        public System.UInt16[,] VSor;
+        public ushort[,] VSor;
         public int[] Poid;
         public VsorPoid(int NBSTA)
         {
-            VSor = new System.UInt16[6 + 1, NBSTA];
+            VSor = new ushort[6 + 1, NBSTA];
             Poid = new int[96 + 1];
         }
     }
