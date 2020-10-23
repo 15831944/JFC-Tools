@@ -140,9 +140,17 @@ namespace ARProbaProcessing
             int[] ISTA = HAB_0_NOTO_1_STA_LIST_MASK(arProba);
             #endregion entrées chab1qhp
 
+            #region entrées caud1qhp
+            string pathAudQhInd = Path.Combine(OutputPath, "AudQhInd");
+            #endregion entrées caud1qhp
+
             #region entrées calcreg
             string pathCellule = Path.Combine(OutputPath, "Cellules");
             #endregion entrées calcreg
+
+            #region entrées caudtotp
+            string pathNoteIndiv = Path.Combine(OutputPath, "NOTINDIV");
+            #endregion entrées caudtotp
 
             #region entrées cont75br
             int popLV = 54439040;
@@ -241,13 +249,13 @@ namespace ARProbaProcessing
             ecrsegpa(pathSIGJFC_BDE, pathSegs, COL_PIAB, COL_CSCI, COL_SEX, COL_AGE11, COL_RUDA, NbStation, NBINDIV, SIGN_LINE_LEN_FULL, pathSortie5,
                      out int[,] POIDSEGM, out int IPOP);
 
-            int[,,,] cellules = calcregr(NBINDIV, NB_STA_HAB_NOTO, NINI_IND_STA, POIDSEGM, JN, pathCellule); // int[LV/Sa/Di, STATIONS, QH, CELL];
+            short[,,,] cellules = calcregr(NBINDIV, NB_STA_HAB_NOTO, NINI_IND_STA, POIDSEGM, JN, pathCellule); // int[LV/Sa/Di, STATIONS, QH, CELL];
 
-            int[,,,] regrs = calcnivo(NBINDIV, NB_STA_HAB_NOTO, cellules, pathNiveaux); // [LV/Sa/Di, STATIONS, QH, CELL]
+            byte[,,,] regrs = calcnivo(NBINDIV, NB_STA_HAB_NOTO, cellules, pathNiveaux); // [LV/Sa/Di, STATIONS, QH, CELL]
 
-            int[,,,] audiences = caud1qhp(NBINDIV, NB_STA_HAB_NOTO, JN, POIDSEGM); // audiences[STATIONS, INdiv, QH, 1..3]
+            byte[,,,] audiences = caud1qhp(NBINDIV, NB_STA_HAB_NOTO, JN, POIDSEGM, pathAudQhInd); // audiences[STATIONS, INdiv, QH, 1..3]
 
-            float[] noteIndiv = caudtotp(NBINDIV, NB_STA_HAB_NOTO, JN, POIDSEGM, fushab09Indivs);
+            float[] noteIndiv = caudtotp(NBINDIV, NB_STA_HAB_NOTO, JN, POIDSEGM, fushab09Indivs, pathNoteIndiv);
 
             float[,,,] ZUPTAUSE = sav1qhpa(NBINDIV, NB_STA_HAB_NOTO, regrs, POIDSEGM, fushab09Indivs, JNByWeek, JN, pathSortiesav1qhpa); // [STATIONS, QH, DATAS ZR-UR-PR-TAUX, CELL];
 
@@ -1181,7 +1189,7 @@ namespace ARProbaProcessing
             File.AppendAllText(pathSortie5, $"   NBGUS: {IG}   POPULATION:{IPOP}");
         }
 
-        private int[,,,] calcregr(int NBIND, int NBSTA, int[,] NINI, int[,] POIDSEGM, VsorPoid[][] JN, string pathCellule)
+        private short[,,,] calcregr(int NBIND, int NBSTA, int[,] NINI, int[,] POIDSEGM, VsorPoid[][] JN, string pathCellule)
         {
             // PANEL RADIO 08 MEDIAMETRIE(nouveau format)
             // CONTROLE DES MINIMA D'ECOUTES PAR CELLULES DE BASE          
@@ -1191,7 +1199,7 @@ namespace ARProbaProcessing
             int NBCEL = 23;
             int[,] KHI2 = new int[NBIND + 1, 6 + 1];
             int[] IAUD = new int[3 + 1];
-            int[,,,] MINIS = new int[3 + 1, NBSTA + 1, 96 + 1, NBCEL + 1];
+            short[,,,] MINIS = new short[3 + 1, NBSTA + 1, 96 + 1, NBCEL + 1];
 
             // BOUCLE INDIVIDUS
             for (int IG = 1; IG <= NBIND; IG++)
@@ -1265,7 +1273,7 @@ namespace ARProbaProcessing
             return MINIS;
         }
 
-        private int[,,,] calcnivo(int NBIND, int NBSTA, int[,,,] MINIS, string pathNivo)
+        private byte[,,,] calcnivo(int NBIND, int NBSTA, short[,,,] MINIS, string pathNivo)
         {
             // C PANEL RADIO 08 MEDIAMETRIE(nouveau format)
             // REGROUPEMENTS DES CELLULES DE BASE
@@ -1273,8 +1281,8 @@ namespace ARProbaProcessing
             int NIVREG = 9;
 
             // Le nombre de station correspond au nombre de stations(30) -1 pour Total Radio(et Total TV)
-            int[,,,] REGRS = new int[3 + 1, NBSTA + 1, 96 + 1, NBCEL + 1];
-            int[] TREG = new int[NBCEL + 1];
+            byte[,,,] REGRS = new byte[3 + 1, NBSTA + 1, 96 + 1, NBCEL + 1];
+            byte[] TREG = new byte[NBCEL + 1];
             int[,] NIVO = new int[,]  { {0, 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
                                    {999999, 1,1,2,3,3,4,4,5,6,6,7,8,9,9,10,10 },
                                    {999999, 1,1,1,2,2,3,3,3,4,4,4,5,6,6,6,6},
@@ -1308,7 +1316,7 @@ namespace ARProbaProcessing
                         {
                             // REGROUPEMENT NIVEAU N1 >> NIVEAU N2
                             bool sortie = false;
-                            for (int IN = 1; IN <= 3; IN++)
+                            for (byte IN = 1; IN <= 3; IN++)
                             {
                                 for (int IC = 1; IC <= NBCEL; IC++)
                                 {
@@ -1338,7 +1346,7 @@ namespace ARProbaProcessing
                                             N = 1;
                                             for (int I = 1; I <= NBCEL; I++)
                                             {
-                                                if (NIVO[IN, I] == NIVO[IN, IC]) TREG[I] = IN + 1;
+                                                if (NIVO[IN, I] == NIVO[IN, IC]) TREG[I] = Convert.ToByte(IN + 1);
                                             }
                                         }
                                     }
@@ -1391,26 +1399,7 @@ namespace ARProbaProcessing
             }
 
             writeBinary.Close();
-
-            if (File.Exists(pathNivo + "R")) File.Delete(pathNivo + "R");
-            writeStream = new FileStream(pathNivo + "R", FileMode.Create);
-            writeBinary = new BinaryWriter(writeStream);
-            for (int IU = 1; IU <= 3; IU++)
-            {
-                for (int IP = 1; IP <= NBSTA; IP++)
-                {
-                    for (int IQ = 1; IQ <= 96; IQ++)
-                    {
-                        for (int IC = 1; IC <= NBCEL; IC++)
-                        {
-                            writeBinary.Write(Convert.ToSByte(REGRS[IU, IP, IQ, IC]));
-                        }
-                    }
-                }
-            }
-            writeBinary.Close();
-
-
+            writeStream.Close();
 
             for (int I = 1; I <= NBCEL; I++)
                 Console.WriteLine(MINIS[2, 2, 11, I]);
@@ -1420,18 +1409,21 @@ namespace ARProbaProcessing
 
         // VsorPoid[][] JN [Jour 1..23][Individus 1..N] = {VOSR[,]?, Poid[]}
         // retour [Station, INdiv, Qh, 1..3]
-        private int[,,,] caud1qhp(int NBIND, int NBSTA, VsorPoid[][] JN, int[,] POIDSEGM)
+        private byte[,,,] caud1qhp(int NBIND, int NBSTA, VsorPoid[][] JN, int[,] POIDSEGM, string pathAudQhInd)
         {
             // C PANEL RADIO 08 MEDIAMETRIE(nouveau format)
             // CALCUL DES AUDIENCES PAR INDIVIDU/ QUARTS d'HEURE/STATIONS
             // Le nombre de station correspond au nombre de stations(#NB_STA_HAB_NOTO_TOTAL#) - #NB_STA_TOTAL_ONLY# pour Total Radio (et Total TV)
 
             int NBJOUR = 23;
-            int[,,,] NIN2 = new int[NBSTA + 1, NBIND + 1, 96 + 1, 3 + 1];
+            byte[,,,] NIN2 = new byte[NBSTA + 1, NBIND + 1, 96 + 1, 3 + 1];
             int[] NINI = new int[NBIND + 1];
 
             // OPEN(15, FILE = '#OUTPUT#audqhind',
             //-FORM = 'UNFORMATTED', RECORDTYPE = 'FIXED')
+            // Ecriture AuqQhInd
+            FileStream writeStream = new FileStream(pathAudQhInd, FileMode.Create);
+            BinaryWriter writeBinary = new BinaryWriter(writeStream);
 
             for (int STA = 1; STA <= NBSTA; STA++)
             {
@@ -1454,18 +1446,33 @@ namespace ARProbaProcessing
 
                             if (L1BITFCT(bits, IQ))
                             {
-                                NIN2[STA, IG, IQ, IU] = NIN2[STA, IG, IQ, IU] + JN[IJ][IG].Poid[IQ];
+                                NIN2[STA, IG, IQ, IU] = Convert.ToByte(NIN2[STA, IG, IQ, IU] + JN[IJ][IG].Poid[IQ]);
                             }
 
                         }
                     }
                 }
+
+                // CALCUL DE LA NOTE INDIVIDUELLE
+                for (int I = 1; I <= 3; I++)
+                {
+                    for (int IQ = 1; IQ <= 96; IQ++)
+                    {
+                        for (int IG = 1; IG <= NBIND; IG++)
+                        {
+                            writeBinary.Write(Convert.ToByte(NIN2[STA, IG, IQ, I]));
+                        }
+                    }
+                 }
             }
+
+            writeBinary.Close();
+            writeStream.Close();
 
             return NIN2;
         }
 
-        private float[] caudtotp(int NBIND, int NBSTA, VsorPoid[][] JN, int[,] POIDS, List<Fushab09Indiv> fushab09Indivs)
+        private float[] caudtotp(int NBIND, int NBSTA, VsorPoid[][] JN, int[,] POIDS, List<Fushab09Indiv> fushab09Indivs, string pathNoteIndiv)
         {
             // PANEL RADIO 08 MEDIAMETRIE(nouveau format)
             // CALCUL DES AUDIENCES TOTALES PAR INDIVIDUS / STATION
@@ -1602,12 +1609,20 @@ namespace ARProbaProcessing
                 if (NOTE[I] > MANOT) MANOT = NOTE[I];
             }
 
+            FileStream writeStream = new FileStream(pathNoteIndiv, FileMode.Create);
+            BinaryWriter writeBinary = new BinaryWriter(writeStream);
+            for (int I = 1; I <= NBIND; I++)
+            {
+                writeBinary.Write(Convert.ToInt16(NOTE[I]));
+            }
+            writeBinary.Close();
+            writeStream.Close();
             Console.WriteLine($"MINOT {MINOT} MANOT {MANOT}");
 
             return NOTE;
         }
 
-        private float[,,,] sav1qhpa(int NBIND, int NBSTA, int[,,,] regrs, int[,] KHI2, List<Fushab09Indiv> fushab09Indivs, VsorPoid[][][] JNByWeek, VsorPoid[][] JN, string pathSortie)
+        private float[,,,] sav1qhpa(int NBIND, int NBSTA, byte[,,,] regrs, int[,] KHI2, List<Fushab09Indiv> fushab09Indivs, VsorPoid[][][] JNByWeek, VsorPoid[][] JN, string pathSortie)
         {
             // PANEL RADIO 08 MEDIAMETRIE(nouveau format)
             // CALCUL DES PARAMETRES STATION 2 QUART d'HEURE 31
@@ -2165,7 +2180,7 @@ namespace ARProbaProcessing
             return RESUL;
         }
 
-        private float[,,,] sav1qhps(int NBIND, int NBSTA, int[,,,] regrs, int[,] KHI2, List<Fushab09Indiv> fushab09Indivs, VsorPoid[][][] JNByWeek, VsorPoid[][] JN, string pathSortie)
+        private float[,,,] sav1qhps(int NBIND, int NBSTA, byte[,,,] regrs, int[,] KHI2, List<Fushab09Indiv> fushab09Indivs, VsorPoid[][][] JNByWeek, VsorPoid[][] JN, string pathSortie)
         {
             // PANEL RADIO 08 MEDIAMETRIE(nouveau format)
             // CALCUL DES PARAMETRES z,u,p,tau
@@ -2521,7 +2536,7 @@ namespace ARProbaProcessing
             return RESUL;
         }
 
-        private float[,,,] sav1qhpd(int NBIND, int NBSTA, int[,,,] regrs, int[,] KHI2, List<Fushab09Indiv> fushab09Indivs, VsorPoid[][][] JNByWeek, VsorPoid[][] JN, string pathSortie)
+        private float[,,,] sav1qhpd(int NBIND, int NBSTA, byte[,,,] regrs, int[,] KHI2, List<Fushab09Indiv> fushab09Indivs, VsorPoid[][][] JNByWeek, VsorPoid[][] JN, string pathSortie)
         {
             // PANEL RADIO 08 MEDIAMETRIE(nouveau format)
             // CALCUL DES PARAMETRES z,u,p,tau
@@ -3164,7 +3179,7 @@ namespace ARProbaProcessing
         }
 
         // RESUL = ZUPTAUSE
-        private float[,,,] cnzuptse(int NBIND, int NBSTA, string pathCnzuptse, float[,,,] COUV, int[,,,] REGRS, float[,,,] RESUL)
+        private float[,,,] cnzuptse(int NBIND, int NBSTA, string pathCnzuptse, float[,,,] COUV, byte[,,,] REGRS, float[,,,] RESUL)
         {
             // PANEL RADIO 08 MEDIAMETRIE(nouveau format)
             // CALAGE SUR GRP 75000 + ET RECALCUL DES PARAMETRES STATION
@@ -3327,7 +3342,7 @@ namespace ARProbaProcessing
             return RESULCOR;
         }
 
-        private float[,,,] cnzuptsa(int NBIND, int NBSTA, string pathCnzuptsa, float[,,,] COUV, int[,,,] REGRS, float[,,,] RESUL)
+        private float[,,,] cnzuptsa(int NBIND, int NBSTA, string pathCnzuptsa, float[,,,] COUV, byte[,,,] REGRS, float[,,,] RESUL)
         {
             // PANEL RADIO 08 MEDIAMETRIE(nouveau format)
             // CALAGE SUR GRP 75000 + ET RECALCUL DES PARAMETRES STATION
@@ -3489,7 +3504,7 @@ namespace ARProbaProcessing
             return RESULCOR;
         }
 
-        private float[,,,] cnzuptdi(int NBIND, int NBSTA, string pathCnzuptdi, float[,,,] COUV, int[,,,] REGRS, float[,,,] RESUL)
+        private float[,,,] cnzuptdi(int NBIND, int NBSTA, string pathCnzuptdi, float[,,,] COUV, byte[,,,] REGRS, float[,,,] RESUL)
         {
             // PANEL RADIO 08 MEDIAMETRIE(nouveau format)
             // CALAGE SUR GRP 75000 + ET RECALCUL DES PARAMETRES STATION
@@ -3653,10 +3668,10 @@ namespace ARProbaProcessing
 
         private bool L1BITFCT(ushort[] ZLEC, int ind)
         {
-            int[] NBIT2 = new int[] { 0, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1 };
+
             int sizeBit = (sizeof(ushort) * 8);
             int index = 1 + ((ind - 1) / sizeBit);
-            int pos = NBIT2[ind % sizeBit];
+            int pos = NBIT[ind % sizeBit];
             //int pos =ind % sizeBit;
             return BTEST(ZLEC[index], pos);
         }

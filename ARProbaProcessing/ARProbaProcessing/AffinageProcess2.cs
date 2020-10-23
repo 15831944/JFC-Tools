@@ -8,7 +8,7 @@ namespace ARProbaProcessing
 {
     public partial class AffinageProcess
     {
-        private int[,,,] attribp2(int NBIND, int NBSTA, int[,,,] REGRS, int[,] KHI2, int[,] NINI, float[] NOTES, int[,,,] AUDI, int[,,] HABI,
+        private int[,,,] attribp2(int NBIND, int NBSTA, byte[,,,] REGRS, int[,] KHI2, int[,] NINI, float[] NOTES, byte[,,,] AUDI, int[,,] HABI,
             float[,,,] ZUPTAUSECOR, float[,,,] ZUPTAUSACOR, float[,,,] ZUPTAUDICOR, string pathSortie)
         {
             // PANEL RADIO 08 MEDIAMETRIE(nouveau format)
