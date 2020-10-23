@@ -909,6 +909,16 @@ namespace ARProbaProcessing
             }
             return stationApres;
         }
+
+        private int GetCOLAPRES(ARProba arProba, string colName)
+        {
+            int pos = arProba.SignVars[colName].Position;
+
+            var varLastDI = arProba.SignVars[string.Format("DI{0:00}", arProba.AllHabStationCount)];
+            int offset = (varLastDI.Position + varLastDI.Repetition);
+
+            return pos - offset + 1;
+        }
     }
 
     public struct BSupport

@@ -150,6 +150,19 @@ namespace ARProbaProcessing
 
             #region entrées caudtotp
             string pathNoteIndiv = Path.Combine(OutputPath, "NOTINDIV");
+            int COL_HAB = arProba.SignVars["HAB7"].Position - 1;
+            int COL_MENA = arProba.SignVars["MENA"].Position - 1;
+            int COL_RDA = arProba.SignVars["RDA"].Position - 1;
+            int COL_CSCC = arProba.SignVars["CSCC"].Position - 1;
+            int COL_NIEL = arProba.SignVars["NIEL"].Position - 1;
+            int COL_PG22 = arProba.SignVars["PG22"].Position - 1;
+            int COL_ENF1 = arProba.SignVars["ENF1"].Position - 1;
+            int COL_ENF2 = arProba.SignVars["ENF2"].Position - 1;
+            int COL_ENF3 = arProba.SignVars["ENF3"].Position - 1;
+            int COL_ENF4 = arProba.SignVars["ENF4"].Position - 1;
+            int COL_NPER = arProba.SignVars["NPER"].Position - 1;
+            int COL_APRES = GetCOLAPRES(arProba, "ETVIE") - 1;
+            int COL_CELL = arProba.SignVars["CELL"].Position - 1;
             #endregion entrées caudtotp
 
             #region entrées cont75br
@@ -178,7 +191,6 @@ namespace ARProbaProcessing
             #endregion entrées Transp08
 
             #region entrées crecib08
-            int COL_MENA = 15;
             string pathPan20Cib = Path.Combine(OutputPath, "PAN20CIB");
             #endregion entrées crecib08
 
@@ -255,7 +267,10 @@ namespace ARProbaProcessing
 
             byte[,,,] audiences = caud1qhp(NBINDIV, NB_STA_HAB_NOTO, JN, POIDSEGM, pathAudQhInd); // audiences[STATIONS, INdiv, QH, 1..3]
 
-            float[] noteIndiv = caudtotp(NBINDIV, NB_STA_HAB_NOTO, JN, POIDSEGM, fushab09Indivs, pathNoteIndiv);
+            float[] noteIndiv = caudtotp(NBINDIV, NB_STA_HAB_NOTO, COL_PIAB, COL_CSCI, COL_SEX, COL_AGE11, COL_RUDA,
+                 COL_HAB,  COL_MENA,  COL_RDA,  COL_CSCC,  COL_NIEL,
+             COL_PG22,  COL_ENF1,  COL_ENF2,  COL_ENF3,  COL_ENF4,
+             COL_NPER,  COL_APRES,  COL_CELL, JN, POIDSEGM, fushab09Indivs, pathNoteIndiv);
 
             float[,,,] ZUPTAUSE = sav1qhpa(NBINDIV, NB_STA_HAB_NOTO, regrs, POIDSEGM, fushab09Indivs, JNByWeek, JN, pathSortiesav1qhpa); // [STATIONS, QH, DATAS ZR-UR-PR-TAUX, CELL];
 
@@ -1472,7 +1487,12 @@ namespace ARProbaProcessing
             return NIN2;
         }
 
-        private float[] caudtotp(int NBIND, int NBSTA, VsorPoid[][] JN, int[,] POIDS, List<Fushab09Indiv> fushab09Indivs, string pathNoteIndiv)
+        private float[] caudtotp(int NBIND, int NBSTA, 
+            int COL_PIAB, int COL_CSCI, int COL_SEX, int COL_AGE11, int COL_RUDA, 
+            int COL_HAB, int COL_MENA, int COL_RDA, int COL_CSCC, int COL_NIEL,
+            int COL_PG22, int COL_ENF1, int COL_ENF2,int COL_ENF3, int COL_ENF4,
+            int COL_NPER, int COL_APRES, int COL_CELL, 
+            VsorPoid[][] JN, int[,] POIDS, List<Fushab09Indiv> fushab09Indivs, string pathNoteIndiv)
         {
             // PANEL RADIO 08 MEDIAMETRIE(nouveau format)
             // CALCUL DES AUDIENCES TOTALES PAR INDIVIDUS / STATION
@@ -1517,9 +1537,9 @@ namespace ARProbaProcessing
 
                 //  **CRITERES**
                 // SEXE
-                NINI[IG, 1] = fushab09Indiv.AVANT[14] - 48;
+                NINI[IG, 1] = fushab09Indiv.AVANT[COL_SEX] - 48;
                 // AGE
-                int AGE = 10 * (fushab09Indiv.AVANT[24] - 48) + (fushab09Indiv.AVANT[25] - 48);
+                int AGE = 10 * (fushab09Indiv.AVANT[COL_AGE11] - 48) + (fushab09Indiv.AVANT[COL_AGE11+1] - 48);
                 NINI[IG, 2] = 1;
                 if (AGE > 2) NINI[IG, 2] = 2;
                 if (AGE > 4) NINI[IG, 2] = 3;
@@ -1532,46 +1552,46 @@ namespace ARProbaProcessing
                 NINI[IG, 4] = 1;
                 if (AGE > 1) NINI[IG, 4] = 2;
                 // Profession Individu
-                NINI[IG, 5] = fushab09Indiv.AVANT[18] - 48;
+                NINI[IG, 5] = fushab09Indiv.AVANT[COL_CSCI] - 48;
                 // Région UDA
-                NINI[IG, 6] = fushab09Indiv.AVANT[20] - 48;
+                NINI[IG, 6] = fushab09Indiv.AVANT[COL_RUDA] - 48;
                 // Région UDA
                 NINI[IG, 7] = 1;
-                if ((fushab09Indiv.AVANT[20] - 48) > 1) NINI[IG, 7] = 2;
-                if ((fushab09Indiv.AVANT[20] - 48) > 6) NINI[IG, 7] = 3;
+                if ((fushab09Indiv.AVANT[COL_RUDA] - 48) > 1) NINI[IG, 7] = 2;
+                if ((fushab09Indiv.AVANT[COL_RUDA] - 48) > 6) NINI[IG, 7] = 3;
                 // Habitat
                 NINI[IG, 8] = 1;
-                if ((fushab09Indiv.AVANT[17] - 48) > 1) NINI[IG, 8] = 2;
-                if ((fushab09Indiv.AVANT[17] - 48) > 2) NINI[IG, 8] = 3;
-                if ((fushab09Indiv.AVANT[17] - 48) > 4) NINI[IG, 8] = 4;
-                if ((fushab09Indiv.AVANT[17] - 48) > 6) NINI[IG, 8] = 5;
+                if ((fushab09Indiv.AVANT[COL_HAB] - 48) > 1) NINI[IG, 8] = 2;
+                if ((fushab09Indiv.AVANT[COL_HAB] - 48) > 2) NINI[IG, 8] = 3;
+                if ((fushab09Indiv.AVANT[COL_HAB] - 48) > 4) NINI[IG, 8] = 4;
+                if ((fushab09Indiv.AVANT[COL_HAB] - 48) > 6) NINI[IG, 8] = 5;
                 // Ménagère
-                NINI[IG, 9] = (fushab09Indiv.AVANT[15] - 48);
+                NINI[IG, 9] = (fushab09Indiv.AVANT[COL_MENA] - 48);
                 // Responsable des achats
-                NINI[IG, 10] = (fushab09Indiv.AVANT[16] - 48);
+                NINI[IG, 10] = (fushab09Indiv.AVANT[COL_RDA] - 48);
                 // Profession du chef de famille
-                NINI[IG, 11] = (fushab09Indiv.AVANT[19] - 48);
+                NINI[IG, 11] = (fushab09Indiv.AVANT[COL_CSCC] - 48);
                 // Région NIELSEN
-                NINI[IG, 12] = (fushab09Indiv.AVANT[21] - 48);
+                NINI[IG, 12] = (fushab09Indiv.AVANT[COL_NIEL] - 48);
                 // Région INSEE
-                int INSEE = 10 * (fushab09Indiv.AVANT[22] - 48) + (fushab09Indiv.AVANT[23] - 48);
+                int INSEE = 10 * (fushab09Indiv.AVANT[COL_PG22] - 48) + (fushab09Indiv.AVANT[COL_PG22+1] - 48);
                 NINI[IG, 13] = INSEE;
                 // Nb d'enfants de moins de 6 ans
-                NINI[IG, 14] = fushab09Indiv.AVANT[27] - 48;
+                NINI[IG, 14] = fushab09Indiv.AVANT[COL_ENF1] - 48;
                 // Nb d'enfants de 6 à 8 ans
-                NINI[IG, 15] = fushab09Indiv.AVANT[28] - 48;
+                NINI[IG, 15] = fushab09Indiv.AVANT[COL_ENF2] - 48;
                 // Nb d'enfant de 9 à 10 ans
-                NINI[IG, 16] = fushab09Indiv.AVANT[29] - 48;
+                NINI[IG, 16] = fushab09Indiv.AVANT[COL_ENF3] - 48;
                 // Nb d'enfant de 11 à 14 ans
-                NINI[IG, 17] = fushab09Indiv.AVANT[30] - 48;
+                NINI[IG, 17] = fushab09Indiv.AVANT[COL_ENF4] - 48;
                 // Nb de personnes vivant dans le foyer
-                NINI[IG, 18] = fushab09Indiv.AVANT[31] - 48;
+                NINI[IG, 18] = fushab09Indiv.AVANT[COL_NPER] - 48;
                 // Etape de la vie
-                int ETAPE = 10 * (fushab09Indiv.APRES[11] - 48) + fushab09Indiv.APRES[12] - 48;
+                int ETAPE = 10 * (fushab09Indiv.APRES[COL_APRES] - 48) + fushab09Indiv.APRES[COL_APRES+1] - 48;
                 NINI[IG, 19] = ETAPE;
-                Console.WriteLine(ETAPE);
+                //Console.WriteLine(ETAPE);
                 // Cellule
-                int CELLULE = 10 * (fushab09Indiv.AVANT[33] - 48) + (fushab09Indiv.AVANT[34] - 48);
+                int CELLULE = 10 * (fushab09Indiv.AVANT[COL_CELL] - 48) + (fushab09Indiv.AVANT[COL_CELL+ 1] - 48);
                 NINI[IG, 20] = CELLULE;
             }
 
@@ -1580,6 +1600,7 @@ namespace ARProbaProcessing
             float MANOT = 0;
             for (int I = 1; I <= NBIND; I++)
             {
+                if (I % 100 == 0) Console.WriteLine($"IG : {I}");
                 float NUM = 0f;
                 float DEN = 0f;
 
@@ -1590,13 +1611,13 @@ namespace ARProbaProcessing
                     for (int IC = 1; IC <= 20; IC++)
                     {
                         if (IC == 9) NO = 1;
-                        if (NINI[I, IC] != NINI[J, IC]) DIF = DIF + NO;
+                        if (NINI[I, IC] != NINI[J, IC]) DIF += NO;
                     }
                     float D = -1f * ((DIF / 25) ^ 2);
-                    float A = POIDS[J, 1] * (float)Math.Exp(D);   // A VOIR POIDS[J,1] : à priori on ne lirait que la premire zone de poiids dans fichier origine => tableau 1 dimension
+                    float A = POIDS[J, 1] * (float)Math.Exp(D);  
 
-                    DEN = DEN + A;
-                    NUM = NUM + A * (COUV[J] / 12f);
+                    DEN += A;
+                    NUM += A * (COUV[J] / 12f);
                 }
 
                 NOTE[I] = NUM / DEN;
@@ -1613,7 +1634,7 @@ namespace ARProbaProcessing
             BinaryWriter writeBinary = new BinaryWriter(writeStream);
             for (int I = 1; I <= NBIND; I++)
             {
-                writeBinary.Write(Convert.ToInt16(NOTE[I]));
+                writeBinary.Write(NOTE[I]);
             }
             writeBinary.Close();
             writeStream.Close();
