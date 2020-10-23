@@ -66,7 +66,7 @@ namespace ARProbaProcessing
             List<int> lstFiltreIDF;
             int nbJour = 23;
 
-            int COL_AGE3 = arProba.SignVars["AGE3"].Position- 1;
+            int COL_AGE3 = arProba.SignVars["AGE3"].Position - 1;
             int COL_RUDA = arProba.SignVars["RUDA"].Position - 1;
             int COL_PIAB = arProba.SignVars["PIAB"].Position - 1;
             string pathSIGJFC_BDE = Path.Combine(inputPath, @"Bde\sig19jfc.bde");
@@ -107,7 +107,7 @@ namespace ARProbaProcessing
             #region entrées ecrsegpa
             int COL_CSCI = arProba.SignVars["CSCI"].Position - 1;
             int COL_SEX = arProba.SignVars["SEXE"].Position - 1;
-            int COL_AGE = arProba.SignVars["AGE"].Position - 1;
+            //int COL_AGE = arProba.SignVars["AGE"].Position - 1;
             int COL_AGE11 = arProba.SignVars["AG11"].Position - 1;
 
             int SIGN_LINE_LEN_FULL = 694;
@@ -139,6 +139,10 @@ namespace ARProbaProcessing
             string pathHab = Path.Combine(OutputPath, "habqhind");
             int[] ISTA = HAB_0_NOTO_1_STA_LIST_MASK(arProba);
             #endregion entrées chab1qhp
+
+            #region entrées calcreg
+            string pathCellule = Path.Combine(OutputPath, "Cellules");
+            #endregion entrées calcreg
 
             #region entrées cont75br
             int popLV = 54439040;
@@ -221,7 +225,7 @@ namespace ARProbaProcessing
             #endregion entrées Asymp
 
 
-            int NBINDIV = segpanel(COL_PIAB, COL_CSCI, COL_SEX, COL_AGE, COL_RUDA, pathSIGJFC_BDE, pathSortie1);
+            int NBINDIV = segpanel(COL_PIAB, COL_CSCI, COL_SEX, COL_AGE11, COL_RUDA, pathSIGJFC_BDE, pathSortie1);
 
             //NbStation = arProba.HabAndNotoTotalStationListCount;
             VsorPoid[][] JN = ecrpan1j(pathF04, pathJNNIV, NBINDIV, nbStationHabNotoTotal, nbStationTotal, ITS, year);   // [Jour 1..23][Individus 1..N] = {VOSR[,]?, Poid[]}
@@ -232,12 +236,12 @@ namespace ARProbaProcessing
 
             int[,,] NINI_IND_QH_W = chab1qhp(NB_STA_HAB_NOTO, fushab09Indivs, ISTA, pathHab); // Habitude [INDIV, QH, LV/Sa/Di];
 
-            int[,] NINI_IND_STA = crenonin(nbJour, NB_STA_HAB_NOTO, fushab09Indivs, JN, stationApres , pathNinities); // [INDIV, STATIONS] 
+            int[,] NINI_IND_STA = crenonin(nbJour, NB_STA_HAB_NOTO, fushab09Indivs, JN, stationApres, pathNinities); // [INDIV, STATIONS] 
 
             ecrsegpa(pathSIGJFC_BDE, pathSegs, COL_PIAB, COL_CSCI, COL_SEX, COL_AGE11, COL_RUDA, NbStation, NBINDIV, SIGN_LINE_LEN_FULL, pathSortie5,
                      out int[,] POIDSEGM, out int IPOP);
 
-            int[,,,] cellules = calcregr(NBINDIV, NB_STA_HAB_NOTO, NINI_IND_STA, POIDSEGM, JN); // int[LV/Sa/Di, STATIONS, QH, CELL];
+            int[,,,] cellules = calcregr(NBINDIV, NB_STA_HAB_NOTO, NINI_IND_STA, POIDSEGM, JN, pathCellule); // int[LV/Sa/Di, STATIONS, QH, CELL];
 
             int[,,,] regrs = calcnivo(NBINDIV, NB_STA_HAB_NOTO, cellules, pathNiveaux); // [LV/Sa/Di, STATIONS, QH, CELL]
 
@@ -266,7 +270,7 @@ namespace ARProbaProcessing
 
             BSupport BSUP = transp08(NBINDIV, NB_STA_HAB_NOTO, NB_STA_IDF, ISTA, POIDSEGM, lstFiltreIDF, lstPoids, PROBAS, pathTransp08, pathYearNat, pathYearIdf, pathYearSup);
 
-            int[,] PANCIB = crecib08(NBINDIV, fushab09Indivs, COL_AGE, COL_MENA, pathPan20Cib); // [3 + 1, NIND + 1]
+            int[,] PANCIB = crecib08(NBINDIV, fushab09Indivs, COL_AGE11, COL_MENA, pathPan20Cib); // [3 + 1, NIND + 1]
 
             penetr(NBINDIV, NB_STA_HAB_NOTO_TOTAL, JN, lstPoids, pathPenetr, population, strStations);
 
@@ -541,7 +545,7 @@ namespace ARProbaProcessing
             int IG;
 
             // OUVERTURE FICHIERS
-            for (int IJ = 1; IJ <= 23; IJ++) 
+            for (int IJ = 1; IJ <= 23; IJ++)
             {
                 if (!Directory.Exists(pathNiv)) Directory.CreateDirectory(pathNiv);
                 FileStream writeStream = new FileStream(Path.Combine(pathNiv, "JN" + IJ.ToString("00") + "NIV.JFC"), FileMode.Create);
@@ -597,7 +601,7 @@ namespace ARProbaProcessing
                         int[] POID = new int[96 + 1];
                         for (int I = 1; I <= 96; I++)
                         {
-                            POID[I] = ITAP[I]+1 < NOTE.Length ? NOTE[ITAP[I]+1] : 1;
+                            POID[I] = ITAP[I] + 1 < NOTE.Length ? NOTE[ITAP[I] + 1] : 1;
                         }
 
                         resultJn[IJ][IG] = new VsorPoid(NBSTA) { Poid = POID, VSor = VSOR };
@@ -665,7 +669,7 @@ namespace ARProbaProcessing
                             {
                                 writeBinay.Write(JNByWeek[week][J][IG].VSor[I, IS]); // [Semaine 1..3] [Jour de semaine Lundi à vendredi 1..5] [indiv]
                             }
-                            
+
                         }
                         for (int QH = 1; QH <= 96; QH++)
                         {
@@ -856,7 +860,7 @@ namespace ARProbaProcessing
             //   7     18h00 - 20h00 = 8
             //   8     20h00 - 24h00 = 16
             //   9     24h00 - 05h00 = 20
-            
+
             for (int IPO = 1; IPO <= NBSTA; IPO++)
             {
                 int IP = IPO;
@@ -960,7 +964,7 @@ namespace ARProbaProcessing
                     // 60  310    Les Indés Capitale 27
                     // 61  311    TF1 Pub Radios 28
 
-                    foreach (Tuple<int,int> t in stationApres)
+                    foreach (Tuple<int, int> t in stationApres)
                     {
                         if (NOP == t.Item1 && (indiv.APRES[t.Item2] - 48) == 1)
                         {
@@ -987,7 +991,7 @@ namespace ARProbaProcessing
                             }
                             if (sortie) break;
                         }
-                        if (!sortie)  KHI2[IG, NOP] = 1;
+                        if (!sortie) KHI2[IG, NOP] = 1;
                     }
                 }
             }
@@ -1160,7 +1164,7 @@ namespace ARProbaProcessing
             BinaryWriter writeBinay = new BinaryWriter(writeStream);
             for (int J = 1; J <= 5; J++)
             {
-                for (int I = 1; I < NBIND; I++)
+                for (int I = 1; I <= NBIND; I++)
                 {
                     writeBinay.Write(Convert.ToInt16(SEGM[I, J]));
                 }
@@ -1177,7 +1181,7 @@ namespace ARProbaProcessing
             File.AppendAllText(pathSortie5, $"   NBGUS: {IG}   POPULATION:{IPOP}");
         }
 
-        private int[,,,] calcregr(int NBIND, int NBSTA, int[,] NINI, int[,] POIDSEGM, VsorPoid[][] JN)
+        private int[,,,] calcregr(int NBIND, int NBSTA, int[,] NINI, int[,] POIDSEGM, VsorPoid[][] JN, string pathCellule)
         {
             // PANEL RADIO 08 MEDIAMETRIE(nouveau format)
             // CONTROLE DES MINIMA D'ECOUTES PAR CELLULES DE BASE          
@@ -1227,6 +1231,26 @@ namespace ARProbaProcessing
                     }
                 }
             }
+
+            // Ecriture CELLULES
+            FileStream writeStream = new FileStream(pathCellule, FileMode.Create);
+            BinaryWriter writeBinay = new BinaryWriter(writeStream);
+            // BOUCLE STATIONS
+            for (int IC = 1; IC <= 23; IC++)
+            {
+                for (int IQ = 1; IQ <= 96; IQ++)
+                {
+                    for (int STA = 1; STA <= NBSTA; STA++)
+                    {
+                        for (int I = 1; I <= 3; I++)
+                        {
+                            writeBinay.Write(Convert.ToInt16(MINIS[I, STA, IQ, IC]));
+                        }
+                    }
+                }
+            }
+            writeBinay.Close();
+            writeStream.Close();
 
             Console.WriteLine("7h15 :");
             for (int J = 1; J <= NBCEL; J++)
