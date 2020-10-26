@@ -66,11 +66,54 @@ namespace ARProbaProcessing
             List<int> lstFiltreIDF;
             int nbJour = 23;
 
+            
+
+            #region Definition colonnes
             int COL_AGE3 = arProba.SignVars["AGE3"].Position - 1;
             int COL_RUDA = arProba.SignVars["RUDA"].Position - 1;
             int COL_PIAB = arProba.SignVars["PIAB"].Position - 1;
+            int COL_CSCI = arProba.SignVars["CSCI"].Position - 1;
+            int COL_SEX = arProba.SignVars["SEXE"].Position - 1;
+            int COL_AGE11 = arProba.SignVars["AG11"].Position - 1;
+            int COL_HAB = arProba.SignVars["HAB7"].Position - 1;
+            int COL_MENA = arProba.SignVars["MENA"].Position - 1;
+            int COL_RDA = arProba.SignVars["RDA"].Position - 1;
+            int COL_CSCC = arProba.SignVars["CSCC"].Position - 1;
+            int COL_NIEL = arProba.SignVars["NIEL"].Position - 1;
+            int COL_PG22 = arProba.SignVars["PG22"].Position - 1;
+            int COL_ENF1 = arProba.SignVars["ENF1"].Position - 1;
+            int COL_ENF2 = arProba.SignVars["ENF2"].Position - 1;
+            int COL_ENF3 = arProba.SignVars["ENF3"].Position - 1;
+            int COL_ENF4 = arProba.SignVars["ENF4"].Position - 1;
+            int COL_NPER = arProba.SignVars["NPER"].Position - 1;
+            int COL_APRES = GetCOLAPRES(arProba, "ETVIE") - 1;
+            int COL_CELL = arProba.SignVars["CELL"].Position - 1;
+
+            int COL_TAB_CSCI = arProba.SignVars["CSCI"].Position;
+            int COL_TAB_SEX = arProba.SignVars["SEXE"].Position;
+            int COL_TAB_AGE11 = arProba.SignVars["AG11"].Position;
+            int COL_TAB_HAB = arProba.SignVars["HAB7"].Position;
+            int COL_TAB_MENA = arProba.SignVars["MENA"].Position;
+            int COL_TAB_RDA = arProba.SignVars["RDA"].Position;
+            int COL_TAB_CSCC = arProba.SignVars["CSCC"].Position;
+            int COL_TAB_NIEL = arProba.SignVars["NIEL"].Position;
+            int COL_TAB_PG22 = arProba.SignVars["PG22"].Position;
+            int COL_TAB_ENF1 = arProba.SignVars["ENF1"].Position;
+            int COL_TAB_ENF2 = arProba.SignVars["ENF2"].Position;
+            int COL_TAB_ENF3 = arProba.SignVars["ENF3"].Position;
+            int COL_TAB_ENF4 = arProba.SignVars["ENF4"].Position;
+            int COL_TAB_NPER = arProba.SignVars["NPER"].Position;
+            int COL_TAB_APRES = GetCOLAPRES(arProba, "ETVIE");
+            int COL_TAB_CELL = arProba.SignVars["CELL"].Position;
+            int COL_TAB_AGE3 = arProba.SignVars["AGE3"].Position;
+            int COL_TAB_RUDA = arProba.SignVars["RUDA"].Position;
+            int COL_TAB_PIAB = arProba.SignVars["PIAB"].Position;
+            #endregion Definition colonnes
+
+            #region entrées lecpanel
             string pathSIGJFC_BDE = Path.Combine(inputPath, @"Bde\sig19jfc.bde");
             lecpanel(pathSIGJFC_BDE, COL_AGE3, COL_RUDA, COL_PIAB, out lstPoids, out lstAges, out lstFiltreIDF);
+            #endregion entrées lecpanel
 
             #region entrées regr5jp2
             string pathPansem = Path.Combine(OutputPath, "jfc");
@@ -105,11 +148,6 @@ namespace ARProbaProcessing
             #endregion entrées ecrpan1
 
             #region entrées ecrsegpa
-            int COL_CSCI = arProba.SignVars["CSCI"].Position - 1;
-            int COL_SEX = arProba.SignVars["SEXE"].Position - 1;
-            //int COL_AGE = arProba.SignVars["AGE"].Position - 1;
-            int COL_AGE11 = arProba.SignVars["AG11"].Position - 1;
-
             int SIGN_LINE_LEN_FULL = 694;
             string pathSortie5 = Path.Combine(OutputPath, "SORTIE5.TXT");
             string pathSegs = Path.Combine(OutputPath, "POIDSEGS");
@@ -150,19 +188,7 @@ namespace ARProbaProcessing
 
             #region entrées caudtotp
             string pathNoteIndiv = Path.Combine(OutputPath, "NOTINDIV");
-            int COL_HAB = arProba.SignVars["HAB7"].Position - 1;
-            int COL_MENA = arProba.SignVars["MENA"].Position - 1;
-            int COL_RDA = arProba.SignVars["RDA"].Position - 1;
-            int COL_CSCC = arProba.SignVars["CSCC"].Position - 1;
-            int COL_NIEL = arProba.SignVars["NIEL"].Position - 1;
-            int COL_PG22 = arProba.SignVars["PG22"].Position - 1;
-            int COL_ENF1 = arProba.SignVars["ENF1"].Position - 1;
-            int COL_ENF2 = arProba.SignVars["ENF2"].Position - 1;
-            int COL_ENF3 = arProba.SignVars["ENF3"].Position - 1;
-            int COL_ENF4 = arProba.SignVars["ENF4"].Position - 1;
-            int COL_NPER = arProba.SignVars["NPER"].Position - 1;
-            int COL_APRES = GetCOLAPRES(arProba, "ETVIE") - 1;
-            int COL_CELL = arProba.SignVars["CELL"].Position - 1;
+
             #endregion entrées caudtotp
 
             #region entrées cont75br
@@ -267,10 +293,10 @@ namespace ARProbaProcessing
 
             byte[,,,] audiences = caud1qhp(NBINDIV, NB_STA_HAB_NOTO, JN, POIDSEGM, pathAudQhInd); // audiences[STATIONS, INdiv, QH, 1..3]
 
-            float[] noteIndiv = caudtotp(NBINDIV, NB_STA_HAB_NOTO, COL_PIAB, COL_CSCI, COL_SEX, COL_AGE11, COL_RUDA,
-                 COL_HAB,  COL_MENA,  COL_RDA,  COL_CSCC,  COL_NIEL,
-             COL_PG22,  COL_ENF1,  COL_ENF2,  COL_ENF3,  COL_ENF4,
-             COL_NPER,  COL_APRES,  COL_CELL, JN, POIDSEGM, fushab09Indivs, pathNoteIndiv);
+            float[] noteIndiv = caudtotp(NBINDIV, NB_STA_HAB_NOTO, COL_TAB_PIAB, COL_TAB_CSCI, COL_TAB_SEX, COL_TAB_AGE11, COL_TAB_RUDA,
+                 COL_TAB_HAB,  COL_TAB_MENA,  COL_TAB_RDA,  COL_TAB_CSCC,  COL_TAB_NIEL,
+             COL_TAB_PG22,  COL_TAB_ENF1,  COL_TAB_ENF2,  COL_TAB_ENF3,  COL_TAB_ENF4,
+             COL_TAB_NPER,  COL_TAB_APRES,  COL_TAB_CELL, JN, POIDSEGM, fushab09Indivs, pathNoteIndiv);
 
             float[,,,] ZUPTAUSE = sav1qhpa(NBINDIV, NB_STA_HAB_NOTO, regrs, POIDSEGM, fushab09Indivs, JNByWeek, JN, pathSortiesav1qhpa); // [STATIONS, QH, DATAS ZR-UR-PR-TAUX, CELL];
 
@@ -1613,7 +1639,7 @@ namespace ARProbaProcessing
                         if (IC == 9) NO = 1;
                         if (NINI[I, IC] != NINI[J, IC]) DIF += NO;
                     }
-                    float D = -1f * ((DIF / 25) ^ 2);
+                    float D = -1f * ((DIF / 25f) * (DIF / 25f));
                     float A = POIDS[J, 1] * (float)Math.Exp(D);  
 
                     DEN += A;
@@ -3716,7 +3742,7 @@ namespace ARProbaProcessing
                 DELTA0 = 0f;
                 for (int I = 1; I <= NB; I++)
                 {
-                    DELTA0 = DELTA0 + 2 * I * I * ZC[I] * ZC[I];
+                    DELTA0 = DELTA0 + 2f * I * I * ZC[I] * ZC[I];
                 }
                 DELTA00 = DELTA0;
                 DELTATO = DELTA0;
@@ -3755,6 +3781,11 @@ namespace ARProbaProcessing
                                 DELTZ2 = DELTZ1;
                                 DELTZ1 = DELTZ0;
                                 DELTZ0 = DELTZ;
+                                if (DZ <= 0.0001)
+                                {
+                                    sortie = true;
+                                    break; // GO TO 260
+                                }
                                 if (Z > Z2)
                                 {
                                     Z -= DZ;
@@ -3786,7 +3817,7 @@ namespace ARProbaProcessing
                                         break;
                                     }
                                     Z2 = Z;
-                                    Z += 2 * DZ;
+                                    Z += 2f * DZ;
                                     DZ /= 10f;
                                     DELTZ0 = DELTZ2;
                                     break; // GOTO 5
@@ -3896,7 +3927,7 @@ namespace ARProbaProcessing
                         if (DT > 0.0001)
                         {
                             DELTA0 = DMOINS2;
-                            T1 = T - 2 * DT;
+                            T1 = T - 2f * DT;
                             T2 = T;
                             DT = DT / 10f;
                             ITE = 0;
@@ -3918,8 +3949,8 @@ namespace ARProbaProcessing
                     break;
                 }
 
-                T2 = T2 * 2;
-                T1 = T1 * 2;
+                T2 = T2 * 2f;
+                T1 = T1 * 2f;
 
                 if (T2 < 16)
                 {
@@ -3959,12 +3990,11 @@ namespace ARProbaProcessing
                 if (V > 0d)
                 {
                     P = (GRP - U) / V;
-                    ITU++; ;
+                    ITU++; 
                     Q = 1f - P;
                     X[1] = Q;
 
                     MINITAU(ZC, X, ZA, NB, U0, Q, Z, U, P, V, out DELTU, ref DELTA00);
-
                     if (U0 == 0)
                     {
                         return DELTU;
@@ -3980,7 +4010,7 @@ namespace ARProbaProcessing
                             U = U + DU;
                             if (U >= (1f - Z))
                             {
-                                DU = U - 1 - Z;
+                                DU = U - 1f - Z;
                                 U = 1f - Z - 0.00001f;
                             }
                             continue;
@@ -4000,7 +4030,7 @@ namespace ARProbaProcessing
                     else
                     {
                         // LA DISTANCE A AUGMENTE
-                        if (DU > 0.00001)
+                        if (DU <= 0.00001)
                         {
                             return DELTU0;
                         }
@@ -4024,7 +4054,7 @@ namespace ARProbaProcessing
                 } // if (V > 0)
                 if (DU > 0.00001f)
                 {
-                    DU = DU / 10;
+                    DU = DU / 10f;
                     U = U1;
                     ITU = 0;
                     continue;

@@ -69,7 +69,7 @@ namespace ARProbaProcessing
 
             // PANEL IDF
             //var process = new ARProba(@"C:\Affinage\Panel_Idf\Panfra", "20", "");
-
+            //process.Run();
             new AffinageProcess().Run(process,
                 @"c:\Affinage\Panel_National\Panfra19\Input",
                 @"c:\Affinage\Panel_National\Panfra19\Output"

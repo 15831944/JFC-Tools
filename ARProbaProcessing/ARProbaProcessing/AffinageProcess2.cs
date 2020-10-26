@@ -910,6 +910,18 @@ namespace ARProbaProcessing
             return stationApres;
         }
 
+        //public void COLAPRES(StringBuilder line, string colName, string idx)
+        //{
+        //    int pos = aRProba.SignVars[colName].Position;
+        //    int index = int.Parse(idx);
+
+        //    var varLastDI = aRProba.SignVars[string.Format("DI{0:00}", aRProba.AllHabStationCount)];
+        //    int offset = (varLastDI.Position + varLastDI.Repetition);
+
+        //    line.Append(pos + index - offset + 1);
+        //}
+
+
         private int GetCOLAPRES(ARProba arProba, string colName)
         {
             int pos = arProba.SignVars[colName].Position;

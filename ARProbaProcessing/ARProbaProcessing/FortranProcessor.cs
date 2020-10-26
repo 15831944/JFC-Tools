@@ -581,11 +581,8 @@ namespace ARProbaProcessing
                         else
                             line.Append(',');
                     }
-                    
                     line.Append(station.U1xxIdx);
-
                 }
-
             }
 
             public void IDXSUDRAD(StringBuilder line)
