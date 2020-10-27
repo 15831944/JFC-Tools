@@ -166,6 +166,10 @@ namespace ARProbaProcessing
             string pathSortiesav1qhpa = Path.Combine(OutputPath, "SORTIE.sem");
             string pathSortiesav1qhps = Path.Combine(OutputPath, "SORTIE.sam");
             string pathSortiesav1qhpd = Path.Combine(OutputPath, "SORTIE.dim");
+
+            string pathZuptause = Path.Combine(OutputPath, "ZUPTAUSE");
+            string pathZuptausa = Path.Combine(OutputPath, "ZUPTAUSA");
+            string pathZuptaudi = Path.Combine(OutputPath, "ZUPTAUDI");
             #endregion entrées sav1qh..
 
             #region entrées cgrp75b
@@ -298,11 +302,11 @@ namespace ARProbaProcessing
              COL_TAB_PG22,  COL_TAB_ENF1,  COL_TAB_ENF2,  COL_TAB_ENF3,  COL_TAB_ENF4,
              COL_TAB_NPER,  COL_TAB_APRES,  COL_TAB_CELL, JN, POIDSEGM, fushab09Indivs, pathNoteIndiv);
 
-            float[,,,] ZUPTAUSE = sav1qhpa(NBINDIV, NB_STA_HAB_NOTO, regrs, POIDSEGM, fushab09Indivs, JNByWeek, JN, pathSortiesav1qhpa); // [STATIONS, QH, DATAS ZR-UR-PR-TAUX, CELL];
+            float[,,,] ZUPTAUSE = sav1qhpa(NBINDIV, NB_STA_HAB_NOTO, regrs, POIDSEGM, fushab09Indivs, JNByWeek, JN, pathZuptause, pathSortiesav1qhpa); // [STATIONS, QH, DATAS ZR-UR-PR-TAUX, CELL];
 
-            float[,,,] ZUPTAUSA = sav1qhps(NBINDIV, NB_STA_HAB_NOTO, regrs, POIDSEGM, fushab09Indivs, JNByWeek, JN, pathSortiesav1qhps); // [STATIONS, QH, DATAS ZR-UR-PR-TAUX, CELL];
+            float[,,,] ZUPTAUSA = sav1qhps(NBINDIV, NB_STA_HAB_NOTO, regrs, POIDSEGM, fushab09Indivs, JNByWeek, JN, pathZuptausa, pathSortiesav1qhps); // [STATIONS, QH, DATAS ZR-UR-PR-TAUX, CELL];
 
-            float[,,,] ZUPTAUDI = sav1qhpd(NBINDIV, NB_STA_HAB_NOTO, regrs, POIDSEGM, fushab09Indivs, JNByWeek, JN, pathSortiesav1qhpd); // [STATIONS, QH, DATAS ZR-UR-PR-TAUX, CELL];
+            float[,,,] ZUPTAUDI = sav1qhpd(NBINDIV, NB_STA_HAB_NOTO, regrs, POIDSEGM, fushab09Indivs, JNByWeek, JN, pathZuptaudi, pathSortiesav1qhpd); // [STATIONS, QH, DATAS ZR-UR-PR-TAUX, CELL];
 
             float[,,,] Couverture = cgrp75br(PathGRPWave, NbStation, NbGRPModulation, NbGRPStation, NotorieteStation, pathSortie8, pathNOUVOGRP);  // [LV/Sa/Di, QH, 4 + 1, CELL];
 
@@ -1669,7 +1673,7 @@ namespace ARProbaProcessing
             return NOTE;
         }
 
-        private float[,,,] sav1qhpa(int NBIND, int NBSTA, byte[,,,] regrs, int[,] KHI2, List<Fushab09Indiv> fushab09Indivs, VsorPoid[][][] JNByWeek, VsorPoid[][] JN, string pathSortie)
+        private float[,,,] sav1qhpa(int NBIND, int NBSTA, byte[,,,] regrs, int[,] KHI2, List<Fushab09Indiv> fushab09Indivs, VsorPoid[][][] JNByWeek, VsorPoid[][] JN, string pathZuptause, string pathSortie)
         {
             // PANEL RADIO 08 MEDIAMETRIE(nouveau format)
             // CALCUL DES PARAMETRES STATION 2 QUART d'HEURE 31
@@ -1677,8 +1681,6 @@ namespace ARProbaProcessing
             // LUNDI-VENDREDI
             // VERSION 2
             // Le nombre de station correspond au nombre de stations(#NB_STA_HAB_NOTO_TOTAL#) - #NB_STA_TOTAL_ONLY# pour Total Radio (et Total TV)
-
-            int NBJOUR = 23;
 
             float[,] C = new float[15 + 1, 5 + 1];
             float[] NCOM = new float[15 + 1] { 999999, 15, 105, 455, 1365, 3003, 5005, 6435, 6435, 5005, 3003, 1365, 455, 105, 15, 1 };
@@ -1703,13 +1705,10 @@ namespace ARProbaProcessing
             int[] IZAB = new int[5 + 1];
             int[] ITJR = new int[5 + 1];
             int[] IM = new int[5 + 1];
-            //int[,] POIQH = new int[96 + 1, NBJOUR + 1];
             int[,,] PATRON = new int[96 + 1, 15 + 1, NBIND + 1];
             int[,,] JATOU = new int[96 + 1, 4 + 1, NBIND + 1];
             int[,,] REGRS = new int[3 + 1, NBSTA + 1, 16 + 1];
             int[] TREG = new int[16 + 1];
-
-
 
             //  id  time
             //  1     05h00 - 06h00 = 4
@@ -1726,7 +1725,8 @@ namespace ARProbaProcessing
 
             // OPEN(18, FILE = '#OUTPUT#ZUPTAUSE',
             //-RECORDTYPE = 'FIXED', FORM = 'UNFORMATTED')
-
+            FileStream writeStream = new FileStream(pathZuptause, FileMode.Create);
+            BinaryWriter writeBinaryZuptause = new BinaryWriter(writeStream);
 
             // BOUCLE STATIONS
             for (int NOP = 1; NOP <= NBSTA; NOP++)
@@ -1751,7 +1751,7 @@ namespace ARProbaProcessing
                         int IH = fushab09Indiv.KHAB[ITH[IQ], NOSH] - 48;
                         if (IH == 0) IH = 5;
                         int NJOU = 0;
-                        for (int IJ = 1; IJ <= 4; IJ++)
+                        for (int IJ = 1; IJ <= 15; IJ++)
                         {
                             PATRON[IQ, IJ, IG] = 0;
                         }
@@ -1790,7 +1790,6 @@ namespace ARProbaProcessing
 
                 // 120 
                 // BOUCLE 1 / 4h
-                bool noAudience = false;
                 for (int IQ = 1; IQ <= 96; IQ++)
                 {
                     sbSortie.AppendLine($"IQ = {IQ}");
@@ -1802,7 +1801,6 @@ namespace ARProbaProcessing
 
                     if (TREG[1] != 5)
                     {
-
                         // BOUCLE CELLULES
                         for (int N1 = 1; N1 <= 16; N1++)
                         {
@@ -2197,7 +2195,7 @@ namespace ARProbaProcessing
                             RESUL[NOP, IQ, 3, N1] = PR;
                             RESUL[NOP, IQ, 4, N1] = TAU;
 
-                            sbSortie.AppendLine($"CELLULE {N1} Z {ZR} U {UR} P {PR} TAU {TAU}");
+                            sbSortie.AppendLine($"{N1} Z {ZR} U {UR} P {PR} TAU {TAU}");
 
                         } // for (int N1 = 1; N1 <= 16; N1++)
                     }
@@ -2212,8 +2210,18 @@ namespace ARProbaProcessing
                             RESUL[NOP, IQ, 4, N1] = 0f;
                         }
                     }// if (TREG[1] != 5)
+
                     // FIN DE TRAITEMENT CELLULE
+                    for (int N1=1;N1<=16; N1++)
+                    {
+                        for (int I = 1; I <= 4; I++)
+                        {
+                            writeBinaryZuptause.Write(RESUL[NOP, IQ, I, N1]);
+                        }
+                    }
+
                 } // for (int IQ = 1; IQ <= 96; IQ++)
+
             } // for (int NOP = 1; NOP <= NBSTA; NOP++)
 
             Console.WriteLine($"TRAITEMENT 1/4h ----");
@@ -2224,10 +2232,14 @@ namespace ARProbaProcessing
 
             //FORMAT('CELLULE ',I2,' Z=',F9.7,' U=',F9.7,' P=',F9.7,' TAU=',F9.7) == ??? 
             //? Console.WriteLine($"CELLULE {I2} Z=', F9.7, ' U=', F9.7, ' P=', F9.7, ' TAU=', F9.7)
+
+            writeBinaryZuptause.Close();
+            writeStream.Close();
+
             return RESUL;
         }
 
-        private float[,,,] sav1qhps(int NBIND, int NBSTA, byte[,,,] regrs, int[,] KHI2, List<Fushab09Indiv> fushab09Indivs, VsorPoid[][][] JNByWeek, VsorPoid[][] JN, string pathSortie)
+        private float[,,,] sav1qhps(int NBIND, int NBSTA, byte[,,,] regrs, int[,] KHI2, List<Fushab09Indiv> fushab09Indivs, VsorPoid[][][] JNByWeek, VsorPoid[][] JN, string pathZuptausa, string pathSortie)
         {
             // PANEL RADIO 08 MEDIAMETRIE(nouveau format)
             // CALCUL DES PARAMETRES z,u,p,tau
@@ -2277,7 +2289,8 @@ namespace ARProbaProcessing
 
             // OPEN(18, FILE = '#OUTPUT#ZUPTAUSA',
             //-RECORDTYPE = 'FIXED', FORM = 'UNFORMATTED')
-
+            FileStream writeStream = new FileStream(pathZuptausa, FileMode.Create);
+            BinaryWriter writeBinaryZuptausa = new BinaryWriter(writeStream);
 
             // BOUCLE STATIONS
             for (int NOP = 1; NOP <= NBSTA; NOP++)
@@ -2375,6 +2388,7 @@ namespace ARProbaProcessing
                                   (NIV == 4 && SEG3[SEG2[SEG1[N1]]] == SEG3[SEG2[SEG1[N1 - 1]]]) ||
                                   (NIV == 5))))
                             {
+                                bool KHI2_IG_NIV_EQ_NB_NIV = (NIV == 5 && NB[NIV] == 1) || (KHI2[IG, NIV + 1] == NB[NIV]);
                                 for (int I = 1; I <= 16; I++)
                                 {
                                     for (int J = 1; J <= 5; J++)
@@ -2405,8 +2419,8 @@ namespace ARProbaProcessing
                                     int IPERS = KHI2[IG, 1];
                                     KHI2[IG, 6] = 1;
                                     IPERS = IPERS * 10;
-                                    if (KHI2[IG, NIV + 1] == NB[NIV]) IM[NIV] = IM[NIV] + 1;
-                                    if (KHI2[IG, NIV + 1] == NB[NIV]) IPPS[NIV] = IPPS[NIV] + IPERS;
+                                    if (KHI2_IG_NIV_EQ_NB_NIV) IM[NIV] = IM[NIV] + 1;
+                                    if (KHI2_IG_NIV_EQ_NB_NIV) IPPS[NIV] = IPPS[NIV] + IPERS;
                                     int IAUD = 0;
                                     int NJOU = 0;
                                     for (int I = 1; I <= 4; I++)
@@ -2420,7 +2434,7 @@ namespace ARProbaProcessing
                                     }
                                     if (IAUD == 0)
                                     {
-                                        if (KHI2[IG, NIV + 1] == NB[NIV])
+                                        if (KHI2_IG_NIV_EQ_NB_NIV)
                                         {
                                             COMPT[1, NIV] = COMPT[1, NIV] + IPERS;
                                             SEGM[1, NIV] = SEGM[1, NIV] + 1;
@@ -2431,7 +2445,7 @@ namespace ARProbaProcessing
                                     if (IAUD == 1)
                                     {
                                         int IJ = NJOU + 1;
-                                        if (KHI2[IG, NIV + 1] == NB[NIV])
+                                        if (KHI2_IG_NIV_EQ_NB_NIV)
                                         {
                                             COMPT[IJ, NIV] = COMPT[IJ, NIV] + IPERS;
                                             SEGM[IJ, NIV] = SEGM[IJ, NIV] + 1;
@@ -2441,7 +2455,7 @@ namespace ARProbaProcessing
                                         }
                                         if (NJOU == 4)
                                         {
-                                            if (KHI2[IG, NIV + 1] == NB[NIV])
+                                            if (KHI2_IG_NIV_EQ_NB_NIV)
                                             {
                                                 ITTL[NIV] = ITTL[NIV] + 1;
                                                 ITTP[NIV] = ITTP[NIV] + IPERS;
@@ -2453,7 +2467,7 @@ namespace ARProbaProcessing
                                             }
                                         }
 
-                                        if (KHI2[IG, NIV + 1] == NB[NIV])
+                                        if (KHI2_IG_NIV_EQ_NB_NIV)
                                         {
                                             #region CALCUL DES MOYENNES
 
@@ -2566,7 +2580,13 @@ namespace ARProbaProcessing
                     }
                     // FIN DE TRAITEMENT CELLULE
                     // 1000 
-
+                    for (int N1 = 1; N1 <= 16; N1++)
+                    {
+                        for (int I = 1; I <= 4; I++)
+                        {
+                            writeBinaryZuptausa.Write(RESUL[NOP, IQ, I, N1]);
+                        }
+                    }
                 } // for (int IQ = 1; IQ <= 96; IQ++)
                   // 1001 
                   // 900  
@@ -2580,10 +2600,15 @@ namespace ARProbaProcessing
 
             //FORMAT('CELLULE ',I2,' Z=',F9.7,' U=',F9.7,' P=',F9.7,' TAU=',F9.7) == ??? 
             //? Console.WriteLine($"CELLULE {I2} Z=', F9.7, ' U=', F9.7, ' P=', F9.7, ' TAU=', F9.7)
+
+
+            writeBinaryZuptausa.Close();
+            writeStream.Close();
+
             return RESUL;
         }
 
-        private float[,,,] sav1qhpd(int NBIND, int NBSTA, byte[,,,] regrs, int[,] KHI2, List<Fushab09Indiv> fushab09Indivs, VsorPoid[][][] JNByWeek, VsorPoid[][] JN, string pathSortie)
+        private float[,,,] sav1qhpd(int NBIND, int NBSTA, byte[,,,] regrs, int[,] KHI2, List<Fushab09Indiv> fushab09Indivs, VsorPoid[][][] JNByWeek, VsorPoid[][] JN, string pathZuptaudi, string pathSortie)
         {
             // PANEL RADIO 08 MEDIAMETRIE(nouveau format)
             // CALCUL DES PARAMETRES z,u,p,tau
@@ -2637,7 +2662,8 @@ namespace ARProbaProcessing
 
             // OPEN(18, FILE = '#OUTPUT#ZUPTAUSA',
             //-RECORDTYPE = 'FIXED', FORM = 'UNFORMATTED')
-
+            FileStream writeStream = new FileStream(pathZuptaudi, FileMode.Create);
+            BinaryWriter writeBinaryZuptaudi = new BinaryWriter(writeStream);
 
             // BOUCLE STATIONS
             for (int NOP = 1; NOP <= NBSTA; NOP++)
@@ -2735,6 +2761,7 @@ namespace ARProbaProcessing
                                   (NIV == 4 && SEG4[SEG3[SEG2[N1]]] == SEG4[SEG3[SEG2[N1 - 1]]]) ||
                                   (NIV == 5))))
                             {
+                                bool KHI2_IG_NIV_EQ_NB_NIV = (NIV == 5 && NB[NIV] == 1) || (KHI2[IG, NIV + 1] == NB[NIV]);
                                 for (int I = 1; I <= 16; I++)
                                 {
                                     for (int J = 1; J <= 5; J++)
@@ -2763,10 +2790,14 @@ namespace ARProbaProcessing
                                 for (IG = 1; IG <= NBIND; IG++)
                                 {
                                     int IPERS = KHI2[IG, 1];
-                                    KHI2[IG, 6] = 1;
+                                    
+                                    //KHI2[IG, 6] = 1;
                                     IPERS = IPERS * 10;
-                                    if (KHI2[IG, NIV + 1] == NB[NIV]) IM[NIV] = IM[NIV] + 1;
-                                    if (KHI2[IG, NIV + 1] == NB[NIV]) IPPS[NIV] = IPPS[NIV] + IPERS;
+                                    if (KHI2_IG_NIV_EQ_NB_NIV)
+                                    {
+                                        IM[NIV] = IM[NIV] + 1;
+                                        IPPS[NIV] = IPPS[NIV] + IPERS;
+                                    }
                                     int IAUD = 0;
                                     int NJOU = 0;
                                     for (int I = 1; I <= 4; I++)
@@ -2780,7 +2811,7 @@ namespace ARProbaProcessing
                                     }
                                     if (IAUD == 0)
                                     {
-                                        if (KHI2[IG, NIV + 1] == NB[NIV])
+                                        if (KHI2_IG_NIV_EQ_NB_NIV)
                                         {
                                             COMPT[1, NIV] = COMPT[1, NIV] + IPERS;
                                             SEGM[1, NIV] = SEGM[1, NIV] + 1;
@@ -2791,7 +2822,7 @@ namespace ARProbaProcessing
                                     if (IAUD == 1)
                                     {
                                         int IJ = NJOU + 1;
-                                        if (KHI2[IG, NIV + 1] == NB[NIV])
+                                        if (KHI2_IG_NIV_EQ_NB_NIV)
                                         {
                                             COMPT[IJ, NIV] = COMPT[IJ, NIV] + IPERS;
                                             SEGM[IJ, NIV] = SEGM[IJ, NIV] + 1;
@@ -2801,7 +2832,7 @@ namespace ARProbaProcessing
                                         }
                                         if (NJOU == 4)
                                         {
-                                            if (KHI2[IG, NIV + 1] == NB[NIV])
+                                            if (KHI2_IG_NIV_EQ_NB_NIV)
                                             {
                                                 ITTL[NIV] = ITTL[NIV] + 1;
                                                 ITTP[NIV] = ITTP[NIV] + IPERS;
@@ -2813,7 +2844,7 @@ namespace ARProbaProcessing
                                             }
                                         }
 
-                                        if (KHI2[IG, NIV + 1] == NB[NIV])
+                                        if (KHI2_IG_NIV_EQ_NB_NIV)
                                         {
                                             #region CALCUL DES MOYENNES
 
@@ -2924,7 +2955,15 @@ namespace ARProbaProcessing
                             RESUL[NOP, IQ, 4, N1] = 0f;
                         }
                     }
+                    for (int N1 = 1; N1 <= 16; N1++)
+                    {
+                        for (int I = 1; I <= 4; I++)
+                        {
+                            writeBinaryZuptaudi.Write(RESUL[NOP, IQ, I, N1]);
+                        }
+                    }
                 } // for (int IQ = 1; IQ <= 96; IQ++)
+
             } // for (int NOP = 1; NOP <= NBSTA; NOP++)
 
             Console.WriteLine($"TRAITEMENT 1/4h ----");
@@ -2935,6 +2974,10 @@ namespace ARProbaProcessing
 
             //FORMAT('CELLULE ',I2,' Z=',F9.7,' U=',F9.7,' P=',F9.7,' TAU=',F9.7) == ??? 
             //? Console.WriteLine($"CELLULE {I2} Z=', F9.7, ' U=', F9.7, ' P=', F9.7, ' TAU=', F9.7)
+
+            writeBinaryZuptaudi.Close();
+            writeStream.Close();
+
             return RESUL;
         }
 
