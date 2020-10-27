@@ -60,7 +60,7 @@ namespace ARProbaProcessing
             int NbGRPModulation = 0;
             int NbGRPStation = 0;
             int[] NotorieteStation = null;
-            string PathGRPWave = @"C:\AffinageART\France\Source\SFR04\U120";
+            string PathGRPWave = Path.Combine(OutputPath, "U191.SUP"); 
             List<int> lstPoids;
             List<int> lstAges;
             List<int> lstFiltreIDF;
@@ -1698,9 +1698,6 @@ namespace ARProbaProcessing
             int[] NB = new int[5 + 1];
             int[] ITTL = new int[5 + 1];
             int[] ITOU = new int[5 + 1];
-            int[] SEG2 = new int[16 + 1];
-            int[] SEG3 = new int[10 + 1];
-            int[] SEG4 = new int[6 + 1];
             int[] COMB = new int[15 + 1];
             int[] IZAB = new int[5 + 1];
             int[] ITJR = new int[5 + 1];
@@ -1727,6 +1724,10 @@ namespace ARProbaProcessing
             //-RECORDTYPE = 'FIXED', FORM = 'UNFORMATTED')
             FileStream writeStream = new FileStream(pathZuptause, FileMode.Create);
             BinaryWriter writeBinaryZuptause = new BinaryWriter(writeStream);
+            float ZR = 0f;
+            float UR = 0f;
+            float PR = 0f;
+            float TAU = 0f;
 
             // BOUCLE STATIONS
             for (int NOP = 1; NOP <= NBSTA; NOP++)
@@ -1804,10 +1805,7 @@ namespace ARProbaProcessing
                         // BOUCLE CELLULES
                         for (int N1 = 1; N1 <= 16; N1++)
                         {
-                            float ZR = 0f;
-                            float UR = 0f;
-                            float PR = 0f;
-                            float TAU = 0f;
+                            
 
                             int N2 = SEG1[N1];
                             int N3 = SEG2[N2];
@@ -2195,7 +2193,7 @@ namespace ARProbaProcessing
                             RESUL[NOP, IQ, 3, N1] = PR;
                             RESUL[NOP, IQ, 4, N1] = TAU;
 
-                            sbSortie.AppendLine($"{N1} Z {ZR} U {UR} P {PR} TAU {TAU}");
+                            sbSortie.AppendLine($"CELLULE {N1} Z {ZR} U {UR} P {PR} TAU {TAU}");
 
                         } // for (int N1 = 1; N1 <= 16; N1++)
                     }
@@ -2634,9 +2632,6 @@ namespace ARProbaProcessing
             int[] NB = new int[5 + 1];
             int[] ITTL = new int[5 + 1];
             int[] ITOU = new int[5 + 1];
-            int[] SEG2 = new int[16 + 1];
-            int[] SEG3 = new int[10 + 1];
-            int[] SEG4 = new int[6 + 1];
             int[] COMB = new int[15 + 1];
             int[] IZAB = new int[5 + 1];
             int[] ITJR = new int[5 + 1];
@@ -2746,8 +2741,8 @@ namespace ARProbaProcessing
                             float TAU = 0f;
 
                             int N2 = SEG1[N1];
-                            int N3 = SEG2[N2];
-                            int N4 = SEG3[N3];
+                            int N3 = SEG1[N2];
+                            int N4 = SEG2[N3];
                             NB[1] = N1;
                             NB[2] = N2;
                             NB[3] = N3;
@@ -2756,9 +2751,9 @@ namespace ARProbaProcessing
                             int NIV = TREG[N1] + 1;
                             if (((N1 == 1) || (NIV == 1))
                                 ||
-                               (!((NIV == 2 && SEG2[N1] == SEG2[N1 - 1]) ||
-                                  (NIV == 3 && SEG3[SEG2[N1]] == SEG3[SEG2[N1 - 1]]) ||
-                                  (NIV == 4 && SEG4[SEG3[SEG2[N1]]] == SEG4[SEG3[SEG2[N1 - 1]]]) ||
+                               (!((NIV == 2 && SEG1[N1] == SEG1[N1 - 1]) ||
+                                  (NIV == 3 && SEG2[SEG1[N1]] == SEG2[SEG1[N1 - 1]]) ||
+                                  (NIV == 4 && SEG3[SEG2[SEG1[N1]]] == SEG3[SEG2[SEG1[N1 - 1]]]) ||
                                   (NIV == 5))))
                             {
                                 bool KHI2_IG_NIV_EQ_NB_NIV = (NIV == 5 && NB[NIV] == 1) || (KHI2[IG, NIV + 1] == NB[NIV]);
@@ -3063,7 +3058,7 @@ namespace ARProbaProcessing
             //
             //                              OUVERTURE FICHIER
             //
-            FileStream fs = File.Open(PathGRPWave + @"\U120.SUP", FileMode.Open);
+            FileStream fs = File.Open(PathGRPWave , FileMode.Open);
             fs.Seek(0, SeekOrigin.Begin);
             BinaryReader br = new BinaryReader(fs);
 
@@ -3805,7 +3800,7 @@ namespace ARProbaProcessing
                 bool sortie = false;
                 for (; ; )
                 {
-                    float ITZ = 0;
+                    float ITZ = 1;
                     if (Z >= ZR)
                     {
                         if (DZ > (Z1 - Z2)) DZ = Z1 - Z2;
@@ -3813,7 +3808,8 @@ namespace ARProbaProcessing
                         //10 
                         for (; ; ITZ++)
                         {
-                            float DELTZ = MINIMU(Z, GRP, ZC, ZA, UA, U0, NB, DELTA00);
+                            float DELTZ = 0f;
+                            MINIMU(Z, GRP, ZC, ZA, UA, U0, NB, DELTA00, ref DELTZ);
 
                             if (DELTZ <= DELTZ0)
                             {
@@ -4007,7 +4003,7 @@ namespace ARProbaProcessing
         // SUBROUTINE MINIMU
         // CALCUL DU U OPTIMAL
         // EN FONCTION DE Z
-        private float MINIMU(float Z, float GRP, float[] ZC, float ZA, float UA, float U0, float NB, float DELTA00)
+        private void MINIMU(float Z, float GRP, float[] ZC, float ZA, float UA, float U0, float NB, float DELTA00, ref float DELTZ)
         {
             float[] X = new float[15 + 1];
             float P, U, V, Q, U1, U2, DELTU, DELTU0, DELTU1, DELTU2;
@@ -4040,7 +4036,8 @@ namespace ARProbaProcessing
                     MINITAU(ZC, X, ZA, NB, U0, Q, Z, U, P, V, out DELTU, ref DELTA00);
                     if (U0 == 0)
                     {
-                        return DELTU;
+                        DELTZ = DELTU;
+                        return;
                     }
                     if (DELTU <= DELTU0)
                     {
@@ -4060,7 +4057,8 @@ namespace ARProbaProcessing
                         }
                         if (DU <= 0.00001)
                         {
-                            return DELTU0;
+                            DELTZ = DELTU0;
+                            return;
                         }
                         U2 = U;
                         if (U2 > (1f - Z)) U2 = 1f - Z;
@@ -4075,7 +4073,8 @@ namespace ARProbaProcessing
                         // LA DISTANCE A AUGMENTE
                         if (DU <= 0.00001)
                         {
-                            return DELTU0;
+                            DELTZ = DELTU0;
+                            return;
                         }
                         if (ITU >= 2) U1 = U - 2 * DU;
                         if (ITU < 2)
@@ -4102,7 +4101,8 @@ namespace ARProbaProcessing
                     ITU = 0;
                     continue;
                 }
-                return DELTU0;
+                else
+                    return;
             } // for (; ; )
         }
     }
