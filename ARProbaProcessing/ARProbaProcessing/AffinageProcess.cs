@@ -3158,9 +3158,7 @@ namespace ARProbaProcessing
                         int ISE2 = 16 + SEG1[ISEG];
                         int ISE3 = 26 + SEG2[SEG1[ISEG]];
                         int ISE4 = 32 + SEG3[SEG2[SEG1[ISEG]]];
-                        if (ISEG == 3 || ISE2 == 3 || ISE3 == 3 || ISE4 == 3)
-                        {
-                        }
+
                         IPOP[ISEG, IU] += IPERS;
                         IPOP[ISE2, IU] += IPERS;
                         IPOP[ISE3, IU] += IPERS;
@@ -3216,7 +3214,7 @@ namespace ARProbaProcessing
                     {
                         for (int L = 1; L <= 96; L++)
                         {
-                            COUV[I, J, K, L] = COUV[I, J, K, L] / 12 / IPOP[I, J];
+                            COUV[I, J, K, L] = COUV[I, J, K, L] / 12f / Convert.ToSingle(IPOP[I, J]);
                         }
                     }
 
@@ -3253,7 +3251,7 @@ namespace ARProbaProcessing
             //
             // Le nombre de station correspond au nombre de stations(#NB_STA_HAB_NOTO_TOTAL#) - #NB_STA_TOTAL_ONLY# pour Total Radio (et Total TV)
 
-            int[] POP = new int[3 + 1];
+            int[] POP = new int[3 + 1] {999999, popLV, popS, popD };
             float[] VAL = new float[3 + 1];
             int[] IVAL = new int[3 + 1];
 
@@ -3266,13 +3264,14 @@ namespace ARProbaProcessing
                     sb.Append($"{I.ToString("0000")} : ");
                     for (int J = 1; J <= 3; J++)
                     {
-                        VAL[J] = Couverture[37, J, IP, I] * POP[J];
-                        IVAL[J] = Convert.ToInt32((VAL[J] + 500) / 1000);
-                        sb.Append($" {IVAL[J].ToString("000.000000000")} ");
+                        float val = Couverture[37, J, IP, I] * POP[J];
+                        int iVal = Convert.ToInt32(Math.Truncate( (val + 500f) / 1000f));
+                        sb.Append($" {iVal.ToString().PadLeft(8)} ");
                     }
                     sb.AppendLine();
                 }
             }
+            if (File.Exists(pathCouv)) File.Delete(pathCouv);
             File.AppendAllText(pathCouv, sb.ToString());
         }
 
