@@ -3307,7 +3307,7 @@ namespace ARProbaProcessing
             StringBuilder sortie = new StringBuilder();
             for (int IP = 1; IP <= NBSTA; IP++)
             {
-                sortie.AppendLine(IP.ToString());
+                sortie.AppendLine($" Station {IP}");
                 Console.WriteLine($"--------STATION {IP} --------");
 
                 // BOUCLE 1 / 4h
@@ -3315,7 +3315,7 @@ namespace ARProbaProcessing
                 {
                     int NQ = IQ + 76;
                     if (NQ > 96) NQ = NQ - 96;
-                    sortie.AppendLine(IP.ToString());
+                    sortie.AppendLine($" QH {IQ}");
                     Console.WriteLine($"Traitement 1/4h {IQ}");
 
                     // AUCUNE AUDIENCE POUR CE 1 / 4h
@@ -3326,14 +3326,17 @@ namespace ARProbaProcessing
 
                     if (TREG[1] != 5)
                     {
-
+                        float GRPA = 0f;
+                        float GRPN = 0f;
+                        float ZR = 0f;
+                        float UR = 0f;
+                        float PR = 0f;
+                        float TAU = 0f;
                         // BOUCLE CELLULES
                         for (int N1 = 1; N1 <= 16; N1++)
                         {
-                            float ZR = 0f;
-                            float UR = 0f;
-                            float PR = 0f;
-                            float TAU = 0f;
+                            
+
                             int N2 = SEG1[N1];
                             int N3 = SEG2[N2];
                             int N4 = SEG3[N3];
@@ -3353,7 +3356,7 @@ namespace ARProbaProcessing
                                 PR = RESUL[IP, IQ, 3, N1];
                                 TAU = RESUL[IP, IQ, 4, N1];
                                 float VA = 1f - ZR - UR;
-                                float GRPA = VA * PR + UR;
+                                GRPA = VA * PR + UR;
 
                                 if (IP != IDSUDRAD)
                                 {
@@ -3363,9 +3366,9 @@ namespace ARProbaProcessing
                                     if (IN == 4) ISEG = 32 + SEG3[SEG2[SEG1[N1]]];
                                     if (IN == 5) ISEG = 37;
                                     // CALCUL NOUVEAU P
-                                    float GRPN = COUV[ISEG, 1, IP, NQ];
+                                    GRPN = COUV[ISEG, 1, IP, NQ];
                                     bool process = false;
-                                    if (GRPA != 0d && GRPN != 0d)
+                                    if (GRPA != 0f && GRPN != 0f)
                                     {
                                         float V = 1f - ZR - UR;
                                         if (V <= 0d)
@@ -3406,11 +3409,13 @@ namespace ARProbaProcessing
                             RESULCOR[IP, IQ, 3, N1] = PR;
                             RESULCOR[IP, IQ, 4, N1] = TAU;
 
-                            sortie.Append("N1 = " + N1.ToString());
-                            sortie.Append("ZR = " + ZR.ToString());
-                            sortie.Append("UR = " + UR.ToString());
-                            sortie.Append("PR = " + PR.ToString());
-                            sortie.Append("TAU = " + TAU.ToString());
+                            sortie.Append("CELLULE " + N1.ToString());
+                            sortie.Append(" Z = " + ZR.ToString("0.0000000"));
+                            sortie.Append(" U = " + UR.ToString("0.0000000"));
+                            sortie.Append(" P = " + PR.ToString("0.0000000"));
+                            sortie.Append(" TAU = " + TAU.ToString("0.0000000"));
+                            sortie.Append(" GRPA = " + GRPA.ToString("0.0000000"));
+                            sortie.AppendLine(" GRPN = " + GRPN.ToString("0.0000000"));
 
                         } // for (int N1 = 1; N1 <= 16; N1++)
 
@@ -3491,7 +3496,7 @@ namespace ARProbaProcessing
             StringBuilder sortie = new StringBuilder();
             for (int IP = 1; IP <= NBSTA; IP++)
             {
-                sortie.AppendLine(IP.ToString());
+                sortie.AppendLine($" Station {IP}");
                 Console.WriteLine($"--------STATION {IP} --------");
 
                 // BOUCLE 1 / 4h
@@ -3499,7 +3504,7 @@ namespace ARProbaProcessing
                 {
                     int NQ = IQ + 76;
                     if (NQ > 96) NQ = NQ - 96;
-                    sortie.AppendLine(IP.ToString());
+                    sortie.AppendLine($" QH {IQ}");
                     Console.WriteLine($"Traitement 1/4h {IQ}");
 
                     // AUCUNE AUDIENCE POUR CE 1 / 4h
@@ -3510,14 +3515,15 @@ namespace ARProbaProcessing
 
                     if (TREG[1] != 5)
                     {
-
+                        float GRPA = 0f;
+                        float GRPN = 0f;
+                        float ZR = 0f;
+                        float UR = 0f;
+                        float PR = 0f;
+                        float TAU = 0f;
                         // BOUCLE CELLULES
                         for (int N1 = 1; N1 <= 16; N1++)
                         {
-                            float ZR = 0f;
-                            float UR = 0f;
-                            float PR = 0f;
-                            float TAU = 0f;
                             int N2 = SEG1[N1];
                             int N3 = SEG2[N2];
                             int N4 = SEG3[N3];
@@ -3536,7 +3542,7 @@ namespace ARProbaProcessing
                                 UR = RESUL[IP, IQ, 2, N1];
                                 PR = RESUL[IP, IQ, 3, N1];
                                 TAU = RESUL[IP, IQ, 4, N1];
-                                float GRPA = (1f - ZR - UR) * PR + UR;
+                                GRPA = (1f - ZR - UR) * PR + UR;
 
                                 if (IP != IDSUDRAD)
                                 {
@@ -3546,7 +3552,7 @@ namespace ARProbaProcessing
                                     if (IN == 4) ISEG = 32 + SEG3[SEG2[SEG1[N1]]];
                                     if (IN == 5) ISEG = 37;
                                     // CALCUL NOUVEAU P
-                                    float GRPN = COUV[ISEG, 3, IP, NQ];
+                                    GRPN = COUV[ISEG, 3, IP, NQ];
                                     bool process = false;
                                     if (GRPA != 0d && GRPN != 0d)
                                     {
@@ -3593,7 +3599,9 @@ namespace ARProbaProcessing
                             sortie.Append("ZR = " + ZR.ToString());
                             sortie.Append("UR = " + UR.ToString());
                             sortie.Append("PR = " + PR.ToString());
-                            sortie.Append("TAU = " + TAU.ToString());
+                            sortie.Append(" TAU = " + TAU.ToString("0.0000000"));
+                            sortie.Append(" GRPA = " + GRPA.ToString("0.0000000"));
+                            sortie.AppendLine(" GRPN = " + GRPN.ToString("0.0000000"));
 
                         } // for (int N1 = 1; N1 <= 16; N1++)
 
@@ -3671,7 +3679,7 @@ namespace ARProbaProcessing
             StringBuilder sortie = new StringBuilder();
             for (int IP = 1; IP <= NBSTA; IP++)
             {
-                sortie.AppendLine(IP.ToString());
+                sortie.AppendLine($" Station {IP}");
                 Console.WriteLine($"--------STATION {IP} --------");
 
                 // BOUCLE 1 / 4h
@@ -3679,7 +3687,7 @@ namespace ARProbaProcessing
                 {
                     int NQ = IQ + 76;
                     if (NQ > 96) NQ = NQ - 96;
-                    sortie.AppendLine(IP.ToString());
+                    sortie.AppendLine($" QH {IQ}");
                     Console.WriteLine($"Traitement 1/4h {IQ}");
 
                     // AUCUNE AUDIENCE POUR CE 1 / 4h
@@ -3690,14 +3698,15 @@ namespace ARProbaProcessing
 
                     if (TREG[1] != 5)
                     {
-
+                        float GRPA = 0f;
+                        float GRPN = 0f;
+                        float ZR = 0f;
+                        float UR = 0f;
+                        float PR = 0f;
+                        float TAU = 0f;
                         // BOUCLE CELLULES
                         for (int N1 = 1; N1 <= 16; N1++)
                         {
-                            float ZR = 0f;
-                            float UR = 0f;
-                            float PR = 0f;
-                            float TAU = 0f;
                             int N2 = SEG1[N1];
                             int N3 = SEG2[N2];
                             int N4 = SEG3[N3];
@@ -3716,7 +3725,7 @@ namespace ARProbaProcessing
                                 UR = RESUL[IP, IQ, 2, N1];
                                 PR = RESUL[IP, IQ, 3, N1];
                                 TAU = RESUL[IP, IQ, 4, N1];
-                                float GRPA = (1f - ZR - UR) * PR + UR;
+                                GRPA = (1f - ZR - UR) * PR + UR;
 
                                 if (IP != IDSUDRAD)
                                 {
@@ -3726,7 +3735,7 @@ namespace ARProbaProcessing
                                     if (IN == 4) ISEG = 32 + SEG3[SEG2[SEG1[N1]]];
                                     if (IN == 5) ISEG = 37;
                                     // CALCUL NOUVEAU P
-                                    float GRPN = COUV[ISEG, 2, IP, NQ];
+                                    GRPN = COUV[ISEG, 2, IP, NQ];
                                     bool process = false;
                                     if (GRPA != 0d && GRPN != 0d)
                                     {
@@ -3773,7 +3782,10 @@ namespace ARProbaProcessing
                             sortie.Append("ZR = " + ZR.ToString());
                             sortie.Append("UR = " + UR.ToString());
                             sortie.Append("PR = " + PR.ToString());
-                            sortie.Append("TAU = " + TAU.ToString());
+                            sortie.Append(" TAU = " + TAU.ToString("0.0000000"));
+                            sortie.Append(" GRPA = " + GRPA.ToString("0.0000000"));
+                            sortie.AppendLine(" GRPN = " + GRPN.ToString("0.0000000"));
+
 
                         } // for (int N1 = 1; N1 <= 16; N1++)
 
