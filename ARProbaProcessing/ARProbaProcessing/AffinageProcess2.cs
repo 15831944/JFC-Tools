@@ -931,6 +931,17 @@ namespace ARProbaProcessing
 
             return pos - offset + 1;
         }
+
+        public int[] HAB_NOTO_STA_LIST_U1XX_INDEXES(ARProba arProba)
+        {
+            int[] res = new int[arProba.HabAndNotoStationList.Count() + 1];
+            int i = 1;
+            foreach (var station in arProba.HabAndNotoStationList)
+            {
+                res[i++] = station.U1xxIdx;
+            }
+            return res;
+        }
     }
 
     public struct BSupport
