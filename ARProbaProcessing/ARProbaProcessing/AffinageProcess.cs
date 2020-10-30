@@ -64,8 +64,8 @@ namespace ARProbaProcessing
             List<int> lstAges;
             List<int> lstFiltreIDF;
             int nbJour = 23;
+            //int IDXSUDRAD = 999;
 
-            
 
             #region Definition colonnes
             int COL_AGE3 = arProba.SignVars["AGE3"].Position - 1;
@@ -321,7 +321,7 @@ namespace ARProbaProcessing
 
             float[,,,] ZUPTAUDICOR = cnzuptdi(NBINDIV, NB_STA_HAB_NOTO, pathCnzuptdi, pathzuptaudiCor, Couverture, regrs, ZUPTAUDI);
 
-            int[,,,] PROBAS = attribp2(NBINDIV, NB_STA_HAB_NOTO, regrs, POIDSEGM, NINI_IND_STA, noteIndiv, audiences, NINI_IND_QH_W,
+            short[,,,] PROBAS = attribp2(NBINDIV, NB_STA_HAB_NOTO, regrs, POIDSEGM, NINI_IND_STA, noteIndiv, audiences, NINI_IND_QH_W,
                 ZUPTAUSECOR, ZUPTAUSACOR, ZUPTAUDICOR, pathAttribp2); // [STATIONS, LV/Sa/Di, QH, INDIVS]
 
             BSupport BSUP = transp08(NBINDIV, NB_STA_HAB_NOTO, NB_STA_IDF, ISTA, POIDSEGM, lstFiltreIDF, lstPoids, PROBAS, pathTransp08, pathYearNat, pathYearIdf, pathYearSup);
