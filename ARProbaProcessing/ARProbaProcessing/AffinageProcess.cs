@@ -4076,7 +4076,7 @@ namespace ARProbaProcessing
                     T = T1;
                 }
             }
-            Console.WriteLine($" U= {U}  Z= {Z}  T= {T}  P= {P} ");
+        //    Console.WriteLine($" U= {U}  Z= {Z}  T= {T}  P= {P} ");
         }
 
 

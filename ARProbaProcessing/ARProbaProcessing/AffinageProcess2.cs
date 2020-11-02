@@ -305,10 +305,8 @@ namespace ARProbaProcessing
                                             if (Math.Abs(Z) >= (K / 4f + 1f) && (DELTA >= 1E-3))
                                             {
                                                 SGN = Z < 0 ? -1f : 1f;
-
                                                 if (SGN == -SGN0) DELTA *= 0.3f;
                                                 LAMBDA += SGN * DELTA;
-
                                                 SGN0 = SGN;
                                             }
                                             else
@@ -764,7 +762,7 @@ namespace ARProbaProcessing
         public void CALDISTR(float ZR, float UR, float PO, float TAUX, out double[] DISTR, out double[] REP)
         {
             int NSEG = 100;
-            int JMAX = JMAX = NSEG * 2;
+            int JMAX = NSEG * 2;
             int JSUP = JMAX + 2;
             double ALPHA, BETA, X, V, Q, Y, BAB, LEBND, Z, U, P, TAU;
 
@@ -814,19 +812,19 @@ namespace ARProbaProcessing
             else
             {
                 for (int J = 2; J <= JMAX; J++)
-                    BUFS[J] = (float) Math.Exp((ALPHA - 1) * LOGS[J] + (BETA - 1) * LOGS[JSUP - J]);
+                    BUFS[J] = (double) Math.Exp((ALPHA - 1) * LOGS[J] + (BETA - 1) * LOGS[JSUP - J]);
                 // ASTUCE POUR LES EXTREMITES
                 LEBND = LOGS[2];
                 X = 1d / (6d * (NSEG + 1d));
                 Y = 1d - (BETA - 1d) / JSUP;
                 if (Y < 0.8d) Y = 0.8d;
                 if (Y > 1.2d) Y = 1.2d;
-                DISTR[0] = Y * (float)Math.Exp(ALPHA * LEBND) / ALPHA;
+                DISTR[0] = Y * (double)Math.Exp(ALPHA * LEBND) / ALPHA;
                 Y = 1d - (ALPHA - 1d) / Convert.ToDouble(JSUP);
 
                 if (Y < 0.8d) Y = 0.8d;
                 if (Y > 1.2d) Y = 1.2d;
-                DISTR[NSEG] = Y * (float)Math.Exp(BETA * LEBND) / BETA;
+                DISTR[NSEG] = Y * (double)Math.Exp(BETA * LEBND) / BETA;
                 // SEGMENTS INTERMEDIAIRES
                 for (int I = 1; I <= NSEG - 1; I++)
                     DISTR[I] = (BUFS[2 * I] + BUFS[2 + 2 * I] + 4 * BUFS[1 + 2 * I]) * X;
