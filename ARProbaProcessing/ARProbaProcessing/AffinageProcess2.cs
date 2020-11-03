@@ -26,7 +26,7 @@ namespace ARProbaProcessing
             double[] VREP = new double[NSEG + 1];
             double[] GT = new double[16 + 1];
 
-            double XJ, LAMBDA, DELTA, PCUM, NG, GRPN, X, Y;
+            double XJ, LAMBDA, DELTA, NG, GRPN, X, Y;
             float[] SCORE = new float[NBIND + 1];
             int[] TAB = new int[NBIND + 1];
             float NOTI, SGN, SGN0;
@@ -65,7 +65,7 @@ namespace ARProbaProcessing
                 POIDS[IG] = IPERS;
             }
 
-            FileStream writeStream = new FileStream(@"c:\Affinage\Panel_National\Panfra19\Output\PANECR20bi", FileMode.Create);
+            FileStream writeStream = new FileStream(@"c:\Affinage\Panel_National\Panfra19\Output\PANECR20biy", FileMode.Create);
             BinaryWriter writeBinary = new BinaryWriter(writeStream);
 
             // BOUCLE STATIONS
@@ -94,7 +94,7 @@ namespace ARProbaProcessing
                         {
                             SCORE[I] = AUDI[NOP, I, IQ, IU];   // [STATIONS, INdiv, QH, 1..3]
 
-                            if (SCORE[I] > 0) SCORE[I] = SCORE[I] + 256;
+                            if (SCORE[I] < 0) SCORE[I] += 256;
                             SCORE[I] = 10 * SCORE[I] + HABI[I, IQ, IU];
 
                             NOTI = NOTES[I];
@@ -219,9 +219,8 @@ namespace ARProbaProcessing
                                     {
                                         GT[N1] = 0f;
                                         R = RSAVE;
-                                        X = (float)1E-6;
+                                        X = 1E-6;
                                         RP = R - 1;
-                                        PCUM = 0f;
 
                                         // AFFECTATION DU SEGMENT ZERO
                                         bool bug = false;
@@ -255,14 +254,13 @@ namespace ARProbaProcessing
                                             // AFFECTATION DES PROBAS
                                             for (; ; )
                                             {
-                                                while (R <= RP && (R <= NBIND))
+                                                while ((R <= RP) && (R <= NBIND))
                                                 {
                                                     H = RANK[R];
                                                     PROBAS[NOP, IU, IQ, H] = PR;
                                                     if (PR > 0)
                                                     {
                                                         NG = PR * POIDS[H];
-                                                        PCUM += POIDS[H];
                                                         GT[N1] += NG;
                                                     }
 
@@ -297,7 +295,7 @@ namespace ARProbaProcessing
                                                 if (PR < NSEG) PTNSEG[N1] = RP + 1;
                                             }
 
-                                            GT[N1] /= 1f*(NSEG * IPPS[IN]);
+                                            GT[N1] /= 1d*(NSEG * IPPS[IN]);
                                             double Z = (GRPN - GT[N1]) * NSEG * IPPS[IN];
                                             float K = PTNSEG[N1] - PT1[N1];
 
