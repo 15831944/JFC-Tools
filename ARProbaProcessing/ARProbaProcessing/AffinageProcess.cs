@@ -213,6 +213,7 @@ namespace ARProbaProcessing
 
             #region entrées attribp2
             string pathAttribp2 = Path.Combine(OutputPath, "SORTIE10.TXT");
+            string pathPanecr = @"c:\Affinage\Panel_National\Panfra19\Output\PANECR" + (year % 100).ToString("00");
             #endregion entrées attribp2
 
             #region entrées Transp08
@@ -287,7 +288,7 @@ namespace ARProbaProcessing
 
             List<Fushab09Indiv> fushab09Indivs = Fushab09(NB_STA_HAB_NOTO, SIGN_LINE_LEN_BEFORE_HAB, SIGN_LINE_LEN_AFTER_HAB, NB_STA_ALL_HAB, TABRH, pathSIGJFC2_BDE, pathPANSIGN);
 
-            int[,,,] NINI_IND_QH_W = chab1qhp(NB_STA_HAB_NOTO, fushab09Indivs, ISTA, pathHab); // Habitude [INDIV, QH, LV/Sa/Di];
+            int[,,,] NINI_IND_QH_W = chab1qhp(NB_STA_HAB_NOTO, fushab09Indivs, ISTA, pathHab); // Habitude [STATIONS, INDIV, QH, LV/Sa/Di];
 
             int[,] NINI_IND_STA = crenonin(nbJour, NB_STA_HAB_NOTO, fushab09Indivs, JN, stationApres, pathNinities); // [INDIV, STATIONS] 
 
@@ -322,7 +323,15 @@ namespace ARProbaProcessing
             float[,,,] ZUPTAUDICOR = cnzuptdi(NBINDIV, NB_STA_HAB_NOTO, pathCnzuptdi, pathzuptaudiCor, Couverture, regrs, ZUPTAUDI);
 
             short[,,,] PROBAS = attribp2(NBINDIV, NB_STA_HAB_NOTO, regrs, POIDSEGM, NINI_IND_STA, noteIndiv, audiences, NINI_IND_QH_W,
-                ZUPTAUSECOR, ZUPTAUSACOR, ZUPTAUDICOR, pathAttribp2); // [STATIONS, LV/Sa/Di, QH, INDIVS]
+                ZUPTAUSECOR, ZUPTAUSACOR, ZUPTAUDICOR, pathAttribp2, pathPanecr); // [STATIONS, LV/Sa/Di, QH, INDIVS]
+
+            ZUPTAUSECOR = ZUPTAUSECOR = ZUPTAUDICOR = Couverture = ZUPTAUSE = ZUPTAUSA = ZUPTAUDI =  null;
+            regrs = audiences = null;
+            cellules = null;
+            JNByWeek = null;
+            NINI_IND_QH_W = null;
+            NINI_IND_STA = null;
+            JN = null;
 
             BSupport BSUP = transp08(NBINDIV, NB_STA_HAB_NOTO, NB_STA_IDF, ISTA, POIDSEGM, lstFiltreIDF, lstPoids, PROBAS, pathTransp08, pathYearNat, pathYearIdf, pathYearSup);
 

@@ -9,7 +9,7 @@ namespace ARProbaProcessing
     public partial class AffinageProcess
     {
         private short[,,,] attribp2(int NBIND, int NBSTA, byte[,,,] REGRS, int[,] KHI2, int[,] NINI, float[] NOTES, byte[,,,] AUDI, int[,,,] HABI,
-            float[,,,] ZUPTAUSECOR, float[,,,] ZUPTAUSACOR, float[,,,] ZUPTAUDICOR, string pathSortie)
+            float[,,,] ZUPTAUSECOR, float[,,,] ZUPTAUSACOR, float[,,,] ZUPTAUDICOR, string pathSortie, string pathPANECR)
         {
             // PANEL RADIO 08 MEDIAMETRIE(nouveau format)
             // ATTRIBUTION DES PROBAS 1/4h PAR 1/4h,L-V,SAM,DIM
@@ -65,7 +65,7 @@ namespace ARProbaProcessing
                 POIDS[IG] = IPERS;
             }
 
-            FileStream writeStream = new FileStream(@"c:\Affinage\Panel_National\Panfra19\Output\PANECR20bay", FileMode.Create);
+            FileStream writeStream = new FileStream(pathPANECR, FileMode.Create);
             BinaryWriter writeBinary = new BinaryWriter(writeStream);
 
             // BOUCLE STATIONS
@@ -204,7 +204,7 @@ namespace ARProbaProcessing
                                     float TAU = RESUL[NOP, IQ, 4, N1];
                                     GRPN = UR + P * (1f - ZR - UR);
 
-                                    CALDISTR(ZR, UR, P, TAU, out DISTR, out REP);
+                                    CALDISTR(ZR, UR, P, TAU, LOGS, out DISTR, out REP);
 
                                     // IMPRESSION DES RESULTATS
                                     int IN = TREG[N1] + 1;
@@ -766,14 +766,13 @@ namespace ARProbaProcessing
         }
 
         // CALCUL DE LA REPARTITION DES PROBAS
-        public void CALDISTR(float ZR, float UR, float PO, float TAUX, out double[] DISTR, out double[] REP)
+        public void CALDISTR(float ZR, float UR, float PO, float TAUX, double[] LOGS, out double[] DISTR, out double[] REP)
         {
             int NSEG = 100;
             int JMAX = NSEG * 2;
             int JSUP = JMAX + 2;
             double ALPHA, BETA, X, V, Q, Y, BAB, LEBND, Z, U, P, TAU;
 
-            double[] LOGS = new double[JMAX + 1];
             double[] BUFS = new double[JMAX + 1];
             DISTR = new double[NSEG + 1];
             REP = new double[NSEG + 1];
@@ -794,8 +793,8 @@ namespace ARProbaProcessing
             if (TAU <= 1E-4)
             {
                 TAU = 0;
-                ALPHA = (float)(P * 1E4);
-                BETA = (float)(Q * 1E4);
+                ALPHA = (double)(P * 1E4);
+                BETA = (double)(Q * 1E4);
             }
             else
             {
@@ -836,7 +835,7 @@ namespace ARProbaProcessing
                 for (int I = 1; I <= NSEG - 1; I++)
                     DISTR[I] = (BUFS[2 * I] + BUFS[2 + 2 * I] + 4 * BUFS[1 + 2 * I]) * X;
                 // NORMALISATION DE DISTR
-                BAB = 0f;
+                BAB = 0d;
                 for (int I = 0; I <= NSEG; I++)
                     BAB += DISTR[I];
                 for (int I = 0; I <= NSEG; I++)
