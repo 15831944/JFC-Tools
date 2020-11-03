@@ -380,12 +380,16 @@ namespace ARProbaProcessing
         private BSupport transp08(int NIND, int NBSTA, int NBSTAIDF, int[] ISTA, int[,] POIDSEGS, List<int> FILT, List<int> POIDS, short[,,,] KHI2,
             string pathSortie, string pathYearNat, string pathYearIdf, string pathYearSup)
         {
+            System.GC.Collect();
             // PANEL RADIO 08 MEDIAMETRIE(nouveau format)
             // TRANSFORMATION DES PROBABILITES INDIVIDUELLES
             //   DE 100e EN 1000e ET DE 1 / 4h EN 1 / 2h
-
-            int[,,,] KECR = new int[NBSTA + 1, 3 + 1, 48 + 1, NIND + 1];
-            int[,,,] KECRIDF = new int[NBSTAIDF + 1, 3 + 1, 48 + 1, NIND + 1];
+            int[][,,] KECR = new int[NBSTA+1][,,]; // , 3 + 1, 48 + 1, NIND + 1];
+            for (int s = 1; s <= NBSTA; s++) KECR[s] = new int[3 + 1, 48 + 1, NIND + 1];
+            //int[,,,] KECR = new int[NBSTA + 1, 3// + 1, 48 + 1, NIND + 1];
+            int[][,,] KECRIDF = new int[NBSTAIDF + 1][,,];
+            for (int s = 1; s <= NBSTAIDF; s++) KECRIDF[s] = new int[3 + 1, 48 + 1, NIND + 1];
+            //int[,,,] KECRIDF = new int[NBSTAIDF + 1, 3 + 1, 48 + 1, NIND + 1];
             int[] RIEN = new int[NIND + 1];
             BSupport BSUP = new BSupport();
 
@@ -400,19 +404,23 @@ namespace ARProbaProcessing
             BinaryWriter bwSup = new BinaryWriter(File.Create(pathYearSup));
 
             // COEFF.ET DEPARTEMENT
-            for (int IND = 1; IND <= NIND; IND++)
+            for (int IND = 0; IND < NIND; IND++)
             {
                 POIDS[IND] *= 10;
                 RIEN[IND] = 0;
             }
-            for (int IND = 1; IND <= NIND; IND++) bwNat.Write(Convert.ToInt16(POIDS[IND]));
-            for (int IND = 1; IND <= NIND; IND++) bwNat.Write(Convert.ToInt16(RIEN[IND]));
+            for (int IND =0; IND < NIND; IND++) bwNat.Write(Convert.ToInt16(POIDS[IND]));
+            for (int IND = 0; IND < NIND; IND++) bwNat.Write(Convert.ToInt16(RIEN[IND]));
 
             // BOUCLE STATIONS
             int IDF = 0;
             for (int IS = 1; IS <= NBSTA; IS++)
             {
                 int IFO = ISTA[IS];
+                if (IFO == 1)
+                {
+                    IDF++;
+                }
 
                 Console.WriteLine($"Traitement station {IS}");
 
@@ -429,27 +437,26 @@ namespace ARProbaProcessing
                         // BOUCLE INDIVIDUS
                         for (int II = 1; II <= NIND; II++)
                         {
-                            KECR[IS, IU, IQ4, II] = KHI2[IS, IU, IH, II] + KHI2[IS, IU, IH + 1, II];      //  [STATIONS, LV/Sa/Di, QH, INDIVS]
+                            KECR[IS][IU, IQ4, II] = KHI2[IS, IU, IH, II] + KHI2[IS, IU, IH + 1, II];      //  [STATIONS, LV/Sa/Di, QH, INDIVS]
 
-                            KECR[IS, IU, IQ4, II] *= 5;
+                            KECR[IS][IU, IQ4, II] *= 5;
 
-                            if (KECR[IS, IU, IQ4, II] < 0) Console.WriteLine($"{IS}, {IU}, {IQ4}");
+                            if (KECR[IS][IU, IQ4, II] < 0) Console.WriteLine($"{IS}, {IU}, {IQ4}");
 
-                            bwNat.Write(Convert.ToInt16(KECR[IS, IU, IQ4, II]));
+                            bwNat.Write(Convert.ToInt16(KECR[IS][IU, IQ4, II]));
                         }
 
                         // ECRITURE FICHIER IDF
                         if (IFO == 1)
                         {
-                            IDF++;
                             for (int IN = 1; IN <= NIND; IN++)
                             {
                                 if (FILT[IN] == 0)
-                                    KECRIDF[IS, IU, IQ4, IN] = 0;
+                                    KECRIDF[IDF][IU, IQ4, IN] = 0;
                                 else
-                                    KECRIDF[IS, IU, IQ4, IN] = KECR[IS, IU, IQ4, IN];
+                                    KECRIDF[IDF][IU, IQ4, IN] = KECR[IS][IU, IQ4, IN];
 
-                                bwIdf.Write(Convert.ToInt16(KECRIDF[IDF, IU, IQ4, IN]));
+                                bwIdf.Write(Convert.ToInt16(KECRIDF[IDF][IU, IQ4, IN]));
                             }
                         }
                     }
@@ -461,8 +468,8 @@ namespace ARProbaProcessing
             BSUP.KECR = KECR;
             BSUP.KECRIDF = KECRIDF;
 
-            for (int IND = 1; IND <= NIND; IND++) bwSup.Write(Convert.ToInt16(POIDS[IND]));
-            for (int IND = 1; IND <= NIND; IND++) bwSup.Write(Convert.ToInt16(RIEN[IND]));
+            for (int IND = 0; IND < NIND; IND++) bwSup.Write(Convert.ToInt16(POIDS[IND]));
+            for (int IND = 0; IND < NIND; IND++) bwSup.Write(Convert.ToInt16(RIEN[IND]));
 
             for (int IS = 1; IS <= NBSTA; IS++)
             {
@@ -473,7 +480,7 @@ namespace ARProbaProcessing
                     {
                         for (int II = 1; II <= NIND; II++)
                         {
-                            bwSup.Write(Convert.ToInt16(KECR[IS, IU, IQ, II]));
+                            bwSup.Write(Convert.ToInt16(KECR[IS][IU, IQ, II]));
                         }
                     }
                 }
@@ -487,7 +494,7 @@ namespace ARProbaProcessing
                     {
                         for (int II = 1; II <= NIND; II++)
                         {
-                            bwSup.Write(Convert.ToInt16(KECRIDF[IS, IU, IQ, II]));
+                            bwSup.Write(Convert.ToInt16(KECRIDF[IS][IU, IQ, II]));
                         }
                     }
                 }
@@ -687,7 +694,7 @@ namespace ARProbaProcessing
                         // BOUCLE INDIVIDUS
                         for (int IND = 1; IND <= NIND; IND++)
                         {
-                            if (BSUP.KECR[IS, IU, ITR, IND] > 0)  // [NBSTA + 1, 3 + 1, 48 + 1, NIND + 1]
+                            if (BSUP.KECR[IS][IU, ITR, IND] > 0)  // [NBSTA + 1, 3 + 1, 48 + 1, NIND + 1]
                             {
                                 for (int IN = 1; IN <= N; IN++)
                                 {
@@ -853,6 +860,20 @@ namespace ARProbaProcessing
                 REP[I] = REP[I - 1] + DISTR[I];
         }
 
+        public int[] GET_STA_IDF_LIST_NO_SUDRAD_MASK(ARProba arProba)
+        {
+            int[] sta = new int[arProba.HabAndNotoStationList.Count() + 1];
+            int i = 1;
+            foreach (var station in arProba.HabAndNotoStationList)
+            {
+                if (!station.Name.ToUpper().Equals("SUD RADIO"))
+                {
+                    sta[i++] = station.IsIdf?1:0;
+                }
+            }
+            return sta;
+        }
+
         public int[] HAB_STA_LIST_ID_NOTO_SET_TO_TOTAL_RADIO(ARProba arProba)
         {
             int[] sta = new int[arProba.HabAndNotoStationList.Count() + 1];
@@ -973,7 +994,7 @@ namespace ARProbaProcessing
     {
         public List<int> POIDS;
         public int[] RIEN;
-        public int[,,,] KECR;
-        public int[,,,] KECRIDF;
+        public int[][,,] KECR;
+        public int[][,,] KECRIDF;
     }
 }

@@ -179,7 +179,7 @@ namespace ARProbaProcessing
 
             #region entrées chab1qhp
             string pathHab = Path.Combine(OutputPath, "habqhind");
-            int[] ISTA = HAB_0_NOTO_1_STA_LIST_MASK(arProba);
+            int[] ISTA = HAB_0_NOTO_1_STA_LIST_MASK(arProba); 
             #endregion entrées chab1qhp
 
             #region entrées caud1qhp
@@ -217,11 +217,12 @@ namespace ARProbaProcessing
             #endregion entrées attribp2
 
             #region entrées Transp08
-            int NB_STA_IDF = 14;
+            int NB_STA_IDF = arProba.HabAndNotoStationList.Count(x => x.IsIdf);
             string pathTransp08 = Path.Combine(OutputPath, "2020.SUP");
             string pathYearNat = Path.Combine(OutputPath, "PANRA120.NAT");
             string pathYearIdf = Path.Combine(OutputPath, "PANRA120.IDF");
             string pathYearSup = Path.Combine(OutputPath, "PANRA120.SUP");
+            int[] STA_IDF_LIST_NO_SUDRAD_MASK = GET_STA_IDF_LIST_NO_SUDRAD_MASK(arProba);
             #endregion entrées Transp08
 
             #region entrées crecib08
@@ -331,17 +332,14 @@ namespace ARProbaProcessing
             JNByWeek = null;
             NINI_IND_QH_W = null;
             NINI_IND_STA = null;
-            JN = null;
-
-            BSupport BSUP = transp08(NBINDIV, NB_STA_HAB_NOTO, NB_STA_IDF, ISTA, POIDSEGM, lstFiltreIDF, lstPoids, PROBAS, pathTransp08, pathYearNat, pathYearIdf, pathYearSup);
+            
+            BSupport BSUP = transp08(NBINDIV, NB_STA_HAB_NOTO, NB_STA_IDF, STA_IDF_LIST_NO_SUDRAD_MASK, POIDSEGM, lstFiltreIDF, lstPoids, PROBAS, pathTransp08, pathYearNat, pathYearIdf, pathYearSup);
 
             int[,] PANCIB = crecib08(NBINDIV, fushab09Indivs, COL_AGE11, COL_MENA, pathPan20Cib); // [3 + 1, NIND + 1]
 
             penetr(NBINDIV, NB_STA_HAB_NOTO_TOTAL, JN, lstPoids, pathPenetr, population, strStations);
 
             asympt(NBINDIV, NB_STA_HAB_NOTO, NB_STA_HAB_NOTO_TOTAL, BSUP, PANCIB, pathAS5H5H, headerAS5H5H, strStations);
-
-
 
             #region Endprocess
 
