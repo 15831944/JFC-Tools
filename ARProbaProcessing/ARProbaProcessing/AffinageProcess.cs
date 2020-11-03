@@ -287,7 +287,7 @@ namespace ARProbaProcessing
 
             List<Fushab09Indiv> fushab09Indivs = Fushab09(NB_STA_HAB_NOTO, SIGN_LINE_LEN_BEFORE_HAB, SIGN_LINE_LEN_AFTER_HAB, NB_STA_ALL_HAB, TABRH, pathSIGJFC2_BDE, pathPANSIGN);
 
-            int[,,] NINI_IND_QH_W = chab1qhp(NB_STA_HAB_NOTO, fushab09Indivs, ISTA, pathHab); // Habitude [INDIV, QH, LV/Sa/Di];
+            int[,,,] NINI_IND_QH_W = chab1qhp(NB_STA_HAB_NOTO, fushab09Indivs, ISTA, pathHab); // Habitude [INDIV, QH, LV/Sa/Di];
 
             int[,] NINI_IND_STA = crenonin(nbJour, NB_STA_HAB_NOTO, fushab09Indivs, JN, stationApres, pathNinities); // [INDIV, STATIONS] 
 
@@ -891,7 +891,7 @@ namespace ARProbaProcessing
             return fushab09Indivs;
         }
 
-        private int[,,] chab1qhp(int NBSTA, List<Fushab09Indiv> fushab09Indivs, int[] ISTA, string pathHab)
+        private int[,,,] chab1qhp(int NBSTA, List<Fushab09Indiv> fushab09Indivs, int[] ISTA, string pathHab)
         {
             // PANEL RADIO 08 MEDIAMETRIE(nouveau format)
             // CALCUL DES HABITUDES 1 / 4h PAR INDIVIDU
@@ -899,7 +899,7 @@ namespace ARProbaProcessing
             //  Le nombre de station correspond au nombre de stations(30) -1 pour Total Radio(et Total TV)
 
             int NBIND = fushab09Indivs.Count;
-            int[,,] NINI = new int[NBIND + 1, 96 + 1, 3 + 1];
+            int[,,,] NINI = new int[NBSTA + 1, NBIND + 1, 96 + 1, 3 + 1];
 
 
             // Ecriture habitude
@@ -936,8 +936,8 @@ namespace ARProbaProcessing
                             if (IU == 2) IH = indiv.KHSA[ITH[IQ], IP] - 48;
                             if (IU == 3) IH = indiv.KHDI[ITH[IQ], IP] - 48;
                             if (IH < 1) IH = 5;
-                            NINI[IG, IQ, IU] = 5 - IH;
-                            if (ISTA[IPO] == 1 && IH != 5) NINI[IG, IQ, IU] = 1;
+                            NINI[IPO, IG, IQ, IU] = 5 - IH;
+                            if (ISTA[IPO] == 1 && IH != 5) NINI[IPO, IG, IQ, IU] = 1;
                         }
                     }
                 }
@@ -947,7 +947,7 @@ namespace ARProbaProcessing
                     {
                         for (IG = 1; IG <= NBIND; IG++)
                         {
-                            writeBinary.Write(Convert.ToByte(NINI[IG, IQ, IU]));
+                            writeBinary.Write(Convert.ToByte(NINI[IPO, IG, IQ, IU]));
                         }
                     }
                 }

@@ -8,7 +8,7 @@ namespace ARProbaProcessing
 {
     public partial class AffinageProcess
     {
-        private short[,,,] attribp2(int NBIND, int NBSTA, byte[,,,] REGRS, int[,] KHI2, int[,] NINI, float[] NOTES, byte[,,,] AUDI, int[,,] HABI,
+        private short[,,,] attribp2(int NBIND, int NBSTA, byte[,,,] REGRS, int[,] KHI2, int[,] NINI, float[] NOTES, byte[,,,] AUDI, int[,,,] HABI,
             float[,,,] ZUPTAUSECOR, float[,,,] ZUPTAUSACOR, float[,,,] ZUPTAUDICOR, string pathSortie)
         {
             // PANEL RADIO 08 MEDIAMETRIE(nouveau format)
@@ -65,7 +65,7 @@ namespace ARProbaProcessing
                 POIDS[IG] = IPERS;
             }
 
-            FileStream writeStream = new FileStream(@"c:\Affinage\Panel_National\Panfra19\Output\PANECR20biy", FileMode.Create);
+            FileStream writeStream = new FileStream(@"c:\Affinage\Panel_National\Panfra19\Output\PANECR20bay", FileMode.Create);
             BinaryWriter writeBinary = new BinaryWriter(writeStream);
 
             // BOUCLE STATIONS
@@ -89,13 +89,22 @@ namespace ARProbaProcessing
                             PROBAS[NOP,IU,IQ,I] = 0;
                         }
 
+                        byte[] AUDI_ = new byte[NBIND+1];
+                        int[] HABI_ = new int[NBIND + 1];
+                        int[] NINI_ = new int[NBIND + 1];
+                        for (int I = 1; I <= NBIND; I++)
+                        {
+                            AUDI_[I] = AUDI[NOP, I, IQ, IU];
+                            HABI_[I] = HABI[NOP, I, IQ, IU];
+                            NINI_[I] = NINI[I, NOP];
+                        }
+
                         // TRI DES SCORES INDIVIDUELS
                         for (int I = 1; I <= NBIND; I++)
                         {
                             SCORE[I] = AUDI[NOP, I, IQ, IU];   // [STATIONS, INdiv, QH, 1..3]
-
                             if (SCORE[I] < 0) SCORE[I] += 256;
-                            SCORE[I] = 10 * SCORE[I] + HABI[I, IQ, IU];
+                            SCORE[I] = 10 * SCORE[I] + HABI[NOP, I, IQ, IU];
 
                             NOTI = NOTES[I];
                             if (NINI[I, NOP] == 1) NOTI = 0f;
