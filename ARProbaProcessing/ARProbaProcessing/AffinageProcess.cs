@@ -3527,7 +3527,7 @@ namespace ARProbaProcessing
                                     if (IN == 4) ISEG = 32 + SEG3[SEG2[SEG1[N1]]];
                                     if (IN == 5) ISEG = 37;
                                     // CALCUL NOUVEAU P
-                                    GRPN = COUV[ISEG, 3, IP, NQ];
+                                    GRPN = COUV[ISEG, 2, IP, NQ];
                                     bool process = false;
                                     if (GRPA != 0d && GRPN != 0d)
                                     {
@@ -3710,7 +3710,7 @@ namespace ARProbaProcessing
                                     if (IN == 4) ISEG = 32 + SEG3[SEG2[SEG1[N1]]];
                                     if (IN == 5) ISEG = 37;
                                     // CALCUL NOUVEAU P
-                                    GRPN = COUV[ISEG, 2, IP, NQ];
+                                    GRPN = COUV[ISEG, 3, IP, NQ];
                                     bool process = false;
                                     if (GRPA != 0d && GRPN != 0d)
                                     {
