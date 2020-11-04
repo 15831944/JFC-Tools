@@ -227,55 +227,21 @@ namespace ARProbaProcessing
             #endregion entrées Transp08
 
             #region entrées crecib08
-            string pathPan20Cib = Path.Combine(OutputPath, "PAN20CIB");
+            string pathPan20Cib = Path.Combine(OutputPath, "PAN" + (year % 100).ToString("00") + "CIB");
             #endregion entrées crecib08
 
             #region entrées penetr
             string pathPenetr = Path.Combine(OutputPath, "penetr");
-            int NB_STA_HAB_NOTO_TOTAL = 30;
-            List<string> strStations = new List<string>();
-            strStations.Add("x!x");
-            strStations.Add("                                Les Indés Radios ");
-            strStations.Add("                                        Chérie FM");
-            strStations.Add("                                         Europe 1");
-            strStations.Add("                                     Virgin Radio");
-            strStations.Add("                                   France Culture");
-            strStations.Add("                                      France Info");
-            strStations.Add("                                     France Inter");
-            strStations.Add("                                   France Musique");
-            strStations.Add("                                        Fun Radio");
-            strStations.Add("                                          M Radio");
-            strStations.Add("                                        Nostalgie");
-            strStations.Add("                                              NRJ");
-            strStations.Add("                                      France Bleu");
-            strStations.Add("                                              RFM");
-            strStations.Add("                                              RMC");
-            strStations.Add("                                              RTL");
-            strStations.Add("                                             RTL2");
-            strStations.Add("                                          Skyrock");
-            strStations.Add("                                 Rire et Chansons");
-            strStations.Add("                     NRJ Global Proximité Premium");
-            strStations.Add("                                 Nova and Friends");
-            strStations.Add("                     Lagardère Publicité News IDF");
-            strStations.Add("                                       Radio Nova");
-            strStations.Add("                                            Lip !");
-            strStations.Add("                                    Paris – IDF +");
-            strStations.Add("                                  Radio Classique");
-            strStations.Add("                               Les Indés Capitale");
-            strStations.Add("                                   TF1 Pub Radios");
-            strStations.Add("                                         TSF JAZZ");
-            strStations.Add("                                      Total Radio");
-
-            int population = 54439040;
+            List<string> strStations = arProba.HabAndNotoTotalStationList.Select(x => x.Name).ToList();
             #endregion entrées penetr
 
             #region entrées Asymp
             string pathAS5H5H = Path.Combine(OutputPath, "AS5H5H");
-            string headerAS5H5H = "             PANEL MEDIAMETRIE RADIO 2008" +
+            string headerAS5H5H = "             PANEL MEDIAMETRIE RADIO " + year.ToString() +
                 Environment.NewLine +
                 " PENETRATIONS CUMULEES MAXIMALES 5H-29H LUNDI-DIMANCHE " +
                 Environment.NewLine + Environment.NewLine + Environment.NewLine +
-                " STATIONS/AGREGATS      ENSEMBLE  HOMMES FEMMES     13-34 ANS";
+                " STATIONS/AGREGATS       ENSEMBLE     MENAGERES       13-28";
             // TODO: différence entre le fichier template quer j'ai avec la sortie du fichier donné par Fred
             // Template : ...."STATIONS/AGREGATS      ENSEMBLE  MENAGERES    13-28'-/ 24X,'13 ANS +   - 50 ANS'
             #endregion entrées Asymp
@@ -338,9 +304,9 @@ namespace ARProbaProcessing
 
             int[,] PANCIB = crecib08(NBINDIV, fushab09Indivs, COL_AGE11, COL_MENA, pathPan20Cib); // [3 + 1, NIND + 1]
 
-            penetr(NBINDIV, NB_STA_HAB_NOTO_TOTAL, JN, lstPoids, pathPenetr, population, strStations);
+            penetr(NBINDIV, nbStationHabNotoTotal, JN, lstPoids, pathPenetr, int.Parse(arProba.U1xxPopTxt[0]), strStations);
 
-            asympt(NBINDIV, NB_STA_HAB_NOTO, NB_STA_HAB_NOTO_TOTAL, BSUP, PANCIB, pathAS5H5H, headerAS5H5H, strStations);
+            asympt(NBINDIV, NB_STA_HAB_NOTO, nbStationHabNotoTotal, BSUP, PANCIB, pathAS5H5H, headerAS5H5H, strStations);
 
             #region Endprocess
 
@@ -1770,7 +1736,7 @@ namespace ARProbaProcessing
                         }
                         for (int I = 1; I <= 16; I++)
                         {
-                            TREG[I] = regrs[1, IP, IQ, I];
+                            TREG[I] = regrs[2, IP, IQ, I];
                         }
 
                         if (TREG[1] == 5) continue;
@@ -1792,8 +1758,8 @@ namespace ARProbaProcessing
                         }
                         if (NJOU == 0) JATOU[IQ, 1, IG] = 1;
                         if (NJOU == 0 && IH == 5) JATOU[IQ, 2, IG] = 1;
-                        if (NJOU == 15) JATOU[IQ, 3, IG] = 1;
-                        if (NJOU == 15 && IH == 1) JATOU[IQ, 4, IG] = 1;
+                        if (NJOU == 4) JATOU[IQ, 3, IG] = 1;
+                        if (NJOU == 4 && IH == 1) JATOU[IQ, 4, IG] = 1;
                     } //  for (int IQ = 1; IQ <= 96; IQ++)
                 } // foreach (Fushab09Indiv fushab09Indiv in fushab09Indivs)
 
@@ -1805,7 +1771,7 @@ namespace ARProbaProcessing
                     Console.WriteLine($"--------STATION {NOP} --------1/4h {IQ} ");
                     for (int I = 1; I <= 16; I++)
                     {
-                        TREG[I] = regrs[1, IP, IQ, I];
+                        TREG[I] = regrs[2, IP, IQ, I];
                     }
 
                     if (TREG[1] != 5)

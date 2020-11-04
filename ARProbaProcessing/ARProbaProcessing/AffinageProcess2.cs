@@ -42,7 +42,6 @@ namespace ARProbaProcessing
             int[] PT1 = new int[16 + 1];
             int[] PTNSEG = new int[16 + 1];
             int[] TREG = new int[16 + 1];
-            float PGR = 0f;
             float GRP = 0f;
             int NPERR = 0;
 
@@ -126,7 +125,6 @@ namespace ARProbaProcessing
                         int IP = NOP;
                         if (REGRS[IU, IP, IQ, 1] != 5)
                         {
-                            PGR = 0f;
                             GRP = 0;
                             NPERR = 0;
                             // BOUCLE CELLULES
@@ -193,7 +191,6 @@ namespace ARProbaProcessing
                                         {
                                             H = RANK[I];
                                         }
-                                        PGR = 0f;
                                         GRP = 0;
                                         NPERR = 0;
                                         continue;
@@ -328,7 +325,6 @@ namespace ARProbaProcessing
                                     } // while (LAMBDA <= 0.05 || LAMBDA >= 0.95)  ==> GO TO 45
 
                                     // 75
-                                    PGR = 0f;
                                     GRP = 0f;
                                     NPERR = 0;
                                     for (int I = 1; I <= NICEL; I++)
@@ -336,7 +332,6 @@ namespace ARProbaProcessing
                                         H = RANK[I];
                                         if (PROBAS[NOP, IU, IQ, H] >= 0)
                                         {
-                                            PGR +=  POIDS[H];
                                             GRP += POIDS[H] * PROBAS[NOP, IU, IQ, H];
                                         }
                                         else
@@ -577,7 +572,7 @@ namespace ARProbaProcessing
 
             // Le nombre de station correspond au nombre de stations(#NB_STA_HAB_NOTO_TOTAL#) (avec Total Radio et Total TV)
             int NBJOUR = 23;
-            int[,,] VSOR2 = new int[NBJOUR + 1, 6, NBSTA + 1];
+            int[,,] VSOR2 = new int[NBJOUR + 1, 6+1, NBSTA + 1];
             int[] ITAP = new int[NBSTA + 1];
             int[,] FLAG = new int[NBSTA + 1, NBIND + 1];
             
@@ -623,9 +618,9 @@ namespace ARProbaProcessing
             {
                 for (int IG = 1; IG <= NBIND; IG++)
                 {
-                    ITAP[K] = ITAP[K] + FLAG[K, IG] * 10 * POIDS[IG];
+                    ITAP[K] = ITAP[K] + FLAG[K, IG] * 10 * POIDS[IG-1];
                 }
-                swPenetr.WriteLine(strStations[K].PadLeft(49,' ') + "," + ((100d * ITAP[K]) / population).ToString("0.00"));
+                swPenetr.WriteLine(strStations[K-1].PadLeft(49,' ') + "," + ((100d * ITAP[K]) / population).ToString("0.00"));
             }
             swPenetr.Close();
         }
@@ -642,7 +637,6 @@ namespace ARProbaProcessing
             // Le nombre de station correspond au nombre de stations(#NB_STA_HAB_NOTO_TOTAL#) - #NB_STA_TOTAL_ONLY# pour Total Radio (et Total TV)
             // Il ne nous reste plus que #NB_STA_HAB_NOTO,0# stations puisqu'on a supprimé SUD RADIO
             int[] IPOI = new int[NIND + 1];
-            int[,] TABCI = new int[N + 1, NIND + 1];
             int[] IPOPS = new int[N + 1];
             float[] COUV = new float[N + 1];
             int[,,] TABRES = new int[N + 1, NBSTATOTAL  + 1, NIND + 1];
@@ -657,7 +651,7 @@ namespace ARProbaProcessing
 
             for (int IND = 1; IND <= NIND; IND++)
             {
-                IPOI[IND] = BSUP.POIDS[IND];
+                IPOI[IND] = BSUP.POIDS[IND-1];
                 //if (IPOI[IND] < 0) IPOI[IND] += 65536;  /// ???
             }
 
@@ -698,8 +692,8 @@ namespace ARProbaProcessing
                             {
                                 for (int IN = 1; IN <= N; IN++)
                                 {
-                                    if (TABCI[IN, IND] == 1) TABRES[IN, IS, IND] = 1;
-                                    if (TABCI[IN, IND] == 1) TABRES[IN, NBSTATOTAL, IND] = 1;
+                                    if (PANCIB[IN, IND] == 1) TABRES[IN, IS, IND] = 1;
+                                    if (PANCIB[IN, IND] == 1) TABRES[IN, NBSTATOTAL, IND] = 1;
                                 }
                             }
                         }
@@ -718,15 +712,15 @@ namespace ARProbaProcessing
 
             for (int STA = 1; STA <= NBSTA; STA++)
             {
-                for (int I = 1; I < N; I++)
+                for (int I = 1; I <= N; I++)
                 {
                     for (int IND = 1; IND <= NIND; IND++)
                     {
-                        if (TABRES[I, 1, IND] == 1) COUV[I] += IPOI[IND];
+                        if (TABRES[I, STA, IND] == 1) COUV[I] += IPOI[IND];
                     }
-                    COUV[I] *= 100f / IPOPS[I];
+                    COUV[I] *= 100f / Convert.ToSingle(IPOPS[I]);
                 }
-                swPenetr.WriteLine(stations[STA].PadLeft(49) + COUV[1].ToString("0.00").PadLeft(8) + " " + COUV[2].ToString("0.00").PadLeft(8) + " " + COUV[3].ToString("0.00").PadLeft(8));
+                swPenetr.WriteLine(stations[STA-1].PadLeft(49) + COUV[1].ToString("0.00").PadLeft(8) + " " + COUV[2].ToString("0.00").PadLeft(8) + " " + COUV[3].ToString("0.00").PadLeft(8));
             }
 
 
