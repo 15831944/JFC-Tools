@@ -232,7 +232,8 @@ namespace ARProbaProcessing
 
             #region entrées penetr
             string pathPenetr = Path.Combine(OutputPath, "penetr");
-            List<string> strStations = arProba.HabAndNotoTotalStationList.Select(x => x.Name).ToList();
+            List<string> strStations = arProba.HabAndNotoStationList.Select(x => x.Name).ToList();
+            strStations.AddRange(arProba.HabAndNotoTotalStationList.Select(x => x.Name).ToList());
             #endregion entrées penetr
 
             #region entrées Asymp
