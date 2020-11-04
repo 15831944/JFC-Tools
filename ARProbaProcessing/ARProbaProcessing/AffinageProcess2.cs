@@ -8,14 +8,14 @@ namespace ARProbaProcessing
 {
     public partial class AffinageProcess
     {
-        private short[,,,] attribp2(int NBIND, int NBSTA, byte[,,,] REGRS, int[,] KHI2, int[,] NINI, float[] NOTES, byte[,,,] AUDI, int[,,,] HABI,
+        private byte[,,,] attribp2(int NBIND, int NBSTA, byte[,,,] REGRS, int[,] KHI2, int[,] NINI, float[] NOTES, byte[,,,] AUDI, int[,,,] HABI,
             float[,,,] ZUPTAUSECOR, float[,,,] ZUPTAUSACOR, float[,,,] ZUPTAUDICOR, string pathSortie, string pathPANECR)
         {
             // PANEL RADIO 08 MEDIAMETRIE(nouveau format)
             // ATTRIBUTION DES PROBAS 1/4h PAR 1/4h,L-V,SAM,DIM
             //        STATION PAR STATION
             // Le nombre de station correspond au nombre de stations (#NB_STA_HAB_NOTO_TOTAL#) - #NB_STA_TOTAL_ONLY# pour Total Radio (et Total TV)
-            short[,,,] PROBAS = new short[NBSTA + 1, 3 + 1, 96 + 1, NBIND + 1];
+            byte[,,,] PROBAS = new byte[NBSTA + 1, 3 + 1, 96 + 1, NBIND + 1];
             int NSEG = 100;
             int JMAX = NSEG * 2;
             int JSUP = JMAX + 2;
@@ -32,7 +32,7 @@ namespace ARProbaProcessing
             float NOTI, SGN, SGN0;
             int[] POIDS = new int[NBIND + 1];
             int[] IPPS = new int[5 + 1];
-            short PR;
+            byte PR;
             int R, RSAVE, RP, H, HCR;
             int[] NB = new int[5 + 1];
             int[] IM = new int[5 + 1];
@@ -164,7 +164,7 @@ namespace ARProbaProcessing
                                         {
                                             IM[NIV]++;
                                             IPPS[NIV] += POIDS[IG];
-                                            PROBAS[NOP, IU, IQ, IG] = -1;
+                                            PROBAS[NOP, IU, IQ, IG] = 0; // -1 ?
                                             II++;
                                             RANK[II] = IG;
                                             SCORE[II] = CELL[IG];
@@ -377,7 +377,7 @@ namespace ARProbaProcessing
         }
 
 
-        private BSupport transp08(int NIND, int NBSTA, int NBSTAIDF, int[] ISTA, int[,] POIDSEGS, List<int> FILT, List<int> POIDS, short[,,,] KHI2,
+        private BSupport transp08(int NIND, int NBSTA, int NBSTAIDF, int[] ISTA, int[,] POIDSEGS, List<int> FILT, List<int> POIDS, byte[,,,] KHI2,
             string pathSortie, string pathYearNat, string pathYearIdf, string pathYearSup)
         {
             System.GC.Collect();
@@ -451,7 +451,7 @@ namespace ARProbaProcessing
                         {
                             for (int IN = 1; IN <= NIND; IN++)
                             {
-                                if (FILT[IN] == 0)
+                                if (FILT[IN-1] == 0)
                                     KECRIDF[IDF][IU, IQ4, IN] = 0;
                                 else
                                     KECRIDF[IDF][IU, IQ4, IN] = KECR[IS][IU, IQ4, IN];

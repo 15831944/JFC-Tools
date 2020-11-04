@@ -59,7 +59,8 @@ namespace ARProbaProcessing
             int NB_STA_HAB_NOTO = arProba.HabAndNotoStationCount;
             int NbGRPModulation = arProba.U1xxModalityCount + 2;
             int NbGRPStation = arProba.U1xxStationCount;
-            string PathGRPWave = Path.Combine(inputPath, "U191.SUP"); 
+            int year = 2000 + int.Parse(arProba.YearName);
+            string PathGRPWave = Path.Combine(inputPath, "U" + (year % 100).ToString("00") + "1.SUP"); 
             List<int> lstPoids;
             List<int> lstAges;
             List<int> lstFiltreIDF;
@@ -124,7 +125,7 @@ namespace ARProbaProcessing
             int NB_STA_ALL_HAB = arProba.AllHabStationCount;
             int[] TABRH = HAB_STA_LIST_ID_NOTO_SET_TO_TOTAL_RADIO(arProba);
             string pathPANSIGN = Path.Combine(OutputPath, "PANSIGN");
-            string pathSIGJFC2_BDE = Path.Combine(inputPath, @"Bde\sig19jfc2.bde");
+            string pathSIGJFC2_BDE = Path.Combine(inputPath, @"Bde\sig" + (year % 100).ToString("00") + "jfc2.bde");
             #endregion
 
             #region entrées segpanel
@@ -138,7 +139,7 @@ namespace ARProbaProcessing
             int nbStationTotal = arProba.StationCount;
             int nbStationHabNotoTotal = arProba.HabAndNotoStationCount + arProba.HabAndNotoTotalStationListCount;
             int nbStationHabNoto = arProba.HabAndNotoStationCount;
-            int year = 2000 + int.Parse(arProba.YearName);
+            
 
             int[] ITS = new int[nbStationHabNotoTotal + 1];
             int i = 1;
@@ -213,15 +214,15 @@ namespace ARProbaProcessing
 
             #region entrées attribp2
             string pathAttribp2 = Path.Combine(OutputPath, "SORTIE10.TXT");
-            string pathPanecr = @"c:\Affinage\Panel_National\Panfra19\Output\PANECR" + (year % 100).ToString("00");
+            string pathPanecr = @"c:\Affinage\Panel_National\Panfra" + (year % 100).ToString("00") + @"\Output\PANECR" + (year % 100).ToString("00");
             #endregion entrées attribp2
 
             #region entrées Transp08
             int NB_STA_IDF = arProba.HabAndNotoStationList.Count(x => x.IsIdf);
             string pathTransp08 = Path.Combine(OutputPath, "2020.SUP");
-            string pathYearNat = Path.Combine(OutputPath, "PANRA120.NAT");
-            string pathYearIdf = Path.Combine(OutputPath, "PANRA120.IDF");
-            string pathYearSup = Path.Combine(OutputPath, "PANRA120.SUP");
+            string pathYearNat = Path.Combine(OutputPath, "PANRA1" + (year % 100).ToString("00") + ".NAT");
+            string pathYearIdf = Path.Combine(OutputPath, "PANRA1" + (year % 100).ToString("00") + ".IDF");
+            string pathYearSup = Path.Combine(OutputPath, "PANRA1" + (year % 100).ToString("00") + ".SUP");
             int[] STA_IDF_LIST_NO_SUDRAD_MASK = GET_STA_IDF_LIST_NO_SUDRAD_MASK(arProba);
             #endregion entrées Transp08
 
@@ -323,7 +324,7 @@ namespace ARProbaProcessing
 
             float[,,,] ZUPTAUDICOR = cnzuptdi(NBINDIV, NB_STA_HAB_NOTO, pathCnzuptdi, pathzuptaudiCor, Couverture, regrs, ZUPTAUDI);
 
-            short[,,,] PROBAS = attribp2(NBINDIV, NB_STA_HAB_NOTO, regrs, POIDSEGM, NINI_IND_STA, noteIndiv, audiences, NINI_IND_QH_W,
+            byte[,,,] PROBAS = attribp2(NBINDIV, NB_STA_HAB_NOTO, regrs, POIDSEGM, NINI_IND_STA, noteIndiv, audiences, NINI_IND_QH_W,
                 ZUPTAUSECOR, ZUPTAUSACOR, ZUPTAUDICOR, pathAttribp2, pathPanecr); // [STATIONS, LV/Sa/Di, QH, INDIVS]
 
             ZUPTAUSECOR = ZUPTAUSECOR = ZUPTAUDICOR = Couverture = ZUPTAUSE = ZUPTAUSA = ZUPTAUDI =  null;
