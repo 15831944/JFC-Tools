@@ -162,7 +162,7 @@ namespace ARProbaProcessing
                                         {
                                             IM[NIV]++;
                                             IPPS[NIV] += POIDS[IG];
-                                            PROBAS[NOP, IU, IQ, IG] = 0; // -1 ?
+                                            PROBAS[NOP, IU, IQ, IG] = 255; // -1 ?
                                             II++;
                                             RANK[II] = IG;
                                             SCORE[II] = CELL[IG];
@@ -330,7 +330,8 @@ namespace ARProbaProcessing
                                     for (int I = 1; I <= NICEL; I++)
                                     {
                                         H = RANK[I];
-                                        if (PROBAS[NOP, IU, IQ, H] >= 0)
+                                        if (PROBAS[NOP, IU, IQ, H] != 255)
+    //                                    if (PROBAS[NOP, IU, IQ, H] >= 0)
                                         {
                                             GRP += POIDS[H] * PROBAS[NOP, IU, IQ, H];
                                         }

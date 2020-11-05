@@ -65,14 +65,15 @@ namespace ARProbaProcessing
             //return;
 
             // PANEL NATIONAL
-            var process = new ARProba(@"C:\Affinage\Panel_National\Panfra", "19", "");
+            var process = new ARProba(@"C:\Affinage\Panel_National\Panfra", "20", "");
 
             // PANEL IDF
             //var process = new ARProba(@"C:\Affinage\Panel_Idf\Panfra", "20", "");
             //process.Run();
+
             new AffinageProcess().Run(process,
-                @"c:\Affinage\Panel_National\Panfra19\Input",
-                @"c:\Affinage\Panel_National\Panfra19\Output"
+                @"c:\Affinage\Panel_National\Panfra20\Input",
+                @"c:\Affinage\Panel_National\Panfra20\Output"
                 );
 
             return;
@@ -482,8 +483,12 @@ namespace ARProbaProcessing
             }
 
             // Read Uxx Audience file
-            //   string uxxFile = InputPath + string.Format(@"U1" + YearName + ".sup.desc");
-            string uxxFile = InputPath + string.Format(@"U" + YearName + "1.sup.desc");
+            string uxxFile = "";
+            if (int.Parse(YearName) <= 19)
+                uxxFile = InputPath + string.Format(@"U" + YearName + "1.sup.desc");
+            else
+                uxxFile = InputPath + string.Format(@"U1" + YearName + ".sup.desc");
+            //string uxxFile = InputPath + string.Format(@"U" + YearName + "1.sup.desc");
             //string uxxFile = InputPath + string.Format(@"C1" + YearName + ".sup.desc");
 
             var grpStaFile = File.ReadAllLines(uxxFile, Encoding.GetEncoding("Windows-1252"));
@@ -501,12 +506,16 @@ namespace ARProbaProcessing
 
                 if (words.Length > 2)
                 {
-                    if (words[2] != null && !words[2].Trim().Equals(string.Empty))
+                    // Position des séparatuers ":"   / correction bug si réponse démo avec un ":"
+                    int Pos1er2Point = line.IndexOf(':');
+                    int Pos2eme2Point = line.IndexOf(':', Pos1er2Point + 1);
+
+                    // On vérifie que les positions des ":" sont bien 5 et 13  (seul les stations)
+                    if (words[2] != null && !words[2].Trim().Equals(string.Empty) && Pos1er2Point == 5 && Pos2eme2Point == 13)
                     {
                         string stationName = words[2].Trim();
                         if (stationName.Contains('('))
                             stationName = stationName.Substring(0, stationName.IndexOf('(')).Trim();
-
                         u1xxList.Add(stationName);
                     }
                     else if (words[2].Trim().Equals(string.Empty))
@@ -516,16 +525,17 @@ namespace ARProbaProcessing
                     }
                 }
             }
-            
+
             U1xxStationCount = u1xxList.Count;
             U1xxModalityCount = u1xxModalityList.Count;
 
             List<string> exceptionList = new List<string>();
-
-            string uxxExceptFile = InputPath + string.Format(@"U" + YearName + "1_sta_exception.desc");
-            //string uxxExceptFile = InputPath + string.Format(@"U1" + YearName + "_sta_exception.desc");
+            string uxxExceptFile = "";
+            if (int.Parse(YearName) <= 19)
+                uxxExceptFile = InputPath + string.Format(@"U" + YearName + "1_sta_exception.desc");
+            else
+                uxxExceptFile = InputPath + string.Format(@"U1" + YearName + "_sta_exception.desc");
             //string uxxExceptFile = InputPath + string.Format(@"C1" + YearName + "_sta_exception.desc");
-
 
             if (!File.Exists(uxxExceptFile))
             {
@@ -689,8 +699,12 @@ namespace ARProbaProcessing
             // Load population txt
             U1xxPopTxt = new List<string>();
 
-            string uxxPopFile = InputPath + string.Format(@"U" + YearName + "1_Pop.txt");
-            // string uxxPopFile = InputPath + string.Format(@"U1" + YearName + "_Pop.txt");
+            string uxxPopFile = "";
+            if (int.Parse(YearName) <= 19)
+                uxxPopFile = InputPath + string.Format(@"U" + YearName + "1_Pop.txt");
+            else
+                uxxPopFile = InputPath + string.Format(@"U1" + YearName + "_Pop.txt");
+
             //string uxxPopFile = InputPath + string.Format(@"C1" + YearName + "_Pop.txt");
 
             var popTxtFile = File.ReadAllLines(uxxPopFile, Encoding.GetEncoding("Windows-1252"));

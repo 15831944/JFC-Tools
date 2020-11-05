@@ -60,7 +60,11 @@ namespace ARProbaProcessing
             int NbGRPModulation = arProba.U1xxModalityCount + 2;
             int NbGRPStation = arProba.U1xxStationCount;
             int year = 2000 + int.Parse(arProba.YearName);
-            string PathGRPWave = Path.Combine(inputPath, "U" + (year % 100).ToString("00") + "1.SUP"); 
+            string PathGRPWave = "";
+            if (year <= 2019)
+                PathGRPWave = Path.Combine(inputPath, "U" + (year % 100).ToString("00") + "1.SUP");
+            else
+                PathGRPWave = Path.Combine(inputPath, "U1" + (year % 100).ToString("00") + ".SUP");
             List<int> lstPoids;
             List<int> lstAges;
             List<int> lstFiltreIDF;
@@ -111,7 +115,7 @@ namespace ARProbaProcessing
             #endregion Definition colonnes
 
             #region entr�es lecpanel
-            string pathSIGJFC_BDE = Path.Combine(inputPath, @"Bde\sig19jfc.bde");
+            string pathSIGJFC_BDE = Path.Combine(inputPath, @"Bde\sig" + (year % 100).ToString("00") + "jfc.bde");
             lecpanel(pathSIGJFC_BDE, COL_AGE3, COL_RUDA, COL_PIAB, out lstPoids, out lstAges, out lstFiltreIDF);
             #endregion entr�es lecpanel
 
@@ -2984,50 +2988,6 @@ namespace ARProbaProcessing
             int ICSP, IREG, ISEX, IAGE, ISEG, COMPT;
             int[,] ZLEC = new int[96 + 1, NbGRPStation + 1];
 
-            //   id idx    sta
-            //   16  101    Les Indés Radios
-            //   21  001    Chérie FM
-            //   22  002    Europe 1
-            //   23  005    Virgin Radio
-            //   24  004    France Culture
-            //   25  006    France Info
-            //   26  008    France Inter
-            //   27  007    France Musique
-            //   28  009    Fun Radio
-            //   29  010    M Radio
-            //   30  011    Nostalgie
-            //   31  012    NRJ
-            //   32  003    France Bleu
-            //   33  013    RFM
-            //   34  016    RMC
-            //   35  015    RTL
-            //   36  017    RTL2
-            //   37  018    Skyrock
-            //   39  014    Rire et Chansons
-            //   47  201    NRJ Global Proximité Premium
-            //   50  303    Nova and Friends
-            //   53  305    Lagardère Publicité News IDF
-            //   54  020    Radio Nova
-            //   55  306    Lip !
-            //   56  307    Paris - IDF +
-            //   59  019    Radio Classique
-            //   60  310    Les Indés Capitale
-            //   61  311    TF1 Pub Radios
-            //   64  021    TSF JAZZ
-
-            // Attention Total radio est obligatoirement a le fin avec total TV si present
-            //   01  022    Total Radio
-
-
-
-            //       DATA ISTA / 12,16,17,18,19,20,21,22,23,24,25,26,27,28,29,
-            //-30,31,32,14,0,8,55,15,59,54,33,41,37,38 /
-
-            //ISTA = new int[]
-            //{
-            //    0,12, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 14, 0, 8, 55, 15, 59, 54, 33,41, 37, 38
-            //};
-
             //
             // INITIALISATIONS
             //
@@ -3054,7 +3014,6 @@ namespace ARProbaProcessing
                         ZLEC[i, j] = br.ReadByte();
 
                 int IPERS = KHI2[1];
-                if (IPERS < 0) IPERS = 32767;
                 if (IPERS > 0)
                 {
 
@@ -3170,6 +3129,7 @@ namespace ARProbaProcessing
                     if (ISEG == 2) COMPT = COMPT + 1;
                 }
             }
+            br.Close();
             fs.Close();
 
             if (File.Exists(pathSortie8)) File.Delete(pathSortie8);
@@ -3189,7 +3149,15 @@ namespace ARProbaProcessing
                     {
                         for (int L = 1; L <= 96; L++)
                         {
+                            if (IPOP[I, J] ==0)
+                            {
+
+                            }
                             COUV[I, J, K, L] = COUV[I, J, K, L] / 12f / Convert.ToSingle(IPOP[I, J]);
+                            if (float.IsNaN(COUV[I, J, K, L]))
+                            {
+
+                            }
                         }
                     }
 
@@ -3288,6 +3256,10 @@ namespace ARProbaProcessing
                 // BOUCLE 1 / 4h
                 for (int IQ = 1; IQ <= 96; IQ++)
                 {
+                    if (IQ==21)
+                    {
+
+                    }
                     int NQ = IQ + 76;
                     if (NQ > 96) NQ = NQ - 96;
                     sortie.AppendLine($" QH {IQ}");
