@@ -303,7 +303,7 @@ namespace ARProbaProcessing
             
             BSupport BSUP = transp08(NBINDIV, NB_STA_HAB_NOTO, NB_STA_IDF, STA_IDF_LIST_NO_SUDRAD_MASK, POIDSEGM, lstFiltreIDF, lstPoids, PROBAS, pathTransp08, pathYearNat, pathYearIdf, pathYearSup);
 
-            int[,] PANCIB = crecib08(NBINDIV, fushab09Indivs, COL_AGE11, COL_MENA, pathPan20Cib); // [3 + 1, NIND + 1]
+            int[,] PANCIB = crecib08(NBINDIV, fushab09Indivs, COL_TAB_AGE11, COL_TAB_MENA, pathPan20Cib); // [3 + 1, NIND + 1]
 
             penetr(NBINDIV, nbStationHabNotoTotal, JN, lstPoids, pathPenetr, int.Parse(arProba.U1xxPopTxt[0]), strStations);
 
@@ -3485,7 +3485,7 @@ namespace ARProbaProcessing
                     // AUCUNE AUDIENCE POUR CE 1 / 4h
                     for (int I = 1; I <= 16; I++)
                     {
-                        TREG[I] = REGRS[3, IP, IQ, I];
+                        TREG[I] = REGRS[2, IP, IQ, I];
                     }
 
                     if (TREG[1] != 5)
@@ -3668,7 +3668,7 @@ namespace ARProbaProcessing
                     // AUCUNE AUDIENCE POUR CE 1 / 4h
                     for (int I = 1; I <= 16; I++)
                     {
-                        TREG[I] = REGRS[2, IP, IQ, I];
+                        TREG[I] = REGRS[3, IP, IQ, I];
                     }
 
                     if (TREG[1] != 5)

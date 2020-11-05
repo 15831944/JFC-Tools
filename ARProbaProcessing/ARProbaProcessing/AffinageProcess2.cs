@@ -572,7 +572,7 @@ namespace ARProbaProcessing
 
             // Le nombre de station correspond au nombre de stations(#NB_STA_HAB_NOTO_TOTAL#) (avec Total Radio et Total TV)
             int NBJOUR = 23;
-            int[,,] VSOR2 = new int[NBJOUR + 1, 6+1, NBSTA + 1];
+            ushort[,,] VSOR2 = new ushort[NBJOUR + 1, 6+1, NBSTA + 1];
             int[] ITAP = new int[NBSTA + 1];
             int[,] FLAG = new int[NBSTA + 1, NBIND + 1];
             
@@ -599,7 +599,7 @@ namespace ARProbaProcessing
                             {
                                 ushort[] bits = new ushort[7];
                                 for (int b = 1; b <= 6; b++)
-                                    bits[b] = JN[I][IG].VSor[b, K];
+                                    bits[b] = VSOR2[I,M,K]; //  JN[I][IG].VSor[b, K];
 
                                 if (L1BITFCT(bits, L))
                                 {
@@ -618,7 +618,7 @@ namespace ARProbaProcessing
             {
                 for (int IG = 1; IG <= NBIND; IG++)
                 {
-                    ITAP[K] = ITAP[K] + FLAG[K, IG] * 10 * POIDS[IG-1];
+                    ITAP[K] += FLAG[K, IG] * POIDS[IG-1];
                 }
                 swPenetr.WriteLine(strStations[K-1].PadLeft(49,' ') + "," + ((100d * ITAP[K]) / population).ToString("0.00"));
             }
