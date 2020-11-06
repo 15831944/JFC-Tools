@@ -3033,11 +3033,17 @@ namespace ARProbaProcessing
                     if (KHI2[2] == 6) IU = 2;
                     if (KHI2[2] == 7) IU = 3;
 
-                    // DETERMINATION DU SEGMENT
-                    int IND_CSP = 5 + 2;
-                    int IND_AGE = 20 + 2;
+                    // DETERMINATION DU SEGMENT 2019
+                    //int IND_CSP = 5 + 2;
+                    //int IND_AGE = 20 + 2;
+                    //int IND_SEX = 3;
+                    //int IND_REG = 13 + 2;
+
+                    // DETERMINATION DU SEGMENT 2020 !!!!!! TODO:
+                    int IND_CSP = 4 + 2;
+                    int IND_AGE = 18 + 2;
                     int IND_SEX = 3;
-                    int IND_REG = 13 + 2;
+                    int IND_REG = 12 + 2;
 
                     ICSP = 1;
                     if (KHI2[IND_CSP] == 1 || KHI2[IND_CSP] > 4) ICSP = 2;

@@ -200,7 +200,7 @@ namespace ARProbaProcessing
                                     float P = RESUL[NOP, IQ, 3, N1];
                                     float TAU = RESUL[NOP, IQ, 4, N1];
                                     GRPN = UR + P * (1f - ZR - UR);
-
+                                    if (float.IsNaN(P)) P = 0f;
                                     CALDISTR(ZR, UR, P, TAU, LOGS, out DISTR, out REP);
 
                                     // IMPRESSION DES RESULTATS
