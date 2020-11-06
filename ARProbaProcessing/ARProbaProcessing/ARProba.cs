@@ -73,7 +73,7 @@ namespace ARProbaProcessing
 
             new AffinageProcess().Run(process,
                 @"c:\Affinage\Panel_National\Panfra20\Input",
-                @"c:\Affinage\Panel_National\Panfra20\Output"
+                @"c:\Affinage\Panel_National\Panfra20\OutputC"
                 );
 
             return;

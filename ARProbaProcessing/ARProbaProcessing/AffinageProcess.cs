@@ -1741,7 +1741,7 @@ namespace ARProbaProcessing
                         }
                         for (int I = 1; I <= 16; I++)
                         {
-                            TREG[I] = regrs[2, IP, IQ, I];
+                            TREG[I] = regrs[1, IP, IQ, I];
                         }
 
                         if (TREG[1] == 5) continue;
@@ -1763,8 +1763,8 @@ namespace ARProbaProcessing
                         }
                         if (NJOU == 0) JATOU[IQ, 1, IG] = 1;
                         if (NJOU == 0 && IH == 5) JATOU[IQ, 2, IG] = 1;
-                        if (NJOU == 4) JATOU[IQ, 3, IG] = 1;
-                        if (NJOU == 4 && IH == 1) JATOU[IQ, 4, IG] = 1;
+                        if (NJOU == 15) JATOU[IQ, 3, IG] = 1;
+                        if (NJOU == 15 && IH == 1) JATOU[IQ, 4, IG] = 1;
                     } //  for (int IQ = 1; IQ <= 96; IQ++)
                 } // foreach (Fushab09Indiv fushab09Indiv in fushab09Indivs)
 
@@ -1776,7 +1776,7 @@ namespace ARProbaProcessing
                     Console.WriteLine($"--------STATION {NOP} --------1/4h {IQ} ");
                     for (int I = 1; I <= 16; I++)
                     {
-                        TREG[I] = regrs[2, IP, IQ, I];
+                        TREG[I] = regrs[1, IP, IQ, I];
                     }
 
                     if (TREG[1] != 5)
@@ -2123,6 +2123,15 @@ namespace ARProbaProcessing
                                 {
                                     if ((IN == 5 && NB[IN] == 1) || KHI2[I, IN + 1] == NB[IN]) POPS = POPS + KHI2[I, 1];
                                 }
+                                int[] aa = new int[NBIND+1];
+                                if (IN != 5)
+                                {
+                                    for (int I = 1; I <= NBIND; I++)
+                                    {
+                                        aa[I] = KHI2[I, IN + 1];
+                                    }
+                                }
+
                                 POPS = POPS * 10f;
                                 float DIRAC0 = COMPT[1, IN] / POPS;
                                 float DIRAC1 = ITTP[IN] / POPS;
@@ -2157,7 +2166,7 @@ namespace ARProbaProcessing
                                 UR = DIRAC1;
 
                                 //WRITE(16, *) GRP, ZA, ZR, UA, UR
-                                sbSortie.AppendLine($"{GRP}  {ZA}  {ZR}  {UA}  {UR}");
+                                sbSortie.AppendLine($"GRP {GRP}  ZA {ZA}  ZR {ZR}  UA {UA}  UR {UR} IZAP {IZAP[IN]} POPS {POPS} NIV {NIV} IN {IN}");
 
                                 float ND = 15;
                                 MINIMISE(GRP, Z, ref PR, ref UR, ref ZR, out TAU, ZA, UA, ND); // float GRP, float[] ZC, ref float PR, ref float UR, ref float ZR, out float TAU, float ZA, float UA, float NB)
