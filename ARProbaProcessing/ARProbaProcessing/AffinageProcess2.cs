@@ -27,9 +27,9 @@ namespace ARProbaProcessing
             double[] GT = new double[16 + 1];
 
             double XJ, LAMBDA, DELTA, NG, GRPN, X, Y;
-            float[] SCORE = new float[NBIND + 1];
+            double[] SCORE = new double[NBIND + 1];
             int[] TAB = new int[NBIND + 1];
-            float NOTI, SGN, SGN0;
+            double NOTI, SGN, SGN0;
             int[] POIDS = new int[NBIND + 1];
             int[] IPPS = new int[5 + 1];
             byte PR;
@@ -42,7 +42,7 @@ namespace ARProbaProcessing
             int[] PT1 = new int[16 + 1];
             int[] PTNSEG = new int[16 + 1];
             int[] TREG = new int[16 + 1];
-            float GRP = 0f;
+            double GRP = 0f;
             int NPERR = 0;
 
             // INITIALISATIONS
@@ -107,7 +107,7 @@ namespace ARProbaProcessing
 
                             NOTI = NOTES[I];
                             if (NINI[I, NOP] == 1) NOTI = 0f;
-                            SCORE[I] = 1000 * SCORE[I] + NOTI;
+                            SCORE[I] = 1000d * Convert.ToDouble( SCORE[I]) + NOTI;
                             RANG[I] = I;
                         }
 
@@ -280,7 +280,7 @@ namespace ARProbaProcessing
                                                 NG = POIDS[RANK[R]];
                                                 HCR = (int)Math.Truncate(SCORE[RANK[R]]);  // TODO Real => INT*4 ?
                                                                                            //60
-                                                float HCRf =SCORE[RANK[R]];
+                                                double HCRf =SCORE[RANK[R]];
                                                 do
                                                 {
                                                     H = RANK[RP + 1];
@@ -306,10 +306,10 @@ namespace ARProbaProcessing
                                             float K = PTNSEG[N1] - PT1[N1];
 
                                             // TEST SI GRP COHERENT
-                                            if (Math.Abs(Z) >= (K / 4f + 1f) && (DELTA >= 1E-3))
+                                            if (Math.Abs(Z) >= (K / 4d + 1d) && (DELTA >= 1E-3))
                                             {
-                                                SGN = Z < 0 ? -1f : 1f;
-                                                if (SGN == -SGN0) DELTA *= 0.3f;
+                                                SGN = Z < 0 ? -1d : 1d;
+                                                if (SGN == -SGN0) DELTA *= 0.3d;
                                                 LAMBDA += SGN * DELTA;
                                                 SGN0 = SGN;
                                             }
@@ -737,9 +737,9 @@ namespace ARProbaProcessing
             swPenetr.Close();
         }
 
-        public void SORTF(int I1, int IFIN, int[] RANG, float[] SCORE)
+        public void SORTF(int I1, int IFIN, int[] RANG, double[] SCORE)
         {
-            float X;
+            double X;
             int I = I1;
             int J = IFIN;
 

@@ -218,7 +218,7 @@ namespace ARProbaProcessing
 
             #region entrées attribp2
             string pathAttribp2 = Path.Combine(OutputPath, "SORTIE10.TXT");
-            string pathPanecr = @"c:\Affinage\Panel_National\Panfra" + (year % 100).ToString("00") + @"\Output\PANECR" + (year % 100).ToString("00");
+            string pathPanecr = Path.Combine(OutputPath, "PANECR" + (year % 100).ToString("00"));
             #endregion entrées attribp2
 
             #region entrées Transp08
@@ -1664,11 +1664,11 @@ namespace ARProbaProcessing
             // VERSION 2
             // Le nombre de station correspond au nombre de stations(#NB_STA_HAB_NOTO_TOTAL#) - #NB_STA_TOTAL_ONLY# pour Total Radio (et Total TV)
 
-            float[,] C = new float[15 + 1, 5 + 1];
-            float[] NCOM = new float[15 + 1] { 999999, 15, 105, 455, 1365, 3003, 5005, 6435, 6435, 5005, 3003, 1365, 455, 105, 15, 1 };
+            double[,] C = new double[15 + 1, 5 + 1];
+            double[] NCOM = new double[15 + 1] { 999999, 15, 105, 455, 1365, 3003, 5005, 6435, 6435, 5005, 3003, 1365, 455, 105, 15, 1 };
             float[,,,] RESUL = new float[NBSTA + 1, 96 + 1, 4 + 1, 16 + 1];
-            float[] Z = new float[15 + 1];
-            float[] YR = new float[15 + 1];
+            double[] Z = new double[15 + 1];
+            double[] YR = new double[15 + 1];
 
             int[,] COMPT = new int[16 + 1, 5 + 1];
             int[] ITPO = new int[5 + 1];
@@ -2118,7 +2118,7 @@ namespace ARProbaProcessing
 
                                 // IMPRESSION DES RESULTATS
                                 int IN = TREG[N1] + 1;
-                                float POPS = 0f;
+                                double POPS = 0f;
                                 for (int I = 1; I <= NBIND; I++)
                                 {
                                     if ((IN == 5 && NB[IN] == 1) || KHI2[I, IN + 1] == NB[IN]) POPS = POPS + KHI2[I, 1];
@@ -2133,9 +2133,9 @@ namespace ARProbaProcessing
                                 }
 
                                 POPS = POPS * 10f;
-                                float DIRAC0 = COMPT[1, IN] / POPS;
-                                float DIRAC1 = ITTP[IN] / POPS;
-                                float PC1 = IZAP[IN] / POPS;
+                                double DIRAC0 = COMPT[1, IN] / POPS;
+                                double DIRAC1 = ITTP[IN] / POPS;
+                                double PC1 = IZAP[IN] / POPS;
                                 int IPOP = 0;
                                 for (int I = 2; I <= 16; I++)
                                 {
@@ -2148,7 +2148,7 @@ namespace ARProbaProcessing
                                     if (I != 16) COMPT[I + 1, IN] = COMPT[I + 1, IN] + COMPT[I, IN];
                                 }
 
-                                float GRP = IPOP * 100;
+                                double GRP = IPOP * 100d;
                                 GRP = GRP / POPS / 15f;
                                 PR = (IPOP - ITTP[IN] * 15) / 14f;
                                 PR = PR / (POPS - COMPT[1, IN] - ITTP[IN]);
@@ -2160,9 +2160,9 @@ namespace ARProbaProcessing
                                 // APPEL DE LA FONCTION DIFFERENCE
 
                                 GRP = GRP / 100f;
-                                float ZA = DIRAC0;
+                                double ZA = DIRAC0;
                                 ZR = IZAP[IN] / POPS;
-                                float UA = ITJP[IN] / POPS;
+                                double UA = ITJP[IN] / POPS;
                                 UR = DIRAC1;
 
                                 //WRITE(16, *) GRP, ZA, ZR, UA, UR
@@ -2171,8 +2171,8 @@ namespace ARProbaProcessing
                                 float ND = 15;
                                 MINIMISE(GRP, Z, ref PR, ref UR, ref ZR, out TAU, ZA, UA, ND); // float GRP, float[] ZC, ref float PR, ref float UR, ref float ZR, out float TAU, float ZA, float UA, float NB)
 
-                                float GRP0 = 0f;
-                                float GRPC = 0f;
+                                double GRP0 = 0d;
+                                double GRPC = 0d;
                                 for (int I = 1; I <= 15; I++)
                                 {
                                     GRPC = GRPC + YR[I];
@@ -2238,11 +2238,11 @@ namespace ARProbaProcessing
 
             int NBJOUR = 23;
 
-            float[,] C = new float[15 + 1, 5 + 1];
-            float[] NCOM = new float[4 + 1] { 999999f, 4, 6, 4, 1 };
+            double[,] C = new double[15 + 1, 5 + 1];
+            double[] NCOM = new double[4 + 1] { 999999f, 4, 6, 4, 1 };
             float[,,,] RESUL = new float[NBSTA + 1, 96 + 1, 4 + 1, 16 + 1];
-            float[] Z = new float[15 + 1];
-            float[] YR = new float[15 + 1];
+            double[] Z = new double[15 + 1];
+            double[] YR = new double[15 + 1];
 
             int[,] COMPT = new int[16 + 1, 5 + 1];
             int[] ITPO = new int[5 + 1];
@@ -2495,15 +2495,15 @@ namespace ARProbaProcessing
 
                                 // IMPRESSION DES RESULTATS
                                 int IN = TREG[N1] + 1;
-                                float POPS = 0f;
+                                double POPS = 0f;
                                 for (int I = 1; I <= NBIND; I++)
                                 {
                                     if ((NIV == 5 && NB[IN] == 1) || (KHI2[I, IN + 1] == NB[IN])) POPS = POPS + KHI2[I, 1];
                                 }
-                                POPS = POPS * 10f;
-                                float DIRAC0 = COMPT[1, IN] / POPS;
-                                float DIRAC1 = ITTP[IN] / POPS;
-                                float PC1 = IZAP[IN] / POPS;
+                                POPS = POPS * 10d;
+                                double DIRAC0 = COMPT[1, IN] / POPS;
+                                double DIRAC1 = ITTP[IN] / POPS;
+                                double PC1 = IZAP[IN] / POPS;
                                 int IPOP = 0;
                                 for (int I = 2; I <= 5; I++)
                                 {
@@ -2516,7 +2516,7 @@ namespace ARProbaProcessing
                                     if (I != 5) COMPT[I + 1, IN] = COMPT[I + 1, IN] + COMPT[I, IN];
                                 }
 
-                                float GRP = IPOP * 100;
+                                double GRP = IPOP * 100;
                                 GRP = GRP / POPS / 4f;
                                 PR = (IPOP - ITTP[IN] * 4f) / 3f;
                                 if (POPS == (COMPT[1, IN] + ITTP[IN]))
@@ -2531,15 +2531,15 @@ namespace ARProbaProcessing
                                     PR = PR / (POPS - COMPT[1, IN] - ITTP[IN]);
                                     for (int I = 1; I <= 4; I++)
                                     {
-                                        Z[I] = C[I, IN] / NCOM[I] / POPS * 100f;
+                                        Z[I] = Convert.ToSingle(1d * C[I, IN] / NCOM[I] / POPS * 100d);
                                     }
 
                                     // APPEL DE LA FONCTION DIFFERENCE
 
                                     GRP = GRP / 100f;
-                                    float ZA = DIRAC0;
+                                    double ZA = DIRAC0;
                                     ZR = IZAP[IN] / POPS;
-                                    float UA = ITJP[IN] / POPS;
+                                    double UA = ITJP[IN] / POPS;
                                     UR = DIRAC1;
 
                                     //WRITE(16, *) GRP, ZA, ZR, UA, UR
@@ -2609,11 +2609,11 @@ namespace ARProbaProcessing
 
             int NBJOUR = 23;
 
-            float[,] C = new float[15 + 1, 5 + 1];
-            float[] NCOM = new float[4 + 1] { 999999f, 4, 6, 4, 1 };
+            double[,] C = new double[15 + 1, 5 + 1];
+            double[] NCOM = new double[4 + 1] { 999999f, 4, 6, 4, 1 };
             float[,,,] RESUL = new float[NBSTA + 1, 96 + 1, 4 + 1, 16 + 1];
-            float[] Z = new float[15 + 1];
-            float[] YR = new float[15 + 1];
+            double[] Z = new double[15 + 1];
+            double[] YR = new double[15 + 1];
 
             int[,] COMPT = new int[16 + 1, 5 + 1];
             int[] ITPO = new int[5 + 1];
@@ -2868,15 +2868,15 @@ namespace ARProbaProcessing
 
                                 // IMPRESSION DES RESULTATS
                                 int IN = TREG[N1] + 1;
-                                float POPS = 0f;
+                                double POPS = 0f;
                                 for (int I = 1; I <= NBIND; I++)
                                 {
                                     if ((NIV == 5 && NB[IN] == 1) || (KHI2[I, IN + 1] == NB[IN])) POPS = POPS + KHI2[I, 1];
                                 }
                                 POPS = POPS * 10f;
-                                float DIRAC0 = COMPT[1, IN] / POPS;
-                                float DIRAC1 = ITTP[IN] / POPS;
-                                float PC1 = IZAP[IN] / POPS;
+                                double DIRAC0 = COMPT[1, IN] / POPS;
+                                double DIRAC1 = ITTP[IN] / POPS;
+                                double PC1 = IZAP[IN] / POPS;
                                 int IPOP = 0;
                                 for (int I = 2; I <= 5; I++)
                                 {
@@ -2889,7 +2889,7 @@ namespace ARProbaProcessing
                                     if (I != 5) COMPT[I + 1, IN] = COMPT[I + 1, IN] + COMPT[I, IN];
                                 }
 
-                                float GRP = IPOP * 100;
+                                double GRP = IPOP * 100;
                                 GRP = GRP / POPS / 4f;
                                 PR = (IPOP - ITTP[IN] * 4f) / 3f;
                                 if (POPS == (COMPT[1, IN] + ITTP[IN]))
@@ -2910,9 +2910,9 @@ namespace ARProbaProcessing
                                     // APPEL DE LA FONCTION DIFFERENCE
 
                                     GRP = GRP / 100f;
-                                    float ZA = DIRAC0;
+                                    double ZA = DIRAC0;
                                     ZR = IZAP[IN] / POPS;
-                                    float UA = ITJP[IN] / POPS;
+                                    double UA = ITJP[IN] / POPS;
                                     UR = DIRAC1;
 
                                     //WRITE(16, *) GRP, ZA, ZR, UA, UR
@@ -3815,7 +3815,7 @@ namespace ARProbaProcessing
         // SUBROUTINE MINIMISE
         // optimisation de la courbe theorique de montee en audience
         // suivant la beta binomiale
-        private void MINIMISE(float GRP, float[] ZC, ref double PR, ref double UR, ref double ZR, out double TAU, float ZA, float UA, float NB, bool qhps = false)
+        private void MINIMISE(double GRP, double[] ZC, ref double PR, ref double UR, ref double ZR, out double TAU, double ZA, double UA, float NB, bool qhps = false)
         {
             double DZ, DZ0, DT0, DU, Z, Z1, Z2, DELTA0, DELTZ0, DELTZ1, DELTZ2, DELTA00, DELTZ = 0d;
             RES = new double[5] { 0, ZA, UA, 0d, 0d };
@@ -3941,7 +3941,7 @@ namespace ARProbaProcessing
 
         // SUBROUTINE MINITAU
         // CALCUL DE LA VALEUR OPTIMALE DE TAU
-        private void MINITAU(float[] ZC, double[] X, float ZA, float NB, double U0, double Q, double Z, double U, double P, double V, out double DELTT, ref double DELTA00)
+        private void MINITAU(double[] ZC, double[] X, double ZA, float NB, double U0, double Q, double Z, double U, double P, double V, out double DELTT, ref double DELTA00)
         {
             double[] Y = new double[15 + 1];
             float T,  T1, T2,  DT;
@@ -4045,7 +4045,7 @@ namespace ARProbaProcessing
         // SUBROUTINE MINIMU
         // CALCUL DU U OPTIMAL
         // EN FONCTION DE Z
-        private void MINIMU(double Z, float GRP, float[] ZC, float ZA, float UA, double U0, float NB, double DELTA00, ref double DELTZ)
+        private void MINIMU(double Z, double GRP, double[] ZC, double ZA, double UA, double U0, float NB, double DELTA00, ref double DELTZ)
         {
             double[] X = new double[15 + 1];
             
