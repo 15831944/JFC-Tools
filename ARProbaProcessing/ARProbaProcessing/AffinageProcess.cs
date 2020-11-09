@@ -112,6 +112,8 @@ namespace ARProbaProcessing
             int COL_TAB_AGE3 = arProba.SignVars["AGE3"].Position;
             int COL_TAB_RUDA = arProba.SignVars["RUDA"].Position;
             int COL_TAB_PIAB = arProba.SignVars["PIAB"].Position;
+
+            GetIndiceUXXX(PathGRPWave + ".desc", out int IND_CSP, out int IND_AGE, out int IND_SEX, out int IND_REG);
             #endregion Definition colonnes
 
             #region entrées lecpanel
@@ -152,7 +154,7 @@ namespace ARProbaProcessing
             #endregion entrées ecrpan1
 
             #region entrées ecrsegpa
-            int SIGN_LINE_LEN_FULL = 694;
+            int SIGN_LINE_LEN_FULL = arProba.SigLineLen + 2;
             string pathSortie5 = Path.Combine(OutputPath, "SORTIE5.TXT");
             string pathSegs = Path.Combine(OutputPath, "POIDSEGS");
             #endregion entrées ecrsegpa
@@ -285,7 +287,7 @@ namespace ARProbaProcessing
 
             float[,,,] ZUPTAUDI = sav1qhpd(NBINDIV, NB_STA_HAB_NOTO, regrs, POIDSEGM, fushab09Indivs, JNByWeek, JN, pathZuptaudi, pathSortiesav1qhpd); // [STATIONS, QH, DATAS ZR-UR-PR-TAUX, CELL];
 
-            float[,,,] Couverture = cgrp75br(PathGRPWave, NbStation, NbGRPModulation, NbGRPStation, ISTAcgrp75br, pathSortie8, pathNOUVOGRP);  // [LV/Sa/Di, QH, 4 + 1, CELL];
+            float[,,,] Couverture = cgrp75br(PathGRPWave, IND_CSP, IND_AGE, IND_SEX, IND_REG, NbStation, NbGRPModulation, NbGRPStation, ISTAcgrp75br, pathSortie8, pathNOUVOGRP);  // [LV/Sa/Di, QH, 4 + 1, CELL];
 
             cont75br(NBINDIV, NB_STA_HAB_NOTO, popLV, popS, popD, Couverture, pathSortie9);
 
@@ -1699,6 +1701,10 @@ namespace ARProbaProcessing
             //  7     18h00 - 20h00 = 8
             //  8     20h00 - 24h00 = 16
             //  9     24h00 - 05h00 = 20
+            double ZR = 0f;
+            double UR = 0f;
+            double PR = 0f;
+            double TAU = 0f;
 
             StringBuilder sbSortie = new StringBuilder();
 
@@ -1781,11 +1787,6 @@ namespace ARProbaProcessing
 
                     if (TREG[1] != 5)
                     {
-                        double ZR = 0f;
-                        double UR = 0f;
-                        double PR = 0f;
-                        double TAU = 0f;
-
                         // BOUCLE CELLULES
                         for (int N1 = 1; N1 <= 16; N1++)
                         {
@@ -2132,7 +2133,7 @@ namespace ARProbaProcessing
                                     }
                                 }
 
-                                POPS = POPS * 10f;
+                                POPS = POPS * 10d;
                                 double DIRAC0 = COMPT[1, IN] / POPS;
                                 double DIRAC1 = ITTP[IN] / POPS;
                                 double PC1 = IZAP[IN] / POPS;
@@ -2149,17 +2150,17 @@ namespace ARProbaProcessing
                                 }
 
                                 double GRP = IPOP * 100d;
-                                GRP = GRP / POPS / 15f;
-                                PR = (IPOP - ITTP[IN] * 15) / 14f;
+                                GRP = GRP / POPS / 15d;
+                                PR = (IPOP - ITTP[IN] * 15) / 14d;
                                 PR = PR / (POPS - COMPT[1, IN] - ITTP[IN]);
                                 for (int I = 1; I <= 15; I++)
                                 {
-                                    Z[I] = C[I, IN] / NCOM[I] / POPS * 100f;
+                                    Z[I] = C[I, IN] / NCOM[I] / POPS * 100d;
                                 }
 
                                 // APPEL DE LA FONCTION DIFFERENCE
 
-                                GRP = GRP / 100f;
+                                GRP = GRP / 100d;
                                 double ZA = DIRAC0;
                                 ZR = IZAP[IN] / POPS;
                                 double UA = ITJP[IN] / POPS;
@@ -2262,7 +2263,10 @@ namespace ARProbaProcessing
             int[,,] PATRON = new int[96 + 1, 15 + 1, NBIND + 1];
             int[,,] JATOU = new int[96 + 1, 4 + 1, NBIND + 1];
             int[] TREG = new int[16 + 1];
-
+            double ZR = 0f;
+            double UR = 0f;
+            double PR = 0f;
+            double TAU = 0f;
             StringBuilder sbSortie = new StringBuilder();
 
             //  id  time
@@ -2354,10 +2358,7 @@ namespace ARProbaProcessing
 
                     if (TREG[1] != 5)
                     {
-                        double ZR = 0f;
-                        double UR = 0f;
-                        double PR = 0f;
-                        double TAU = 0f;
+       
 
                         // BOUCLE CELLULES
                         for (int N1 = 1; N1 <= 16; N1++)
@@ -2495,7 +2496,7 @@ namespace ARProbaProcessing
 
                                 // IMPRESSION DES RESULTATS
                                 int IN = TREG[N1] + 1;
-                                double POPS = 0f;
+                                double POPS = 0d;
                                 for (int I = 1; I <= NBIND; I++)
                                 {
                                     if ((NIV == 5 && NB[IN] == 1) || (KHI2[I, IN + 1] == NB[IN])) POPS = POPS + KHI2[I, 1];
@@ -2517,8 +2518,8 @@ namespace ARProbaProcessing
                                 }
 
                                 double GRP = IPOP * 100;
-                                GRP = GRP / POPS / 4f;
-                                PR = (IPOP - ITTP[IN] * 4f) / 3f;
+                                GRP = GRP / POPS / 4d;
+                                PR = (IPOP - ITTP[IN] * 4d) / 3d;
                                 if (POPS == (COMPT[1, IN] + ITTP[IN]))
                                 {
                                     ZR = COMPT[1, IN] / POPS;
@@ -2536,14 +2537,14 @@ namespace ARProbaProcessing
 
                                     // APPEL DE LA FONCTION DIFFERENCE
 
-                                    GRP = GRP / 100f;
+                                    GRP = GRP / 100d;
                                     double ZA = DIRAC0;
                                     ZR = IZAP[IN] / POPS;
                                     double UA = ITJP[IN] / POPS;
                                     UR = DIRAC1;
 
                                     //WRITE(16, *) GRP, ZA, ZR, UA, UR
-                                    sbSortie.AppendLine($"{GRP}  {ZA}  {ZR}  {UA}  {UR}");
+                                    sbSortie.AppendLine($"{GRP}  {ZA}  {ZR}  {UA}  {UR} {PR} {POPS} {COMPT[1, IN]} {ITTP[IN]}");
 
                                     float ND = 4;
                                     MINIMISE(GRP, Z, ref PR, ref UR, ref ZR, out TAU, ZA, UA, ND, qhps: true); // float GRP, float[] ZC, ref float PR, ref float UR, ref float ZR, out float TAU, float ZA, float UA, float NB)
@@ -2633,6 +2634,10 @@ namespace ARProbaProcessing
             int[,,] PATRON = new int[96 + 1, 15 + 1, NBIND + 1];
             int[,,] JATOU = new int[96 + 1, 4 + 1, NBIND + 1];
             int[] TREG = new int[16 + 1];
+            double ZR = 0f;
+            double UR = 0f;
+            double PR = 0f;
+            double TAU = 0f;
 
             StringBuilder sbSortie = new StringBuilder();
 
@@ -2724,10 +2729,6 @@ namespace ARProbaProcessing
 
                     if (TREG[1] != 5)
                     {
-                        double ZR = 0d;
-                        double UR = 0d;
-                        double PR = 0d;
-                        double TAU = 0d;
                         // BOUCLE CELLULES
                         for (int N1 = 1; N1 <= 16; N1++)
                         {
@@ -2868,12 +2869,12 @@ namespace ARProbaProcessing
 
                                 // IMPRESSION DES RESULTATS
                                 int IN = TREG[N1] + 1;
-                                double POPS = 0f;
+                                double POPS = 0d;
                                 for (int I = 1; I <= NBIND; I++)
                                 {
                                     if ((NIV == 5 && NB[IN] == 1) || (KHI2[I, IN + 1] == NB[IN])) POPS = POPS + KHI2[I, 1];
                                 }
-                                POPS = POPS * 10f;
+                                POPS = POPS * 10d;
                                 double DIRAC0 = COMPT[1, IN] / POPS;
                                 double DIRAC1 = ITTP[IN] / POPS;
                                 double PC1 = IZAP[IN] / POPS;
@@ -2890,8 +2891,8 @@ namespace ARProbaProcessing
                                 }
 
                                 double GRP = IPOP * 100;
-                                GRP = GRP / POPS / 4f;
-                                PR = (IPOP - ITTP[IN] * 4f) / 3f;
+                                GRP = GRP / POPS / 4d;
+                                PR = (IPOP - ITTP[IN] * 4d) / 3d;
                                 if (POPS == (COMPT[1, IN] + ITTP[IN]))
                                 {
                                     ZR = COMPT[1, IN] / POPS;
@@ -2978,7 +2979,9 @@ namespace ARProbaProcessing
         /// <param name="NbGRPStation">Nombre de station dans la fichier de GRP U109</param>
         /// <param name="NotorieteStation"></param>
         /// <returns></returns>
-        private float[,,,] cgrp75br(string PathGRPWave, int NbStation, int NbGRPModulation, int NbGRPStation, int[] ISTA, string pathSortie8, string pathNOUVOGRP)
+        private float[,,,] cgrp75br(string PathGRPWave,
+            int IND_CSP, int IND_AGE, int IND_SEX, int IND_REG, 
+            int NbStation, int NbGRPModulation, int NbGRPStation, int[] ISTA, string pathSortie8, string pathNOUVOGRP)
         {
             if (NbStation == 0
                 || NbGRPModulation == 0
@@ -3040,10 +3043,10 @@ namespace ARProbaProcessing
                     //int IND_REG = 13 + 2;
 
                     // DETERMINATION DU SEGMENT 2020 !!!!!! TODO:
-                    int IND_CSP = 4 + 2;
-                    int IND_AGE = 18 + 2;
-                    int IND_SEX = 3;
-                    int IND_REG = 12 + 2;
+                    //int IND_CSP = 4 + 2;
+                    //int IND_AGE = 18 + 2;
+                    //int IND_SEX = 3;
+                    //int IND_REG = 12 + 2;
 
                     ICSP = 1;
                     if (KHI2[IND_CSP] == 1 || KHI2[IND_CSP] > 4) ICSP = 2;

@@ -983,6 +983,44 @@ namespace ARProbaProcessing
             }
             return res;
         }
+        private void GetIndiceUXXX(string pathUxxxDesc, out int IND_CSP, out int IND_AGE, out int IND_SEX, out int IND_REG)
+        {
+            // Pour pannat 2020
+            IND_CSP = -1;
+            IND_AGE = -1;
+            IND_SEX = -1;
+            IND_REG = -1;
+            string[] lines = File.ReadAllLines(pathUxxxDesc, Encoding.GetEncoding("iso-8859-1"));
+            foreach (string s in lines)
+            {
+                if (s.Contains(": Sexe :"))
+                {
+                    IND_SEX = int.Parse(s.Substring(0, s.IndexOf(':')))+2;
+                }
+                else if (s.Contains("CSP Individu") && s.Contains("7 cl."))
+                {
+                    IND_CSP = int.Parse(s.Substring(0, s.IndexOf(':'))) + 2;
+                }
+                else if (s.Contains("Age") && s.Contains("12 cl."))
+                {
+                    IND_AGE = int.Parse(s.Substring(0, s.IndexOf(':'))) + 2;
+                }
+                else if (s.Contains(": Régions UDA :"))
+                {
+                    IND_REG = int.Parse(s.Substring(0, s.IndexOf(':'))) + 2;
+                }
+                if (IND_SEX != -1 && IND_CSP != -1 && IND_AGE != -1 && IND_REG != -1) break;
+            }
+
+            if (IND_SEX == -1)
+                throw new Exception("GetIndiceUXXX : indice 'Sexe' pas trouve dans " + pathUxxxDesc);
+            if (IND_CSP == -1)
+                throw new Exception("GetIndiceUXXX : indice 'CSP Individu' pas trouve dans " + pathUxxxDesc);
+            if (IND_AGE == -1)
+                throw new Exception("GetIndiceUXXX : indice 'Age (12 cl.)' pas trouve dans " + pathUxxxDesc);
+            if (IND_REG == -1)
+                throw new Exception("GetIndiceUXXX : indice 'Régions UDA' pas trouve dans " + pathUxxxDesc);
+        }
     }
 
     public struct BSupport
