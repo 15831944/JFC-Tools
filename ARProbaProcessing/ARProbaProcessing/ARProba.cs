@@ -63,22 +63,24 @@ namespace ARProbaProcessing
             // PANEL CADRES
             //FilterNatToCadre(@"D:\Work\AR\Probabilisation\FR\Panel Cadre\Panfra", "13");
             //return;
-            int year = 2019;
+            int year = 2020;
             Console.WriteLine(2019.ToString("0000") + " ==>");
-            string panelName = "Panel_National";
+            string panelName = "Panel_Cadre";
+            Enquete enquete = Enquete.PanelCadre;
             // PANEL NATIONAL
-            var process = new ARProba(@"C:\Affinage\" + panelName + @"\Panfra", (year % 100).ToString("00"), "");
+            var process = new ARProba(@"C:\Affinage\" + panelName + @"\Panfra", (year % 100).ToString("00"), "", enquete);
 
             // PANEL IDF
             //var process = new ARProba(@"C:\Affinage\Panel_Idf\Panfra", "20", "");
             //            process.Run();
 
-            string inputDir = @"c:\Affinage\Panel_National\Panfra" + (year % 100).ToString("00") + @"\Input";
-            string outputDir = @"c:\Affinage\Panel_National\Panfra" + (year % 100).ToString("00") + @"\OutputC";
+            string inputDir = @"c:\Affinage\" + panelName + @"\Panfra" + (year % 100).ToString("00") + @"\Input";
+            string outputDir = @"c:\Affinage\" + panelName + @"\Panfra" + (year % 100).ToString("00") + @"\OutputC";
 
             if (!Directory.Exists(outputDir)) Directory.CreateDirectory(outputDir);
 
             new AffinageProcess().Run(process,
+                enquete,
                 inputDir,
                 outputDir
                 );
@@ -271,7 +273,7 @@ namespace ARProbaProcessing
 
         #endregion
 
-        public ARProba(string basePathPrefix, string yearName, string basePathSuffix)
+        public ARProba(string basePathPrefix, string yearName, string basePathSuffix, Enquete enquete)
         {
             // Init manual parameters
 
@@ -327,7 +329,7 @@ namespace ARProbaProcessing
             }
 
             // Load the station list
-            LoadSationList();
+            LoadSationList(enquete);
 
             SigFileName = string.Format(@"Bde\sig{0}jfc.bde", YearName);
 
@@ -356,7 +358,7 @@ namespace ARProbaProcessing
 
         }
 
-        private void LoadSationList()
+        private void LoadSationList(Enquete enquete)
         {
             // Load Station list
             string staListFile = InputPath + string.Format(@"xls\sta_list.csv");
@@ -492,12 +494,11 @@ namespace ARProbaProcessing
             // Read Uxx Audience file
             string uxxFile = "";
             if (int.Parse(YearName) <= 19)
-                uxxFile = InputPath + string.Format(@"U" + YearName + "1.sup.desc");
+                uxxFile = InputPath + string.Format(EnqueteTools.GetSupFileChar(enquete) + YearName + "1.sup.desc");
             else
-                uxxFile = InputPath + string.Format(@"U1" + YearName + ".sup.desc");
+                uxxFile = InputPath + string.Format(EnqueteTools.GetSupFileChar(enquete) + "1" + YearName + ".sup.desc");
             //string uxxFile = InputPath + string.Format(@"U" + YearName + "1.sup.desc");
             //string uxxFile = InputPath + string.Format(@"C1" + YearName + ".sup.desc");
-
             var grpStaFile = File.ReadAllLines(uxxFile, Encoding.GetEncoding("Windows-1252"));
 
             List<string> u1xxList = new List<string>();
@@ -539,10 +540,9 @@ namespace ARProbaProcessing
             List<string> exceptionList = new List<string>();
             string uxxExceptFile = "";
             if (int.Parse(YearName) <= 19)
-                uxxExceptFile = InputPath + string.Format(@"U" + YearName + "1_sta_exception.desc");
+                uxxExceptFile = InputPath + string.Format(EnqueteTools.GetSupFileChar(enquete) + YearName + "1_sta_exception.desc");
             else
-                uxxExceptFile = InputPath + string.Format(@"U1" + YearName + "_sta_exception.desc");
-            //string uxxExceptFile = InputPath + string.Format(@"C1" + YearName + "_sta_exception.desc");
+                uxxExceptFile = InputPath + string.Format(EnqueteTools.GetSupFileChar(enquete) + "1" + YearName + "_sta_exception.desc");
 
             if (!File.Exists(uxxExceptFile))
             {
@@ -646,8 +646,6 @@ namespace ARProbaProcessing
                 throw new Exception("Exception: " + exceptionList.ToString());
             }
 
-               
-
             // Set IDF flag if any
             foreach (var sta in list)
             {
@@ -708,11 +706,9 @@ namespace ARProbaProcessing
 
             string uxxPopFile = "";
             if (int.Parse(YearName) <= 19)
-                uxxPopFile = InputPath + string.Format(@"U" + YearName + "1_Pop.txt");
+                uxxPopFile = InputPath + string.Format(EnqueteTools.GetSupFileChar(enquete) + YearName + "1_Pop.txt");
             else
-                uxxPopFile = InputPath + string.Format(@"U1" + YearName + "_Pop.txt");
-
-            //string uxxPopFile = InputPath + string.Format(@"C1" + YearName + "_Pop.txt");
+                uxxPopFile = InputPath + string.Format(EnqueteTools.GetSupFileChar(enquete) + "1" + YearName + "_Pop.txt");
 
             var popTxtFile = File.ReadAllLines(uxxPopFile, Encoding.GetEncoding("Windows-1252"));
 

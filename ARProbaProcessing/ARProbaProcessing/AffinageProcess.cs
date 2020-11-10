@@ -6,8 +6,11 @@ using System.Text;
 
 namespace ARProbaProcessing
 {
+
+
     public partial class AffinageProcess
     {
+
         private int[] NOTE = new int[25 + 1] { 999999, 0, 12, 6, 4, 3, 3, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
         private int[] NBIT = new int[] { 0, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1 };
         private int[] SEG1 = new int[] { 999999, 1, 1, 2, 3, 3, 4, 4, 5, 6, 6, 7, 8, 9, 9, 10, 10 };
@@ -24,7 +27,7 @@ namespace ARProbaProcessing
                 7,7,7,7,7,7,7,7,
                 8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8};
 
-        public void Run(ARProba arProba, string inputPath, string OutputPath)
+        public void Run(ARProba arProba, Enquete enquete, string inputPath, string OutputPath)
         {
             #region BeginProcess
             bool ModeDebug = false;
@@ -62,9 +65,10 @@ namespace ARProbaProcessing
             int year = 2000 + int.Parse(arProba.YearName);
             string PathGRPWave = "";
             if (year <= 2019)
-                PathGRPWave = Path.Combine(inputPath, "U" + (year % 100).ToString("00") + "1.SUP");
+                PathGRPWave = Path.Combine(inputPath, EnqueteTools.GetSupFileChar(enquete) + (year % 100).ToString("00") + "1.SUP");
             else
-                PathGRPWave = Path.Combine(inputPath, "U1" + (year % 100).ToString("00") + ".SUP");
+                PathGRPWave = Path.Combine(inputPath, EnqueteTools.GetSupFileChar(enquete) +"1" + (year % 100).ToString("00") + ".SUP");
+
             List<int> lstPoids;
             List<int> lstAges;
             List<int> lstFiltreIDF;
@@ -113,7 +117,7 @@ namespace ARProbaProcessing
             int COL_TAB_RUDA = arProba.SignVars["RUDA"].Position;
             int COL_TAB_PIAB = arProba.SignVars["PIAB"].Position;
 
-            GetIndiceUXXX(PathGRPWave + ".desc", out int IND_CSP, out int IND_AGE, out int IND_SEX, out int IND_REG);
+            GetIndiceUXXX(PathGRPWave + ".desc", enquete, out int IND_CSP, out int IND_AGE, out int IND_SEX, out int IND_REG);
             #endregion Definition colonnes
 
             #region entrées lecpanel

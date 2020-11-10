@@ -45,6 +45,7 @@
   <ItemGroup>
     <Compile Include="AffinageProcess.cs" />
     <Compile Include="AffinageProcess2.cs" />
+    <Compile Include="EnqueteEnum.cs" />
     <Compile Include="F04Processor.cs" />
     <Compile Include="ARProba.cs" />
     <Compile Include="FortranProcessor.cs" />

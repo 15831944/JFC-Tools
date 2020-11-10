@@ -983,7 +983,8 @@ namespace ARProbaProcessing
             }
             return res;
         }
-        private void GetIndiceUXXX(string pathUxxxDesc, out int IND_CSP, out int IND_AGE, out int IND_SEX, out int IND_REG)
+
+        private void GetIndiceUXXX(string pathUxxxDesc, Enquete enquete, out int IND_CSP, out int IND_AGE, out int IND_SEX, out int IND_REG)
         {
             // Pour pannat 2020
             IND_CSP = -1;
@@ -997,11 +998,13 @@ namespace ARProbaProcessing
                 {
                     IND_SEX = int.Parse(s.Substring(0, s.IndexOf(':')))+2;
                 }
-                else if (s.Contains("CSP Individu") && s.Contains("7 cl."))
+                else if ((enquete == Enquete.PanelNational && s.Contains("CSP Individu") && s.Contains("7 cl.")) ||
+                    (enquete == Enquete.PanelCadre && s.Contains("CSP Individu")))
                 {
                     IND_CSP = int.Parse(s.Substring(0, s.IndexOf(':'))) + 2;
                 }
-                else if (s.Contains("Age") && s.Contains("12 cl."))
+                else if ((enquete == Enquete.PanelNational && s.Contains("Age") && s.Contains("12 cl.")) ||
+                         (enquete == Enquete.PanelCadre && s.Contains("Age sur 7 Tranches")))
                 {
                     IND_AGE = int.Parse(s.Substring(0, s.IndexOf(':'))) + 2;
                 }
