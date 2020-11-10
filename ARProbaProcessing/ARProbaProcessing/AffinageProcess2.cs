@@ -675,16 +675,15 @@ namespace ARProbaProcessing
             }
             //      CLOSE(8)
 
-
             // BOUCLE STATIONS
             for (int IS = 1; IS <= NBSTA; IS++)
-            { 
+            {
                 // BOUCLE SEMAINE SAMEDI DIMANCHE
-                for (int IU = 1; IU <= 3; IU++)
-                { 
+                for (int IU = 1; IU <= 1; IU++)
+                {
                     // BOUCLE TRANCHES HORAIRES(EN 1 / 2 HEURE)
-                    for (int ITR = 1; ITR <= 48; ITR++)
-                    { 
+                    for (int ITR = 6; ITR <= 48; ITR++)
+                    {
                         //  TRANCHE HORAIRE 5h 29h
                         // BOUCLE INDIVIDUS
                         for (int IND = 1; IND <= NIND; IND++)
@@ -702,12 +701,40 @@ namespace ARProbaProcessing
                 }
             }
 
+            //// BOUCLE STATIONS
+            //for (int IS = 1; IS <= NBSTA; IS++)
+            //{ 
+            //    // BOUCLE SEMAINE SAMEDI DIMANCHE
+            //    for (int IU = 1; IU <= 3; IU++)
+            //    { 
+            //        // BOUCLE TRANCHES HORAIRES(EN 1 / 2 HEURE)
+            //        for (int ITR = 1; ITR <= 48; ITR++)
+            //        { 
+            //            //  TRANCHE HORAIRE 5h 29h
+            //            // BOUCLE INDIVIDUS
+            //            for (int IND = 1; IND <= NIND; IND++)
+            //            {
+            //                if (BSUP.KECR[IS][IU, ITR, IND] > 0)  // [NBSTA + 1, 3 + 1, 48 + 1, NIND + 1]
+            //                {
+            //                    for (int IN = 1; IN <= N; IN++)
+            //                    {
+            //                        if (PANCIB[IN, IND] == 1) TABRES[IN, IS, IND] = 1;
+            //                        if (PANCIB[IN, IND] == 1) TABRES[IN, NBSTATOTAL, IND] = 1;
+            //                    }
+            //                }
+            //            }
+            //        }
+            //    }
+            //}
+
             Console.WriteLine("IPOPS");
             for (int I = 1; I <= N; I++)
                 Console.WriteLine(IPOPS[I].ToString());
 
-            if (File.Exists(pathAS5H5H)) File.Delete(pathAS5H5H);
-            StreamWriter swPenetr = new StreamWriter(File.Create(pathAS5H5H));
+            if (File.Exists(pathAS5H5H + "c")) File.Delete(pathAS5H5H + "c");
+            StreamWriter swPenetr = new StreamWriter(File.Create(pathAS5H5H + "c"));
+            //if (File.Exists(pathAS5H5H)) File.Delete(pathAS5H5H);
+            //StreamWriter swPenetr = new StreamWriter(File.Create(pathAS5H5H));
             // Header
             swPenetr.WriteLine(headerAS5H5H);
 

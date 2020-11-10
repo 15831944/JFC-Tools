@@ -340,7 +340,7 @@ namespace ARProbaProcessing
                 }
             }
 
-            File.WriteAllText(OutputPath + "StationList.txt", staList.ToString());
+            File.WriteAllText(OutputPath + @"\StationList.txt", staList.ToString());
             #endregion Endprocess
         }
 
