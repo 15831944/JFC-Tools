@@ -58,22 +58,29 @@ namespace ARProbaProcessing
 
             bool ModeDebug = false;
 
-            Console.WriteLine("2020 ==>"); 
+            
 
             // PANEL CADRES
             //FilterNatToCadre(@"D:\Work\AR\Probabilisation\FR\Panel Cadre\Panfra", "13");
             //return;
-
+            int year = 2019;
+            Console.WriteLine(2019.ToString("0000") + " ==>");
+            string panelName = "Panel_National";
             // PANEL NATIONAL
-            var process = new ARProba(@"C:\Affinage\Panel_National\Panfra", "20", "");
+            var process = new ARProba(@"C:\Affinage\" + panelName + @"\Panfra", (year % 100).ToString("00"), "");
 
             // PANEL IDF
             //var process = new ARProba(@"C:\Affinage\Panel_Idf\Panfra", "20", "");
-            //process.Run();
+            //            process.Run();
+
+            string inputDir = @"c:\Affinage\Panel_National\Panfra" + (year % 100).ToString("00") + @"\Input";
+            string outputDir = @"c:\Affinage\Panel_National\Panfra" + (year % 100).ToString("00") + @"\OutputC";
+
+            if (!Directory.Exists(outputDir)) Directory.CreateDirectory(outputDir);
 
             new AffinageProcess().Run(process,
-                @"c:\Affinage\Panel_National\Panfra20\Input",
-                @"c:\Affinage\Panel_National\Panfra20\OutputC"
+                inputDir,
+                outputDir
                 );
 
             return;
