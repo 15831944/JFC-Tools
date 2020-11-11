@@ -679,10 +679,10 @@ namespace ARProbaProcessing
             for (int IS = 1; IS <= NBSTA; IS++)
             {
                 // BOUCLE SEMAINE SAMEDI DIMANCHE
-                for (int IU = 1; IU <= 1; IU++)
+                for (int IU = 1; IU <= 3; IU++)
                 {
                     // BOUCLE TRANCHES HORAIRES(EN 1 / 2 HEURE)
-                    for (int ITR = 6; ITR <= 48; ITR++)
+                    for (int ITR = 1; ITR <= 48; ITR++)
                     {
                         //  TRANCHE HORAIRE 5h 29h
                         // BOUCLE INDIVIDUS
