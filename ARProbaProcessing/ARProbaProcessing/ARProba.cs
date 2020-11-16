@@ -58,37 +58,42 @@ namespace ARProbaProcessing
 
             bool ModeDebug = false;
 
-            
+            FAffinage fAffinage = new FAffinage();
+            if (fAffinage.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
 
-            // PANEL CADRES
-            //FilterNatToCadre(@"D:\Work\AR\Probabilisation\FR\Panel Cadre\Panfra", "13");
-            //return;
-            int year = 2020;
-            Console.WriteLine(2019.ToString("0000") + " ==>");
-            string panelName = "Panel_Cadre";
-            Enquete enquete = Enquete.PanelCadre;
-            // PANEL NATIONAL
-            var process = new ARProba(@"C:\Affinage\" + panelName + @"\Panfra", (year % 100).ToString("00"), "", enquete);
+                // PANEL CADRES
+                //FilterNatToCadre(@"D:\Work\AR\Probabilisation\FR\Panel Cadre\Panfra", "13");
+                //return;
+                int year = fAffinage.GetYear();
+                Console.WriteLine(year.ToString("0000") + " ==>");
+                string panelName = fAffinage.GetDirName(); // "Panel_Cadre";
+                Enquete enquete = fAffinage.GetEnquete();
 
-            // PANEL IDF
-            //var process = new ARProba(@"C:\Affinage\Panel_Idf\Panfra", "20", "");
-            //            process.Run();
+                // PANEL NATIONAL
+                var process = new ARProba(@"C:\Affinage\" + panelName + @"\Panfra", (year % 100).ToString("00"), "", enquete);
 
-            string inputDir = @"c:\Affinage\" + panelName + @"\Panfra" + (year % 100).ToString("00") + @"\Input";
-            string outputDir = @"c:\Affinage\" + panelName + @"\Panfra" + (year % 100).ToString("00") + @"\OutputC";
+                // PANEL IDF
+                //var process = new ARProba(@"C:\Affinage\Panel_Idf\Panfra", "20", "");
+                //            process.Run();
 
-            if (!Directory.Exists(outputDir)) Directory.CreateDirectory(outputDir);
+                string inputDir = @"c:\Affinage\" + panelName + @"\Panfra" + (year % 100).ToString("00") + @"\Input";
+                string outputDir = @"c:\Affinage\" + panelName + @"\Panfra" + (year % 100).ToString("00") + @"\OutputC";
 
-            new AffinageProcess().Run(process,
-                enquete,
-                inputDir,
-                outputDir
-                );
+                if (!Directory.Exists(outputDir)) Directory.CreateDirectory(outputDir);
 
-            return;
-            process.Run();
-            if (!ModeDebug)
-                process.TestCouv();    // en 1ere phase en commentaire (Debug) et mettre en 2eme phase en mode Release
+                new AffinageProcess().Run(process,
+                    enquete,
+                    inputDir,
+                    outputDir
+                    );
+
+                return;
+            }
+
+            //process.Run();
+            //if (!ModeDebug)
+            //    process.TestCouv();    // en 1ere phase en commentaire (Debug) et mettre en 2eme phase en mode Release
 
             // HAVAS - 1/2 HEURE
             // process.ExportControl();
@@ -99,7 +104,7 @@ namespace ARProbaProcessing
             ////process.Run();
             //process.TestCouv();
 
-            
+
             Console.WriteLine("Process done: Press a key...");
             Console.In.ReadLine();
 
@@ -292,7 +297,7 @@ namespace ARProbaProcessing
             //OutputPath = @"C:\Work\AR\Probabilisation\FR\Panel National\Panfra10\Output\";
 
             //ProgramPath = @"C:\Work\AR\Probabilisation\FR\Panel National\Panfra10\Program\";
-            
+
             //YearName = "10";
 
 
@@ -477,16 +482,16 @@ namespace ARProbaProcessing
 
                     if (item == null)
                         throw new Exception("Error could not find the station: " + stationBaseName);
-                    
+
                     //--------------- TEST--------------
-                   /* if (item.Mode == Station.eSignVariable.Habit)
-                    {
-                        int test = 0;
-                    }
-                    else
-                    {
-                        item.*Mode = Station.eSignVariable.Notoriety;
-                    }*/
+                    /* if (item.Mode == Station.eSignVariable.Habit)
+                     {
+                         int test = 0;
+                     }
+                     else
+                     {
+                         item.*Mode = Station.eSignVariable.Notoriety;
+                     }*/
                     item.Mode = Station.eSignVariable.Notoriety;
                     item.Index = index + modalityIdx;
 
@@ -641,7 +646,7 @@ namespace ARProbaProcessing
 
             if (exceptionList.Count > 0)
             {
-                using (var l_file = new StreamWriter(Path.Combine(InputPath,"Exception_provenantducode.desc")))
+                using (var l_file = new StreamWriter(Path.Combine(InputPath, "Exception_provenantducode.desc")))
                 {
                     foreach (String i_exception in exceptionList)
                     {
@@ -1550,18 +1555,18 @@ namespace ARProbaProcessing
 
         public void Control()
         {
-            using (var lwriter =  new StreamWriter("control.txt"))
+            using (var lwriter = new StreamWriter("control.txt"))
             {
                 lwriter.WriteLine("stations NB_STA_ALL_HAB");
                 foreach (Station station in this.StationList)
                 {
-                   lwriter.WriteLine("station "+station.Name+" mode "+station.Mode );
+                    lwriter.WriteLine("station " + station.Name + " mode " + station.Mode);
                 }
                 lwriter.WriteLine("");
                 foreach (Station station in this.StationList)
                 {
                     if (station.Mode == Station.eSignVariable.Habit)
-                        lwriter.WriteLine("habit station " + station.Name );
+                        lwriter.WriteLine("habit station " + station.Name);
                 }
             }
 
@@ -1572,6 +1577,7 @@ namespace ARProbaProcessing
 
         public void Run()
         {
+
             bool ModeDebug = false;
 
             // Create Output JFC folder if it does not exist
@@ -1633,7 +1639,7 @@ namespace ARProbaProcessing
             ProcessFortranFile(fortranProcessor, "penetr", run);
             ProcessFortranFile(fortranProcessor, "asympt", run);
 
-            
+
             // Make station list
             StringBuilder staList = new StringBuilder();
             staList.AppendLine("=====Nat=======");
@@ -1654,7 +1660,6 @@ namespace ARProbaProcessing
             }
 
             File.WriteAllText(OutputPath + "StationList.txt", staList.ToString());
-
         }
 
         public void TestCouv()
@@ -2021,7 +2026,7 @@ namespace ARProbaProcessing
             }
 
         }
-               
+
         // Récupère path pour les fichiers (3) générés pas Kantar
         // soit
         // 1/ U1YY.sup.desc             ou  C1YY.sup.desc ou

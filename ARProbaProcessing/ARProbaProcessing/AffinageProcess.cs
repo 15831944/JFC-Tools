@@ -29,6 +29,8 @@ namespace ARProbaProcessing
 
         public void Run(ARProba arProba, Enquete enquete, string inputPath, string OutputPath)
         {
+ 
+
             #region BeginProcess
             bool ModeDebug = false;
 

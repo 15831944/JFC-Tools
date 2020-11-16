@@ -33,9 +33,14 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -48,9 +53,20 @@
     <Compile Include="EnqueteEnum.cs" />
     <Compile Include="F04Processor.cs" />
     <Compile Include="ARProba.cs" />
+    <Compile Include="FAffinage.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FAffinage.Designer.cs">
+      <DependentUpon>FAffinage.cs</DependentUpon>
+    </Compile>
     <Compile Include="FortranProcessor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestProcessor.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="FAffinage.resx">
+      <DependentUpon>FAffinage.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
