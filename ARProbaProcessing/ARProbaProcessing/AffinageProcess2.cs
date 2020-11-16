@@ -1031,7 +1031,8 @@ namespace ARProbaProcessing
                     IND_CSP = int.Parse(s.Substring(0, s.IndexOf(':'))) + 2;
                 }
                 else if ((enquete == Enquete.PanelNational && s.Contains("Age") && s.Contains("12 cl.")) ||
-                         (enquete == Enquete.PanelCadre && s.Contains("Age sur 7 Tranches")))
+                         (enquete == Enquete.PanelCadre && s.Contains("Age sur 7 Tranches")) ||
+                         (enquete == Enquete.PanelIleDeFrance && s.Contains("Age") && s.Contains("13 cl.")))
                 {
                     IND_AGE = int.Parse(s.Substring(0, s.IndexOf(':'))) + 2;
                 }
@@ -1039,16 +1040,18 @@ namespace ARProbaProcessing
                 {
                     IND_REG = int.Parse(s.Substring(0, s.IndexOf(':'))) + 2;
                 }
-                if (IND_SEX != -1 && IND_CSP != -1 && IND_AGE != -1 && IND_REG != -1) break;
+                if ((enquete == Enquete.PanelIleDeFrance && IND_SEX != -1 && IND_AGE != -1)
+                    || (enquete != Enquete.PanelIleDeFrance && IND_SEX != -1 && IND_CSP != -1 && IND_AGE != -1 && IND_REG != -1))
+                    break;
             }
 
             if (IND_SEX == -1)
                 throw new Exception("GetIndiceUXXX : indice 'Sexe' pas trouve dans " + pathUxxxDesc);
-            if (IND_CSP == -1)
+            if (IND_CSP == -1 && enquete != Enquete.PanelIleDeFrance)
                 throw new Exception("GetIndiceUXXX : indice 'CSP Individu' pas trouve dans " + pathUxxxDesc);
             if (IND_AGE == -1)
                 throw new Exception("GetIndiceUXXX : indice 'Age (12 cl.)' pas trouve dans " + pathUxxxDesc);
-            if (IND_REG == -1)
+            if (IND_REG == -1 && enquete != Enquete.PanelIleDeFrance)
                 throw new Exception("GetIndiceUXXX : indice 'Régions UDA' pas trouve dans " + pathUxxxDesc);
         }
     }

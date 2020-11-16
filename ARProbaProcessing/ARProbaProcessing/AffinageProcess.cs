@@ -62,7 +62,7 @@ namespace ARProbaProcessing
 
             int NbStation = arProba.HabAndNotoStationCount;
             int NB_STA_HAB_NOTO = arProba.HabAndNotoStationCount;
-            int NbGRPModulation = arProba.U1xxModalityCount + 2;
+            int NbGRPModulation = arProba.U1xxModalityCount + (enquete == Enquete.PanelIleDeFrance ? 0 : 2);
             int NbGRPStation = arProba.U1xxStationCount;
             int year = 2000 + int.Parse(arProba.YearName);
             string PathGRPWave = "";
@@ -293,9 +293,13 @@ namespace ARProbaProcessing
 
             float[,,,] ZUPTAUDI = sav1qhpd(NBINDIV, NB_STA_HAB_NOTO, regrs, POIDSEGM, fushab09Indivs, JNByWeek, JN, pathZuptaudi, pathSortiesav1qhpd); // [STATIONS, QH, DATAS ZR-UR-PR-TAUX, CELL];
 
-            float[,,,] Couverture = cgrp75br(PathGRPWave, IND_CSP, IND_AGE, IND_SEX, IND_REG, NbStation, NbGRPModulation, NbGRPStation, ISTAcgrp75br, pathSortie8, pathNOUVOGRP);  // [LV/Sa/Di, QH, 4 + 1, CELL];
+            float[,,,] Couverture = 
+                enquete== Enquete.PanelIleDeFrance ?
+                cgrp75br_Idf(PathGRPWave, IND_AGE, IND_SEX, NbStation, NbGRPModulation, NbGRPStation, ISTAcgrp75br, pathSortie8, pathNOUVOGRP)  // [LV/Sa/Di, QH, 4 + 1, CELL];
+                :
+                cgrp75br(PathGRPWave, IND_CSP, IND_AGE, IND_SEX, IND_REG, NbStation, NbGRPModulation, NbGRPStation, ISTAcgrp75br, pathSortie8, pathNOUVOGRP);  // [LV/Sa/Di, QH, 4 + 1, CELL];
 
-            cont75br(NBINDIV, NB_STA_HAB_NOTO, popLV, popS, popD, Couverture, pathSortie9);
+            cont75br(NBINDIV, NB_STA_HAB_NOTO, popLV, popS, popD, Couverture, (enquete == Enquete.PanelIleDeFrance ?11:37), pathSortie9);
 
             float[,,,] ZUPTAUSECOR = cnzuptse(NBINDIV, NB_STA_HAB_NOTO, pathCnzuptse, pathzuptauseCor, Couverture, regrs, ZUPTAUSE);  // float[STATIONS, QH, DATAS ZR-UR-PR-TAUX, CELL];
 
@@ -3211,7 +3215,173 @@ namespace ARProbaProcessing
             return COUV;
         }
 
-        private void cont75br(int NBIND, int NBSTA, int popLV, int popS, int popD, float[,,,] Couverture, string pathCouv)
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="PathGRPWave"> Chemin pour accèder au fichier de la 126000</param>
+        /// <param name="NbStation"> Le nombre de station correspond au nombre de stations(30) -1 pour Total Radio(et Total TV)</param>
+        /// <param name="NbGRPModulation">Nombre de modalités dans le fichier de GRP 89(Attention + 2 pour le vecteur de poids et un vecteur vide dans le fichier U109)</param>
+        /// <param name="NbGRPStation">Nombre de station dans la fichier de GRP U109</param>
+        /// <param name="NotorieteStation"></param>
+        /// <returns></returns>
+        private float[,,,] cgrp75br_Idf(string PathGRPWave,
+            int IND_AGE, int IND_SEX,
+            int NbStation, int NbGRPModulation, int NbGRPStation, int[] ISTA, string pathSortie8, string pathNOUVOGRP)
+        {
+            if (NbStation == 0
+                || NbGRPModulation == 0
+                || NbGRPStation == 0)
+                return null;
+
+
+            // PANEL RADIO 08 MEDIAMETRIE(nouveau format)
+            // CALCUL DES GRP 75000 POUR CALAGE
+
+            float[,,,] COUV = new float[11 + 1, 3 + 1, NbStation + 1, 96 + 1];
+            int[,] IPOP = new int[11 + 1, 3 + 1];
+
+            int[] KHI2 = new int[NbGRPModulation + 1];
+            //int[] ISTA = new int[NbStation + 1];
+            int ICSP, IREG, ISEX, IAGE, ISEG=0, COMPT;
+            int[,] ZLEC = new int[96 + 1, NbGRPStation + 1];
+
+            //
+            // INITIALISATIONS
+            //
+            int IG = 0;
+
+            //
+            //                              OUVERTURE FICHIER
+            //
+            FileStream fs = File.Open(PathGRPWave, FileMode.Open);
+            fs.Seek(0, SeekOrigin.Begin);
+            BinaryReader br = new BinaryReader(fs);
+
+            COMPT = 0;
+            IG = 0;
+
+            while (fs.Position != fs.Length)
+            {
+                // BOUCLE INDIVIDUS
+                for (int i = 1; i <= NbGRPModulation; i++)
+                    KHI2[i] = br.ReadUInt16();
+
+                for (int j = 1; j <= NbGRPStation; j++)
+                    for (int i = 1; i <= 96; i++)
+                        ZLEC[i, j] = br.ReadByte();
+
+                int IPERS = KHI2[1];
+                if (IPERS > 0)
+                {
+                    IG = IG + 1;
+                    Console.WriteLine(IG);
+
+                    int IU = 1;
+                    if (KHI2[2] == 6) IU = 2;
+                    if (KHI2[2] == 7) IU = 3;
+
+                    ISEX = KHI2[IND_SEX];
+                    if (ISEX > 2) ISEX = 2;
+                    IAGE = 1; // < 35
+
+                    if (KHI2[IND_AGE] > 6) IAGE = 2;
+                    if (KHI2[IND_AGE] > 11) IAGE = 3;
+                    if ((IAGE == 1) == (ISEX == 1)) ISEG = 1;
+                    if ((IAGE == 1) == (ISEX == 2)) ISEG = 2;
+                    if ((IAGE == 2) == (ISEX == 1)) ISEG = 3;
+                    if ((IAGE == 2) == (ISEX == 2)) ISEG = 4;
+                    if (IAGE == 3) ISEG = 5;
+                    if (ISEG < 1 || ISEG > 5)
+                    {
+                        Console.WriteLine($" ISEG= {ISEG}");
+                        throw new Exception(" cgrp75 : ISEG= {ISEG} (ISEG < 1 || ISEG > 5)");
+                    }
+                    else
+                    {
+                        int ISE2 = 5 + SEG1[ISEG];
+                        int ISE3 = 8 + SEG2[SEG1[ISEG]];
+                        IPOP[ISEG, IU] += IPERS;
+                        IPOP[ISE2, IU] += IPERS;
+                        IPOP[ISE3, IU] += IPERS;
+                        IPOP[11, IU] += IPERS;
+
+                        // BOUCLE STATIONS
+                        for (int IS = 1; IS <= NbStation; IS++)
+                        {
+                            int NS = ISTA[IS];
+
+                            if (NS != 0)
+                            {
+                                //                              BOUCLE 1 / 4h
+                                for (int IQ = 1; IQ <= 96; IQ++)
+                                {
+                                    if (ZLEC[IQ, NS] > 0)
+                                    {
+                                        COUV[ISEG, IU, IS, IQ] += IPERS * ZLEC[IQ, NS];
+
+                                        COUV[ISE2, IU, IS, IQ] += IPERS * ZLEC[IQ, NS];
+
+                                        COUV[ISE3, IU, IS, IQ] += IPERS * ZLEC[IQ, NS];
+
+                                        COUV[11, IU, IS, IQ] += IPERS * ZLEC[IQ, NS];
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    if (ISEG == 2) COMPT = COMPT + 1;
+                }
+            }
+            br.Close();
+            fs.Close();
+
+            if (File.Exists(pathSortie8)) File.Delete(pathSortie8);
+            if (File.Exists(pathNOUVOGRP)) File.Delete(pathNOUVOGRP);
+            StringBuilder sbSortie8 = new StringBuilder();
+
+            sbSortie8.AppendLine(" NBGUS: " + IG.ToString());
+            for (int I = 1; I <= 11; I++)
+            {
+                sbSortie8.Append(I.ToString("000") + " : ");
+
+                for (int J = 1; J <= 3; J++)
+                {
+                    sbSortie8.Append(IPOP[I, J].ToString("").PadLeft(9) + " ");
+
+                    for (int K = 1; K <= NbStation; K++)
+                    {
+                        for (int L = 1; L <= 96; L++)
+                        {
+                             COUV[I, J, K, L] = COUV[I, J, K, L] / 12f / Convert.ToSingle(IPOP[I, J]);
+                        }
+                    }
+
+                }
+                sbSortie8.AppendLine();
+            }
+            File.AppendAllText(pathSortie8, sbSortie8.ToString());
+
+            using (BinaryWriter writer = new BinaryWriter(File.Open(pathNOUVOGRP, FileMode.Create)))
+            {
+                for (int L = 1; L <= 96; L++)
+                {
+                    for (int K = 1; K <= NbStation; K++)
+                    {
+                        for (int J = 1; J <= 3; J++)
+                        {
+                            for (int I = 1; I <= 11; I++)
+                                writer.Write(COUV[I, J, K, L]);
+                        }
+
+                    }
+                }
+            }
+
+            return COUV;
+        }
+
+        private void cont75br(int NBIND, int NBSTA, int popLV, int popS, int popD, float[,,,] Couverture, int idxTot, string pathCouv)
         {
             // PANEL RADIO 08 MEDIAMETRIE(nouveau format)
             // CONTROLE DES GRP 75000 POUR CALAGE
@@ -3231,7 +3401,7 @@ namespace ARProbaProcessing
                     sb.Append($"{I.ToString("0000")} : ");
                     for (int J = 1; J <= 3; J++)
                     {
-                        float val = Couverture[37, J, IP, I] * POP[J];
+                        float val = Couverture[idxTot, J, IP, I] * POP[J];
                         int iVal = Convert.ToInt32(Math.Truncate( (val + 500f) / 1000f));
                         sb.Append($" {iVal.ToString().PadLeft(8)} ");
                     }

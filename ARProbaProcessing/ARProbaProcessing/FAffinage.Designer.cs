@@ -43,7 +43,7 @@
             this.cbo_panel.Items.AddRange(new object[] {
             "National",
             "Cadre",
-            "Ile de de France"});
+            "Ile de France"});
             this.cbo_panel.Location = new System.Drawing.Point(102, 26);
             this.cbo_panel.Name = "cbo_panel";
             this.cbo_panel.Size = new System.Drawing.Size(440, 28);
@@ -109,7 +109,7 @@
             this.btnOk.Text = "OK";
             this.btnOk.UseVisualStyleBackColor = true;
             // 
-            // Form1
+            // FAffinage
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -120,7 +120,7 @@
             this.Controls.Add(this.nudYear);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.cbo_panel);
-            this.Name = "Form1";
+            this.Name = "FAffinage";
             this.Text = "Form1";
             ((System.ComponentModel.ISupportInitialize)(this.nudYear)).EndInit();
             this.ResumeLayout(false);

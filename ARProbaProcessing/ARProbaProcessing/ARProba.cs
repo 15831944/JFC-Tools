@@ -66,7 +66,7 @@ namespace ARProbaProcessing
                 //FilterNatToCadre(@"D:\Work\AR\Probabilisation\FR\Panel Cadre\Panfra", "13");
                 //return;
                 int year = fAffinage.GetYear();
-                Console.WriteLine(year.ToString("0000") + " ==>");
+                Console.WriteLine(2019.ToString("0000") + " ==>");
                 string panelName = fAffinage.GetDirName(); // "Panel_Cadre";
                 Enquete enquete = fAffinage.GetEnquete();
 
@@ -338,7 +338,10 @@ namespace ARProbaProcessing
             }
 
             // Load the station list
-            LoadSationList(enquete);
+            if (enquete != Enquete.PanelIleDeFrance)
+                LoadSationList(enquete);
+            else
+                LoadSationList_IDF(enquete);
 
             SigFileName = string.Format(@"Bde\sig{0}jfc.bde", YearName);
 

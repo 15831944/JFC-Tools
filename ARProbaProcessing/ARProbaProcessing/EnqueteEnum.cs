@@ -21,6 +21,7 @@ namespace ARProbaProcessing
                 case Enquete.PanelNational:
                     return "U";
                 case Enquete.PanelCadre:
+                case Enquete.PanelIleDeFrance:
                     return "C";
             }
             return "*";
