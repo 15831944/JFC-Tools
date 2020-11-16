@@ -237,6 +237,8 @@ namespace ARProbaProcessing
         public int HabAndNotoTotalStationListCount
         { get { return HabAndNotoTotalStationList.Count(); } }
 
+        private int hiddenHabStationCount = 0;
+
         #endregion
 
         #region U1xx station list handling
@@ -246,6 +248,8 @@ namespace ARProbaProcessing
 
         public List<string> U1xxPopTxt { get; private set; }
 
+        public Dictionary<string, int> U1xxModalityVars
+        { get; private set; }
         #endregion
 
         #region Signaletique file...
@@ -358,6 +362,9 @@ namespace ARProbaProcessing
 
         }
 
+
+
+        #region Load station List
         private void LoadSationList(Enquete enquete)
         {
             // Load Station list
@@ -428,9 +435,9 @@ namespace ARProbaProcessing
                     if (stationName.Contains('('))
                         stationName = stationName.Substring(0, stationName.IndexOf('(')).Trim();
 
-                    stationName = Normalize(stationName);
+                    stationName = Normalize(stationName, enquete);
 
-                    Station item = list.Find((station) => (NormalizeCompare(stationName, Normalize(station.Name))));
+                    Station item = list.Find((station) => (NormalizeCompare(stationName, Normalize(station.Name, enquete))));
 
                     if (item == null)
                         throw new Exception("Error could not find the station: " + stationBaseName);
@@ -464,9 +471,9 @@ namespace ARProbaProcessing
                     if (stationName.Contains('('))
                         stationName = stationName.Substring(0, stationName.IndexOf('(')).Trim();
 
-                    stationName = Normalize(stationName);
+                    stationName = Normalize(stationName, enquete);
 
-                    Station item = list.Find((station) => (NormalizeCompare(stationName, Normalize(station.Name))));
+                    Station item = list.Find((station) => (NormalizeCompare(stationName, Normalize(station.Name, enquete))));
 
                     if (item == null)
                         throw new Exception("Error could not find the station: " + stationBaseName);
@@ -584,14 +591,14 @@ namespace ARProbaProcessing
                     continue;
                 }
 
-                stationName = Normalize(stationName);
+                stationName = Normalize(stationName, enquete);
 
                 int idx = 1;
                 foreach (var station in u1xxList.ToArray())
                 {
                     if (station != null)
                     {
-                        if (NormalizeCompare(stationName, Normalize(station)))
+                        if (NormalizeCompare(stationName, Normalize(station, enquete)))
                         {
                             sta.U1xxIdx = idx;
                             u1xxList[idx - 1] = null;
@@ -606,14 +613,14 @@ namespace ARProbaProcessing
                     // Try again with more normalization
 
                     stationName = sta.Name;
-                    stationName = Normalize2(stationName);
+                    stationName = Normalize2(stationName, enquete);
 
                     idx = 1;
                     foreach (var station in u1xxList.ToArray())
                     {
                         if (station != null)
                         {
-                            string nors = Normalize2(station);
+                            string nors = Normalize2(station, enquete);
                             if (NormalizeCompare(stationName, nors))
                             {
                                 sta.U1xxIdx = idx;
@@ -654,14 +661,14 @@ namespace ARProbaProcessing
 
                 string stationName = sta.Name;
 
-                stationName = Normalize(stationName);
+                stationName = Normalize(stationName, enquete);
 
                 int idx = 1;
                 foreach (var station in u1xxList.ToArray())
                 {
                     if (station != null)
                     {
-                        if (NormalizeCompare(stationName, Normalize(station)))
+                        if (NormalizeCompare(stationName, Normalize(station, enquete)))
                         {
                             sta.IsIdf = true;
                             u1xxList[idx - 1] = null;
@@ -676,14 +683,14 @@ namespace ARProbaProcessing
                     // Try again with more normalization
 
                     stationName = sta.Name;
-                    stationName = Normalize2(stationName);
+                    stationName = Normalize2(stationName, enquete);
 
                     idx = 1;
                     foreach (var station in u1xxList.ToArray())
                     {
                         if (station != null)
                         {
-                            string nors = Normalize2(station);
+                            string nors = Normalize2(station, enquete);
                             if (NormalizeCompare(stationName, nors))
                             {
                                 sta.IsIdf = true;
@@ -751,39 +758,523 @@ namespace ARProbaProcessing
 
         }
 
-        //change le nom des stations 
 
-        static string Normalize2(string str)
+        // Load Stations Liste "IDF"
+        private void LoadSationList_IDF(Enquete enquete)
+        {
+            // Load Station list
+            string staListFile = InputPath + string.Format(@"xls\sta_list.csv");
+
+            List<Station> list = new List<Station>();
+
+            var staList = File.ReadAllLines(staListFile, Encoding.GetEncoding("Windows-1252"));
+            foreach (var sta in staList)
+            {
+                if (sta.Equals(string.Empty))
+                    continue;
+
+                var words = sta.Split(';');
+                if (words.Length < 2)
+                    throw new Exception("Error while loading the file " + staListFile);
+
+                int id = int.Parse(words[0]);
+                string name = words[1].Trim(' ', '"', '\t');
+
+                string comment = null;
+                if (name.Contains('('))
+                {
+                    comment = name.Substring(name.IndexOf('('));
+                    name = name.Substring(0, name.IndexOf('(')).Trim();
+                }
+                Station staItem = new Station(id, name);
+
+                if (words.Length > 2 && words[2] != null && !words[2].Equals(string.Empty))
+                    staItem.Comment = words[2];
+                else if (comment != null)
+                    staItem.Comment = comment;
+
+                list.Add(staItem);
+            }
+
+            // Load Habit and Notoriety
+            string libSigFile = InputPath + string.Format(@"xls\lib_sig.csv");
+
+            var libList = File.ReadAllLines(libSigFile, Encoding.GetEncoding("Windows-1252"));
+
+            string currentVariable = null;
+
+            foreach (var sta in libList)
+            {
+
+                if (sta.Equals(string.Empty))
+                    continue;
+
+                var words = sta.Split(';');
+
+                if (!words[0].Equals(string.Empty))
+                    currentVariable = words[1].Trim();
+
+                if (currentVariable == null)
+                    continue;
+
+                if (currentVariable.Length == 4 && currentVariable.StartsWith("LV"))
+                {
+                    // Get the Hab index
+                    int index = int.Parse(currentVariable.Substring(2));
+
+                    if (!words[2].StartsWith("Habitudes d'écoute Lundi-Vendredi"))
+                        throw new Exception("Error variable detection on: " + words[2]);
+
+                    string stationName = words[2].Replace("Habitudes d'écoute Lundi-Vendredi", "").Trim();
+                    string stationBaseName = stationName;
+                    if (stationName.Contains('('))
+                        stationName = stationName.Substring(0, stationName.IndexOf('(')).Trim();
+
+                    /////////////////////////////// SPECIFIQUE IDF /////////////////////
+                    if (stationName.Equals("SUD RADIO"))
+                    {
+                        // Go to the next var because SUB RADIO has been removed from the panel IDF
+                        currentVariable = null;
+                        hiddenHabStationCount++;
+                        continue;
+                    }
+
+                    if (stationName.Equals("RADIO CLASSIQUE") && words[7] != null && words[7].Contains("VIDE"))
+                    {
+                        // Go to the next var because RADIO CLASSIQUE has been removed from the panel IDF AND ADDED back on a different position
+                        currentVariable = null;
+                        //hiddenHabStationCount++;
+                        continue;
+                    }
+
+                    stationName = Normalize2(stationName, enquete);
+                    ////////////////////////////////////////////////////////////////////////////
+
+                    Station item = list.Find((station) => (NormalizeCompare(stationName, Normalize2(station.Name, enquete))));
+
+                    if (item == null)
+                        throw new Exception("Error could not find the station: " + stationName);
+
+                    item.Mode = Station.eSignVariable.Habit;
+                    item.Index = index;
+
+
+                    // Go to the next var
+                    currentVariable = null;
+                }
+                else if (currentVariable.Length >= 4 && currentVariable.StartsWith("NOTO"))
+                {
+                    int index = 0;
+                    if (currentVariable.Length > 4)
+                    {
+                        index = int.Parse(currentVariable.Substring(4)) * 100;
+                    }
+
+                    if (words[5].Equals(string.Empty))
+                    {
+                        continue;
+                    }
+
+                    int modalityIdx = int.Parse(words[5]);
+                    string stationName = words[6];
+
+                    if (stationName == "VIDE")
+                        continue;
+
+                    string baseStationName = stationName;
+
+                    if (stationName.Contains('('))
+                        stationName = stationName.Substring(0, stationName.IndexOf('(')).Trim();
+
+                    if (stationName.Equals("Tout Paris")
+                        || stationName.Equals("PUBAUDIO IDF")
+                        //|| stationName.Equals("ADO FM")
+                        || stationName.Equals("LE MOUV")
+                        //|| stationName.Equals("VOLTAGE")
+                        || stationName.Equals("RFI")
+                        || (stationName.Equals("Radio Classique") && words[7] != null && words[7].Contains("SUPPRESSION"))
+                    )
+                    {
+                        // Go to the next var because this station has been removed from the panel IDF
+                        continue;
+                    }
+
+                    stationName = Normalize(stationName, enquete);
+
+                    Station item = list.Find((station) => (NormalizeCompare(stationName, Normalize(station.Name, enquete))));
+
+                    if (item == null)
+                        throw new Exception("Error could not find the station: " + stationName);
+
+                    item.Mode = Station.eSignVariable.Notoriety;
+                    item.Index = index + modalityIdx;
+
+                }
+                else
+                {
+                    // Go to the next var
+                    currentVariable = null;
+                }
+            }
+
+            // Read Uxx Audience file
+            //string uxxFile = Path.Combine(InputPath, string.Format(@"R1" + YearName + ".tab"));
+
+            var tblStaFileNat = File.ReadAllLines(Path.Combine(InputPath, "FRSTATIO.TBL"), Encoding.GetEncoding("Windows-1252"));
+            var tblStaFileIdf = File.ReadAllLines(Path.Combine(InputPath, "FRSTATIO_IDF.TBL"), Encoding.GetEncoding("Windows-1252"));
+
+            List<string> tblStaFile = new List<string>(tblStaFileIdf);
+            tblStaFile.AddRange(tblStaFileNat);
+
+            List<string> u1xxList = new List<string>();
+            List<string> notu1xxList = new List<string>();
+
+            List<string> u1xxModalityList = new List<string>();
+
+            string dicAlign = Path.Combine(InputPath, "C1" + YearName + ".sup.desc");
+            string[] dicAlignList = File.ReadAllLines(dicAlign, Encoding.GetEncoding("Windows-1252"));
+
+            List<string[]> grpStaFile = new List<string[]>();
+
+            U1xxModalityVars = new Dictionary<string, int>();
+
+            u1xxModalityList.Add("POIDS");
+            U1xxModalityVars.Add("POIDS", 1);
+            u1xxModalityList.Add("JOURS");
+            U1xxModalityVars.Add("JOURS", 2);
+
+            foreach (var line in dicAlignList)
+            {
+                if (line[0].Equals('\t'))
+                    continue;
+
+                string[] ws = line.Split(':');
+                if (ws.Length != 3)
+                    continue;
+
+                if (ws[2].Trim() == string.Empty)
+                {
+                    u1xxModalityList.Add(line);
+                    U1xxModalityVars.Add(ws[1].Trim(), u1xxModalityList.Count);
+                }
+                else
+                {
+                    if (ws[0].Trim() != string.Empty && ws[1].Trim() != string.Empty && ws[2].Trim() != string.Empty)
+                        grpStaFile.Add(ws);
+                }
+            }
+
+
+            int grpidx = 1;
+            foreach (var staCode in grpStaFile)
+            {
+                string staName = (from sline in tblStaFile
+                                  where sline.Length > 50 && sline[0] != ';' && int.Parse(sline.Substring(0, 5)) == int.Parse(staCode[0])
+                                  select sline.Substring(19, 30)
+                                 ).FirstOrDefault();
+                if (staName == null)
+                {
+                    notu1xxList.Add(staCode + " (" + grpidx + ")");
+                    u1xxList.Add(staCode[0] + " : " + staCode[1] + " : " + staCode[2]);
+                }
+                else
+                {
+                    //u1xxList.Add("(" + staCode + ")" + staName.Trim() + " (" + grpidx + ")");
+
+                    if (staName.Trim().ToLower() == "sud radio medias idf")
+                    {
+                        staName = "REGIE 1981 IDF";
+                    }
+
+                    u1xxList.Add(staName.Trim());
+                }
+                grpidx++;
+            }
+
+            var listName = list.Select((s) => (s.Name)).ToArray();
+
+            var listProbHabName = list.Where(s => (s.Mode == Station.eSignVariable.Habit)).Select((s) => (s.Name)).ToArray();
+            var listProbNotoName = list.Where(s => (s.Mode == Station.eSignVariable.Notoriety)).Select((s) => (s.Name)).ToArray();
+            var listNoneName = list.Where(s => (s.Mode == Station.eSignVariable.None)).Select((s) => (s.Name)).ToArray();
+
+            U1xxStationCount = u1xxList.Count;
+            U1xxModalityCount = u1xxModalityList.Count;
+
+            List<string> exceptionList = new List<string>();
+
+            // string uxxExceptFile = InputPath + string.Format(@"C1" + YearName + "_sta_exception.desc");
+            string uxxExceptFile = GetPathYear(enquete, InputPath, "_sta_exception", "desc");
+
+            var xceptFile = File.ReadAllLines(uxxExceptFile, Encoding.GetEncoding("Windows-1252"));
+
+            List<string> exceptedExceptionList = new List<string>();
+
+            // Load expected exceptions
+            foreach (var except in xceptFile)
+            {
+                if (except == null || except.Trim().Equals(string.Empty))
+                    continue;
+
+                exceptedExceptionList.Add(except.Trim());
+            }
+
+            // init Uxx index
+
+            int sud_plus_Wit_idx = u1xxList.FindIndex((str) => (str.Equals("Sud + Wit"))) + 1;
+
+            if (sud_plus_Wit_idx > 0) u1xxList[sud_plus_Wit_idx - 1] = null;
+
+            // Get index for all station in audience file U1xx
+            foreach (var sta in list.ToArray())
+            {
+
+                if (sta.Mode == Station.eSignVariable.None)
+                    continue;
+
+                string stationName = sta.Name;
+
+                string baseStationName = sta.Name;
+
+                if (stationName.Equals("Sud + Wit") || stationName.Equals("Sud Radio"))
+                {
+                    sta.U1xxIdx = sud_plus_Wit_idx;
+                    continue;
+                }
+
+                stationName = Normalize(stationName, enquete);
+
+                int idx = 1;
+                foreach (var station in u1xxList.ToArray())
+                {
+                    if (station != null)
+                    {
+                        if (NormalizeCompare(stationName, Normalize(station, enquete)))
+                        {
+                            sta.U1xxIdx = idx;
+                            u1xxList[idx - 1] = null;
+                            break;
+                        }
+                    }
+                    idx++;
+                }
+
+                if (sta.U1xxIdx == 0 && sta.Mode != Station.eSignVariable.None)
+                {
+                    // Try again with more normalization
+
+                    stationName = sta.Name;
+                    stationName = Normalize2(stationName, enquete);
+
+                    idx = 1;
+                    foreach (var station in u1xxList.ToArray())
+                    {
+                        if (station != null)
+                        {
+                            string nors = Normalize2(station, enquete);
+                            if (NormalizeCompare(stationName, nors))
+                            {
+                                sta.U1xxIdx = idx;
+                                u1xxList[idx - 1] = null;
+                                break;
+                            }
+                        }
+                        idx++;
+                    }
+                }
+
+                if (sta.U1xxIdx == 0 && sta.Mode != Station.eSignVariable.None)
+                {
+                    if (!exceptedExceptionList.Contains(sta.Name))
+                    {
+                        exceptionList.Add(sta.Name);
+                    }
+                    else
+                    {
+                        //    list.Remove(sta);
+                        //sta.Mode = Station.eSignVariable.None;
+                    }
+                }
+            }
+
+            if (exceptionList.Count > 0)
+                throw new Exception("Exception: " + exceptionList.ToString());
+
+            // Load population txt
+            U1xxPopTxt = new List<string>();
+
+            // string uxxPopFile = InputPath + string.Format(@"C1" + YearName + "_Pop.txt");
+            // TODO
+            string uxxPopFile = GetPathYear(enquete, InputPath, "_Pop", "txt");
+
+            var popTxtFile = File.ReadAllLines(uxxPopFile, Encoding.GetEncoding("Windows-1252"));
+
+            foreach (var line in popTxtFile)
+            {
+                if (line == null || line.Trim().Equals(string.Empty))
+                    continue;
+
+                var words = line.Split(':');
+
+                U1xxPopTxt.Add(words[1].Trim());
+            }
+
+            if (U1xxPopTxt.Count != 3)
+                throw new Exception("txt population file error");
+
+            // Init the fitred list
+
+            StationList = list;
+
+
+            var habAndNotoStationListNotOrdered = (from sta in list
+                                                   where sta.Mode != Station.eSignVariable.None
+                                                      && !sta.Name.Equals("total TV", StringComparison.CurrentCultureIgnoreCase)
+                                                      && !sta.Name.Equals("total radio", StringComparison.CurrentCultureIgnoreCase)
+                                                      && sta.U1xxIdx != 0
+                                                   select sta).ToArray();
+            bool writeOrder = true;
+            if (writeOrder)
+            {
+                var staNameList = from s in habAndNotoStationListNotOrdered
+                                  select s.Name;
+                string fileStationList = Path.Combine(OutputPath, "Station List.txt");
+
+                File.WriteAllLines(fileStationList, staNameList);
+                HabAndNotoStationList = habAndNotoStationListNotOrdered;
+            }
+            else
+            {
+                HabAndNotoStationList = new List<Station>(habAndNotoStationListNotOrdered.Count());
+                string fileStationList = Path.Combine(OutputPath, "Station List.txt");
+                var staNameList = File.ReadAllLines(fileStationList);
+
+                foreach (var staName in staNameList)
+                {
+                    bool fund = false;
+                    foreach (var sta in habAndNotoStationListNotOrdered)
+                    {
+                        if (sta.Name.Equals(staName))
+                        {
+                            ((List<Station>)HabAndNotoStationList).Add(sta);
+                            fund = true;
+                            break;
+                        }
+                    }
+
+                    if (!fund)
+                        throw new Exception("Could not find the station " + staName);
+                }
+            }
+
+            var realStaList = list.Where(s => s.Mode != Station.eSignVariable.None).Select(s => s.Name + " (" + s.U1xxIdx + ")").ToArray();
+
+
+            //HabAndNotoTotalStationList = new Station[0];
+            HabAndNotoTotalStationList = (from sta in list
+                                          where sta.Mode != Station.eSignVariable.None
+                                             && (/*sta.Name.Equals("total TV", StringComparison.CurrentCultureIgnoreCase)
+                                                  ||*/
+           sta.Name.Equals("total radio", StringComparison.CurrentCultureIgnoreCase)
+                                                )
+                                          select sta).ToArray();
+
+            NotoStationList = (from sta in HabAndNotoStationList
+                               where sta.Mode == Station.eSignVariable.Notoriety
+                                    && sta.U1xxIdx != 0
+                               select sta).ToArray();
+            HabStationList = (from sta in HabAndNotoStationList
+                              where sta.Mode == Station.eSignVariable.Habit
+                                    && sta.U1xxIdx != 0
+                              select sta).ToArray();
+
+        }
+        #endregion Load station List
+
+        //change le nom des stations 
+        static string Normalize2(string str, Enquete enquete)
         {
             string res = str;
-            res = res.Replace("Métr.", "Métropoles");
-            res = res.Replace("RMC INFO", "RMC");
-            res = res.Replace("Rires", "Rire");
-            res = res.Replace("MFM Radio", "MFM");
-            res = res.Replace("MFM RADIO", "MFM");
-            res = res.Replace("Lagardère Métropoles", "LAP");
-            res = res.Replace("Les Parisiennes", "Paris – IDF +");
 
-            return Normalize(res);
+            // Normalisation "NATIONAL ou CADRES"
+            if (enquete != Enquete.PanelIleDeFrance)
+            {
+                res = res.Replace("Métr.", "Métropoles");
+                res = res.Replace("RMC INFO", "RMC");
+                res = res.Replace("Rires", "Rire");
+                res = res.Replace("MFM Radio", "MFM");
+                res = res.Replace("MFM RADIO", "MFM");
+                res = res.Replace("Lagardère Métropoles", "LAP");
+                res = res.Replace("Les Parisiennes", "Paris – IDF +");
+            }
+            else
+            {
+                res = res.Replace("Métr.", "Métropoles");
+                res = res.Replace("RMC INFO", "RMC");
+                res = res.Replace("Rires", "Rire");
+                res = res.Replace("Lagardère Métropoles", "LAP");
+                res = res.Replace("(avCh.France)", "");
+                res = res.Replace("FIP Paris", "FIP");
+                res = res.Replace("TSF JAZZ", "TSF");
+                res = res.Replace("MFM RADIO", "MFM");
+                if (res.IndexOf("VOLT") != -1 && res.IndexOf("VOLTAGE") == -1)
+                    res = res.Replace("VOLT", "VOLTAGE");
+            }
+
+            return Normalize(res, enquete);
         }
 
-
-        static string Normalize(string str)
+        // Les "Normalize"  NATIONAL ou IDF
+        static string Normalize(string str, Enquete enquete)
         {
             StringBuilder buf = new StringBuilder();
 
-            foreach (var ch in str.Trim().ToUpper())
+            // Normalisation "NATIONAL ou CADRES"
+            if (enquete != Enquete.PanelIleDeFrance)
             {
-                if ((ch >= 'A' && ch <= 'Z') || (ch >= '0' && ch <= '9'))
-                    buf.Append(ch);
-                else if (ch == '&')
-                    buf.Append("ET");
-                else if (ch == ' ' || ch == '\t')
-                { }
-                else
-                    buf.Append('?');
+                foreach (var ch in str.Trim().ToUpper())
+                {
+                    if ((ch >= 'A' && ch <= 'Z') || (ch >= '0' && ch <= '9'))
+                        buf.Append(ch);
+                    else if (ch == '&')
+                        buf.Append("ET");
+                    else if (ch == ' ' || ch == '\t')
+                    { }
+                    else
+                        buf.Append('?');
+                }
             }
+            else
+            {
+                // Normalisation "IDF"
+                str = str.Replace("Métr.", "Métropoles");
+                str = str.Replace("Radio Latina", "LATINA");
+                str = str.Replace("Ado FM", "ADO");
+                str = str.Replace("Voltage FM", "VOLTAGE");
 
+                str = str.Replace("Les Indépendants", "LES INDES RADIOS");
+                // str = str.Replace("Les Indés Radio", "LES INDES RADIOS"); sep 2015
+                str = str.Replace("Les Indés Radios", "LES INDES RADIOS");
+                str = str.Replace("Les Indés Radio", "LES INDES RADIOS");
+
+                str = str.Replace("Sud Média Radio IDF", "SUD RADIO MEDIAS IDF");
+                str = str.Replace("Lagardère Métrople IDF", "LAGARDERE METROPOLES IDF");
+
+
+                // StringBuilder buf = new StringBuilder();
+
+                foreach (var ch in str.Trim().ToUpper())
+                {
+                    if ((ch >= 'A' && ch <= 'Z') || (ch >= '0' && ch <= '9'))
+                        buf.Append(ch);
+                    else if (ch == '&')
+                        buf.Append("ET");
+                    else if (ch == ' ' || ch == '\t')
+                    { }
+                    else
+                        buf.Append('?');
+                }
+
+            }
             return buf.ToString();
         }
 
@@ -1530,8 +2021,45 @@ namespace ARProbaProcessing
             }
 
         }
-
-
+               
+        // Récupère path pour les fichiers (3) générés pas Kantar
+        // soit
+        // 1/ U1YY.sup.desc             ou  C1YY.sup.desc ou
+        // 2/ U1YY.sup                  ou  C1YY.sup ou
+        // 3/ U1YY_sta_exception.desc   ou  C1YY_sta_exception.desc
+        // 4/ U1YY_Pop.txt              ou  C1YY_Pop.txt
+        //
+        public string GetPathYear(Enquete enquete, string inputPath, string libafterYear, string extension)
+        {
+            string pathReturn = "";
+            int valYear = Convert.ToInt32(YearName);
+            if (enquete == Enquete.PanelNational)
+            {
+                // Path National
+                if (valYear <= 19)
+                    pathReturn = Path.Combine(inputPath, "U" + YearName + "1" + libafterYear + "." + extension);
+                else
+                    pathReturn = Path.Combine(inputPath, "U1" + YearName + libafterYear + "." + extension);
+            }
+            else if (enquete == Enquete.PanelCadre)
+            {
+                // Path Cadre
+                if (valYear <= 19)
+                    pathReturn = Path.Combine(inputPath, "C" + YearName + "1" + libafterYear + "." + extension);
+                else
+                    pathReturn = Path.Combine(inputPath, "C1" + YearName + libafterYear + "." + extension);
+            }
+            else if (enquete == Enquete.PanelIleDeFrance)
+            {
+                // A priori même chemin que pour les Cadres mais "prudence !!!"
+                // Path IDF
+                if (valYear <= 19)
+                    pathReturn = Path.Combine(inputPath, "C" + YearName + "1" + libafterYear + "." + extension);
+                else
+                    pathReturn = Path.Combine(inputPath, "C1" + YearName + libafterYear + "." + extension);
+            }
+            return pathReturn;
+        }
 
         //private void CutSupFileIDF_NAT()
         //{
