@@ -354,9 +354,11 @@ namespace ARProbaProcessing
             NINI_IND_QH_W = null;
             NINI_IND_STA = null;
 
-            BSupport BSUP = transp08(NBINDIV, NB_STA_HAB_NOTO, NB_STA_IDF, STA_IDF_LIST_NO_SUDRAD_MASK, POIDSEGM, lstFiltreIDF, lstPoids, PROBAS, pathTransp08, pathYearNat, pathYearIdf, pathYearSup);
+            BSupport BSUP = transp08(contextPanel, NBINDIV, NB_STA_HAB_NOTO, NB_STA_IDF, STA_IDF_LIST_NO_SUDRAD_MASK, POIDSEGM, lstFiltreIDF, lstPoids, PROBAS, pathTransp08, pathYearNat, pathYearIdf, pathYearSup);
 
-            int[,] PANCIB = crecib08(NBINDIV, fushab09Indivs, COL_TAB_AGE11, COL_TAB_MENA, pathPan20Cib); // [3 + 1, NIND + 1]
+            int[,] PANCIB = (enquete == Enquete.PanelIleDeFrance) ?
+                crecib08_Idf(NBINDIV, fushab09Indivs, COL_TAB_SEX, COL_TAB_AGE11, pathPan20Cib) :
+                crecib08(NBINDIV, fushab09Indivs, COL_TAB_AGE11, COL_TAB_MENA, pathPan20Cib); // [3 + 1, NIND + 1]
 
             penetr(NBINDIV, nbStationHabNotoTotal, JN, lstPoids, pathPenetr, int.Parse(arProba.U1xxPopTxt[0]), strStations);
 

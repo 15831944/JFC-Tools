@@ -8,7 +8,7 @@ namespace ARProbaProcessing
 {
     public partial class AffinageProcess
     {
-        private byte[,,,] attribp2(ContextPanel contextPanel,  int NBIND, int NBSTA, byte[,,,] REGRS, int[,] KHI2, int[,] NINI, float[] NOTES, byte[,,,] AUDI, int[,,,] HABI,
+        private byte[,,,] attribp2(ContextPanel contextPanel, int NBIND, int NBSTA, byte[,,,] REGRS, int[,] KHI2, int[,] NINI, float[] NOTES, byte[,,,] AUDI, int[,,,] HABI,
             float[,,,] ZUPTAUSECOR, float[,,,] ZUPTAUSACOR, float[,,,] ZUPTAUDICOR, string pathSortie, string pathPANECR)
         {
             // PANEL RADIO 08 MEDIAMETRIE(nouveau format)
@@ -24,24 +24,24 @@ namespace ARProbaProcessing
             double[] DISTR = new double[NSEG + 1];
             double[] REP = new double[NSEG + 1];
             double[] VREP = new double[NSEG + 1];
-            double[] GT = new double[16 + 1];
+            double[] GT = new double[contextPanel.NbSeg + 1];
 
             double XJ, LAMBDA, DELTA, NG, GRPN, X, Y;
             double[] SCORE = new double[NBIND + 1];
             int[] TAB = new int[NBIND + 1];
             double NOTI, SGN, SGN0;
             int[] POIDS = new int[NBIND + 1];
-            int[] IPPS = new int[5 + 1];
+            int[] IPPS = new int[contextPanel.TRegTest + 1];
             byte PR;
             int R, RSAVE, RP, H, HCR;
-            int[] NB = new int[5 + 1];
-            int[] IM = new int[5 + 1];
+            int[] NB = new int[contextPanel.TRegTest + 1];
+            int[] IM = new int[contextPanel.TRegTest + 1];
             int[] RANK = new int[NBIND + 1 + 1];
             int[] RANG = new int[NBIND + 1];
             int[] CELL = new int[NBIND + 1];
-            int[] PT1 = new int[16 + 1];
-            int[] PTNSEG = new int[16 + 1];
-            int[] TREG = new int[16 + 1];
+            int[] PT1 = new int[contextPanel.NbSeg + 1];
+            int[] PTNSEG = new int[contextPanel.NbSeg + 1];
+            int[] TREG = new int[contextPanel.NbSeg + 1];
             double GRP = 0f;
             int NPERR = 0;
 
@@ -85,10 +85,10 @@ namespace ARProbaProcessing
                         if (IU == 3) RESUL = ZUPTAUDICOR;
                         for (int I = 1; I <= NBIND; I++)
                         {
-                            PROBAS[NOP,IU,IQ,I] = 0;
+                            PROBAS[NOP, IU, IQ, I] = 0;
                         }
 
-                        byte[] AUDI_ = new byte[NBIND+1];
+                        byte[] AUDI_ = new byte[NBIND + 1];
                         int[] HABI_ = new int[NBIND + 1];
                         int[] NINI_ = new int[NBIND + 1];
                         for (int I = 1; I <= NBIND; I++)
@@ -107,7 +107,7 @@ namespace ARProbaProcessing
 
                             NOTI = NOTES[I];
                             if (NINI[I, NOP] == 1) NOTI = 0f;
-                            SCORE[I] = 1000d * Convert.ToDouble( SCORE[I]) + NOTI;
+                            SCORE[I] = 1000d * Convert.ToDouble(SCORE[I]) + NOTI;
                             RANG[I] = I;
                         }
 
@@ -123,33 +123,32 @@ namespace ARProbaProcessing
 
                         // AUCUNE AUDIENCE POUR CE 1/4h
                         int IP = NOP;
-                        if (REGRS[IU, IP, IQ, 1] != 5)
+                        if (REGRS[IU, IP, IQ, 1] != contextPanel.TRegTest)
                         {
                             GRP = 0;
                             NPERR = 0;
                             // BOUCLE CELLULES
-                            for (int N1 = 1; N1 <= 16; N1++)
+                            for (int N1 = 1; N1 <= contextPanel.NbSeg; N1++)
                             {
                                 TREG[N1] = REGRS[IU, IP, IQ, N1];
+
                                 int N2 = contextPanel.SEG1[N1];
                                 int N3 = contextPanel.SEG2[N2];
-                                int N4 = contextPanel.SEG3[N3];
+                                int N4 = (contextPanel.Enquete != Enquete.PanelIleDeFrance) ? contextPanel.SEG3[N3] : 0;
                                 NB[1] = N1;
                                 NB[2] = N2;
                                 NB[3] = N3;
-                                NB[4] = N4;
-                                NB[5] = 1;
+                                NB[4] = (contextPanel.Enquete != Enquete.PanelIleDeFrance) ? N4 : 1;
+                                if (contextPanel.Enquete != Enquete.PanelIleDeFrance) NB[5] = 1;
                                 int NIV = TREG[N1] + 1;
-
                                 if (((N1 == 1) || (NIV == 1))
-                                ||
-                                (!((NIV == 2 && contextPanel.SEG1[N1] == contextPanel.SEG1[N1 - 1]) ||
-                                (NIV == 3 && contextPanel.SEG2[contextPanel.SEG1[N1]] == contextPanel.SEG2[contextPanel.SEG1[N1 - 1]]) ||
-                                (NIV == 4 && contextPanel.SEG3[contextPanel.SEG2[contextPanel.SEG1[N1]]] == contextPanel.SEG3[contextPanel.SEG2[contextPanel.SEG1[N1 - 1]]]) ||
-                                (NIV == 5))))
+                                    ||
+                                   (!((NIV == 2 && contextPanel.SEG1[N1] == contextPanel.SEG1[N1 - 1]) ||
+                                      (NIV == 3 && contextPanel.SEG2[contextPanel.SEG1[N1]] == contextPanel.SEG2[contextPanel.SEG1[N1 - 1]]) ||
+                                      (contextPanel.Enquete != Enquete.PanelIleDeFrance && NIV == 4 && contextPanel.SEG3[contextPanel.SEG2[contextPanel.SEG1[N1]]] == contextPanel.SEG3[contextPanel.SEG2[contextPanel.SEG1[N1 - 1]]]) ||
+                                      (NIV == contextPanel.TRegTest))))
                                 {
-
-                                    for (int J = 1; J <= 5; J++)
+                                    for (int J = 1; J <= contextPanel.TRegTest; J++)
                                     {
                                         IM[J] = 0;
                                         IPPS[J] = 0;
@@ -158,7 +157,7 @@ namespace ARProbaProcessing
                                     int II = 0;
                                     for (int IG = 1; IG <= NBIND; IG++)
                                     {
-                                        if ((NIV==5 && NB[NIV]==1) || (KHI2[IG, NIV + 1] == NB[NIV]))
+                                        if ((NIV == 5 && NB[NIV] == 1) || (KHI2[IG, NIV + 1] == NB[NIV]))
                                         {
                                             IM[NIV]++;
                                             IPPS[NIV] += POIDS[IG];
@@ -280,10 +279,10 @@ namespace ARProbaProcessing
                                                 NG = POIDS[RANK[R]];
                                                 HCR = (int)Math.Truncate(SCORE[RANK[R]]);  // TODO Real => INT*4 ?
                                                                                            //60
-                                                double HCRf =SCORE[RANK[R]];
+                                                double HCRf = SCORE[RANK[R]];
                                                 do
                                                 {
-                                                    H = RANK[RP + 1];
+                                                    H = (contextPanel.Enquete == Enquete.PanelIleDeFrance) ? RANK[RP] : RANK[RP + 1];
                                                     //if (SCORE[H] != HCR) break;
                                                     if (SCORE[H] != HCRf) break;
 
@@ -301,7 +300,7 @@ namespace ARProbaProcessing
                                                 if (PR < NSEG) PTNSEG[N1] = RP + 1;
                                             }
 
-                                            GT[N1] /= 1d*(NSEG * IPPS[IN]);
+                                            GT[N1] /= 1d * (NSEG * IPPS[IN]);
                                             double Z = (GRPN - GT[N1]) * NSEG * IPPS[IN];
                                             float K = PTNSEG[N1] - PT1[N1];
 
@@ -331,7 +330,7 @@ namespace ARProbaProcessing
                                     {
                                         H = RANK[I];
                                         if (PROBAS[NOP, IU, IQ, H] != 255)
-    //                                    if (PROBAS[NOP, IU, IQ, H] >= 0)
+                                        //                                    if (PROBAS[NOP, IU, IQ, H] >= 0)
                                         {
                                             GRP += POIDS[H] * PROBAS[NOP, IU, IQ, H];
                                         }
@@ -351,7 +350,7 @@ namespace ARProbaProcessing
 
                         } // if (REGRS[IU, IP, IQ, 1] == 5)
 
-                        if (IP != 999)
+                        if (contextPanel.Enquete != Enquete.PanelIleDeFrance && IP != 999)
                         {
                             for (int IG = 1; IG <= NBIND; IG++)
                                 writeBinary.Write(PROBAS[NOP, IU, IQ, IG]);
@@ -365,22 +364,21 @@ namespace ARProbaProcessing
 
             if (File.Exists(pathSortie)) File.Delete(pathSortie);
             File.AppendAllText(pathSortie, sbSortie.ToString());
-            
+
             writeBinary.Close();
             writeStream.Close();
 
             return PROBAS;
         }
 
-
-        private BSupport transp08(int NIND, int NBSTA, int NBSTAIDF, int[] ISTA, int[,] POIDSEGS, List<int> FILT, List<int> POIDS, byte[,,,] KHI2,
+        private BSupport transp08(ContextPanel contextPanel, int NIND, int NBSTA, int NBSTAIDF, int[] ISTA, int[,] POIDSEGS, List<int> FILT, List<int> POIDS, byte[,,,] KHI2,
             string pathSortie, string pathYearNat, string pathYearIdf, string pathYearSup)
         {
             System.GC.Collect();
             // PANEL RADIO 08 MEDIAMETRIE(nouveau format)
             // TRANSFORMATION DES PROBABILITES INDIVIDUELLES
             //   DE 100e EN 1000e ET DE 1 / 4h EN 1 / 2h
-            int[][,,] KECR = new int[NBSTA+1][,,]; // , 3 + 1, 48 + 1, NIND + 1];
+            int[][,,] KECR = new int[NBSTA + 1][,,]; // , 3 + 1, 48 + 1, NIND + 1];
             for (int s = 1; s <= NBSTA; s++) KECR[s] = new int[3 + 1, 48 + 1, NIND + 1];
             //int[,,,] KECR = new int[NBSTA + 1, 3// + 1, 48 + 1, NIND + 1];
             int[][,,] KECRIDF = new int[NBSTAIDF + 1][,,];
@@ -396,8 +394,13 @@ namespace ARProbaProcessing
             if (File.Exists(pathYearSup)) File.Delete(pathYearSup);
 
             BinaryWriter bwNat = new BinaryWriter(File.Create(pathYearNat));
-            BinaryWriter bwIdf = new BinaryWriter(File.Create(pathYearIdf));
-            BinaryWriter bwSup = new BinaryWriter(File.Create(pathYearSup));
+            BinaryWriter bwIdf = null;
+            BinaryWriter bwSup = null;
+            if (contextPanel.Enquete != Enquete.PanelIleDeFrance)
+            {
+                bwIdf = new BinaryWriter(File.Create(pathYearIdf));
+                bwSup = new BinaryWriter(File.Create(pathYearSup));
+            }
 
             // COEFF.ET DEPARTEMENT
             for (int IND = 0; IND < NIND; IND++)
@@ -405,7 +408,7 @@ namespace ARProbaProcessing
                 POIDS[IND] *= 10;
                 RIEN[IND] = 0;
             }
-            for (int IND =0; IND < NIND; IND++) bwNat.Write(Convert.ToInt16(POIDS[IND]));
+            for (int IND = 0; IND < NIND; IND++) bwNat.Write(Convert.ToInt16(POIDS[IND]));
             for (int IND = 0; IND < NIND; IND++) bwNat.Write(Convert.ToInt16(RIEN[IND]));
 
             // BOUCLE STATIONS
@@ -429,7 +432,7 @@ namespace ARProbaProcessing
                     {
                         int IH = IQ + 20;
                         if (IH > 96) IH = IH - 96;
-                        int IQ4 = (IQ + 1) / 2; 
+                        int IQ4 = (IQ + 1) / 2;
                         // BOUCLE INDIVIDUS
                         for (int II = 1; II <= NIND; II++)
                         {
@@ -443,11 +446,11 @@ namespace ARProbaProcessing
                         }
 
                         // ECRITURE FICHIER IDF
-                        if (IFO == 1)
+                        if (IFO == 1 && contextPanel.Enquete != Enquete.PanelIleDeFrance)
                         {
                             for (int IN = 1; IN <= NIND; IN++)
                             {
-                                if (FILT[IN-1] == 0)
+                                if (FILT[IN - 1] == 0)
                                     KECRIDF[IDF][IU, IQ4, IN] = 0;
                                 else
                                     KECRIDF[IDF][IU, IQ4, IN] = KECR[IS][IU, IQ4, IN];
@@ -459,46 +462,48 @@ namespace ARProbaProcessing
                 }
             }
 
-            BSUP.POIDS = POIDS;
-            BSUP.RIEN = RIEN;
-            BSUP.KECR = KECR;
-            BSUP.KECRIDF = KECRIDF;
-
-            for (int IND = 0; IND < NIND; IND++) bwSup.Write(Convert.ToInt16(POIDS[IND]));
-            for (int IND = 0; IND < NIND; IND++) bwSup.Write(Convert.ToInt16(RIEN[IND]));
-
-            for (int IS = 1; IS <= NBSTA; IS++)
+            if (contextPanel.Enquete != Enquete.PanelIleDeFrance)
             {
-                // BOUCLE UNIVERS
-                for (int IU = 1; IU <= 3; IU++)
+                BSUP.POIDS = POIDS;
+                BSUP.RIEN = RIEN;
+                BSUP.KECR = KECR;
+                BSUP.KECRIDF = KECRIDF;
+
+                for (int IND = 0; IND < NIND; IND++) bwSup.Write(Convert.ToInt16(POIDS[IND]));
+                for (int IND = 0; IND < NIND; IND++) bwSup.Write(Convert.ToInt16(RIEN[IND]));
+
+                for (int IS = 1; IS <= NBSTA; IS++)
                 {
-                    for (int IQ = 1; IQ <= 48; IQ ++)
+                    // BOUCLE UNIVERS
+                    for (int IU = 1; IU <= 3; IU++)
                     {
-                        for (int II = 1; II <= NIND; II++)
+                        for (int IQ = 1; IQ <= 48; IQ++)
                         {
-                            bwSup.Write(Convert.ToInt16(KECR[IS][IU, IQ, II]));
+                            for (int II = 1; II <= NIND; II++)
+                            {
+                                bwSup.Write(Convert.ToInt16(KECR[IS][IU, IQ, II]));
+                            }
                         }
                     }
                 }
-            }
-            for (int IS = 1; IS <= NBSTAIDF; IS++)
-            {
-                // BOUCLE UNIVERS IDF
-                for (int IU = 1; IU <= 3; IU++)
+                for (int IS = 1; IS <= NBSTAIDF; IS++)
                 {
-                    for (int IQ = 1; IQ <= 48; IQ ++)
+                    // BOUCLE UNIVERS IDF
+                    for (int IU = 1; IU <= 3; IU++)
                     {
-                        for (int II = 1; II <= NIND; II++)
+                        for (int IQ = 1; IQ <= 48; IQ++)
                         {
-                            bwSup.Write(Convert.ToInt16(KECRIDF[IS][IU, IQ, II]));
+                            for (int II = 1; II <= NIND; II++)
+                            {
+                                bwSup.Write(Convert.ToInt16(KECRIDF[IS][IU, IQ, II]));
+                            }
                         }
                     }
                 }
+                bwIdf.Close();
+                bwSup.Close();
             }
-
             bwNat.Close();
-            bwIdf.Close();
-            bwSup.Close();
 
             return BSUP;
         }
@@ -565,6 +570,66 @@ namespace ARProbaProcessing
             return KECR;
         }
 
+        private int[,] crecib08_Idf(int NIND, List<Fushab09Indiv> fushab09Indivs, int COL_SEX, int COL_AGE, string pathPan20Cib)
+        {
+            // PANEL RADIO 08 MEDIAMETRIE
+            // CREATION DE VECTEURS DE CIBLES DE CONTROLE ASYMPTOTES
+            // Le nombre de station correspond au nombre de stations(#NB_STA_HAB_NOTO_TOTAL#) - #NB_STA_TOTAL_ONLY# pour Total Radio (et Total TV)
+
+            //C Attention AVANT(#SIGN_LINE_LEN_BEFORE_HAB#) et le buffer de lecture pour se caler au début des données de HAB
+            //C Attention APRES(#SIGN_LINE_LEN_AFTER_HAB#) et le buffer de lecture pour se caler à la fin de la ligne des données
+
+            int[,] KECR = new int[4 + 1, NIND + 1];
+
+            // INITIALISATIONS
+            int IG = 0;
+            int CPT2 = 0;
+            int CPT3 = 0;
+
+            foreach (Fushab09Indiv fushab09Indiv in fushab09Indivs)
+            {
+                IG = IG + 1;
+                int IND = IG;
+                // Ensemble(13 ans et +)
+                KECR[1, IND] = 1;
+                // Ensemble(13 ans et +)
+                KECR[1, IND] = 1;
+                // cible "Hommes"
+                KECR[2, IND] = 0;
+                // cible "Femmes"
+                KECR[3, IND] = 0;
+                // cible "13-34 ans"
+                KECR[4, IND] = 0;
+
+                // Construction de la cible "Hommes"
+                if ((fushab09Indiv.AVANT[COL_SEX] - 48) == 1) KECR[2, IND] = 1;
+                if ((fushab09Indiv.AVANT[COL_SEX] - 48) == 1) CPT2 = CPT2 + 1;
+                // Construction de la cible "Femmes"
+                if ((fushab09Indiv.AVANT[COL_SEX] - 48) == 2) KECR[3, IND] = 1;
+                if ((fushab09Indiv.AVANT[COL_SEX] - 48) == 2) CPT3 = CPT3 + 1;
+                // Construction de la cible des 13 - 34 ans
+                int AGE = 10 * (fushab09Indiv.AVANT[COL_AGE] - 48) + (fushab09Indiv.AVANT[COL_AGE+1] - 48);
+                if (AGE <= 4) KECR[4, IND] = 1;
+            }
+
+            Console.WriteLine(IG.ToString());
+
+            if (File.Exists(pathPan20Cib)) File.Delete(pathPan20Cib);
+            BinaryWriter bwNat = new BinaryWriter(File.Create(pathPan20Cib));
+            for (int I = 1; I <= 4; I++)
+            {
+                for (int J = 1; J <= NIND; J++)
+                {
+                    bwNat.Write(Convert.ToInt16(KECR[I, J]));
+                }
+            }
+            bwNat.Close();
+
+            Console.WriteLine($"CPT2 = {CPT2}");
+            Console.WriteLine($"CPT3 = {CPT3}");
+
+            return KECR;
+        }
 
         private void penetr(int NBIND, int NBSTA, VsorPoid[][] JN, List<int> POIDS, string pathPenetr, int population, List<string> strStations)
         {
@@ -573,10 +638,10 @@ namespace ARProbaProcessing
 
             // Le nombre de station correspond au nombre de stations(#NB_STA_HAB_NOTO_TOTAL#) (avec Total Radio et Total TV)
             int NBJOUR = 23;
-            ushort[,,] VSOR2 = new ushort[NBJOUR + 1, 6+1, NBSTA + 1];
+            ushort[,,] VSOR2 = new ushort[NBJOUR + 1, 6 + 1, NBSTA + 1];
             int[] ITAP = new int[NBSTA + 1];
             int[,] FLAG = new int[NBSTA + 1, NBIND + 1];
-            
+
             // INITIALISATIONS
 
             for (int I = 1; I <= NBJOUR; I++)
@@ -600,7 +665,7 @@ namespace ARProbaProcessing
                             {
                                 ushort[] bits = new ushort[7];
                                 for (int b = 1; b <= 6; b++)
-                                    bits[b] = VSOR2[I,M,K]; //  JN[I][IG].VSor[b, K];
+                                    bits[b] = VSOR2[I, M, K]; //  JN[I][IG].VSor[b, K];
 
                                 if (L1BITFCT(bits, L))
                                 {
@@ -619,9 +684,9 @@ namespace ARProbaProcessing
             {
                 for (int IG = 1; IG <= NBIND; IG++)
                 {
-                    ITAP[K] += FLAG[K, IG] * POIDS[IG-1];
+                    ITAP[K] += FLAG[K, IG] * POIDS[IG - 1];
                 }
-                swPenetr.WriteLine(strStations[K-1].PadLeft(49,' ') + "," + ((100d * ITAP[K]) / population).ToString("0.00"));
+                swPenetr.WriteLine(strStations[K - 1].PadLeft(49, ' ') + "," + ((100d * ITAP[K]) / population).ToString("0.00"));
             }
             swPenetr.Close();
         }
@@ -640,7 +705,7 @@ namespace ARProbaProcessing
             int[] IPOI = new int[NIND + 1];
             int[] IPOPS = new int[N + 1];
             float[] COUV = new float[N + 1];
-            int[,,] TABRES = new int[N + 1, NBSTATOTAL  + 1, NIND + 1];
+            int[,,] TABRES = new int[N + 1, NBSTATOTAL + 1, NIND + 1];
             int[] IG = new int[N + 1];
 
             // OUVERTURE DES FICHIERS
@@ -652,7 +717,7 @@ namespace ARProbaProcessing
 
             for (int IND = 1; IND <= NIND; IND++)
             {
-                IPOI[IND] = BSUP.POIDS[IND-1];
+                IPOI[IND] = BSUP.POIDS[IND - 1];
                 //if (IPOI[IND] < 0) IPOI[IND] += 65536;  /// ???
             }
 
@@ -748,7 +813,7 @@ namespace ARProbaProcessing
                     }
                     COUV[I] *= 100f / Convert.ToSingle(IPOPS[I]);
                 }
-                swPenetr.WriteLine(stations[STA-1].PadLeft(49) + COUV[1].ToString("0.00").PadLeft(8) + " " + COUV[2].ToString("0.00").PadLeft(8) + " " + COUV[3].ToString("0.00").PadLeft(8));
+                swPenetr.WriteLine(stations[STA - 1].PadLeft(49) + COUV[1].ToString("0.00").PadLeft(8) + " " + COUV[2].ToString("0.00").PadLeft(8) + " " + COUV[3].ToString("0.00").PadLeft(8));
             }
 
 
@@ -847,7 +912,7 @@ namespace ARProbaProcessing
             else
             {
                 for (int J = 2; J <= JMAX; J++)
-                    BUFS[J] = (double) Math.Exp((ALPHA - 1) * LOGS[J] + (BETA - 1) * LOGS[JSUP - J]);
+                    BUFS[J] = (double)Math.Exp((ALPHA - 1) * LOGS[J] + (BETA - 1) * LOGS[JSUP - J]);
                 // ASTUCE POUR LES EXTREMITES
                 LEBND = LOGS[2];
                 X = 1d / (6d * (NSEG + 1d));
@@ -890,7 +955,7 @@ namespace ARProbaProcessing
             {
                 if (!station.Name.ToUpper().Equals("SUD RADIO"))
                 {
-                    sta[i++] = station.IsIdf?1:0;
+                    sta[i++] = station.IsIdf ? 1 : 0;
                 }
             }
             return sta;
@@ -952,7 +1017,7 @@ namespace ARProbaProcessing
             return res;
         }
 
-        public List<Tuple<int,int>> CRENONIN_NOTO_HANDLING(ARProba arProba)
+        public List<Tuple<int, int>> CRENONIN_NOTO_HANDLING(ARProba arProba)
         {
             List<Tuple<int, int>> stationApres = new List<Tuple<int, int>>();
 
@@ -1023,7 +1088,7 @@ namespace ARProbaProcessing
             {
                 if (s.Contains(": Sexe :"))
                 {
-                    IND_SEX = int.Parse(s.Substring(0, s.IndexOf(':')))+2;
+                    IND_SEX = int.Parse(s.Substring(0, s.IndexOf(':'))) + 2;
                 }
                 else if ((enquete == Enquete.PanelNational && s.Contains("CSP Individu") && s.Contains("7 cl.")) ||
                     (enquete == Enquete.PanelCadre && s.Contains("CSP Individu")))
