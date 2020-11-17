@@ -13,9 +13,9 @@ namespace ARProbaProcessing
 
         private int[] NOTE = new int[25 + 1] { 999999, 0, 12, 6, 4, 3, 3, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
         private int[] NBIT = new int[] { 0, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1 };
-        private int[] SEG1 = new int[] { 999999, 1, 1, 2, 3, 3, 4, 4, 5, 6, 6, 7, 8, 9, 9, 10, 10 };
-        private int[] SEG2 = new int[] { 999999, 1, 1, 2, 3, 3, 4, 4, 5, 6, 6 };
-        private int[] SEG3 = new int[] { 999999, 1, 2, 2, 3, 3, 4 };
+        //private int[] contextPanel.SEG1 = new int[] { 999999, 1, 1, 2, 3, 3, 4, 4, 5, 6, 6, 7, 8, 9, 9, 10, 10 };
+        //private int[] contextPanel.SEG2 = new int[] { 999999, 1, 1, 2, 3, 3, 4, 4, 5, 6, 6 };
+        //private int[] contextPanel.SEG3 = new int[] { 999999, 1, 2, 2, 3, 3, 4 };
         private int[] ITH = new int[] { 999999,
                 9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,
                 1,1,1,1,
@@ -29,7 +29,7 @@ namespace ARProbaProcessing
 
         public void Run(ARProba arProba, Enquete enquete, string inputPath, string OutputPath)
         {
- 
+
 
             #region BeginProcess
             bool ModeDebug = false;
@@ -59,6 +59,43 @@ namespace ARProbaProcessing
                 run = true;
             #endregion EndProcess
 
+            ContextPanel contextPanel;
+            if (enquete == Enquete.PanelIleDeFrance)
+            {
+                contextPanel = new ContextPanel()
+                {
+                    Enquete = Enquete.PanelIleDeFrance,
+                    IdxTot = 11,
+                    NbSeg = 5,
+                    TRegTest = 4,
+                    SEGBASE = new int[] { 5, 8 },
+                    SEG1 = new int[] { 999999, 1, 1, 2, 2, 3 },
+                    SEG2 = new int[] { 999999, 1, 2, 2 },
+                    SEG3 = null,
+                    NIVO = new int[,] { {0, 1,1,2,2,3 },
+                                   {999999, 1,1,2,2,2 },
+                                   {999999, 1,1,1,1,1} }
+                };
+            }
+            else
+            {
+                contextPanel = new ContextPanel()
+                {
+                    Enquete = enquete,
+                    IdxTot = 37,
+                    NbSeg = 16,
+                    TRegTest = 5,
+                    SEGBASE = new int[] { 16, 26, 32 },
+                    SEG1 = new int[] { 999999, 1, 1, 2, 3, 3, 4, 4, 5, 6, 6, 7, 8, 9, 9, 10, 10 },
+                    SEG2 = new int[] { 999999, 1, 1, 2, 3, 3, 4, 4, 5, 6, 6 },
+                    SEG3 = new int[] { 999999, 1, 2, 2, 3, 3, 4 },
+                    NIVO = new int[,]  { {0, 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
+                                   {999999, 1,1,2,3,3,4,4,5,6,6,7,8,9,9,10,10 },
+                                   {999999, 1,1,1,2,2,3,3,3,4,4,4,5,6,6,6,6},
+                                   {999999, 1,1,1,2,2,2,2,2,3,3,3,3,4,4,4,4 },
+                                   {999999, 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1 } }
+                };
+            }
 
             int NbStation = arProba.HabAndNotoStationCount;
             int NB_STA_HAB_NOTO = arProba.HabAndNotoStationCount;
@@ -69,7 +106,7 @@ namespace ARProbaProcessing
             if (year <= 2019)
                 PathGRPWave = Path.Combine(inputPath, EnqueteTools.GetSupFileChar(enquete) + (year % 100).ToString("00") + "1.SUP");
             else
-                PathGRPWave = Path.Combine(inputPath, EnqueteTools.GetSupFileChar(enquete) +"1" + (year % 100).ToString("00") + ".SUP");
+                PathGRPWave = Path.Combine(inputPath, EnqueteTools.GetSupFileChar(enquete) + "1" + (year % 100).ToString("00") + ".SUP");
 
             List<int> lstPoids;
             List<int> lstAges;
@@ -91,6 +128,7 @@ namespace ARProbaProcessing
             int COL_CSCC = arProba.SignVars["CSCC"].Position - 1;
             int COL_NIEL = arProba.SignVars["NIEL"].Position - 1;
             int COL_PG22 = arProba.SignVars["PG22"].Position - 1;
+            int COL_ENFA = arProba.SignVars["ENFA"].Position - 1;
             int COL_ENF1 = arProba.SignVars["ENF1"].Position - 1;
             int COL_ENF2 = arProba.SignVars["ENF2"].Position - 1;
             int COL_ENF3 = arProba.SignVars["ENF3"].Position - 1;
@@ -108,6 +146,7 @@ namespace ARProbaProcessing
             int COL_TAB_CSCC = arProba.SignVars["CSCC"].Position;
             int COL_TAB_NIEL = arProba.SignVars["NIEL"].Position;
             int COL_TAB_PG22 = arProba.SignVars["PG22"].Position;
+            int COL_TAB_ENFA = arProba.SignVars["ENFA"].Position;
             int COL_TAB_ENF1 = arProba.SignVars["ENF1"].Position;
             int COL_TAB_ENF2 = arProba.SignVars["ENF2"].Position;
             int COL_TAB_ENF3 = arProba.SignVars["ENF3"].Position;
@@ -151,7 +190,7 @@ namespace ARProbaProcessing
             int nbStationTotal = arProba.StationCount;
             int nbStationHabNotoTotal = arProba.HabAndNotoStationCount + arProba.HabAndNotoTotalStationListCount;
             int nbStationHabNoto = arProba.HabAndNotoStationCount;
-            
+
 
             int[] ITS = new int[nbStationHabNotoTotal + 1];
             int i = 1;
@@ -192,7 +231,7 @@ namespace ARProbaProcessing
 
             #region entrées chab1qhp
             string pathHab = Path.Combine(OutputPath, "habqhind");
-            int[] ISTA = HAB_0_NOTO_1_STA_LIST_MASK(arProba); 
+            int[] ISTA = HAB_0_NOTO_1_STA_LIST_MASK(arProba);
             #endregion entrées chab1qhp
 
             #region entrées caud1qhp
@@ -260,10 +299,10 @@ namespace ARProbaProcessing
             #endregion entrées Asymp
 
 
-            int NBINDIV = segpanel(COL_PIAB, COL_CSCI, COL_SEX, COL_AGE11, COL_RUDA, pathSIGJFC_BDE, pathSortie1);
+            int NBINDIV = segpanel(contextPanel, COL_PIAB, COL_CSCI, COL_SEX, COL_AGE11, COL_RUDA, pathSIGJFC_BDE, pathSortie1);
 
             //NbStation = arProba.HabAndNotoTotalStationListCount;
-            VsorPoid[][] JN = ecrpan1j(pathF04, pathJNNIV, NBINDIV, nbStationHabNotoTotal, nbStationTotal, ITS, year);   // [Jour 1..23][Individus 1..N] = {VOSR[,]?, Poid[]}
+            VsorPoid[][] JN = ecrpan1j(contextPanel, pathF04, pathJNNIV, NBINDIV, nbStationHabNotoTotal, nbStationTotal, ITS, year);   // [Jour 1..23][Individus 1..N] = {VOSR[,]?, Poid[]}
 
             VsorPoid[][][] JNByWeek = regr5jp2(nbStationHabNotoTotal, NBINDIV, JN, pathPansem); // [Semaine 1..3][Jour de semaine Lundi à vendredi 1..5][indiv]
 
@@ -271,52 +310,50 @@ namespace ARProbaProcessing
 
             int[,,,] NINI_IND_QH_W = chab1qhp(NB_STA_HAB_NOTO, fushab09Indivs, ISTA, pathHab); // Habitude [STATIONS, INDIV, QH, LV/Sa/Di];
 
-            int[,] NINI_IND_STA = crenonin(nbJour, NB_STA_HAB_NOTO, fushab09Indivs, JN, stationApres, pathNinities); // [INDIV, STATIONS] 
+            int[,] NINI_IND_STA = crenonin(contextPanel, nbJour, NB_STA_HAB_NOTO, fushab09Indivs, JN, stationApres, pathNinities); // [INDIV, STATIONS] 
 
-            ecrsegpa(pathSIGJFC_BDE, pathSegs, COL_PIAB, COL_CSCI, COL_SEX, COL_AGE11, COL_RUDA, NbStation, NBINDIV, SIGN_LINE_LEN_FULL, pathSortie5,
+            ecrsegpa(contextPanel, pathSIGJFC_BDE, pathSegs, COL_PIAB, COL_CSCI, COL_SEX, COL_AGE11, COL_RUDA, NbStation, NBINDIV, SIGN_LINE_LEN_FULL, pathSortie5,
                      out int[,] POIDSEGM, out int IPOP);
 
-            short[,,,] cellules = calcregr(NBINDIV, NB_STA_HAB_NOTO, NINI_IND_STA, POIDSEGM, JN, pathCellule); // int[LV/Sa/Di, STATIONS, QH, CELL];
+            short[,,,] cellules = calcregr(contextPanel, NBINDIV, NB_STA_HAB_NOTO, NINI_IND_STA, POIDSEGM, JN, pathCellule); // int[LV/Sa/Di, STATIONS, QH, CELL];
 
-            byte[,,,] regrs = calcnivo(NBINDIV, NB_STA_HAB_NOTO, cellules, pathNiveaux); // [LV/Sa/Di, STATIONS, QH, CELL]
+            byte[,,,] regrs = calcnivo(contextPanel, NBINDIV, NB_STA_HAB_NOTO, cellules, pathNiveaux); // [LV/Sa/Di, STATIONS, QH, CELL]
 
             byte[,,,] audiences = caud1qhp(NBINDIV, NB_STA_HAB_NOTO, JN, POIDSEGM, pathAudQhInd); // audiences[STATIONS, INdiv, QH, 1..3]
 
-            float[] noteIndiv = caudtotp(NBINDIV, NB_STA_HAB_NOTO, COL_TAB_PIAB, COL_TAB_CSCI, COL_TAB_SEX, COL_TAB_AGE11, COL_TAB_RUDA,
-                 COL_TAB_HAB,  COL_TAB_MENA,  COL_TAB_RDA,  COL_TAB_CSCC,  COL_TAB_NIEL,
-             COL_TAB_PG22,  COL_TAB_ENF1,  COL_TAB_ENF2,  COL_TAB_ENF3,  COL_TAB_ENF4,
-             COL_TAB_NPER,  COL_TAB_APRES,  COL_TAB_CELL, JN, POIDSEGM, fushab09Indivs, pathNoteIndiv);
+            float[] noteIndiv = caudtotp(contextPanel, NBINDIV, NB_STA_HAB_NOTO, COL_TAB_PIAB, COL_TAB_CSCI, COL_TAB_SEX, COL_TAB_AGE11, COL_TAB_RUDA,
+                 COL_TAB_HAB, COL_TAB_MENA, COL_TAB_RDA, COL_TAB_CSCC, COL_TAB_NIEL,
+             COL_TAB_PG22, COL_TAB_ENF1, COL_TAB_ENF2, COL_TAB_ENF3, COL_TAB_ENF4, COL_TAB_ENFA,
+             COL_TAB_NPER, COL_TAB_APRES, COL_TAB_CELL, JN, POIDSEGM, fushab09Indivs, pathNoteIndiv);
 
-            float[,,,] ZUPTAUSE = sav1qhpa(NBINDIV, NB_STA_HAB_NOTO, regrs, POIDSEGM, fushab09Indivs, JNByWeek, JN, pathZuptause, pathSortiesav1qhpa); // [STATIONS, QH, DATAS ZR-UR-PR-TAUX, CELL];
+            float[,,,] ZUPTAUSE = sav1qhpa(contextPanel, NBINDIV, NB_STA_HAB_NOTO, regrs, POIDSEGM, fushab09Indivs, JNByWeek, JN, pathZuptause, pathSortiesav1qhpa); // [STATIONS, QH, DATAS ZR-UR-PR-TAUX, CELL];
 
-            float[,,,] ZUPTAUSA = sav1qhps(NBINDIV, NB_STA_HAB_NOTO, regrs, POIDSEGM, fushab09Indivs, JNByWeek, JN, pathZuptausa, pathSortiesav1qhps); // [STATIONS, QH, DATAS ZR-UR-PR-TAUX, CELL];
+            float[,,,] ZUPTAUSA = sav1qhps(contextPanel, NBINDIV, NB_STA_HAB_NOTO, regrs, POIDSEGM, fushab09Indivs, JNByWeek, JN, pathZuptausa, pathSortiesav1qhps); // [STATIONS, QH, DATAS ZR-UR-PR-TAUX, CELL];
 
-            float[,,,] ZUPTAUDI = sav1qhpd(NBINDIV, NB_STA_HAB_NOTO, regrs, POIDSEGM, fushab09Indivs, JNByWeek, JN, pathZuptaudi, pathSortiesav1qhpd); // [STATIONS, QH, DATAS ZR-UR-PR-TAUX, CELL];
+            float[,,,] ZUPTAUDI = sav1qhpd(contextPanel, NBINDIV, NB_STA_HAB_NOTO, regrs, POIDSEGM, fushab09Indivs, JNByWeek, JN, pathZuptaudi, pathSortiesav1qhpd); // [STATIONS, QH, DATAS ZR-UR-PR-TAUX, CELL];
 
-            float[,,,] Couverture = 
-                enquete== Enquete.PanelIleDeFrance ?
-                cgrp75br_Idf(PathGRPWave, IND_AGE, IND_SEX, NbStation, NbGRPModulation, NbGRPStation, ISTAcgrp75br, pathSortie8, pathNOUVOGRP)  // [LV/Sa/Di, QH, 4 + 1, CELL];
-                :
-                cgrp75br(PathGRPWave, IND_CSP, IND_AGE, IND_SEX, IND_REG, NbStation, NbGRPModulation, NbGRPStation, ISTAcgrp75br, pathSortie8, pathNOUVOGRP);  // [LV/Sa/Di, QH, 4 + 1, CELL];
+            float[,,,] Couverture = (enquete == Enquete.PanelIleDeFrance) ?
+                cgrp75br_Idf(contextPanel, PathGRPWave, IND_AGE, IND_SEX, NbStation, NbGRPModulation, NbGRPStation, ISTAcgrp75br, pathSortie8, pathNOUVOGRP) : // [LV/Sa/Di, QH, 4 + 1, CELL];
+                cgrp75br(contextPanel, PathGRPWave, IND_CSP, IND_AGE, IND_SEX, IND_REG, NbStation, NbGRPModulation, NbGRPStation, ISTAcgrp75br, pathSortie8, pathNOUVOGRP);  // [LV/Sa/Di, QH, 4 + 1, CELL];
 
-            cont75br(NBINDIV, NB_STA_HAB_NOTO, popLV, popS, popD, Couverture, (enquete == Enquete.PanelIleDeFrance ?11:37), pathSortie9);
+            cont75br(contextPanel, NBINDIV, NB_STA_HAB_NOTO, popLV, popS, popD, Couverture, pathSortie9);
 
-            float[,,,] ZUPTAUSECOR = cnzuptse(NBINDIV, NB_STA_HAB_NOTO, pathCnzuptse, pathzuptauseCor, Couverture, regrs, ZUPTAUSE);  // float[STATIONS, QH, DATAS ZR-UR-PR-TAUX, CELL];
+            float[,,,] ZUPTAUSECOR = cnzuptse(contextPanel, NBINDIV, NB_STA_HAB_NOTO, pathCnzuptse, pathzuptauseCor, Couverture, regrs, ZUPTAUSE);  // float[STATIONS, QH, DATAS ZR-UR-PR-TAUX, CELL];
 
-            float[,,,] ZUPTAUSACOR = cnzuptsa(NBINDIV, NB_STA_HAB_NOTO, pathCnzuptsa, pathzuptausaCor, Couverture, regrs, ZUPTAUSA);
+            float[,,,] ZUPTAUSACOR = cnzuptsa(contextPanel, NBINDIV, NB_STA_HAB_NOTO, pathCnzuptsa, pathzuptausaCor, Couverture, regrs, ZUPTAUSA);
 
-            float[,,,] ZUPTAUDICOR = cnzuptdi(NBINDIV, NB_STA_HAB_NOTO, pathCnzuptdi, pathzuptaudiCor, Couverture, regrs, ZUPTAUDI);
+            float[,,,] ZUPTAUDICOR = cnzuptdi(contextPanel, NBINDIV, NB_STA_HAB_NOTO, pathCnzuptdi, pathzuptaudiCor, Couverture, regrs, ZUPTAUDI);
 
-            byte[,,,] PROBAS = attribp2(NBINDIV, NB_STA_HAB_NOTO, regrs, POIDSEGM, NINI_IND_STA, noteIndiv, audiences, NINI_IND_QH_W,
+            byte[,,,] PROBAS = attribp2(contextPanel, NBINDIV, NB_STA_HAB_NOTO, regrs, POIDSEGM, NINI_IND_STA, noteIndiv, audiences, NINI_IND_QH_W,
                 ZUPTAUSECOR, ZUPTAUSACOR, ZUPTAUDICOR, pathAttribp2, pathPanecr); // [STATIONS, LV/Sa/Di, QH, INDIVS]
 
-            ZUPTAUSECOR = ZUPTAUSECOR = ZUPTAUDICOR = Couverture = ZUPTAUSE = ZUPTAUSA = ZUPTAUDI =  null;
+            ZUPTAUSECOR = ZUPTAUSECOR = ZUPTAUDICOR = Couverture = ZUPTAUSE = ZUPTAUSA = ZUPTAUDI = null;
             regrs = audiences = null;
             cellules = null;
             JNByWeek = null;
             NINI_IND_QH_W = null;
             NINI_IND_STA = null;
-            
+
             BSupport BSUP = transp08(NBINDIV, NB_STA_HAB_NOTO, NB_STA_IDF, STA_IDF_LIST_NO_SUDRAD_MASK, POIDSEGM, lstFiltreIDF, lstPoids, PROBAS, pathTransp08, pathYearNat, pathYearIdf, pathYearSup);
 
             int[,] PANCIB = crecib08(NBINDIV, fushab09Indivs, COL_TAB_AGE11, COL_TAB_MENA, pathPan20Cib); // [3 + 1, NIND + 1]
@@ -425,7 +462,7 @@ namespace ARProbaProcessing
             Console.WriteLine("NbIndiv : " + IG + " Population : " + IPOP + " NbIndivIDF : " + COMPTIDF);
         }
 
-        private int segpanel(int COL_PIAB, int COL_CSCI, int COL_SEX, int COL_AGE, int COL_RUDA, string pathSIGJFC_BDE, string pathSortie1)
+        private int segpanel(ContextPanel contextPanel, int COL_PIAB, int COL_CSCI, int COL_SEX, int COL_AGE, int COL_RUDA, string pathSIGJFC_BDE, string pathSortie1)
         {
             // PANEL RADIO 08 MEDIAMETRIE(nouveau format)
             // CONTROLE DES VOLUMES DES SEGMENTS
@@ -488,76 +525,90 @@ namespace ARProbaProcessing
                 //   La région UDA de l'interviewé est codé sur une colonne (colonne 20)
                 //   IREG = 1 correspond aux 6 UDA Nord
                 //   IREG = 2 correspond aux 3 UDA Sud
-
                 IREG = 1;
                 if (int.Parse(strIndiv[COL_RUDA].ToString()) > 6) IREG = 2;
 
                 //C-------------------------------------------------------------------------- -
                 //  C On fonction des variables précédemment calculées, on détermine les segments
                 //  C-------------------------------------------------------------------------- -
-                if (IAGE != 3)
+                if (contextPanel.Enquete != Enquete.PanelIleDeFrance)
                 {
-                    if (ICSP == 1)
+                    if (IAGE != 3)
                     {
-                        ISEG = 3;
-                        if (IREG == 1 && ISEX == 1) ISEG = 1;
-                        if (IREG == 1 && ISEX == 2) ISEG = 2;
-                    }
-                    else
-                    {
-                        if (ICSP != 3)
+                        if (ICSP == 1)
                         {
-                            if (IAGE != 2)
-                            {
-                                ISEG = 4;
-                                if (ISEX == 2) ISEG = 5;
-                            }
-                            else
-                            {
-                                ISEG = 11;
-                                if (IREG == 1 && ISEX == 1) ISEG = 9;
-                                if (IREG == 1 && ISEX == 2) ISEG = 10;
-                            }
+                            ISEG = 3;
+                            if (IREG == 1 && ISEX == 1) ISEG = 1;
+                            if (IREG == 1 && ISEX == 2) ISEG = 2;
                         }
                         else
                         {
-                            if (IAGE != 2)
+                            if (ICSP != 3)
                             {
-                                ISEG = 8;
-                                if (IREG == 1 && ISEX == 1) ISEG = 6;
-                                if (IREG == 1 && ISEX == 2) ISEG = 7;
+                                if (IAGE != 2)
+                                {
+                                    ISEG = 4;
+                                    if (ISEX == 2) ISEG = 5;
+                                }
+                                else
+                                {
+                                    ISEG = 11;
+                                    if (IREG == 1 && ISEX == 1) ISEG = 9;
+                                    if (IREG == 1 && ISEX == 2) ISEG = 10;
+                                }
                             }
                             else
                             {
-                                ISEG = 12;
+                                if (IAGE != 2)
+                                {
+                                    ISEG = 8;
+                                    if (IREG == 1 && ISEX == 1) ISEG = 6;
+                                    if (IREG == 1 && ISEX == 2) ISEG = 7;
+                                }
+                                else
+                                {
+                                    ISEG = 12;
+                                }
                             }
                         }
                     }
-                }
-                else
-                {
-                    ISEG = 13;
-                    if (IREG == 2) ISEG = 14;
-                    if (ISEX == 2) ISEG = ISEG + 2;
-                }
+                    else
+                    {
+                        ISEG = 13;
+                        if (IREG == 2) ISEG = 14;
+                        if (ISEX == 2) ISEG = ISEG + 2;
+                    }
 
-                if (ISEG < 1 || ISEG > 16)
-                {
-                    Console.WriteLine($" ISEG= {ISEG}");
-                    return -1;
+                    if (ISEG < 1 || ISEG > 16)
+                    {
+                        Console.WriteLine($" ISEG= {ISEG}");
+                        return -1;
+                    }
+                    else
+                    {
+                        SEGM[ISEG]++;
+                    }
                 }
-                else
+                else if (contextPanel.Enquete == Enquete.PanelIleDeFrance)
                 {
-                    SEGM[ISEG]++;
+                    // Segment 1 = Hommes de 13 à 34 ans
+                    if ((ISEX == 1) && (IAGE == 1)) SEGM[1] += 1;
+                    // Segment 2 = Femmes de 13 à 34 ans
+                    if ((ISEX == 2) && (IAGE == 1)) SEGM[2] += 1;
+                    // Segment 3 = Hommes de 35 à 59 ans
+                    if ((ISEX == 1) && (IAGE == 2)) SEGM[3] += 1;
+                    // Segment 4 = Femmes de 35 à 59 ans
+                    if ((ISEX == 2) && (IAGE == 2)) SEGM[4] += 1;
+                    // Segment 5 = 60 ans et +
+                    if (IAGE == 3) SEGM[5] += 1;
                 }
-
             } // foreach (string strIndiv in KHI2)
 
             if (File.Exists(pathSortie1)) File.Delete(pathSortie1);
             StreamWriter swSortie1 = new StreamWriter(File.Create(pathSortie1));
             swSortie1.WriteLine($"NBGUS: {IG}   POPULATION: {IPOP}");
 
-            for (int I = 1; I <= 16; I++)
+            for (int I = 1; I <= contextPanel.NbSeg; I++)
             {
                 float PEN = SEGM[I];
                 PEN = PEN * 100f / IG;
@@ -568,7 +619,7 @@ namespace ARProbaProcessing
             return IG;
         }
 
-        private VsorPoid[][] ecrpan1j(string pathF04, string pathNiv, int NBIND, int NBSTA, int NB_STA_TOTAL, int[] ITS, int year)
+        private VsorPoid[][] ecrpan1j(ContextPanel contextPanel, string pathF04, string pathNiv, int NBIND, int NBSTA, int NB_STA_TOTAL, int[] ITS, int year)
         {
             VsorPoid[][] resultJn = new VsorPoid[23 + 1][];
             for (int sor = 1; sor <= 23; sor++)
@@ -633,7 +684,7 @@ namespace ARProbaProcessing
                             }
                         }
 
-                        for (int IS = 1; IS <= NBSTA - 2; IS++)
+                        for (int IS = 1; IS <= NBSTA - (contextPanel.Enquete != Enquete.PanelIleDeFrance ? 2 : 0); IS++)
                         {
                             //int IC = ITS[IS];
                             for (int QH = 1; QH <= 96; QH++)
@@ -950,7 +1001,7 @@ namespace ARProbaProcessing
             return NINI;
         }
 
-        private int[,] crenonin(int NBJOUR, int NBSTA, List<Fushab09Indiv> fushab09Indivs, VsorPoid[][] JN, List<Tuple<int, int>> stationApres, string pathNinities)
+        private int[,] crenonin(ContextPanel contextPanel, int NBJOUR, int NBSTA, List<Fushab09Indiv> fushab09Indivs, VsorPoid[][] JN, List<Tuple<int, int>> stationApres, string pathNinities)
         {
             // PANEL RADIO 08 MEDIAMETRIE(nouveau format)
             // CREATION DU FICHIER DES NON INITIALISES AUX STATIONS
@@ -985,8 +1036,20 @@ namespace ARProbaProcessing
                     KHI2[IG, NOP] = 0;
 
                     // NON INITIALISE ?
+                    // Pour les stations dont on dispose des habitudes d'écoutes, 
+                    // on regarde si l'individu à déclaré une habitude
+                    // d'écoute sur au moins une des 9 tranches horaires de la journée, sur la semaine, sur le
+                    // samedi et enfin, sur le dimanche. Dès qu'on détecte une habitude, on sors de la boucle et
+                    // la valeur de KHI2 pour l'individu sur la station restera à 0 (c'est à dire que l'individu
+                    // est initialisé). Sinon, on regarde si l'individu a déclaré avoir écouté au moins un 1/4 d'heure
+                    // de la station et si encore il n'a rien écouté alors l'individu est dit non initialisé et KHI2(IG, NOP) = 1
+
                     bool sortie = false;
-                    if ((NOP != 20) && (NOP != 21) && (NOP != 22) && (NOP != 23) && (NOP != 24) && (NOP != 25) && (NOP != 26) && (NOP != 27))
+                    if (
+                        (contextPanel.Enquete != Enquete.PanelIleDeFrance && (NOP != 20) && (NOP != 21) && (NOP != 22) && (NOP != 23) && (NOP != 24) && (NOP != 25) && (NOP != 26) && (NOP != 27))
+                        ||
+                        (contextPanel.Enquete == Enquete.PanelIleDeFrance && (NOP != 1) && (NOP != 19) && (NOP != 20) && (NOP != 21) && (NOP != 24) && (NOP != 25) && (NOP != 26) && (NOP != 27) && (NOP != 28) && (NOP != 29) && (NOP != 30) && (NOP != 31))
+                        )
                     {
                         for (int ITR = 1; ITR <= 9; ITR++)
                         {
@@ -1073,7 +1136,7 @@ namespace ARProbaProcessing
             return KHI2;
         }
 
-        private void ecrsegpa(string pathSig, string pathSegs, int COL_PIAB, int COL_CSCI, int COL_SEX, int COL_AGE, int COL_RUDA, int NBSTA, int NBIND, int SIGN_LINE_LEN_FULL, string pathSortie5,
+        private void ecrsegpa(ContextPanel contextPanel, string pathSig, string pathSegs, int COL_PIAB, int COL_CSCI, int COL_SEX, int COL_AGE, int COL_RUDA, int NBSTA, int NBIND, int SIGN_LINE_LEN_FULL, string pathSortie5,
             out int[,] SEGM, out int IPOP)
         {
             // PANEL RADIO 08 MEDIAMETRIE(nouveau format)
@@ -1083,7 +1146,7 @@ namespace ARProbaProcessing
 
             // Longueur d'une ligne: 599 + 2 car de fin
             //int[] KHI2 = new int[SIGN_LINE_LEN_FULL + 1];
-            SEGM = new int[NBIND + 1, 5 + 1];
+            SEGM = new int[NBIND + 1, contextPanel.TRegTest + 1];
             int ICSP, IREG, ISEX, IAGE, ISEG;
             int[] C = new int[17];
             IPOP = 0;
@@ -1153,63 +1216,91 @@ namespace ARProbaProcessing
                     // On fonction des variables précédemment calculées, on détermine les segments
                     //-------------------------------------------------------------------------- -
 
-                    if (IAGE != 3)
+                    if (contextPanel.Enquete == Enquete.PanelIleDeFrance)
                     {
-                        if (ICSP == 1)
+                        // Segment 1 = Hommes de 13 à 34 ans
+                        if ((ISEX == 1) && (IAGE == 1)) ISEG = 1;
+                        // Segment 2 = Femmes de 13 à 34 ans
+                        if ((ISEX == 2) && (IAGE == 1)) ISEG = 2;
+                        // Segment 3 = Hommes de 35 à 59 ans
+                        if ((ISEX == 1) && (IAGE == 2)) ISEG = 3;
+                        // Segment 4 = Femmes de 35 à 59 ans
+                        if ((ISEX == 2) && (IAGE == 2)) ISEG = 4;
+                    }
+
+                    if (contextPanel.Enquete == Enquete.PanelIleDeFrance)
+                    {
+                        if ((ISEX == 1) && (IAGE == 1)) ISEG = 1;
+                        // Segment 2 = Femmes de 13 à 34 ans
+                        if ((ISEX == 2) && (IAGE == 1)) ISEG = 2;
+                        // Segment 3 = Hommes de 35 à 59 ans
+                        if ((ISEX == 1) && (IAGE == 2)) ISEG = 3;
+                        // Segment 4 = Femmes de 35 à 59 ans
+                        if ((ISEX == 2) && (IAGE == 2)) ISEG = 4;
+                        // Segment 5 = 60 ans et +
+                        if (IAGE == 3) ISEG = 5;
+                    }
+                    else if (contextPanel.Enquete != Enquete.PanelIleDeFrance)
+                    {
+                        // Segment 5 = 60 ans et +
+                        if (IAGE != 3)
                         {
-                            ISEG = 3;
-                            if (IREG == 1 && ISEX == 1) ISEG = 1;
-                            if (IREG == 1 && ISEX == 2) ISEG = 2;
-                        }
-                        else
-                        {
-                            if (ICSP != 3)
+                            if (ICSP == 1)
                             {
-                                if (IAGE != 2)
-                                {
-                                    ISEG = 4;
-                                    if (ISEX == 2) ISEG = 5;
-                                }
-                                else
-                                {
-                                    ISEG = 11;
-                                    if (IREG == 1 && ISEX == 1) ISEG = 9;
-                                    if (IREG == 1 && ISEX == 2) ISEG = 10;
-                                }
+                                ISEG = 3;
+                                if (IREG == 1 && ISEX == 1) ISEG = 1;
+                                if (IREG == 1 && ISEX == 2) ISEG = 2;
                             }
                             else
                             {
-                                if (IAGE != 2)
+                                if (ICSP != 3)
                                 {
-                                    ISEG = 8;
-                                    if (IREG == 1 && ISEX == 1) ISEG = 6;
-                                    if (IREG == 1 && ISEX == 2) ISEG = 7;
+                                    if (IAGE != 2)
+                                    {
+                                        ISEG = 4;
+                                        if (ISEX == 2) ISEG = 5;
+                                    }
+                                    else
+                                    {
+                                        ISEG = 11;
+                                        if (IREG == 1 && ISEX == 1) ISEG = 9;
+                                        if (IREG == 1 && ISEX == 2) ISEG = 10;
+                                    }
                                 }
                                 else
                                 {
-                                    ISEG = 12;
+                                    if (IAGE != 2)
+                                    {
+                                        ISEG = 8;
+                                        if (IREG == 1 && ISEX == 1) ISEG = 6;
+                                        if (IREG == 1 && ISEX == 2) ISEG = 7;
+                                    }
+                                    else
+                                    {
+                                        ISEG = 12;
+                                    }
                                 }
                             }
                         }
-                    }
-                    else
-                    {
-                        ISEG = 13;
-                        if (IREG == 2) ISEG = 14;
-                        if (ISEX == 2) ISEG = ISEG + 2;
+                        else
+                        {
+                            ISEG = 13;
+                            if (IREG == 2) ISEG = 14;
+                            if (ISEX == 2) ISEG = ISEG + 2;
+                        }
                     }
                 }
                 SEGM[IG, 2] = ISEG;
-                SEGM[IG, 3] = SEG1[ISEG];
-                SEGM[IG, 4] = SEG2[SEG1[ISEG]];
-                SEGM[IG, 5] = SEG3[SEG2[SEG1[ISEG]]];
+                SEGM[IG, 3] = contextPanel.SEG1[ISEG];
+                SEGM[IG, 4] = contextPanel.SEG2[contextPanel.SEG1[ISEG]];
+                if (contextPanel.Enquete != Enquete.PanelIleDeFrance) SEGM[IG, 5] = contextPanel.SEG3[contextPanel.SEG2[contextPanel.SEG1[ISEG]]];
 
                 C[ISEG]++;
             }
 
             FileStream writeStream = new FileStream(pathSegs, FileMode.Create);
             BinaryWriter writeBinay = new BinaryWriter(writeStream);
-            for (int J = 1; J <= 5; J++)
+            for (int J = 1; J <= contextPanel.TRegTest; J++)
             {
                 for (int I = 1; I <= NBIND; I++)
                 {
@@ -1228,14 +1319,14 @@ namespace ARProbaProcessing
             File.AppendAllText(pathSortie5, $"   NBGUS: {IG}   POPULATION:{IPOP}");
         }
 
-        private short[,,,] calcregr(int NBIND, int NBSTA, int[,] NINI, int[,] POIDSEGM, VsorPoid[][] JN, string pathCellule)
+        private short[,,,] calcregr(ContextPanel contextPanel, int NBIND, int NBSTA, int[,] NINI, int[,] POIDSEGM, VsorPoid[][] JN, string pathCellule)
         {
             // PANEL RADIO 08 MEDIAMETRIE(nouveau format)
             // CONTROLE DES MINIMA D'ECOUTES PAR CELLULES DE BASE          
             // Le nombre de station correspond au nombre de stations(#NB_STA_HAB_NOTO_TOTAL#) - #NB_STA_TOTAL_ONLY# pour Total Radio (et Total TV)
 
             int NBJOUR = 23;
-            int NBCEL = 23;
+            int NBCEL = (contextPanel.Enquete == Enquete.PanelIleDeFrance ? 5 : 23);
             int[,] KHI2 = new int[NBIND + 1, 6 + 1];
             int[] IAUD = new int[3 + 1];
             short[,,,] MINIS = new short[3 + 1, NBSTA + 1, 96 + 1, NBCEL + 1];
@@ -1283,7 +1374,7 @@ namespace ARProbaProcessing
             FileStream writeStream = new FileStream(pathCellule, FileMode.Create);
             BinaryWriter writeBinay = new BinaryWriter(writeStream);
             // BOUCLE STATIONS
-            for (int IC = 1; IC <= 23; IC++)
+            for (int IC = 1; IC <= (contextPanel.Enquete == Enquete.PanelIleDeFrance ? 5 : 23); IC++)
             {
                 for (int IQ = 1; IQ <= 96; IQ++)
                 {
@@ -1312,21 +1403,16 @@ namespace ARProbaProcessing
             return MINIS;
         }
 
-        private byte[,,,] calcnivo(int NBIND, int NBSTA, short[,,,] MINIS, string pathNivo)
+        private byte[,,,] calcnivo(ContextPanel contextPanel, int NBIND, int NBSTA, short[,,,] MINIS, string pathNivo)
         {
             // C PANEL RADIO 08 MEDIAMETRIE(nouveau format)
             // REGROUPEMENTS DES CELLULES DE BASE
-            int NBCEL = 16;
+            int NBCEL = contextPanel.NbSeg;
             int NIVREG = 9;
 
             // Le nombre de station correspond au nombre de stations(30) -1 pour Total Radio(et Total TV)
             byte[,,,] REGRS = new byte[3 + 1, NBSTA + 1, 96 + 1, NBCEL + 1];
             byte[] TREG = new byte[NBCEL + 1];
-            int[,] NIVO = new int[,]  { {0, 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
-                                   {999999, 1,1,2,3,3,4,4,5,6,6,7,8,9,9,10,10 },
-                                   {999999, 1,1,1,2,2,3,3,3,4,4,4,5,6,6,6,6},
-                                   {999999, 1,1,1,2,2,2,2,2,3,3,3,3,4,4,4,4 },
-                                   {999999, 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1 } };
 
             // BOUCLE STATIONS
             for (int IP = 1; IP <= NBSTA; IP++)
@@ -1348,14 +1434,14 @@ namespace ARProbaProcessing
                         {
                             for (int IC = 1; IC <= NBCEL; IC++)
                             {
-                                TREG[IC] = 5;
+                                TREG[IC] = Convert.ToByte(contextPanel.TRegTest);
                             }
                         }
                         else
                         {
                             // REGROUPEMENT NIVEAU N1 >> NIVEAU N2
                             bool sortie = false;
-                            for (byte IN = 1; IN <= 3; IN++)
+                            for (byte IN = 1; IN <= (contextPanel.Enquete == Enquete.PanelIleDeFrance ? 2 : 3); IN++)
                             {
                                 for (int IC = 1; IC <= NBCEL; IC++)
                                 {
@@ -1364,7 +1450,7 @@ namespace ARProbaProcessing
                                         for (int I = 1; I <= NBCEL; I++)
                                         {
 
-                                            if (NIVO[IN, I] == NIVO[IN, IC]) TREG[I] = TREG[IC];
+                                            if (contextPanel.NIVO[IN, I] == contextPanel.NIVO[IN, IC]) TREG[I] = TREG[IC];
                                         }
                                     }
                                 }
@@ -1377,7 +1463,7 @@ namespace ARProbaProcessing
 
                                         for (int I = 1; I <= NBCEL; I++)
                                         {
-                                            if (NIVO[IN, I] == NIVO[IN, IC]) IM = IM + MINIS[IU, IP, IQ, I];
+                                            if (contextPanel.NIVO[IN, I] == contextPanel.NIVO[IN, IC]) IM = IM + MINIS[IU, IP, IQ, I];
                                         }
 
                                         if (IM < NIVREG)
@@ -1385,7 +1471,7 @@ namespace ARProbaProcessing
                                             N = 1;
                                             for (int I = 1; I <= NBCEL; I++)
                                             {
-                                                if (NIVO[IN, I] == NIVO[IN, IC]) TREG[I] = Convert.ToByte(IN + 1);
+                                                if (contextPanel.NIVO[IN, I] == contextPanel.NIVO[IN, IC]) TREG[I] = Convert.ToByte(IN + 1);
                                             }
                                         }
                                     }
@@ -1402,11 +1488,11 @@ namespace ARProbaProcessing
                             {
                                 for (int IC = 1; IC <= NBCEL; IC++)
                                 {
-                                    if (TREG[IC] == 4)
+                                    if (TREG[IC] == contextPanel.TRegTest - 1)
                                     {
                                         for (int I = 1; I <= NBCEL; I++)
                                         {
-                                            TREG[I] = 4;
+                                            TREG[I] = Convert.ToByte(contextPanel.TRegTest - 1);
                                         }
                                     }
                                 }
@@ -1502,7 +1588,7 @@ namespace ARProbaProcessing
                             writeBinary.Write(Convert.ToByte(NIN2[STA, IG, IQ, I]));
                         }
                     }
-                 }
+                }
             }
 
             writeBinary.Close();
@@ -1511,11 +1597,11 @@ namespace ARProbaProcessing
             return NIN2;
         }
 
-        private float[] caudtotp(int NBIND, int NBSTA, 
-            int COL_PIAB, int COL_CSCI, int COL_SEX, int COL_AGE11, int COL_RUDA, 
+        private float[] caudtotp(ContextPanel contextPanel, int NBIND, int NBSTA,
+            int COL_PIAB, int COL_CSCI, int COL_SEX, int COL_AGE11, int COL_RUDA,
             int COL_HAB, int COL_MENA, int COL_RDA, int COL_CSCC, int COL_NIEL,
-            int COL_PG22, int COL_ENF1, int COL_ENF2,int COL_ENF3, int COL_ENF4,
-            int COL_NPER, int COL_APRES, int COL_CELL, 
+            int COL_PG22, int COL_ENF1, int COL_ENF2, int COL_ENF3, int COL_ENF4, int COL_TAB_ENFA,
+            int COL_NPER, int COL_APRES, int COL_CELL,
             VsorPoid[][] JN, int[,] POIDS, List<Fushab09Indiv> fushab09Indivs, string pathNoteIndiv)
         {
             // PANEL RADIO 08 MEDIAMETRIE(nouveau format)
@@ -1563,7 +1649,7 @@ namespace ARProbaProcessing
                 // SEXE
                 NINI[IG, 1] = fushab09Indiv.AVANT[COL_SEX] - 48;
                 // AGE
-                int AGE = 10 * (fushab09Indiv.AVANT[COL_AGE11] - 48) + (fushab09Indiv.AVANT[COL_AGE11+1] - 48);
+                int AGE = 10 * (fushab09Indiv.AVANT[COL_AGE11] - 48) + (fushab09Indiv.AVANT[COL_AGE11 + 1] - 48);
                 NINI[IG, 2] = 1;
                 if (AGE > 2) NINI[IG, 2] = 2;
                 if (AGE > 4) NINI[IG, 2] = 3;
@@ -1598,7 +1684,7 @@ namespace ARProbaProcessing
                 // Région NIELSEN
                 NINI[IG, 12] = (fushab09Indiv.AVANT[COL_NIEL] - 48);
                 // Région INSEE
-                int INSEE = 10 * (fushab09Indiv.AVANT[COL_PG22] - 48) + (fushab09Indiv.AVANT[COL_PG22+1] - 48);
+                int INSEE = 10 * (fushab09Indiv.AVANT[COL_PG22] - 48) + (fushab09Indiv.AVANT[COL_PG22 + 1] - 48);
                 NINI[IG, 13] = INSEE;
                 // Nb d'enfants de moins de 6 ans
                 NINI[IG, 14] = fushab09Indiv.AVANT[COL_ENF1] - 48;
@@ -1611,12 +1697,17 @@ namespace ARProbaProcessing
                 // Nb de personnes vivant dans le foyer
                 NINI[IG, 18] = fushab09Indiv.AVANT[COL_NPER] - 48;
                 // Etape de la vie
-                int ETAPE = 10 * (fushab09Indiv.APRES[COL_APRES] - 48) + fushab09Indiv.APRES[COL_APRES+1] - 48;
+                int ETAPE = 10 * (fushab09Indiv.APRES[COL_APRES] - 48) + fushab09Indiv.APRES[COL_APRES + 1] - 48;
                 NINI[IG, 19] = ETAPE;
                 //Console.WriteLine(ETAPE);
                 // Cellule
-                int CELLULE = 10 * (fushab09Indiv.AVANT[COL_CELL] - 48) + (fushab09Indiv.AVANT[COL_CELL+ 1] - 48);
-                NINI[IG, 20] = CELLULE;
+                if (contextPanel.Enquete == Enquete.PanelIleDeFrance)
+                    NINI[IG, 20] = fushab09Indiv.AVANT[COL_TAB_ENFA] - 48;
+                else
+                {
+                    int CELLULE = 10 * (fushab09Indiv.AVANT[COL_CELL] - 48) + (fushab09Indiv.AVANT[COL_CELL + 1] - 48);
+                    NINI[IG, 20] = CELLULE;
+                }
             }
 
             // CALCUL DE LA NOTE INDIVIDUELLE
@@ -1638,7 +1729,7 @@ namespace ARProbaProcessing
                         if (NINI[I, IC] != NINI[J, IC]) DIF += NO;
                     }
                     float D = -1f * ((DIF / 25f) * (DIF / 25f));
-                    float A = POIDS[J, 1] * (float)Math.Exp(D);  
+                    float A = POIDS[J, 1] * (float)Math.Exp(D);
 
                     DEN += A;
                     NUM += A * (COUV[J] / 12f);
@@ -1667,7 +1758,7 @@ namespace ARProbaProcessing
             return NOTE;
         }
 
-        private float[,,,] sav1qhpa(int NBIND, int NBSTA, byte[,,,] regrs, int[,] KHI2, List<Fushab09Indiv> fushab09Indivs, VsorPoid[][][] JNByWeek, VsorPoid[][] JN, string pathZuptause, string pathSortie)
+        private float[,,,] sav1qhpa(ContextPanel contextPanel, int NBIND, int NBSTA, byte[,,,] regrs, int[,] KHI2, List<Fushab09Indiv> fushab09Indivs, VsorPoid[][][] JNByWeek, VsorPoid[][] JN, string pathZuptause, string pathSortie)
         {
             // PANEL RADIO 08 MEDIAMETRIE(nouveau format)
             // CALCUL DES PARAMETRES STATION 2 QUART d'HEURE 31
@@ -1676,30 +1767,29 @@ namespace ARProbaProcessing
             // VERSION 2
             // Le nombre de station correspond au nombre de stations(#NB_STA_HAB_NOTO_TOTAL#) - #NB_STA_TOTAL_ONLY# pour Total Radio (et Total TV)
 
-            double[,] C = new double[15 + 1, 5 + 1];
+            double[,] C = new double[15 + 1, contextPanel.TRegTest + 1];
             double[] NCOM = new double[15 + 1] { 999999, 15, 105, 455, 1365, 3003, 5005, 6435, 6435, 5005, 3003, 1365, 455, 105, 15, 1 };
-            float[,,,] RESUL = new float[NBSTA + 1, 96 + 1, 4 + 1, 16 + 1];
+            float[,,,] RESUL = new float[NBSTA + 1, 96 + 1, 4 + 1, contextPanel.NbSeg + 1];
             double[] Z = new double[15 + 1];
             double[] YR = new double[15 + 1];
 
-            int[,] COMPT = new int[16 + 1, 5 + 1];
-            int[] ITPO = new int[5 + 1];
-            int[] ITTP = new int[5 + 1];
-            int[] IZAP = new int[5 + 1];
-            int[] IPPS = new int[5 + 1];
-            int[] ITJP = new int[5 + 1];
-            int[,] SEGM = new int[16 + 1, 5 + 1];
-            int[] NB = new int[5 + 1];
-            int[] ITTL = new int[5 + 1];
-            int[] ITOU = new int[5 + 1];
+            int[,] COMPT = new int[16+1, contextPanel.TRegTest + 1];  // contextPanel.NbSeg + 1 ou 16 ???
+            int[] ITPO = new int[contextPanel.TRegTest + 1];
+            int[] ITTP = new int[contextPanel.TRegTest + 1];
+            int[] IZAP = new int[contextPanel.TRegTest + 1];
+            int[] IPPS = new int[contextPanel.TRegTest + 1];
+            int[] ITJP = new int[contextPanel.TRegTest + 1];
+            int[,] SEGM = new int[16 + 1, contextPanel.TRegTest + 1]; // contextPanel.NbSeg + 1 ou 16 ???
+            int[] NB = new int[contextPanel.TRegTest + 1];
+            int[] ITTL = new int[contextPanel.TRegTest + 1];
+            int[] ITOU = new int[contextPanel.TRegTest + 1];
             int[] COMB = new int[15 + 1];
-            int[] IZAB = new int[5 + 1];
-            int[] ITJR = new int[5 + 1];
-            int[] IM = new int[5 + 1];
+            int[] IZAB = new int[contextPanel.TRegTest + 1];
+            int[] ITJR = new int[contextPanel.TRegTest + 1];
+            int[] IM = new int[contextPanel.TRegTest + 1];
             int[,,] PATRON = new int[96 + 1, 15 + 1, NBIND + 1];
             int[,,] JATOU = new int[96 + 1, 4 + 1, NBIND + 1];
-            int[,,] REGRS = new int[3 + 1, NBSTA + 1, 16 + 1];
-            int[] TREG = new int[16 + 1];
+            int[] TREG = new int[contextPanel.NbSeg + 1];
 
             //  id  time
             //  1     05h00 - 06h00 = 4
@@ -1755,12 +1845,12 @@ namespace ARProbaProcessing
                         {
                             JATOU[IQ, IJ, IG] = 0;
                         }
-                        for (int I = 1; I <= 16; I++)
+                        for (int I = 1; I <= contextPanel.NbSeg; I++)
                         {
                             TREG[I] = regrs[1, IP, IQ, I];
                         }
 
-                        if (TREG[1] == 5) continue;
+                        if (TREG[1] == contextPanel.TRegTest) continue;
                         int IJK = 1;
                         for (int I = 3; I <= 21; I++)
                         {
@@ -1790,35 +1880,35 @@ namespace ARProbaProcessing
                 {
                     sbSortie.AppendLine($"IQ = {IQ}");
                     Console.WriteLine($"--------STATION {NOP} --------1/4h {IQ} ");
-                    for (int I = 1; I <= 16; I++)
+                    for (int I = 1; I <= contextPanel.NbSeg; I++)
                     {
                         TREG[I] = regrs[1, IP, IQ, I];
                     }
 
-                    if (TREG[1] != 5)
+                    if (TREG[1] != contextPanel.TRegTest)
                     {
                         // BOUCLE CELLULES
-                        for (int N1 = 1; N1 <= 16; N1++)
+                        for (int N1 = 1; N1 <= contextPanel.NbSeg; N1++)
                         {
-                            int N2 = SEG1[N1];
-                            int N3 = SEG2[N2];
-                            int N4 = SEG3[N3];
+                            int N2 = contextPanel.SEG1[N1];
+                            int N3 = contextPanel.SEG2[N2];
+                            int N4 = (contextPanel.Enquete != Enquete.PanelIleDeFrance) ? contextPanel.SEG3[N3] : 0;
                             NB[1] = N1;
                             NB[2] = N2;
                             NB[3] = N3;
-                            NB[4] = N4;
-                            NB[5] = 1;
+                            NB[4] = (contextPanel.Enquete != Enquete.PanelIleDeFrance) ? N4 : 1;
+                            if (contextPanel.Enquete != Enquete.PanelIleDeFrance) NB[5] = 1;
                             int NIV = TREG[N1] + 1;
                             if (((N1 == 1) || (NIV == 1))
                                 ||
-                               (!((NIV == 2 && SEG1[N1] == SEG1[N1 - 1]) ||
-                                  (NIV == 3 && SEG2[SEG1[N1]] == SEG2[SEG1[N1 - 1]]) ||
-                                  (NIV == 4 && SEG3[SEG2[SEG1[N1]]] == SEG3[SEG2[SEG1[N1 - 1]]]) ||
-                                  (NIV == 5))))
+                               (!((NIV == 2 && contextPanel.SEG1[N1] == contextPanel.SEG1[N1 - 1]) ||
+                                  (NIV == 3 && contextPanel.SEG2[contextPanel.SEG1[N1]] == contextPanel.SEG2[contextPanel.SEG1[N1 - 1]]) ||
+                                  (contextPanel.Enquete != Enquete.PanelIleDeFrance && NIV == 4 && contextPanel.SEG3[contextPanel.SEG2[contextPanel.SEG1[N1]]] == contextPanel.SEG3[contextPanel.SEG2[contextPanel.SEG1[N1 - 1]]]) ||
+                                  (NIV == contextPanel.TRegTest))))
                             {
-                                for (int I = 1; I <= 16; I++)
+                                for (int I = 1; I <= contextPanel.NbSeg; I++)   // 16 or contextPanel.NbSeg ????? bug IDF fortran ?
                                 {
-                                    for (int J = 1; J <= 5; J++)
+                                    for (int J = 1; J <= contextPanel.TRegTest; J++)
                                     {
                                         SEGM[I, J] = 0;
                                         COMPT[I, J] = 0;
@@ -1826,7 +1916,7 @@ namespace ARProbaProcessing
                                     }
                                 }
 
-                                for (int J = 1; J <= 5; J++)
+                                for (int J = 1; J <= contextPanel.TRegTest; J++)
                                 {
                                     IM[J] = 0;
                                     IPPS[J] = 0;
@@ -1844,8 +1934,7 @@ namespace ARProbaProcessing
                                 for (IG = 1; IG <= NBIND; IG++)
                                 {
                                     int IPERS = KHI2[IG, 1];
-                                    bool KHI2_IG_NIV_EQ_NB_NIV = (NIV == 5 && NB[NIV] == 1) || (KHI2[IG, NIV + 1] == NB[NIV]);
-                                    //KHI2[IG, 6] = 1;
+                                    bool KHI2_IG_NIV_EQ_NB_NIV = (NIV == contextPanel.TRegTest && NB[NIV] == 1) || (KHI2[IG, NIV + 1] == NB[NIV]);
                                     IPERS = IPERS * 10;
                                     if (KHI2_IG_NIV_EQ_NB_NIV)
                                     {
@@ -2132,15 +2221,7 @@ namespace ARProbaProcessing
                                 double POPS = 0f;
                                 for (int I = 1; I <= NBIND; I++)
                                 {
-                                    if ((IN == 5 && NB[IN] == 1) || KHI2[I, IN + 1] == NB[IN]) POPS = POPS + KHI2[I, 1];
-                                }
-                                int[] aa = new int[NBIND+1];
-                                if (IN != 5)
-                                {
-                                    for (int I = 1; I <= NBIND; I++)
-                                    {
-                                        aa[I] = KHI2[I, IN + 1];
-                                    }
+                                    if ((IN == contextPanel.TRegTest && NB[IN] == 1) || KHI2[I, IN + 1] == NB[IN]) POPS = POPS + KHI2[I, 1];
                                 }
 
                                 POPS = POPS * 10d;
@@ -2148,24 +2229,34 @@ namespace ARProbaProcessing
                                 double DIRAC1 = ITTP[IN] / POPS;
                                 double PC1 = IZAP[IN] / POPS;
                                 int IPOP = 0;
-                                for (int I = 2; I <= 16; I++)
+                                for (int I = 2; I <= contextPanel.NbSeg; I++)
                                 {
                                     IPOP = IPOP + COMPT[I, IN] * (I - 1);
                                 }
 
-                                for (int I = 2; I <= 16; I++)
+                                for (int I = 2; I <= contextPanel.NbSeg; I++)
                                 {
-                                    if (I != 16) SEGM[I + 1, IN] = SEGM[I + 1, IN] + SEGM[I, IN];
-                                    if (I != 16) COMPT[I + 1, IN] = COMPT[I + 1, IN] + COMPT[I, IN];
+                                    if (I != contextPanel.NbSeg) SEGM[I + 1, IN] += SEGM[I, IN];
+                                    if (I != contextPanel.NbSeg) COMPT[I + 1, IN] += COMPT[I, IN];
                                 }
 
                                 double GRP = IPOP * 100d;
                                 GRP = GRP / POPS / 15d;
                                 PR = (IPOP - ITTP[IN] * 15) / 14d;
+
+                                if (contextPanel.Enquete == Enquete.PanelIleDeFrance && POPS == (COMPT[1, IN] + ITTP[IN]))
+                                {
+                                    ZR = COMPT[1, IN] / POPS;
+                                    UR = ITTP[IN] / POPS;
+                                    PR = 1d;
+                                    TAU = 0d;
+                                    break;
+                                }
+
                                 PR = PR / (POPS - COMPT[1, IN] - ITTP[IN]);
                                 for (int I = 1; I <= 15; I++)
                                 {
-                                    Z[I] = C[I, IN] / NCOM[I] / POPS * 100d;
+                                    Z[I] = 1d * C[I, IN] / NCOM[I] / POPS * 100d;
                                 }
 
                                 // APPEL DE LA FONCTION DIFFERENCE
@@ -2202,7 +2293,7 @@ namespace ARProbaProcessing
                     else
                     {
                         sbSortie.AppendLine(" ***PAS D AUDIENCE POUR CE 1 / 4h * **");
-                        for (int N1 = 1; N1 <= 16; N1++)
+                        for (int N1 = 1; N1 <= contextPanel.NbSeg; N1++)
                         {
                             RESUL[NOP, IQ, 1, N1] = 1f;
                             RESUL[NOP, IQ, 2, N1] = 0f;
@@ -2212,7 +2303,7 @@ namespace ARProbaProcessing
                     }// if (TREG[1] != 5)
 
                     // FIN DE TRAITEMENT CELLULE
-                    for (int N1=1;N1<=16; N1++)
+                    for (int N1 = 1; N1 <= contextPanel.NbSeg; N1++)
                     {
                         for (int I = 1; I <= 4; I++)
                         {
@@ -2239,7 +2330,7 @@ namespace ARProbaProcessing
             return RESUL;
         }
 
-        private float[,,,] sav1qhps(int NBIND, int NBSTA, byte[,,,] regrs, int[,] KHI2, List<Fushab09Indiv> fushab09Indivs, VsorPoid[][][] JNByWeek, VsorPoid[][] JN, string pathZuptausa, string pathSortie)
+        private float[,,,] sav1qhps(ContextPanel contextPanel, int NBIND, int NBSTA, byte[,,,] regrs, int[,] KHI2, List<Fushab09Indiv> fushab09Indivs, VsorPoid[][][] JNByWeek, VsorPoid[][] JN, string pathZuptausa, string pathSortie)
         {
             // PANEL RADIO 08 MEDIAMETRIE(nouveau format)
             // CALCUL DES PARAMETRES z,u,p,tau
@@ -2249,30 +2340,30 @@ namespace ARProbaProcessing
 
             int NBJOUR = 23;
 
-            double[,] C = new double[15 + 1, 5 + 1];
+            double[,] C = new double[15 + 1, contextPanel.TRegTest + 1];
             double[] NCOM = new double[4 + 1] { 999999f, 4, 6, 4, 1 };
-            float[,,,] RESUL = new float[NBSTA + 1, 96 + 1, 4 + 1, 16 + 1];
+            float[,,,] RESUL = new float[NBSTA + 1, 96 + 1, 4 + 1, contextPanel.NbSeg + 1];
             double[] Z = new double[15 + 1];
             double[] YR = new double[15 + 1];
 
-            int[,] COMPT = new int[16 + 1, 5 + 1];
-            int[] ITPO = new int[5 + 1];
-            int[] ITTP = new int[5 + 1];
-            int[] IZAP = new int[5 + 1];
-            int[] IPPS = new int[5 + 1];
-            int[] ITJP = new int[5 + 1];
-            int[,] SEGM = new int[16 + 1, 5 + 1];
-            int[] NB = new int[5 + 1];
-            int[] ITTL = new int[5 + 1];
-            int[] ITOU = new int[5 + 1];
+            int[,] COMPT = new int[16 + 1, contextPanel.TRegTest + 1];
+            int[] ITPO = new int[contextPanel.TRegTest + 1];
+            int[] ITTP = new int[contextPanel.TRegTest + 1];
+            int[] IZAP = new int[contextPanel.TRegTest + 1];
+            int[] IPPS = new int[contextPanel.TRegTest + 1];
+            int[] ITJP = new int[contextPanel.TRegTest + 1];
+            int[,] SEGM = new int[16 + 1, contextPanel.TRegTest + 1];
+            int[] NB = new int[contextPanel.TRegTest + 1];
+            int[] ITTL = new int[contextPanel.TRegTest + 1];
+            int[] ITOU = new int[contextPanel.TRegTest + 1];
             int[] COMB = new int[15 + 1];
-            int[] IZAB = new int[5 + 1];
-            int[] ITJR = new int[5 + 1];
-            int[] IM = new int[5 + 1];
+            int[] IZAB = new int[contextPanel.TRegTest + 1];
+            int[] ITJR = new int[contextPanel.TRegTest + 1];
+            int[] IM = new int[contextPanel.TRegTest + 1];
             //int[,] POIQH = new int[96 + 1, NBJOUR + 1];
-            int[,,] PATRON = new int[96 + 1, 15 + 1, NBIND + 1];
+            int[,,] PATRON = new int[96 + 1, 4 + 1, NBIND + 1];
             int[,,] JATOU = new int[96 + 1, 4 + 1, NBIND + 1];
-            int[] TREG = new int[16 + 1];
+            int[] TREG = new int[contextPanel.NbSeg + 1];
             double ZR = 0f;
             double UR = 0f;
             double PR = 0f;
@@ -2320,7 +2411,7 @@ namespace ARProbaProcessing
                         int IH = fushab09Indiv.KHSA[ITH[IQ], NOSH] - 48;
                         if (IH == 0) IH = 5;
                         int NJOU = 0;
-                        for (int IJ = 1; IJ <= 15; IJ++)
+                        for (int IJ = 1; IJ <= 4; IJ++)
                         {
                             PATRON[IQ, IJ, IG] = 0;
                         }
@@ -2328,12 +2419,12 @@ namespace ARProbaProcessing
                         {
                             JATOU[IQ, IJ, IG] = 0;
                         }
-                        for (int I = 1; I <= 16; I++)
+                        for (int I = 1; I <= contextPanel.NbSeg; I++)
                         {
                             TREG[I] = regrs[2, IP, IQ, I];
                         }
 
-                        if (TREG[1] == 5) continue;
+                        if (TREG[1] == contextPanel.TRegTest) continue;
                         int IJK = 1;
                         for (int I = 1; I <= 22; I += 7)
                         {
@@ -2361,38 +2452,36 @@ namespace ARProbaProcessing
                 {
                     sbSortie.AppendLine($"IQ = {IQ}");
                     Console.WriteLine($"--------STATION {NOP} --------1/4h {IQ} ");
-                    for (int I = 1; I <= 16; I++)
+                    for (int I = 1; I <= contextPanel.NbSeg; I++)
                     {
                         TREG[I] = regrs[2, IP, IQ, I];
                     }
 
-                    if (TREG[1] != 5)
+                    if (TREG[1] != contextPanel.TRegTest)
                     {
-       
-
                         // BOUCLE CELLULES
-                        for (int N1 = 1; N1 <= 16; N1++)
+                        for (int N1 = 1; N1 <= contextPanel.NbSeg; N1++)
                         {
-                            int N2 = SEG1[N1];
-                            int N3 = SEG2[N2];
-                            int N4 = SEG3[N3];
+                            int N2 = contextPanel.SEG1[N1];
+                            int N3 = contextPanel.SEG2[N2];
+                            int N4 = (contextPanel.Enquete != Enquete.PanelIleDeFrance) ? contextPanel.SEG3[N3] : 0;
                             NB[1] = N1;
                             NB[2] = N2;
                             NB[3] = N3;
-                            NB[4] = N4;
-                            NB[5] = 1;
+                            NB[4] = (contextPanel.Enquete != Enquete.PanelIleDeFrance) ? N4 : 1;
+                            if (contextPanel.Enquete != Enquete.PanelIleDeFrance) NB[5] = 1;
                             int NIV = TREG[N1] + 1;
                             if (((N1 == 1) || (NIV == 1))
                                 ||
-                               (!((NIV == 2 && SEG1[N1] == SEG1[N1 - 1]) ||
-                                  (NIV == 3 && SEG2[SEG1[N1]] == SEG2[SEG1[N1 - 1]]) ||
-                                  (NIV == 4 && SEG3[SEG2[SEG1[N1]]] == SEG3[SEG2[SEG1[N1 - 1]]]) ||
-                                  (NIV == 5))))
+                               (!((NIV == 2 && contextPanel.SEG1[N1] == contextPanel.SEG1[N1 - 1]) ||
+                                  (NIV == 3 && contextPanel.SEG2[contextPanel.SEG1[N1]] == contextPanel.SEG2[contextPanel.SEG1[N1 - 1]]) ||
+                                  (contextPanel.Enquete != Enquete.PanelIleDeFrance && NIV == 4 && contextPanel.SEG3[contextPanel.SEG2[contextPanel.SEG1[N1]]] == contextPanel.SEG3[contextPanel.SEG2[contextPanel.SEG1[N1 - 1]]]) ||
+                                  (NIV == contextPanel.TRegTest))))
                             {
-                                
-                                for (int I = 1; I <= 16; I++)
+
+                                for (int I = 1; I <= contextPanel.NbSeg; I++)
                                 {
-                                    for (int J = 1; J <= 5; J++)
+                                    for (int J = 1; J <= contextPanel.TRegTest; J++)
                                     {
                                         SEGM[I, J] = 0;
                                         COMPT[I, J] = 0;
@@ -2400,7 +2489,7 @@ namespace ARProbaProcessing
                                     }
                                 }
 
-                                for (int J = 1; J <= 5; J++)
+                                for (int J = 1; J <= contextPanel.TRegTest; J++)
                                 {
                                     IM[J] = 0;
                                     IPPS[J] = 0;
@@ -2417,9 +2506,9 @@ namespace ARProbaProcessing
                                 // BOUCLE INDIVIDUS
                                 for (IG = 1; IG <= NBIND; IG++)
                                 {
-                                    bool KHI2_IG_NIV_EQ_NB_NIV = (NIV == 5 && NB[NIV] == 1) || (KHI2[IG, NIV + 1] == NB[NIV]);
+                                    bool KHI2_IG_NIV_EQ_NB_NIV = (NIV == contextPanel.TRegTest && NB[NIV] == 1) || (KHI2[IG, NIV + 1] == NB[NIV]);
                                     int IPERS = KHI2[IG, 1];
-                                    //KHI2[IG, 6] = 1;
+
                                     IPERS = IPERS * 10;
                                     if (KHI2_IG_NIV_EQ_NB_NIV) IM[NIV] = IM[NIV] + 1;
                                     if (KHI2_IG_NIV_EQ_NB_NIV) IPPS[NIV] = IPPS[NIV] + IPERS;
@@ -2509,22 +2598,22 @@ namespace ARProbaProcessing
                                 double POPS = 0d;
                                 for (int I = 1; I <= NBIND; I++)
                                 {
-                                    if ((NIV == 5 && NB[IN] == 1) || (KHI2[I, IN + 1] == NB[IN])) POPS = POPS + KHI2[I, 1];
+                                    if ((IN == contextPanel.TRegTest && NB[IN] == 1) || (KHI2[I, IN + 1] == NB[IN])) POPS = POPS + KHI2[I, 1];
                                 }
                                 POPS = POPS * 10d;
                                 double DIRAC0 = COMPT[1, IN] / POPS;
                                 double DIRAC1 = ITTP[IN] / POPS;
                                 double PC1 = IZAP[IN] / POPS;
                                 int IPOP = 0;
-                                for (int I = 2; I <= 5; I++)
+                                for (int I = 2; I <= contextPanel.NbSeg; I++)
                                 {
                                     IPOP = IPOP + COMPT[I, IN] * (I - 1);
                                 }
 
-                                for (int I = 2; I <= 5; I++)
+                                for (int I = 2; I <= contextPanel.NbSeg; I++)
                                 {
-                                    if (I != 5) SEGM[I + 1, IN] = SEGM[I + 1, IN] + SEGM[I, IN];
-                                    if (I != 5) COMPT[I + 1, IN] = COMPT[I + 1, IN] + COMPT[I, IN];
+                                    if (I != contextPanel.NbSeg) SEGM[I + 1, IN] += SEGM[I, IN];
+                                    if (I != contextPanel.NbSeg) COMPT[I + 1, IN] += COMPT[I, IN];
                                 }
 
                                 double GRP = IPOP * 100;
@@ -2542,7 +2631,7 @@ namespace ARProbaProcessing
                                     PR = PR / (POPS - COMPT[1, IN] - ITTP[IN]);
                                     for (int I = 1; I <= 4; I++)
                                     {
-                                        Z[I] = Convert.ToSingle(1d * C[I, IN] / NCOM[I] / POPS * 100d);
+                                        Z[I] = 1d * C[I, IN] / NCOM[I] / POPS * 100d;
                                     }
 
                                     // APPEL DE LA FONCTION DIFFERENCE
@@ -2572,7 +2661,7 @@ namespace ARProbaProcessing
                     else
                     {
                         sbSortie.AppendLine(" ***PAS D AUDIENCE POUR CE 1 / 4h * **");
-                        for (int N1 = 1; N1 <= 16; N1++)
+                        for (int N1 = 1; N1 <= contextPanel.NbSeg; N1++)
                         {
                             RESUL[NOP, IQ, 1, N1] = 1f;
                             RESUL[NOP, IQ, 2, N1] = 0f;
@@ -2582,7 +2671,7 @@ namespace ARProbaProcessing
                     }
                     // FIN DE TRAITEMENT CELLULE
                     // 1000 
-                    for (int N1 = 1; N1 <= 16; N1++)
+                    for (int N1 = 1; N1 <= contextPanel.NbSeg; N1++)
                     {
                         for (int I = 1; I <= 4; I++)
                         {
@@ -2610,7 +2699,7 @@ namespace ARProbaProcessing
             return RESUL;
         }
 
-        private float[,,,] sav1qhpd(int NBIND, int NBSTA, byte[,,,] regrs, int[,] KHI2, List<Fushab09Indiv> fushab09Indivs, VsorPoid[][][] JNByWeek, VsorPoid[][] JN, string pathZuptaudi, string pathSortie)
+        private float[,,,] sav1qhpd(ContextPanel contextPanel, int NBIND, int NBSTA, byte[,,,] regrs, int[,] KHI2, List<Fushab09Indiv> fushab09Indivs, VsorPoid[][][] JNByWeek, VsorPoid[][] JN, string pathZuptaudi, string pathSortie)
         {
             // PANEL RADIO 08 MEDIAMETRIE(nouveau format)
             // CALCUL DES PARAMETRES z,u,p,tau
@@ -2620,30 +2709,30 @@ namespace ARProbaProcessing
 
             int NBJOUR = 23;
 
-            double[,] C = new double[15 + 1, 5 + 1];
+            double[,] C = new double[15 + 1, contextPanel.TRegTest + 1];
             double[] NCOM = new double[4 + 1] { 999999f, 4, 6, 4, 1 };
-            float[,,,] RESUL = new float[NBSTA + 1, 96 + 1, 4 + 1, 16 + 1];
+            float[,,,] RESUL = new float[NBSTA + 1, 96 + 1, 4 + 1, contextPanel.NbSeg + 1];
             double[] Z = new double[15 + 1];
             double[] YR = new double[15 + 1];
 
-            int[,] COMPT = new int[16 + 1, 5 + 1];
-            int[] ITPO = new int[5 + 1];
-            int[] ITTP = new int[5 + 1];
-            int[] IZAP = new int[5 + 1];
-            int[] IPPS = new int[5 + 1];
-            int[] ITJP = new int[5 + 1];
-            int[,] SEGM = new int[16 + 1, 5 + 1];
-            int[] NB = new int[5 + 1];
-            int[] ITTL = new int[5 + 1];
-            int[] ITOU = new int[5 + 1];
+            int[,] COMPT = new int[16 + 1, contextPanel.TRegTest + 1];
+            int[] ITPO = new int[contextPanel.TRegTest + 1];
+            int[] ITTP = new int[contextPanel.TRegTest + 1];
+            int[] IZAP = new int[contextPanel.TRegTest + 1];
+            int[] IPPS = new int[contextPanel.TRegTest + 1];
+            int[] ITJP = new int[contextPanel.TRegTest + 1];
+            int[,] SEGM = new int[16 + 1, contextPanel.TRegTest + 1];
+            int[] NB = new int[contextPanel.TRegTest + 1];
+            int[] ITTL = new int[contextPanel.TRegTest + 1];
+            int[] ITOU = new int[contextPanel.TRegTest + 1];
             int[] COMB = new int[15 + 1];
-            int[] IZAB = new int[5 + 1];
-            int[] ITJR = new int[5 + 1];
-            int[] IM = new int[5 + 1];
+            int[] IZAB = new int[contextPanel.TRegTest + 1];
+            int[] ITJR = new int[contextPanel.TRegTest + 1];
+            int[] IM = new int[contextPanel.TRegTest + 1];
             //int[,] POIQH = new int[96 + 1, NBJOUR + 1];
-            int[,,] PATRON = new int[96 + 1, 15 + 1, NBIND + 1];
+            int[,,] PATRON = new int[96 + 1, 4 + 1, NBIND + 1];
             int[,,] JATOU = new int[96 + 1, 4 + 1, NBIND + 1];
-            int[] TREG = new int[16 + 1];
+            int[] TREG = new int[contextPanel.NbSeg + 1];
             double ZR = 0f;
             double UR = 0f;
             double PR = 0f;
@@ -2699,12 +2788,12 @@ namespace ARProbaProcessing
                         {
                             JATOU[IQ, IJ, IG] = 0;
                         }
-                        for (int I = 1; I <= 16; I++)
+                        for (int I = 1; I <= contextPanel.NbSeg; I++)
                         {
                             TREG[I] = regrs[3, IP, IQ, I];
                         }
 
-                        if (TREG[1] == 5) continue;
+                        if (TREG[1] == contextPanel.TRegTest) continue;
                         int IJK = 1;
                         for (int I = 2; I <= 23; I += 7)
                         {
@@ -2732,36 +2821,36 @@ namespace ARProbaProcessing
                 {
                     sbSortie.AppendLine($"IQ = {IQ}");
                     Console.WriteLine($"--------STATION {NOP} --------1/4h {IQ} ");
-                    for (int I = 1; I <= 16; I++)
+                    for (int I = 1; I <= contextPanel.NbSeg; I++)
                     {
                         TREG[I] = regrs[3, IP, IQ, I];
                     }
 
-                    if (TREG[1] != 5)
+                    if (TREG[1] != contextPanel.TRegTest)
                     {
                         // BOUCLE CELLULES
-                        for (int N1 = 1; N1 <= 16; N1++)
+                        for (int N1 = 1; N1 <= contextPanel.NbSeg; N1++)
                         {
-                            int N2 = SEG1[N1];
-                            int N3 = SEG1[N2];
-                            int N4 = SEG2[N3];
+                            int N2 = contextPanel.SEG1[N1];
+                            int N3 = contextPanel.SEG2[N2];
+                            int N4 = (contextPanel.Enquete != Enquete.PanelIleDeFrance) ? contextPanel.SEG3[N3] : 0;
                             NB[1] = N1;
                             NB[2] = N2;
                             NB[3] = N3;
-                            NB[4] = N4;
-                            NB[5] = 1;
+                            NB[4] = (contextPanel.Enquete != Enquete.PanelIleDeFrance) ? N4 : 1;
+                            if (contextPanel.Enquete != Enquete.PanelIleDeFrance) NB[5] = 1;
                             int NIV = TREG[N1] + 1;
                             if (((N1 == 1) || (NIV == 1))
                                 ||
-                               (!((NIV == 2 && SEG1[N1] == SEG1[N1 - 1]) ||
-                                  (NIV == 3 && SEG2[SEG1[N1]] == SEG2[SEG1[N1 - 1]]) ||
-                                  (NIV == 4 && SEG3[SEG2[SEG1[N1]]] == SEG3[SEG2[SEG1[N1 - 1]]]) ||
-                                  (NIV == 5))))
+                               (!((NIV == 2 && contextPanel.SEG1[N1] == contextPanel.SEG1[N1 - 1]) ||
+                                  (NIV == 3 && contextPanel.SEG2[contextPanel.SEG1[N1]] == contextPanel.SEG2[contextPanel.SEG1[N1 - 1]]) ||
+                                  (contextPanel.Enquete != Enquete.PanelIleDeFrance && NIV == 4 && contextPanel.SEG3[contextPanel.SEG2[contextPanel.SEG1[N1]]] == contextPanel.SEG3[contextPanel.SEG2[contextPanel.SEG1[N1 - 1]]]) ||
+                                  (NIV == contextPanel.TRegTest))))
                             {
-                                
-                                for (int I = 1; I <= 16; I++)
+
+                                for (int I = 1; I <= contextPanel.NbSeg; I++)
                                 {
-                                    for (int J = 1; J <= 5; J++)
+                                    for (int J = 1; J <= contextPanel.TRegTest; J++)
                                     {
                                         SEGM[I, J] = 0;
                                         COMPT[I, J] = 0;
@@ -2769,7 +2858,7 @@ namespace ARProbaProcessing
                                     }
                                 }
 
-                                for (int J = 1; J <= 5; J++)
+                                for (int J = 1; J <= contextPanel.TRegTest; J++)
                                 {
                                     IM[J] = 0;
                                     IPPS[J] = 0;
@@ -2786,10 +2875,9 @@ namespace ARProbaProcessing
                                 // BOUCLE INDIVIDUS
                                 for (IG = 1; IG <= NBIND; IG++)
                                 {
-                                    bool KHI2_IG_NIV_EQ_NB_NIV = (NIV == 5 && NB[NIV] == 1) || (KHI2[IG, NIV + 1] == NB[NIV]);
+                                    bool KHI2_IG_NIV_EQ_NB_NIV = (NIV == contextPanel.TRegTest && NB[NIV] == 1) || (KHI2[IG, NIV + 1] == NB[NIV]);
                                     int IPERS = KHI2[IG, 1];
-                                    
-                                    //KHI2[IG, 6] = 1;
+
                                     IPERS = IPERS * 10;
                                     if (KHI2_IG_NIV_EQ_NB_NIV)
                                     {
@@ -2882,7 +2970,7 @@ namespace ARProbaProcessing
                                 double POPS = 0d;
                                 for (int I = 1; I <= NBIND; I++)
                                 {
-                                    if ((NIV == 5 && NB[IN] == 1) || (KHI2[I, IN + 1] == NB[IN])) POPS = POPS + KHI2[I, 1];
+                                    if ((IN == contextPanel.TRegTest && NB[IN] == 1) || (KHI2[I, IN + 1] == NB[IN])) POPS = POPS + KHI2[I, 1];
                                 }
                                 POPS = POPS * 10d;
                                 double DIRAC0 = COMPT[1, IN] / POPS;
@@ -2896,8 +2984,8 @@ namespace ARProbaProcessing
 
                                 for (int I = 2; I <= 5; I++)
                                 {
-                                    if (I != 5) SEGM[I + 1, IN] = SEGM[I + 1, IN] + SEGM[I, IN];
-                                    if (I != 5) COMPT[I + 1, IN] = COMPT[I + 1, IN] + COMPT[I, IN];
+                                    if (I != 5) SEGM[I + 1, IN] += SEGM[I, IN];
+                                    if (I != 5) COMPT[I + 1, IN] += COMPT[I, IN];
                                 }
 
                                 double GRP = IPOP * 100;
@@ -2915,7 +3003,7 @@ namespace ARProbaProcessing
                                     PR = PR / (POPS - COMPT[1, IN] - ITTP[IN]);
                                     for (int I = 1; I <= 4; I++)
                                     {
-                                        Z[I] = C[I, IN] / NCOM[I] / POPS * 100f;
+                                        Z[I] = 1d * C[I, IN] / NCOM[I] / POPS * 100d;
                                     }
 
                                     // APPEL DE LA FONCTION DIFFERENCE
@@ -2945,7 +3033,7 @@ namespace ARProbaProcessing
                     else
                     {
                         sbSortie.Append(" ***PAS D AUDIENCE POUR CE 1 / 4h * **");
-                        for (int N1 = 1; N1 <= 16; N1++)
+                        for (int N1 = 1; N1 <= contextPanel.NbSeg; N1++)
                         {
                             RESUL[NOP, IQ, 1, N1] = 1f;
                             RESUL[NOP, IQ, 2, N1] = 0f;
@@ -2953,7 +3041,7 @@ namespace ARProbaProcessing
                             RESUL[NOP, IQ, 4, N1] = 0f;
                         }
                     }
-                    for (int N1 = 1; N1 <= 16; N1++)
+                    for (int N1 = 1; N1 <= contextPanel.NbSeg; N1++)
                     {
                         for (int I = 1; I <= 4; I++)
                         {
@@ -2989,8 +3077,8 @@ namespace ARProbaProcessing
         /// <param name="NbGRPStation">Nombre de station dans la fichier de GRP U109</param>
         /// <param name="NotorieteStation"></param>
         /// <returns></returns>
-        private float[,,,] cgrp75br(string PathGRPWave,
-            int IND_CSP, int IND_AGE, int IND_SEX, int IND_REG, 
+        private float[,,,] cgrp75br(ContextPanel contextPanel, string PathGRPWave,
+            int IND_CSP, int IND_AGE, int IND_SEX, int IND_REG,
             int NbStation, int NbGRPModulation, int NbGRPStation, int[] ISTA, string pathSortie8, string pathNOUVOGRP)
         {
             if (NbStation == 0
@@ -3018,7 +3106,7 @@ namespace ARProbaProcessing
             //
             //                              OUVERTURE FICHIER
             //
-            FileStream fs = File.Open(PathGRPWave , FileMode.Open);
+            FileStream fs = File.Open(PathGRPWave, FileMode.Open);
             fs.Seek(0, SeekOrigin.Begin);
             BinaryReader br = new BinaryReader(fs);
 
@@ -3117,9 +3205,9 @@ namespace ARProbaProcessing
                     }
                     else
                     {
-                        int ISE2 = 16 + SEG1[ISEG];
-                        int ISE3 = 26 + SEG2[SEG1[ISEG]];
-                        int ISE4 = 32 + SEG3[SEG2[SEG1[ISEG]]];
+                        int ISE2 = 16 + contextPanel.SEG1[ISEG];
+                        int ISE3 = 26 + contextPanel.SEG2[contextPanel.SEG1[ISEG]];
+                        int ISE4 = 32 + contextPanel.SEG3[contextPanel.SEG2[contextPanel.SEG1[ISEG]]];
 
                         IPOP[ISEG, IU] += IPERS;
                         IPOP[ISE2, IU] += IPERS;
@@ -3167,17 +3255,17 @@ namespace ARProbaProcessing
             sbSortie8.AppendLine(" NBGUS: " + IG.ToString());
             for (int I = 1; I <= 37; I++)
             {
-                sbSortie8.Append(I.ToString("000") + " : " );
+                sbSortie8.Append(I.ToString("000") + " : ");
 
                 for (int J = 1; J <= 3; J++)
                 {
-                    sbSortie8.Append(IPOP[I,J].ToString("").PadLeft(9) + " ");
+                    sbSortie8.Append(IPOP[I, J].ToString("").PadLeft(9) + " ");
 
                     for (int K = 1; K <= NbStation; K++)
                     {
                         for (int L = 1; L <= 96; L++)
                         {
-                            if (IPOP[I, J] ==0)
+                            if (IPOP[I, J] == 0)
                             {
 
                             }
@@ -3210,7 +3298,7 @@ namespace ARProbaProcessing
                 }
             }
 
-            
+
 
             return COUV;
         }
@@ -3225,7 +3313,7 @@ namespace ARProbaProcessing
         /// <param name="NbGRPStation">Nombre de station dans la fichier de GRP U109</param>
         /// <param name="NotorieteStation"></param>
         /// <returns></returns>
-        private float[,,,] cgrp75br_Idf(string PathGRPWave,
+        private float[,,,] cgrp75br_Idf(ContextPanel contextPanel, string PathGRPWave,
             int IND_AGE, int IND_SEX,
             int NbStation, int NbGRPModulation, int NbGRPStation, int[] ISTA, string pathSortie8, string pathNOUVOGRP)
         {
@@ -3243,7 +3331,7 @@ namespace ARProbaProcessing
 
             int[] KHI2 = new int[NbGRPModulation + 1];
             //int[] ISTA = new int[NbStation + 1];
-            int ICSP, IREG, ISEX, IAGE, ISEG=0, COMPT;
+            int ISEX, IAGE, ISEG = 0, COMPT;
             int[,] ZLEC = new int[96 + 1, NbGRPStation + 1];
 
             //
@@ -3272,7 +3360,8 @@ namespace ARProbaProcessing
                         ZLEC[i, j] = br.ReadByte();
 
                 int IPERS = KHI2[1];
-                if (IPERS > 0)
+                if (IPERS < 0) IPERS = 65536 + IPERS;
+                if (IPERS >= 0)
                 {
                     IG = IG + 1;
                     Console.WriteLine(IG);
@@ -3299,8 +3388,8 @@ namespace ARProbaProcessing
                     }
                     else
                     {
-                        int ISE2 = 5 + SEG1[ISEG];
-                        int ISE3 = 8 + SEG2[SEG1[ISEG]];
+                        int ISE2 = 5 + contextPanel.SEG1[ISEG];
+                        int ISE3 = 8 + contextPanel.SEG2[contextPanel.SEG1[ISEG]];
                         IPOP[ISEG, IU] += IPERS;
                         IPOP[ISE2, IU] += IPERS;
                         IPOP[ISE3, IU] += IPERS;
@@ -3353,7 +3442,7 @@ namespace ARProbaProcessing
                     {
                         for (int L = 1; L <= 96; L++)
                         {
-                             COUV[I, J, K, L] = COUV[I, J, K, L] / 12f / Convert.ToSingle(IPOP[I, J]);
+                            COUV[I, J, K, L] = COUV[I, J, K, L] / 12f / Convert.ToSingle(IPOP[I, J]);
                         }
                     }
 
@@ -3381,14 +3470,14 @@ namespace ARProbaProcessing
             return COUV;
         }
 
-        private void cont75br(int NBIND, int NBSTA, int popLV, int popS, int popD, float[,,,] Couverture, int idxTot, string pathCouv)
+        private void cont75br(ContextPanel contextPanel, int NBIND, int NBSTA, int popLV, int popS, int popD, float[,,,] Couverture, string pathCouv)
         {
             // PANEL RADIO 08 MEDIAMETRIE(nouveau format)
             // CONTROLE DES GRP 75000 POUR CALAGE
             //
             // Le nombre de station correspond au nombre de stations(#NB_STA_HAB_NOTO_TOTAL#) - #NB_STA_TOTAL_ONLY# pour Total Radio (et Total TV)
 
-            int[] POP = new int[3 + 1] {999999, popLV, popS, popD };
+            int[] POP = new int[3 + 1] { 999999, popLV, popS, popD };
             float[] VAL = new float[3 + 1];
             int[] IVAL = new int[3 + 1];
 
@@ -3401,9 +3490,22 @@ namespace ARProbaProcessing
                     sb.Append($"{I.ToString("0000")} : ");
                     for (int J = 1; J <= 3; J++)
                     {
-                        float val = Couverture[idxTot, J, IP, I] * POP[J];
-                        int iVal = Convert.ToInt32(Math.Truncate( (val + 500f) / 1000f));
+                        float val = Couverture[contextPanel.IdxTot, J, IP, I] * POP[J];
+                        int iVal = Convert.ToInt32(Math.Truncate((val + 500f) / 1000f));
                         sb.Append($" {iVal.ToString().PadLeft(8)} ");
+
+                        if (contextPanel.Enquete == Enquete.PanelIleDeFrance)
+                        {
+                            for (int s = 1; s <= contextPanel.NbSeg; s++)
+                            {
+                                val = Couverture[s, J, IP, I] * POP[J];
+                                if (float.IsNaN(val))
+                                    iVal = 0;
+                                else
+                                    iVal = Convert.ToInt32(Math.Truncate((val + 500f) / 1000f));
+                                sb.Append($" {iVal.ToString().PadLeft(8)} ");
+                            }
+                        }
                     }
                     sb.AppendLine();
                 }
@@ -3413,7 +3515,7 @@ namespace ARProbaProcessing
         }
 
         // RESUL = ZUPTAUSE
-        private float[,,,] cnzuptse(int NBIND, int NBSTA, string pathCnzuptse, string pathZuptauseCor, float[,,,] COUV, byte[,,,] REGRS, float[,,,] RESUL)
+        private float[,,,] cnzuptse(ContextPanel contextPanel, int NBIND, int NBSTA, string pathCnzuptse, string pathZuptauseCor, float[,,,] COUV, byte[,,,] REGRS, float[,,,] RESUL)
         {
             // PANEL RADIO 08 MEDIAMETRIE(nouveau format)
             // CALAGE SUR GRP 75000 + ET RECALCUL DES PARAMETRES STATION
@@ -3422,23 +3524,8 @@ namespace ARProbaProcessing
             //
             int IDSUDRAD = 19;
 
-            float[,,,] RESULCOR = new float[NBSTA + 1, 96 + 1, 4 + 1, 16 + 1];
-            int[] TREG = new int[16 + 1];
-
-            // OPEN(15, FILE = 'C:\Affinage\PANEL_~1\Panfra20\Output\NIVEAUX',
-            //-RECORDTYPE = 'FIXED', FORM = 'UNFORMATTED')
-            // READ(15)REGRS
-            // CLOSE(15)
-            // OPEN(15, FILE = 'C:\Affinage\PANEL_~1\Panfra20\Output\NOUVOGRP.SEM',
-            //-RECORDTYPE = 'FIXED', FORM = 'UNFORMATTED')
-            // READ(15)COUV
-            // CLOSE(15)
-            // OPEN(16, FILE = 'C:\Affinage\PANEL_~1\Panfra20\Output\SORTIESE.COR',
-            //-RECORDTYPE = 'TEXT')
-            // OPEN(17, FILE = 'C:\Affinage\PANEL_~1\Panfra20\Output\ZUPTAUSE',
-            //-RECORDTYPE = 'FIXED', FORM = 'UNFORMATTED')
-            // OPEN(18, FILE = 'C:\Affinage\PANEL_~1\Panfra20\Output\ZUPTAUSE.COR',
-            //-RECORDTYPE = 'FIXED', FORM = 'UNFORMATTED')
+            float[,,,] RESULCOR = new float[NBSTA + 1, 96 + 1, 4 + 1, contextPanel.IdxTot + 1];
+            int[] TREG = new int[contextPanel.NbSeg + 1];
 
             // BOUCLE STATIONS
             StringBuilder sortie = new StringBuilder();
@@ -3450,22 +3537,18 @@ namespace ARProbaProcessing
                 // BOUCLE 1 / 4h
                 for (int IQ = 1; IQ <= 96; IQ++)
                 {
-                    if (IQ==21)
-                    {
-
-                    }
                     int NQ = IQ + 76;
                     if (NQ > 96) NQ = NQ - 96;
                     sortie.AppendLine($" QH {IQ}");
                     Console.WriteLine($"Traitement 1/4h {IQ}");
 
                     // AUCUNE AUDIENCE POUR CE 1 / 4h
-                    for (int I = 1; I <= 16; I++)
+                    for (int I = 1; I <= contextPanel.NbSeg; I++)
                     {
                         TREG[I] = REGRS[1, IP, IQ, I];
                     }
 
-                    if (TREG[1] != 5)
+                    if (TREG[1] != contextPanel.TRegTest)  // 5 ou 4 idf
                     {
                         float GRPA = 0f;
                         float GRPN = 0f;
@@ -3474,20 +3557,15 @@ namespace ARProbaProcessing
                         float PR = 0f;
                         float TAU = 0f;
                         // BOUCLE CELLULES
-                        for (int N1 = 1; N1 <= 16; N1++)
+                        for (int N1 = 1; N1 <= contextPanel.NbSeg; N1++)
                         {
-                            
-
-                            int N2 = SEG1[N1];
-                            int N3 = SEG2[N2];
-                            int N4 = SEG3[N3];
                             int IN = TREG[N1] + 1;
                             if (((N1 == 1) || (IN == 1))
                                 ||
-                               (!((IN == 2 && SEG1[N1] == SEG1[N1 - 1]) ||
-                                  (IN == 3 && SEG2[SEG1[N1]] == SEG2[SEG1[N1 - 1]]) ||
-                                  (IN == 4 && SEG3[SEG2[SEG1[N1]]] == SEG3[SEG2[SEG1[N1 - 1]]]) ||
-                                  (IN == 5))))
+                               (!((IN == 2 && contextPanel.SEG1[N1] == contextPanel.SEG1[N1 - 1]) ||
+                                  (IN == 3 && contextPanel.SEG2[contextPanel.SEG1[N1]] == contextPanel.SEG2[contextPanel.SEG1[N1 - 1]]) ||
+                                  (contextPanel.Enquete != Enquete.PanelIleDeFrance && IN == 4 && contextPanel.SEG3[contextPanel.SEG2[contextPanel.SEG1[N1]]] == contextPanel.SEG3[contextPanel.SEG2[contextPanel.SEG1[N1 - 1]]]) ||
+                                  (IN == contextPanel.TRegTest))))
                             {
 
                                 // LECTURE DES Z, U, P, TAU ORIGINAUX
@@ -3502,10 +3580,10 @@ namespace ARProbaProcessing
                                 if (IP != IDSUDRAD)
                                 {
                                     int ISEG = N1;
-                                    if (IN == 2) ISEG = 16 + SEG1[N1];
-                                    if (IN == 3) ISEG = 26 + SEG2[SEG1[N1]];
-                                    if (IN == 4) ISEG = 32 + SEG3[SEG2[SEG1[N1]]];
-                                    if (IN == 5) ISEG = 37;
+                                    if (IN == 2) ISEG = contextPanel.SEGBASE[0] + contextPanel.SEG1[N1];
+                                    if (IN == 3) ISEG = contextPanel.SEGBASE[1] + contextPanel.SEG2[contextPanel.SEG1[N1]];
+                                    if (IN == 4 && contextPanel.Enquete != Enquete.PanelIleDeFrance) ISEG = contextPanel.SEGBASE[2] + contextPanel.SEG3[contextPanel.SEG2[contextPanel.SEG1[N1]]];
+                                    if (IN == contextPanel.TRegTest) ISEG = contextPanel.IdxTot;
                                     // CALCUL NOUVEAU P
                                     GRPN = COUV[ISEG, 1, IP, NQ];
                                     bool process = false;
@@ -3564,7 +3642,7 @@ namespace ARProbaProcessing
                     else
                     {
                         sortie.Append(" ***PAS D AUDIENCE POUR CE 1 / 4h * **");
-                        for (int N1 = 1; N1 <= 16; N1++)
+                        for (int N1 = 1; N1 <= contextPanel.NbSeg; N1++)
                         {
                             RESULCOR[IP, IQ, 1, N1] = 1f;
                             RESULCOR[IP, IQ, 2, N1] = 0f;
@@ -3590,7 +3668,7 @@ namespace ARProbaProcessing
             {
                 for (int IQ = 1; IQ <= 96; IQ++)
                 {
-                    for (int N1 = 1; N1 <= 16; N1++)
+                    for (int N1 = 1; N1 <= contextPanel.NbSeg; N1++)
                     {
                         for (int I = 1; I <= 4; I++)
                         {
@@ -3606,7 +3684,7 @@ namespace ARProbaProcessing
             return RESULCOR;
         }
 
-        private float[,,,] cnzuptsa(int NBIND, int NBSTA, string pathCnzuptsa, string pathZuptausaCor, float[,,,] COUV, byte[,,,] REGRS, float[,,,] RESUL)
+        private float[,,,] cnzuptsa(ContextPanel contextPanel, int NBIND, int NBSTA, string pathCnzuptsa, string pathZuptausaCor, float[,,,] COUV, byte[,,,] REGRS, float[,,,] RESUL)
         {
             // PANEL RADIO 08 MEDIAMETRIE(nouveau format)
             // CALAGE SUR GRP 75000 + ET RECALCUL DES PARAMETRES STATION
@@ -3615,23 +3693,8 @@ namespace ARProbaProcessing
             //
             int IDSUDRAD = 19;
 
-            float[,,,] RESULCOR = new float[NBSTA + 1, 96 + 1, 4 + 1, 16 + 1];
-            int[] TREG = new int[16 + 1];
-
-            // OPEN(15, FILE = 'C:\Affinage\PANEL_~1\Panfra20\Output\NIVEAUX',
-            //-RECORDTYPE = 'FIXED', FORM = 'UNFORMATTED')
-            // READ(15)REGRS
-            // CLOSE(15)
-            // OPEN(15, FILE = 'C:\Affinage\PANEL_~1\Panfra20\Output\NOUVOGRP.SEM',
-            //-RECORDTYPE = 'FIXED', FORM = 'UNFORMATTED')
-            // READ(15)COUV
-            // CLOSE(15)
-            // OPEN(16, FILE = 'C:\Affinage\PANEL_~1\Panfra20\Output\SORTIESA.COR',
-            //-RECORDTYPE = 'TEXT')
-            // OPEN(17, FILE = 'C:\Affinage\PANEL_~1\Panfra20\Output\ZUPTAUSE',
-            //-RECORDTYPE = 'FIXED', FORM = 'UNFORMATTED')
-            // OPEN(18, FILE = 'C:\Affinage\PANEL_~1\Panfra20\Output\ZUPTAUSE.COR',
-            //-RECORDTYPE = 'FIXED', FORM = 'UNFORMATTED')
+            float[,,,] RESULCOR = new float[NBSTA + 1, 96 + 1, 4 + 1, contextPanel.NbSeg + 1];
+            int[] TREG = new int[contextPanel.NbSeg + 1];
 
             // BOUCLE STATIONS
             StringBuilder sortie = new StringBuilder();
@@ -3649,12 +3712,12 @@ namespace ARProbaProcessing
                     Console.WriteLine($"Traitement 1/4h {IQ}");
 
                     // AUCUNE AUDIENCE POUR CE 1 / 4h
-                    for (int I = 1; I <= 16; I++)
+                    for (int I = 1; I <= contextPanel.NbSeg; I++)
                     {
                         TREG[I] = REGRS[2, IP, IQ, I];
                     }
 
-                    if (TREG[1] != 5)
+                    if (TREG[1] != contextPanel.TRegTest)
                     {
                         float GRPA = 0f;
                         float GRPN = 0f;
@@ -3663,18 +3726,18 @@ namespace ARProbaProcessing
                         float PR = 0f;
                         float TAU = 0f;
                         // BOUCLE CELLULES
-                        for (int N1 = 1; N1 <= 16; N1++)
+                        for (int N1 = 1; N1 <= contextPanel.NbSeg; N1++)
                         {
-                            int N2 = SEG1[N1];
-                            int N3 = SEG2[N2];
-                            int N4 = SEG3[N3];
+                            int N2 = contextPanel.SEG1[N1];
+                            int N3 = contextPanel.SEG2[N2];
+                            int N4 = (contextPanel.Enquete != Enquete.PanelIleDeFrance) ? contextPanel.SEG3[N3] : 0;
                             int IN = TREG[N1] + 1;
                             if (((N1 == 1) || (IN == 1))
                                 ||
-                               (!((IN == 2 && SEG1[N1] == SEG1[N1 - 1]) ||
-                                  (IN == 3 && SEG2[SEG1[N1]] == SEG2[SEG1[N1 - 1]]) ||
-                                  (IN == 4 && SEG3[SEG2[SEG1[N1]]] == SEG3[SEG2[SEG1[N1 - 1]]]) ||
-                                  (IN == 5))))
+                               (!((IN == 2 && contextPanel.SEG1[N1] == contextPanel.SEG1[N1 - 1]) ||
+                                  (IN == 3 && contextPanel.SEG2[contextPanel.SEG1[N1]] == contextPanel.SEG2[contextPanel.SEG1[N1 - 1]]) ||
+                                  (contextPanel.Enquete != Enquete.PanelIleDeFrance && IN == 4 && contextPanel.SEG3[contextPanel.SEG2[contextPanel.SEG1[N1]]] == contextPanel.SEG3[contextPanel.SEG2[contextPanel.SEG1[N1 - 1]]]) ||
+                                  (IN == contextPanel.TRegTest))))
                             {
 
                                 // LECTURE DES Z, U, P, TAU ORIGINAUX
@@ -3688,10 +3751,10 @@ namespace ARProbaProcessing
                                 if (IP != IDSUDRAD)
                                 {
                                     int ISEG = N1;
-                                    if (IN == 2) ISEG = 16 + SEG1[N1];
-                                    if (IN == 3) ISEG = 26 + SEG2[SEG1[N1]];
-                                    if (IN == 4) ISEG = 32 + SEG3[SEG2[SEG1[N1]]];
-                                    if (IN == 5) ISEG = 37;
+                                    if (IN == 2) ISEG = contextPanel.SEGBASE[0] + contextPanel.SEG1[N1];
+                                    if (IN == 3) ISEG = contextPanel.SEGBASE[1] + contextPanel.SEG2[contextPanel.SEG1[N1]];
+                                    if (contextPanel.Enquete != Enquete.PanelIleDeFrance && IN == 4) ISEG = 32 + contextPanel.SEG3[contextPanel.SEG2[contextPanel.SEG1[N1]]];
+                                    if (IN == contextPanel.TRegTest) ISEG = contextPanel.IdxTot;
                                     // CALCUL NOUVEAU P
                                     GRPN = COUV[ISEG, 2, IP, NQ];
                                     bool process = false;
@@ -3750,7 +3813,7 @@ namespace ARProbaProcessing
                     else
                     {
                         sortie.Append(" ***PAS D AUDIENCE POUR CE 1 / 4h * **");
-                        for (int N1 = 1; N1 <= 16; N1++)
+                        for (int N1 = 1; N1 <= contextPanel.NbSeg; N1++)
                         {
                             RESULCOR[IP, IQ, 1, N1] = 1f;
                             RESULCOR[IP, IQ, 2, N1] = 0f;
@@ -3775,7 +3838,7 @@ namespace ARProbaProcessing
             {
                 for (int IQ = 1; IQ <= 96; IQ++)
                 {
-                    for (int N1 = 1; N1 <= 16; N1++)
+                    for (int N1 = 1; N1 <= contextPanel.NbSeg; N1++)
                     {
                         for (int I = 1; I <= 4; I++)
                         {
@@ -3789,7 +3852,7 @@ namespace ARProbaProcessing
             return RESULCOR;
         }
 
-        private float[,,,] cnzuptdi(int NBIND, int NBSTA, string pathCnzuptdi, string pathCnzuptaudiCor, float[,,,] COUV, byte[,,,] REGRS, float[,,,] RESUL)
+        private float[,,,] cnzuptdi(ContextPanel contextPanel, int NBIND, int NBSTA, string pathCnzuptdi, string pathCnzuptaudiCor, float[,,,] COUV, byte[,,,] REGRS, float[,,,] RESUL)
         {
             // PANEL RADIO 08 MEDIAMETRIE(nouveau format)
             // CALAGE SUR GRP 75000 + ET RECALCUL DES PARAMETRES STATION
@@ -3798,23 +3861,8 @@ namespace ARProbaProcessing
             //
             int IDSUDRAD = 19;
 
-            float[,,,] RESULCOR = new float[NBSTA + 1, 96 + 1, 4 + 1, 16 + 1];
-            int[] TREG = new int[16 + 1];
-
-            // OPEN(15, FILE = 'C:\Affinage\PANEL_~1\Panfra20\Output\NIVEAUX',
-            //-RECORDTYPE = 'FIXED', FORM = 'UNFORMATTED')
-            // READ(15)REGRS
-            // CLOSE(15)
-            // OPEN(15, FILE = 'C:\Affinage\PANEL_~1\Panfra20\Output\NOUVOGRP.SEM',
-            //-RECORDTYPE = 'FIXED', FORM = 'UNFORMATTED')
-            // READ(15)COUV
-            // CLOSE(15)
-            // OPEN(16, FILE = 'C:\Affinage\PANEL_~1\Panfra20\Output\SORTIESE.COR',
-            //-RECORDTYPE = 'TEXT')
-            // OPEN(17, FILE = 'C:\Affinage\PANEL_~1\Panfra20\Output\ZUPTAUSE',
-            //-RECORDTYPE = 'FIXED', FORM = 'UNFORMATTED')
-            // OPEN(18, FILE = 'C:\Affinage\PANEL_~1\Panfra20\Output\ZUPTAUSE.COR',
-            //-RECORDTYPE = 'FIXED', FORM = 'UNFORMATTED')
+            float[,,,] RESULCOR = new float[NBSTA + 1, 96 + 1, 4 + 1, contextPanel.NbSeg + 1];
+            int[] TREG = new int[contextPanel.NbSeg + 1];
 
             // BOUCLE STATIONS
             StringBuilder sortie = new StringBuilder();
@@ -3832,12 +3880,12 @@ namespace ARProbaProcessing
                     Console.WriteLine($"Traitement 1/4h {IQ}");
 
                     // AUCUNE AUDIENCE POUR CE 1 / 4h
-                    for (int I = 1; I <= 16; I++)
+                    for (int I = 1; I <= contextPanel.NbSeg; I++)
                     {
                         TREG[I] = REGRS[3, IP, IQ, I];
                     }
 
-                    if (TREG[1] != 5)
+                    if (TREG[1] != contextPanel.TRegTest)
                     {
                         float GRPA = 0f;
                         float GRPN = 0f;
@@ -3846,18 +3894,18 @@ namespace ARProbaProcessing
                         float PR = 0f;
                         float TAU = 0f;
                         // BOUCLE CELLULES
-                        for (int N1 = 1; N1 <= 16; N1++)
+                        for (int N1 = 1; N1 <= contextPanel.NbSeg; N1++)
                         {
-                            int N2 = SEG1[N1];
-                            int N3 = SEG2[N2];
-                            int N4 = SEG3[N3];
+                            int N2 = contextPanel.SEG1[N1];
+                            int N3 = contextPanel.SEG2[N2];
+                            int N4 = (contextPanel.Enquete != Enquete.PanelIleDeFrance) ? contextPanel.SEG3[N3] : 0;
                             int IN = TREG[N1] + 1;
                             if (((N1 == 1) || (IN == 1))
                                 ||
-                               (!((IN == 2 && SEG1[N1] == SEG1[N1 - 1]) ||
-                                  (IN == 3 && SEG2[SEG1[N1]] == SEG2[SEG1[N1 - 1]]) ||
-                                  (IN == 4 && SEG3[SEG2[SEG1[N1]]] == SEG3[SEG2[SEG1[N1 - 1]]]) ||
-                                  (IN == 5))))
+                               (!((IN == 2 && contextPanel.SEG1[N1] == contextPanel.SEG1[N1 - 1]) ||
+                                  (IN == 3 && contextPanel.SEG2[contextPanel.SEG1[N1]] == contextPanel.SEG2[contextPanel.SEG1[N1 - 1]]) ||
+                                  (contextPanel.Enquete != Enquete.PanelIleDeFrance && IN == 4 && contextPanel.SEG3[contextPanel.SEG2[contextPanel.SEG1[N1]]] == contextPanel.SEG3[contextPanel.SEG2[contextPanel.SEG1[N1 - 1]]]) ||
+                                  (IN == contextPanel.TRegTest))))
                             {
 
                                 // LECTURE DES Z, U, P, TAU ORIGINAUX
@@ -3871,10 +3919,11 @@ namespace ARProbaProcessing
                                 if (IP != IDSUDRAD)
                                 {
                                     int ISEG = N1;
-                                    if (IN == 2) ISEG = 16 + SEG1[N1];
-                                    if (IN == 3) ISEG = 26 + SEG2[SEG1[N1]];
-                                    if (IN == 4) ISEG = 32 + SEG3[SEG2[SEG1[N1]]];
-                                    if (IN == 5) ISEG = 37;
+                                    if (IN == 2) ISEG = contextPanel.SEGBASE[0] + contextPanel.SEG1[N1];
+                                    if (IN == 3) ISEG = contextPanel.SEGBASE[1] + contextPanel.SEG2[contextPanel.SEG1[N1]];
+                                    if (contextPanel.Enquete != Enquete.PanelIleDeFrance && IN == 4) ISEG = 32 + contextPanel.SEG3[contextPanel.SEG2[contextPanel.SEG1[N1]]];
+                                    if (IN == contextPanel.TRegTest) ISEG = contextPanel.IdxTot;
+
                                     // CALCUL NOUVEAU P
                                     GRPN = COUV[ISEG, 3, IP, NQ];
                                     bool process = false;
@@ -3934,7 +3983,7 @@ namespace ARProbaProcessing
                     else
                     {
                         sortie.Append(" ***PAS D AUDIENCE POUR CE 1 / 4h * **");
-                        for (int N1 = 1; N1 <= 16; N1++)
+                        for (int N1 = 1; N1 <= contextPanel.NbSeg; N1++)
                         {
                             RESULCOR[IP, IQ, 1, N1] = 1f;
                             RESULCOR[IP, IQ, 2, N1] = 0f;
@@ -3959,7 +4008,7 @@ namespace ARProbaProcessing
             {
                 for (int IQ = 1; IQ <= 96; IQ++)
                 {
-                    for (int N1 = 1; N1 <= 16; N1++)
+                    for (int N1 = 1; N1 <= contextPanel.NbSeg; N1++)
                     {
                         for (int I = 1; I <= 4; I++)
                         {
@@ -4032,7 +4081,7 @@ namespace ARProbaProcessing
                         //10 
                         for (; ; ITZ++)
                         {
-                            
+
                             MINIMU(Z, GRP, ZC, ZA, UA, U0, NB, DELTA00, ref DELTZ);
 
                             if (DELTZ <= DELTZ0)
@@ -4123,8 +4172,8 @@ namespace ARProbaProcessing
         private void MINITAU(double[] ZC, double[] X, double ZA, float NB, double U0, double Q, double Z, double U, double P, double V, out double DELTT, ref double DELTA00)
         {
             double[] Y = new double[15 + 1];
-            float T,  T1, T2,  DT;
-            double DMOINS1=0, DMOINS2 = 0, DELTA0;
+            float T, T1, T2, DT;
+            double DMOINS1 = 0, DMOINS2 = 0, DELTA0;
 
             // INCREMENTS INITIAUX
             DELTT = 0;
@@ -4196,7 +4245,7 @@ namespace ARProbaProcessing
                         continue;
                     }
                     if (ITE <= 2 && DT > 0.0001)
-                    { 
+                    {
                         T2 = T;
                         DT = DT / 10f;
                         ITE = 0;
@@ -4217,7 +4266,7 @@ namespace ARProbaProcessing
                     T = T1;
                 }
             }
-        //    Console.WriteLine($" U= {U}  Z= {Z}  T= {T}  P= {P} ");
+            //    Console.WriteLine($" U= {U}  Z= {Z}  T= {T}  P= {P} ");
         }
 
 
@@ -4227,8 +4276,8 @@ namespace ARProbaProcessing
         private void MINIMU(double Z, double GRP, double[] ZC, double ZA, double UA, double U0, float NB, double DELTA00, ref double DELTZ)
         {
             double[] X = new double[15 + 1];
-            
-            double P, U, V, Q, U1,U2, DELTU, DELTU0, DELTU1, DELTU2;
+
+            double P, U, V, Q, U1, U2, DELTU, DELTU0, DELTU1, DELTU2;
 
             DELTU0 = DELTA00;
             DELTU1 = DELTU0;
@@ -4251,7 +4300,7 @@ namespace ARProbaProcessing
                 if (V > 0d)
                 {
                     P = (GRP - U) / V;
-                    ITU++; 
+                    ITU++;
                     Q = 1f - P;
                     X[1] = Q;
 
@@ -4351,6 +4400,19 @@ namespace ARProbaProcessing
                 KHI3[i] = new int[LENENR, 5];
             IG = new int[3];
         }
+    }
+
+    public struct ContextPanel
+    {
+        public Enquete Enquete;
+        public int[] SEG1;
+        public int[] SEG2;
+        public int[] SEG3;
+        public int[] SEGBASE; // 16,26,32  ou  5,8 idf
+        public int IdxTot;    // 37 ou 11 idf
+        public int NbSeg;     // 16 ou 5 idf
+        public int TRegTest;  // 5 ou 4 idf
+        public int[,] NIVO;
     }
 
     public struct VsorPoid

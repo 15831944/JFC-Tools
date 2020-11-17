@@ -8,7 +8,7 @@ namespace ARProbaProcessing
 {
     public partial class AffinageProcess
     {
-        private byte[,,,] attribp2(int NBIND, int NBSTA, byte[,,,] REGRS, int[,] KHI2, int[,] NINI, float[] NOTES, byte[,,,] AUDI, int[,,,] HABI,
+        private byte[,,,] attribp2(ContextPanel contextPanel,  int NBIND, int NBSTA, byte[,,,] REGRS, int[,] KHI2, int[,] NINI, float[] NOTES, byte[,,,] AUDI, int[,,,] HABI,
             float[,,,] ZUPTAUSECOR, float[,,,] ZUPTAUSACOR, float[,,,] ZUPTAUDICOR, string pathSortie, string pathPANECR)
         {
             // PANEL RADIO 08 MEDIAMETRIE(nouveau format)
@@ -131,9 +131,9 @@ namespace ARProbaProcessing
                             for (int N1 = 1; N1 <= 16; N1++)
                             {
                                 TREG[N1] = REGRS[IU, IP, IQ, N1];
-                                int N2 = SEG1[N1];
-                                int N3 = SEG2[N2];
-                                int N4 = SEG3[N3];
+                                int N2 = contextPanel.SEG1[N1];
+                                int N3 = contextPanel.SEG2[N2];
+                                int N4 = contextPanel.SEG3[N3];
                                 NB[1] = N1;
                                 NB[2] = N2;
                                 NB[3] = N3;
@@ -143,9 +143,9 @@ namespace ARProbaProcessing
 
                                 if (((N1 == 1) || (NIV == 1))
                                 ||
-                                (!((NIV == 2 && SEG1[N1] == SEG1[N1 - 1]) ||
-                                (NIV == 3 && SEG2[SEG1[N1]] == SEG2[SEG1[N1 - 1]]) ||
-                                (NIV == 4 && SEG3[SEG2[SEG1[N1]]] == SEG3[SEG2[SEG1[N1 - 1]]]) ||
+                                (!((NIV == 2 && contextPanel.SEG1[N1] == contextPanel.SEG1[N1 - 1]) ||
+                                (NIV == 3 && contextPanel.SEG2[contextPanel.SEG1[N1]] == contextPanel.SEG2[contextPanel.SEG1[N1 - 1]]) ||
+                                (NIV == 4 && contextPanel.SEG3[contextPanel.SEG2[contextPanel.SEG1[N1]]] == contextPanel.SEG3[contextPanel.SEG2[contextPanel.SEG1[N1 - 1]]]) ||
                                 (NIV == 5))))
                                 {
 
