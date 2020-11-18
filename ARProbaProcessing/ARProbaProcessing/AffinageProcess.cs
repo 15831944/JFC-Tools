@@ -59,6 +59,7 @@ namespace ARProbaProcessing
                 run = true;
             #endregion EndProcess
 
+            int year = 2000 + int.Parse(arProba.YearName);
             ContextPanel contextPanel;
             if (enquete == Enquete.PanelIleDeFrance)
             {
@@ -74,7 +75,8 @@ namespace ARProbaProcessing
                     SEG3 = null,
                     NIVO = new int[,] { {0, 1,1,2,2,3 },
                                    {999999, 1,1,2,2,2 },
-                                   {999999, 1,1,1,1,1} }
+                                   {999999, 1,1,1,1,1} },
+                    Year = year
                 };
             }
             else
@@ -93,7 +95,8 @@ namespace ARProbaProcessing
                                    {999999, 1,1,2,3,3,4,4,5,6,6,7,8,9,9,10,10 },
                                    {999999, 1,1,1,2,2,3,3,3,4,4,4,5,6,6,6,6},
                                    {999999, 1,1,1,2,2,2,2,2,3,3,3,3,4,4,4,4 },
-                                   {999999, 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1 } }
+                                   {999999, 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1 } },
+                    Year = year
                 };
             }
 
@@ -101,7 +104,7 @@ namespace ARProbaProcessing
             int NB_STA_HAB_NOTO = arProba.HabAndNotoStationCount;
             int NbGRPModulation = arProba.U1xxModalityCount + (enquete == Enquete.PanelIleDeFrance ? 0 : 2);
             int NbGRPStation = arProba.U1xxStationCount;
-            int year = 2000 + int.Parse(arProba.YearName);
+
             string PathGRPWave = "";
             if (year <= 2019)
                 PathGRPWave = Path.Combine(inputPath, EnqueteTools.GetSupFileChar(enquete) + (year % 100).ToString("00") + "1.SUP");
@@ -248,9 +251,9 @@ namespace ARProbaProcessing
             #endregion entrées caudtotp
 
             #region entrées cont75br
-            int popLV = 54439040;
-            int popS = 54438920;
-            int popD = 54439190;
+            int popLV = int.Parse(arProba.U1xxPopTxt[0]);
+            int popS = int.Parse(arProba.U1xxPopTxt[1]);
+            int popD = int.Parse(arProba.U1xxPopTxt[2]);
             string pathSortie9 = Path.Combine(OutputPath, "SORTIE9.TXT");
             #endregion entrées cont75br
 
@@ -362,7 +365,7 @@ namespace ARProbaProcessing
 
             penetr(NBINDIV, nbStationHabNotoTotal, JN, lstPoids, pathPenetr, int.Parse(arProba.U1xxPopTxt[0]), strStations);
 
-            asympt(NBINDIV, NB_STA_HAB_NOTO, nbStationHabNotoTotal, BSUP, PANCIB, pathAS5H5H, headerAS5H5H, strStations);
+            asympt(contextPanel, NBINDIV, NB_STA_HAB_NOTO, nbStationHabNotoTotal, BSUP, PANCIB, pathAS5H5H, strStations);
 
             #region Endprocess
 
@@ -1775,7 +1778,7 @@ namespace ARProbaProcessing
             double[] Z = new double[15 + 1];
             double[] YR = new double[15 + 1];
 
-            int[,] COMPT = new int[16+1, contextPanel.TRegTest + 1];  // contextPanel.NbSeg + 1 ou 16 ???
+            int[,] COMPT = new int[16 + 1, contextPanel.TRegTest + 1];  // contextPanel.NbSeg + 1 ou 16 ???
             int[] ITPO = new int[contextPanel.TRegTest + 1];
             int[] ITTP = new int[contextPanel.TRegTest + 1];
             int[] IZAP = new int[contextPanel.TRegTest + 1];
@@ -3267,15 +3270,7 @@ namespace ARProbaProcessing
                     {
                         for (int L = 1; L <= 96; L++)
                         {
-                            if (IPOP[I, J] == 0)
-                            {
-
-                            }
                             COUV[I, J, K, L] = COUV[I, J, K, L] / 12f / Convert.ToSingle(IPOP[I, J]);
-                            if (float.IsNaN(COUV[I, J, K, L]))
-                            {
-
-                            }
                         }
                     }
 
@@ -3378,10 +3373,10 @@ namespace ARProbaProcessing
 
                     if (KHI2[IND_AGE] > 6) IAGE = 2;
                     if (KHI2[IND_AGE] > 11) IAGE = 3;
-                    if ((IAGE == 1) == (ISEX == 1)) ISEG = 1;
-                    if ((IAGE == 1) == (ISEX == 2)) ISEG = 2;
-                    if ((IAGE == 2) == (ISEX == 1)) ISEG = 3;
-                    if ((IAGE == 2) == (ISEX == 2)) ISEG = 4;
+                    if ((IAGE == 1) && (ISEX == 1)) ISEG = 1;
+                    if ((IAGE == 1) && (ISEX == 2)) ISEG = 2;
+                    if ((IAGE == 2) && (ISEX == 1)) ISEG = 3;
+                    if ((IAGE == 2) && (ISEX == 2)) ISEG = 4;
                     if (IAGE == 3) ISEG = 5;
                     if (ISEG < 1 || ISEG > 5)
                     {
@@ -3444,6 +3439,10 @@ namespace ARProbaProcessing
                     {
                         for (int L = 1; L <= 96; L++)
                         {
+                            if (IPOP[I, J]==0)
+                            {
+
+                            }
                             COUV[I, J, K, L] = COUV[I, J, K, L] / 12f / Convert.ToSingle(IPOP[I, J]);
                         }
                     }
@@ -3480,8 +3479,6 @@ namespace ARProbaProcessing
             // Le nombre de station correspond au nombre de stations(#NB_STA_HAB_NOTO_TOTAL#) - #NB_STA_TOTAL_ONLY# pour Total Radio (et Total TV)
 
             int[] POP = new int[3 + 1] { 999999, popLV, popS, popD };
-            float[] VAL = new float[3 + 1];
-            int[] IVAL = new int[3 + 1];
 
             StringBuilder sb = new StringBuilder();
             for (int IP = 1; IP <= NBSTA; IP++)
@@ -3495,19 +3492,6 @@ namespace ARProbaProcessing
                         float val = Couverture[contextPanel.IdxTot, J, IP, I] * POP[J];
                         int iVal = Convert.ToInt32(Math.Truncate((val + 500f) / 1000f));
                         sb.Append($" {iVal.ToString().PadLeft(8)} ");
-
-                        if (contextPanel.Enquete == Enquete.PanelIleDeFrance)
-                        {
-                            for (int s = 1; s <= contextPanel.NbSeg; s++)
-                            {
-                                val = Couverture[s, J, IP, I] * POP[J];
-                                if (float.IsNaN(val))
-                                    iVal = 0;
-                                else
-                                    iVal = Convert.ToInt32(Math.Truncate((val + 500f) / 1000f));
-                                sb.Append($" {iVal.ToString().PadLeft(8)} ");
-                            }
-                        }
                     }
                     sb.AppendLine();
                 }
@@ -4415,6 +4399,7 @@ namespace ARProbaProcessing
         public int NbSeg;     // 16 ou 5 idf
         public int TRegTest;  // 5 ou 4 idf
         public int[,] NIVO;
+        public int Year;
     }
 
     public struct VsorPoid

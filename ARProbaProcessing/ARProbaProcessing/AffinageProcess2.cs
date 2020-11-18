@@ -157,7 +157,7 @@ namespace ARProbaProcessing
                                     int II = 0;
                                     for (int IG = 1; IG <= NBIND; IG++)
                                     {
-                                        if ((NIV == 5 && NB[NIV] == 1) || (KHI2[IG, NIV + 1] == NB[NIV]))
+                                        if ((NIV == contextPanel.TRegTest && NB[NIV] == 1) || (KHI2[IG, NIV + 1] == NB[NIV]))
                                         {
                                             IM[NIV]++;
                                             IPPS[NIV] += POIDS[IG];
@@ -462,13 +462,13 @@ namespace ARProbaProcessing
                 }
             }
 
+            BSUP.POIDS = POIDS;
+            BSUP.RIEN = RIEN;
+            BSUP.KECR = KECR;
+            BSUP.KECRIDF = KECRIDF;
+
             if (contextPanel.Enquete != Enquete.PanelIleDeFrance)
             {
-                BSUP.POIDS = POIDS;
-                BSUP.RIEN = RIEN;
-                BSUP.KECR = KECR;
-                BSUP.KECRIDF = KECRIDF;
-
                 for (int IND = 0; IND < NIND; IND++) bwSup.Write(Convert.ToInt16(POIDS[IND]));
                 for (int IND = 0; IND < NIND; IND++) bwSup.Write(Convert.ToInt16(RIEN[IND]));
 
@@ -692,17 +692,31 @@ namespace ARProbaProcessing
         }
 
 
-        private void asympt(int NIND, int NBSTA, int NBSTATOTAL, BSupport BSUP, int[,] PANCIB, string pathAS5H5H, string headerAS5H5H, List<string> stations)
+        private void asympt(ContextPanel contextPanel, int NIND, int NBSTA, int NBSTATOTAL, BSupport BSUP, int[,] PANCIB, string pathAS5H5H, List<string> stations)
         {
             // PANEL RADIO 08 MEDIAMETRIE
             // PROGRAMME ASYMPT
             // PENETRATIONS CUMULEES MAXI 5H - 29H LUNDI-DIMANCHE
 
-            int N = 3;
+            int N = contextPanel.Enquete == Enquete.PanelIleDeFrance ? 4 : 3;
+
+            string headerAS5H5H = contextPanel.Enquete == Enquete.PanelIleDeFrance ?
+                        "             PANEL MEDIAMETRIE RADIO " + contextPanel.Year.ToString() +
+                        Environment.NewLine +
+                        " PENETRATIONS CUMULEES MAXIMALES 5H-29H LUNDI-DIMANCHE " +
+                        Environment.NewLine + Environment.NewLine + Environment.NewLine +
+                        " STATIONS/AGREGATS      ENSEMBLE   HOMMES   FEMMES   13-34 ANS"
+                    :
+                        "             PANEL MEDIAMETRIE RADIO " + contextPanel.Year.ToString() +
+                        Environment.NewLine +
+                        " PENETRATIONS CUMULEES MAXIMALES 5H-29H LUNDI-DIMANCHE " +
+                        Environment.NewLine + Environment.NewLine + Environment.NewLine +
+                        " STATIONS/AGREGATS       ENSEMBLE     MENAGERES       13-28";
+
 
             // Le nombre de station correspond au nombre de stations(#NB_STA_HAB_NOTO_TOTAL#) - #NB_STA_TOTAL_ONLY# pour Total Radio (et Total TV)
             // Il ne nous reste plus que #NB_STA_HAB_NOTO,0# stations puisqu'on a supprimé SUD RADIO
-            int[] IPOI = new int[NIND + 1];
+        int[] IPOI = new int[NIND + 1];
             int[] IPOPS = new int[N + 1];
             float[] COUV = new float[N + 1];
             int[,,] TABRES = new int[N + 1, NBSTATOTAL + 1, NIND + 1];
@@ -765,32 +779,6 @@ namespace ARProbaProcessing
                     }
                 }
             }
-
-            //// BOUCLE STATIONS
-            //for (int IS = 1; IS <= NBSTA; IS++)
-            //{ 
-            //    // BOUCLE SEMAINE SAMEDI DIMANCHE
-            //    for (int IU = 1; IU <= 3; IU++)
-            //    { 
-            //        // BOUCLE TRANCHES HORAIRES(EN 1 / 2 HEURE)
-            //        for (int ITR = 1; ITR <= 48; ITR++)
-            //        { 
-            //            //  TRANCHE HORAIRE 5h 29h
-            //            // BOUCLE INDIVIDUS
-            //            for (int IND = 1; IND <= NIND; IND++)
-            //            {
-            //                if (BSUP.KECR[IS][IU, ITR, IND] > 0)  // [NBSTA + 1, 3 + 1, 48 + 1, NIND + 1]
-            //                {
-            //                    for (int IN = 1; IN <= N; IN++)
-            //                    {
-            //                        if (PANCIB[IN, IND] == 1) TABRES[IN, IS, IND] = 1;
-            //                        if (PANCIB[IN, IND] == 1) TABRES[IN, NBSTATOTAL, IND] = 1;
-            //                    }
-            //                }
-            //            }
-            //        }
-            //    }
-            //}
 
             Console.WriteLine("IPOPS");
             for (int I = 1; I <= N; I++)

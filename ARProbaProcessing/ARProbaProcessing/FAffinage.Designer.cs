@@ -39,6 +39,7 @@
             // 
             // cbo_panel
             // 
+            this.cbo_panel.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbo_panel.FormattingEnabled = true;
             this.cbo_panel.Items.AddRange(new object[] {
             "National",
