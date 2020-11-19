@@ -366,7 +366,7 @@ namespace ARProbaProcessing
 
             ProgramShortPath = buffer.ToString();
 
-            LoadSignStructure();
+            LoadSignStructure(enquete);
 
         }
 
@@ -1305,7 +1305,7 @@ namespace ARProbaProcessing
             return true;
         }
 
-        private void LoadSignStructure()
+        private void LoadSignStructure(Enquete enquete)
         {
             string signStrFile = InputPath + string.Format(@"xls\str_sig.csv");
 
@@ -1351,6 +1351,15 @@ namespace ARProbaProcessing
 
             Station totalRadio = HabAndNotoTotalStationList.First();
             int totalIdx = totalRadio.Index;
+
+            if (enquete == Enquete.PanelIleDeFrance)
+            {
+                hiddenHabStationCount += HabAndNotoTotalStationList.Count();
+                HabAndNotoTotalStationList = new Station[0];
+            }
+
+            hiddenHabStationCount += HabAndNotoTotalStationList.Count();
+            HabAndNotoTotalStationList = new Station[0];
 
             SignVariable trlv = null;
             SignVariable trsa = null;

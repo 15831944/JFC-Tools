@@ -13,9 +13,6 @@ namespace ARProbaProcessing
 
         private int[] NOTE = new int[25 + 1] { 999999, 0, 12, 6, 4, 3, 3, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
         private int[] NBIT = new int[] { 0, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1 };
-        //private int[] contextPanel.SEG1 = new int[] { 999999, 1, 1, 2, 3, 3, 4, 4, 5, 6, 6, 7, 8, 9, 9, 10, 10 };
-        //private int[] contextPanel.SEG2 = new int[] { 999999, 1, 1, 2, 3, 3, 4, 4, 5, 6, 6 };
-        //private int[] contextPanel.SEG3 = new int[] { 999999, 1, 2, 2, 3, 3, 4 };
         private int[] ITH = new int[] { 999999,
                 9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,
                 1,1,1,1,
@@ -1948,7 +1945,7 @@ namespace ARProbaProcessing
                                     }
                                     int IAUD = 0;
                                     int NJOU = 0;
-                                    for (int I = 1; I <= 15; I++)
+                                    for (int I = 1; I <= 4; I++)
                                     {
                                         COMB[I] = PATRON[IQ, I, IG];
                                         if (COMB[I] == 1)
@@ -2234,12 +2231,12 @@ namespace ARProbaProcessing
                                 double DIRAC1 = ITTP[IN] / POPS;
                                 double PC1 = IZAP[IN] / POPS;
                                 int IPOP = 0;
-                                for (int I = 2; I <= contextPanel.NbSeg; I++)
+                                for (int I = 2; I <= 5; I++)
                                 {
                                     IPOP = IPOP + COMPT[I, IN] * (I - 1);
                                 }
 
-                                for (int I = 2; I <= contextPanel.NbSeg; I++)
+                                for (int I = 2; I <= 5; I++)
                                 {
                                     if (I != contextPanel.NbSeg) SEGM[I + 1, IN] += SEGM[I, IN];
                                     if (I != contextPanel.NbSeg) COMPT[I + 1, IN] += COMPT[I, IN];
@@ -2249,41 +2246,44 @@ namespace ARProbaProcessing
                                 GRP = GRP / POPS / 15d;
                                 PR = (IPOP - ITTP[IN] * 15) / 14d;
 
+                                // TODO :erreur fortran : seul le sav1dhpa hors IDF ne contient pas ce test ?
+                                // if (contextPanel.Enquete == Enquete.PanelIleDeFrance && POPS == (COMPT[1, IN] + ITTP[IN]))
                                 if (contextPanel.Enquete == Enquete.PanelIleDeFrance && POPS == (COMPT[1, IN] + ITTP[IN]))
                                 {
                                     ZR = COMPT[1, IN] / POPS;
                                     UR = ITTP[IN] / POPS;
                                     PR = 1d;
                                     TAU = 0d;
-                                    break;
                                 }
-
-                                PR = PR / (POPS - COMPT[1, IN] - ITTP[IN]);
-                                for (int I = 1; I <= 15; I++)
+                                else
                                 {
-                                    Z[I] = 1d * C[I, IN] / NCOM[I] / POPS * 100d;
-                                }
+                                    PR = PR / (POPS - COMPT[1, IN] - ITTP[IN]);
+                                    for (int I = 1; I <= 15; I++)
+                                    {
+                                        Z[I] = 1d * C[I, IN] / NCOM[I] / POPS * 100d;
+                                    }
 
-                                // APPEL DE LA FONCTION DIFFERENCE
+                                    // APPEL DE LA FONCTION DIFFERENCE
 
-                                GRP = GRP / 100d;
-                                double ZA = DIRAC0;
-                                ZR = IZAP[IN] / POPS;
-                                double UA = ITJP[IN] / POPS;
-                                UR = DIRAC1;
+                                    GRP = GRP / 100d;
+                                    double ZA = DIRAC0;
+                                    ZR = IZAP[IN] / POPS;
+                                    double UA = ITJP[IN] / POPS;
+                                    UR = DIRAC1;
 
-                                //WRITE(16, *) GRP, ZA, ZR, UA, UR
-                                sbSortie.AppendLine($"GRP {GRP}  ZA {ZA}  ZR {ZR}  UA {UA}  UR {UR} IZAP {IZAP[IN]} POPS {POPS} NIV {NIV} IN {IN}");
+                                    //WRITE(16, *) GRP, ZA, ZR, UA, UR
+                                    sbSortie.AppendLine($"GRP {GRP}  ZA {ZA}  ZR {ZR}  UA {UA}  UR {UR} IZAP {IZAP[IN]} POPS {POPS} NIV {NIV} IN {IN}");
 
-                                float ND = 15;
-                                MINIMISE(GRP, Z, ref PR, ref UR, ref ZR, out TAU, ZA, UA, ND); // float GRP, float[] ZC, ref float PR, ref float UR, ref float ZR, out float TAU, float ZA, float UA, float NB)
+                                    float ND = 15;
+                                    MINIMISE(GRP, Z, ref PR, ref UR, ref ZR, out TAU, ZA, UA, ND); // float GRP, float[] ZC, ref float PR, ref float UR, ref float ZR, out float TAU, float ZA, float UA, float NB)
 
-                                double GRP0 = 0d;
-                                double GRPC = 0d;
-                                for (int I = 1; I <= 15; I++)
-                                {
-                                    GRPC = GRPC + YR[I];
-                                    GRP0 = GRP0 + Z[I];
+                                    double GRP0 = 0d;
+                                    double GRPC = 0d;
+                                    for (int I = 1; I <= 15; I++)
+                                    {
+                                        GRPC = GRPC + YR[I];
+                                        GRP0 = GRP0 + Z[I];
+                                    }
                                 }
                             } // if (((N1 == 1) || (NIV == 1) ) 
                             RESUL[NOP, IQ, 1, N1] = Convert.ToSingle(ZR);
@@ -2351,13 +2351,13 @@ namespace ARProbaProcessing
             double[] Z = new double[15 + 1];
             double[] YR = new double[15 + 1];
 
-            int[,] COMPT = new int[16 + 1, contextPanel.TRegTest + 1];
+            int[,] COMPT = new int[contextPanel.NbSeg + 1, contextPanel.TRegTest + 1];
             int[] ITPO = new int[contextPanel.TRegTest + 1];
             int[] ITTP = new int[contextPanel.TRegTest + 1];
             int[] IZAP = new int[contextPanel.TRegTest + 1];
             int[] IPPS = new int[contextPanel.TRegTest + 1];
             int[] ITJP = new int[contextPanel.TRegTest + 1];
-            int[,] SEGM = new int[16 + 1, contextPanel.TRegTest + 1];
+            int[,] SEGM = new int[contextPanel.NbSeg + 1, contextPanel.TRegTest + 1];
             int[] NB = new int[contextPanel.TRegTest + 1];
             int[] ITTL = new int[contextPanel.TRegTest + 1];
             int[] ITOU = new int[contextPanel.TRegTest + 1];
@@ -2366,7 +2366,7 @@ namespace ARProbaProcessing
             int[] ITJR = new int[contextPanel.TRegTest + 1];
             int[] IM = new int[contextPanel.TRegTest + 1];
             //int[,] POIQH = new int[96 + 1, NBJOUR + 1];
-            int[,,] PATRON = new int[96 + 1, 4 + 1, NBIND + 1];
+            int[,,] PATRON = new int[96 + 1, contextPanel.NbSeg, NBIND + 1];
             int[,,] JATOU = new int[96 + 1, 4 + 1, NBIND + 1];
             int[] TREG = new int[contextPanel.NbSeg + 1];
             double ZR = 0f;
@@ -2416,7 +2416,7 @@ namespace ARProbaProcessing
                         int IH = fushab09Indiv.KHSA[ITH[IQ], NOSH] - 48;
                         if (IH == 0) IH = 5;
                         int NJOU = 0;
-                        for (int IJ = 1; IJ <= 4; IJ++)
+                        for (int IJ = 1; IJ <= contextPanel.NbSeg-1; IJ++)
                         {
                             PATRON[IQ, IJ, IG] = 0;
                         }
@@ -2519,7 +2519,7 @@ namespace ARProbaProcessing
                                     if (KHI2_IG_NIV_EQ_NB_NIV) IPPS[NIV] = IPPS[NIV] + IPERS;
                                     int IAUD = 0;
                                     int NJOU = 0;
-                                    for (int I = 1; I <= 4; I++)
+                                    for (int I = 1; I <= contextPanel.NbSeg-1; I++)
                                     {
                                         COMB[I] = PATRON[IQ, I, IG];
                                         if (COMB[I] == 1)
@@ -2720,13 +2720,13 @@ namespace ARProbaProcessing
             double[] Z = new double[15 + 1];
             double[] YR = new double[15 + 1];
 
-            int[,] COMPT = new int[16 + 1, contextPanel.TRegTest + 1];
+            int[,] COMPT = new int[contextPanel.NbSeg + 1, contextPanel.TRegTest + 1];
             int[] ITPO = new int[contextPanel.TRegTest + 1];
             int[] ITTP = new int[contextPanel.TRegTest + 1];
             int[] IZAP = new int[contextPanel.TRegTest + 1];
             int[] IPPS = new int[contextPanel.TRegTest + 1];
             int[] ITJP = new int[contextPanel.TRegTest + 1];
-            int[,] SEGM = new int[16 + 1, contextPanel.TRegTest + 1];
+            int[,] SEGM = new int[contextPanel.NbSeg + 1, contextPanel.TRegTest + 1];
             int[] NB = new int[contextPanel.TRegTest + 1];
             int[] ITTL = new int[contextPanel.TRegTest + 1];
             int[] ITOU = new int[contextPanel.TRegTest + 1];
@@ -2735,7 +2735,7 @@ namespace ARProbaProcessing
             int[] ITJR = new int[contextPanel.TRegTest + 1];
             int[] IM = new int[contextPanel.TRegTest + 1];
             //int[,] POIQH = new int[96 + 1, NBJOUR + 1];
-            int[,,] PATRON = new int[96 + 1, 4 + 1, NBIND + 1];
+            int[,,] PATRON = new int[96 + 1, contextPanel.NbSeg, NBIND + 1];
             int[,,] JATOU = new int[96 + 1, 4 + 1, NBIND + 1];
             int[] TREG = new int[contextPanel.NbSeg + 1];
             double ZR = 0f;
@@ -3739,7 +3739,7 @@ namespace ARProbaProcessing
                                     int ISEG = N1;
                                     if (IN == 2) ISEG = contextPanel.SEGBASE[0] + contextPanel.SEG1[N1];
                                     if (IN == 3) ISEG = contextPanel.SEGBASE[1] + contextPanel.SEG2[contextPanel.SEG1[N1]];
-                                    if (contextPanel.Enquete != Enquete.PanelIleDeFrance && IN == 4) ISEG = 32 + contextPanel.SEG3[contextPanel.SEG2[contextPanel.SEG1[N1]]];
+                                    if (contextPanel.Enquete != Enquete.PanelIleDeFrance && IN == 4) ISEG = contextPanel.SEGBASE[2] + contextPanel.SEG3[contextPanel.SEG2[contextPanel.SEG1[N1]]];
                                     if (IN == contextPanel.TRegTest) ISEG = contextPanel.IdxTot;
                                     // CALCUL NOUVEAU P
                                     GRPN = COUV[ISEG, 2, IP, NQ];
