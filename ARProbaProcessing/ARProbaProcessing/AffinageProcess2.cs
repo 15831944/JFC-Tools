@@ -384,7 +384,6 @@ namespace ARProbaProcessing
             int[][,,] KECRIDF = new int[NBSTAIDF + 1][,,];
             for (int s = 1; s <= NBSTAIDF; s++) KECRIDF[s] = new int[3 + 1, 48 + 1, NIND + 1];
             //int[,,,] KECRIDF = new int[NBSTAIDF + 1, 3 + 1, 48 + 1, NIND + 1];
-            int[] RIEN = new int[NIND + 1];
             BSupport BSUP = new BSupport();
 
             //      INITIALISATIONS
@@ -406,10 +405,9 @@ namespace ARProbaProcessing
             for (int IND = 0; IND < NIND; IND++)
             {
                 POIDS[IND] *= 10;
-                RIEN[IND] = 0;
             }
             for (int IND = 0; IND < NIND; IND++) bwNat.Write(Convert.ToInt16(POIDS[IND]));
-            for (int IND = 0; IND < NIND; IND++) bwNat.Write(Convert.ToInt16(RIEN[IND]));
+            for (int IND = 0; IND < NIND; IND++) bwNat.Write(Convert.ToInt16(0));
 
             // BOUCLE STATIONS
             int IDF = 0;
@@ -436,9 +434,7 @@ namespace ARProbaProcessing
                         // BOUCLE INDIVIDUS
                         for (int II = 1; II <= NIND; II++)
                         {
-                            KECR[IS][IU, IQ4, II] = KHI2[IS, IU, IH, II] + KHI2[IS, IU, IH + 1, II];      //  [STATIONS, LV/Sa/Di, QH, INDIVS]
-
-                            KECR[IS][IU, IQ4, II] *= 5;
+                            KECR[IS][IU, IQ4, II] = (KHI2[IS, IU, IH, II] + KHI2[IS, IU, IH + 1, II])*5;      //  [STATIONS, LV/Sa/Di, QH, INDIVS]
 
                             if (KECR[IS][IU, IQ4, II] < 0) Console.WriteLine($"{IS}, {IU}, {IQ4}");
 
@@ -463,14 +459,14 @@ namespace ARProbaProcessing
             }
 
             BSUP.POIDS = POIDS;
-            BSUP.RIEN = RIEN;
+            BSUP.RIEN = null;// A virer
             BSUP.KECR = KECR;
             BSUP.KECRIDF = KECRIDF;
 
             if (contextPanel.Enquete != Enquete.PanelIleDeFrance)
             {
                 for (int IND = 0; IND < NIND; IND++) bwSup.Write(Convert.ToInt16(POIDS[IND]));
-                for (int IND = 0; IND < NIND; IND++) bwSup.Write(Convert.ToInt16(RIEN[IND]));
+                for (int IND = 0; IND < NIND; IND++) bwSup.Write(Convert.ToInt16(0));
 
                 for (int IS = 1; IS <= NBSTA; IS++)
                 {
@@ -716,11 +712,10 @@ namespace ARProbaProcessing
 
             // Le nombre de station correspond au nombre de stations(#NB_STA_HAB_NOTO_TOTAL#) - #NB_STA_TOTAL_ONLY# pour Total Radio (et Total TV)
             // Il ne nous reste plus que #NB_STA_HAB_NOTO,0# stations puisqu'on a supprimé SUD RADIO
-        int[] IPOI = new int[NIND + 1];
+            int[] IPOI = new int[NIND + 1];
             int[] IPOPS = new int[N + 1];
             float[] COUV = new float[N + 1];
             int[,,] TABRES = new int[N + 1, NBSTATOTAL + 1, NIND + 1];
-            int[] IG = new int[N + 1];
 
             // OUVERTURE DES FICHIERS
 
@@ -732,7 +727,6 @@ namespace ARProbaProcessing
             for (int IND = 1; IND <= NIND; IND++)
             {
                 IPOI[IND] = BSUP.POIDS[IND - 1];
-                //if (IPOI[IND] < 0) IPOI[IND] += 65536;  /// ???
             }
 
             // FICHIER DES SEGMENTS
@@ -742,13 +736,11 @@ namespace ARProbaProcessing
             {
                 //      READ(8)(TABCI(I, IND), IND = 1, NIND)
                 IPOPS[I] = 0;
-                IG[I] = 0;
                 for (int IND = 1; IND <= NIND; IND++)
                 {
                     if (PANCIB[I, IND] == 1)
                     {
                         IPOPS[I] += IPOI[IND];
-                        IG[I] = IG[I] + 1;
                     }
                 }
             }
@@ -775,6 +767,13 @@ namespace ARProbaProcessing
                                     if (PANCIB[IN, IND] == 1) TABRES[IN, NBSTATOTAL, IND] = 1;
                                 }
                             }
+                            else
+                            {
+                                for (int IN = 2; IN <= N; IN++)
+                                {
+                                    if (PANCIB[IN, IND] == 1) { }
+                                }
+                            }
                         }
                     }
                 }
@@ -795,13 +794,17 @@ namespace ARProbaProcessing
             {
                 for (int I = 1; I <= N; I++)
                 {
+                    COUV[I] = 0f;
                     for (int IND = 1; IND <= NIND; IND++)
                     {
                         if (TABRES[I, STA, IND] == 1) COUV[I] += IPOI[IND];
                     }
-                    COUV[I] *= 100f / Convert.ToSingle(IPOPS[I]);
+                    COUV[I] = COUV[I] * 100f / Convert.ToSingle(IPOPS[I]);
                 }
-                swPenetr.WriteLine(stations[STA - 1].PadLeft(49) + COUV[1].ToString("0.00").PadLeft(8) + " " + COUV[2].ToString("0.00").PadLeft(8) + " " + COUV[3].ToString("0.00").PadLeft(8));
+                swPenetr.Write(stations[STA - 1].PadLeft(49)); 
+                for (int jj=1; jj<=N; jj++)
+                    swPenetr.Write(COUV[jj].ToString("0.00").PadLeft(8) + " ");
+                swPenetr.WriteLine();
             }
 
 
@@ -967,11 +970,24 @@ namespace ARProbaProcessing
         }
         private int GetTotalRadioIndex(ARProba arProba)
         {
-            var req = from sta in arProba.HabAndNotoTotalStationList
-                      where sta.Name.Equals("total radio", StringComparison.CurrentCultureIgnoreCase)
-                      select sta;
+            if (arProba.HabAndNotoTotalStationList.Count() == 0)
+            {
+                var list = (from sta in arProba.StationList
+                            where sta.Mode != ARProbaProcessing.ARProba.Station.eSignVariable.None
+                               && (sta.Name.Equals("total TV", StringComparison.CurrentCultureIgnoreCase)
+                                   || sta.Name.Equals("total radio", StringComparison.CurrentCultureIgnoreCase)
+                                   )
+                            select sta).ToArray();
+                return list.First().Index;
+            }
+            else
+            {
+                var req = from sta in arProba.HabAndNotoTotalStationList
+                          where sta.Name.Equals("total radio", StringComparison.CurrentCultureIgnoreCase)
+                          select sta;
 
-            return req.First().Index;
+                return req.First().Index;
+            }
         }
 
         private int SIGN_LINE_LEN_BEFORE_HAB_FCT(ARProba arProba)
@@ -988,6 +1004,21 @@ namespace ARProbaProcessing
             len = len - (var.Position + var.Repetition) + 1;
 
             return len;
+        }
+
+        public int SIGN_LINE_LEN_AFTER_HAB_WITH_PAD_FCT(ARProba arProba)
+        {
+            int len = arProba.SigLineLen;
+
+            var var = arProba.SignVars[string.Format("DI{0:00}", arProba.AllHabStationCount + arProba.HabAndNotoTotalStationListCount)]; // a voir  1 =avant mise a 0 de arProba.HabAndNotoTotalStationListCount)
+            len = len - (var.Position + var.Repetition) + 1;
+
+            return len;
+        }
+
+        public int NB_STA_ALL_HAB_WITH_TOTAL(ARProba arProba)
+        {
+             return arProba.AllHabStationCount + arProba.HabAndNotoTotalStationListCount;
         }
 
         public int[] HAB_0_NOTO_1_STA_LIST_MASK(ARProba arProba)

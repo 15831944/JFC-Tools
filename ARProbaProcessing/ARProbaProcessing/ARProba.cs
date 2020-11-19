@@ -218,15 +218,14 @@ namespace ARProbaProcessing
 
         public int HabStationCount
         { get { return HabStationList.Count(); } }
-
         public int AllHabStationCount
         {
             get
             {
                 var req = from sta in StationList
-                          where sta.Mode == Station.eSignVariable.Habit
+                          where (sta.Mode == Station.eSignVariable.Habit && sta.Comment != "Non disponible")
                           select sta;
-                return req.Count();
+                return req.Count() + hiddenHabStationCount;
             }
         }
 

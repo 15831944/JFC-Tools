@@ -73,7 +73,10 @@ namespace ARProbaProcessing
                     NIVO = new int[,] { {0, 1,1,2,2,3 },
                                    {999999, 1,1,2,2,2 },
                                    {999999, 1,1,1,1,1} },
-                    Year = year
+                    Year = year,
+                    SIGN_LINE_LEN_BEFORE_HAB = SIGN_LINE_LEN_BEFORE_HAB_FCT(arProba),
+                    SIGN_LINE_LEN_AFTER_HAB = SIGN_LINE_LEN_AFTER_HAB_WITH_PAD_FCT(arProba),
+                    NB_STA_ALL_HAB = arProba.AllHabStationCount + arProba.HabAndNotoTotalStationListCount // a voir 1 = avant mise a zero de : arProba.HabAndNotoTotalStationListCount 
                 };
             }
             else
@@ -93,8 +96,11 @@ namespace ARProbaProcessing
                                    {999999, 1,1,1,2,2,3,3,3,4,4,4,5,6,6,6,6},
                                    {999999, 1,1,1,2,2,2,2,2,3,3,3,3,4,4,4,4 },
                                    {999999, 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1 } },
-                    Year = year
-                };
+                    Year = year,
+                    SIGN_LINE_LEN_BEFORE_HAB = SIGN_LINE_LEN_BEFORE_HAB_FCT(arProba),
+                    SIGN_LINE_LEN_AFTER_HAB = SIGN_LINE_LEN_AFTER_HAB_FCT(arProba),
+                    NB_STA_ALL_HAB = arProba.AllHabStationCount
+            };
             }
 
             int NbStation = arProba.HabAndNotoStationCount;
@@ -171,9 +177,7 @@ namespace ARProbaProcessing
             #endregion entrées regr5jp2
 
             #region entrées Fushab09
-            int SIGN_LINE_LEN_BEFORE_HAB = SIGN_LINE_LEN_BEFORE_HAB_FCT(arProba);
-            int SIGN_LINE_LEN_AFTER_HAB = SIGN_LINE_LEN_AFTER_HAB_FCT(arProba);
-            int NB_STA_ALL_HAB = arProba.AllHabStationCount;
+
             int[] TABRH = HAB_STA_LIST_ID_NOTO_SET_TO_TOTAL_RADIO(arProba);
             string pathPANSIGN = Path.Combine(OutputPath, "PANSIGN");
             string pathSIGJFC2_BDE = Path.Combine(inputPath, @"Bde\sig" + (year % 100).ToString("00") + "jfc2.bde");
@@ -306,7 +310,7 @@ namespace ARProbaProcessing
 
             VsorPoid[][][] JNByWeek = regr5jp2(nbStationHabNotoTotal, NBINDIV, JN, pathPansem); // [Semaine 1..3][Jour de semaine Lundi à vendredi 1..5][indiv]
 
-            List<Fushab09Indiv> fushab09Indivs = Fushab09(NB_STA_HAB_NOTO, SIGN_LINE_LEN_BEFORE_HAB, SIGN_LINE_LEN_AFTER_HAB, NB_STA_ALL_HAB, TABRH, pathSIGJFC2_BDE, pathPANSIGN);
+            List<Fushab09Indiv> fushab09Indivs = Fushab09(contextPanel, NB_STA_HAB_NOTO, TABRH, pathSIGJFC2_BDE, pathPANSIGN);
 
             int[,,,] NINI_IND_QH_W = chab1qhp(NB_STA_HAB_NOTO, fushab09Indivs, ISTA, pathHab); // Habitude [STATIONS, INDIV, QH, LV/Sa/Di];
 
@@ -785,10 +789,8 @@ namespace ARProbaProcessing
         }
 
         public List<Fushab09Indiv> Fushab09(
+            ContextPanel contextPanel,
             int NBSTA,
-            int SIGN_LINE_LEN_BEFORE_HAB,
-            int SIGN_LINE_LEN_AFTER_HAB,
-            int NB_STA_ALL_HAB,
             int[] TABRH,
             string pathSIGJFC_BDE,
             string pathPANSIGN)
@@ -816,18 +818,18 @@ namespace ARProbaProcessing
             // int[] TABRH /#HAB_STA_LIST_ID_NOTO_SET_TO_TOTAL_RADIO#/
 
             // INTEGER*1 int KHAB(9,NB_STA_ALL_HAB),KHSA(9,#NB_STA_ALL_HAB#),KHDI(9,#NB_STA_ALL_HAB#),APRES[#SIGN_LINE_LEN_AFTER_HAB#), CHARIOT(2)
-            byte[,] KHAB = new byte[9 + 1, NB_STA_ALL_HAB + 1];
-            byte[,] KHSA = new byte[9 + 1, NB_STA_ALL_HAB + 1];
-            byte[,] KHDI = new byte[9 + 1, NB_STA_ALL_HAB + 1];
+            byte[,] KHAB = new byte[9 + 1, contextPanel.NB_STA_ALL_HAB + 1];
+            byte[,] KHSA = new byte[9 + 1, contextPanel.NB_STA_ALL_HAB + 1];
+            byte[,] KHDI = new byte[9 + 1, contextPanel.NB_STA_ALL_HAB + 1];
 
             // INITIALISATIONS
             int G = 0;
 
             // OUVERTURE FICHIERS
             Console.WriteLine("NBSTA=" + NBSTA);
-            Console.WriteLine("SIGN_LINE_LEN_BEFORE_HAB=" + SIGN_LINE_LEN_BEFORE_HAB);
-            Console.WriteLine("SIGN_LINE_LEN_AFTER_HAB=" + SIGN_LINE_LEN_AFTER_HAB);
-            Console.WriteLine("NB_STA_ALL_HAB=" + NB_STA_ALL_HAB);
+            Console.WriteLine("SIGN_LINE_LEN_BEFORE_HAB=" + contextPanel.SIGN_LINE_LEN_BEFORE_HAB);
+            Console.WriteLine("SIGN_LINE_LEN_AFTER_HAB=" + contextPanel.SIGN_LINE_LEN_AFTER_HAB);
+            Console.WriteLine("NB_STA_ALL_HAB=" + contextPanel.NB_STA_ALL_HAB);
 
             //
             //                              OUVERTURE FICHIER
@@ -843,29 +845,29 @@ namespace ARProbaProcessing
             // BOUCLE INDIVIDUS
             while (fs.Position != fs.Length)
             {
-                byte[] AVANT = new byte[SIGN_LINE_LEN_BEFORE_HAB + 1];
-                byte[] APRES = new byte[SIGN_LINE_LEN_AFTER_HAB + 1];
+                byte[] AVANT = new byte[contextPanel.SIGN_LINE_LEN_BEFORE_HAB + 1];
+                byte[] APRES = new byte[contextPanel.SIGN_LINE_LEN_AFTER_HAB + 1];
                 byte[] CHARIOT = new byte[2 + 1];
 
                 // 30 READ(13, END = 120) AVANT,((KHAB(I, J), I = 1, 9), J = 1,#NB_STA_ALL_HAB#),((KHSA(I,J),I=1,9),J=1,#NB_STA_ALL_HAB#),
                 // -((KHDI(I,J),I=1,9),J=1,#NB_STA_ALL_HAB#),APRES,CHARIOT
 
-                for (int i = 1; i <= SIGN_LINE_LEN_BEFORE_HAB; i++)
+                for (int i = 1; i <= contextPanel.SIGN_LINE_LEN_BEFORE_HAB; i++)
                     AVANT[i] = br.ReadByte();
 
-                for (int j = 1; j <= NB_STA_ALL_HAB; j++)
+                for (int j = 1; j <= contextPanel.NB_STA_ALL_HAB; j++)
                     for (int i = 1; i <= 9; i++)
                         KHAB[i, j] = br.ReadByte();
 
-                for (int j = 1; j <= NB_STA_ALL_HAB; j++)
+                for (int j = 1; j <= contextPanel.NB_STA_ALL_HAB; j++)
                     for (int i = 1; i <= 9; i++)
                         KHSA[i, j] = br.ReadByte();
 
-                for (int j = 1; j <= NB_STA_ALL_HAB; j++)
+                for (int j = 1; j <= contextPanel.NB_STA_ALL_HAB; j++)
                     for (int i = 1; i <= 9; i++)
                         KHDI[i, j] = br.ReadByte();
 
-                for (int i = 1; i <= SIGN_LINE_LEN_AFTER_HAB; i++)
+                for (int i = 1; i <= contextPanel.SIGN_LINE_LEN_AFTER_HAB; i++)
                     APRES[i] = br.ReadByte();
 
                 for (int i = 1; i <= 2; i++)
@@ -907,7 +909,7 @@ namespace ARProbaProcessing
             BinaryWriter writeBinary = new BinaryWriter(writeStream);
             foreach (Fushab09Indiv fushab09Indiv in fushab09Indivs)
             {
-                for (int i = 1; i <= SIGN_LINE_LEN_BEFORE_HAB; i++)
+                for (int i = 1; i <= contextPanel.SIGN_LINE_LEN_BEFORE_HAB; i++)
                     writeBinary.Write(fushab09Indiv.AVANT[i]);
 
                 for (int j = 1; j <= NBSTA; j++)
@@ -922,7 +924,7 @@ namespace ARProbaProcessing
                     for (int i = 1; i <= 9; i++)
                         writeBinary.Write(fushab09Indiv.KHDI[i, j]);
 
-                for (int i = 1; i <= SIGN_LINE_LEN_AFTER_HAB; i++)
+                for (int i = 1; i <= contextPanel.SIGN_LINE_LEN_AFTER_HAB; i++)
                     writeBinary.Write(fushab09Indiv.APRES[i]);
 
                 for (int i = 1; i <= 2; i++)
@@ -4400,6 +4402,9 @@ namespace ARProbaProcessing
         public int TRegTest;  // 5 ou 4 idf
         public int[,] NIVO;
         public int Year;
+        public int SIGN_LINE_LEN_BEFORE_HAB;
+        public int SIGN_LINE_LEN_AFTER_HAB;
+        public int NB_STA_ALL_HAB;
     }
 
     public struct VsorPoid
