@@ -277,22 +277,21 @@ namespace ARProbaProcessing
 
                                                 RP = R;
                                                 NG = POIDS[RANK[R]];
-                                                HCR = (int)Math.Truncate(SCORE[RANK[R]]);  // TODO Real => INT*4 ?
-                                                                                           //60
-                                                double HCRf = SCORE[RANK[R]];
+                                                HCR = (int)Math.Truncate(SCORE[RANK[RP]]);  // TODO Real => INT*4 ?
+                                                double HCRf = SCORE[RANK[RP]];
                                                 do
                                                 {
                                                     H = (contextPanel.Enquete == Enquete.PanelIleDeFrance) ? RANK[RP] : RANK[RP + 1];
-                                                    //if (SCORE[H] != HCR) break;
-                                                    if (SCORE[H] != HCRf) break;
+                                                    if (SCORE[H] != HCR) break;
+                                                    //if (SCORE[H] != HCRf) break;
 
-                                                    RP = RP + 1;
-                                                    NG = NG + POIDS[H];
+                                                    RP += 1;
+                                                    NG += POIDS[H];
                                                 }
                                                 while (RP < NICEL);
 
                                                 Y = X + NG * LAMBDA;
-                                                X = X + NG;
+                                                X += NG;
 
                                                 while (VREP[PR] < Y && PR < NSEG) PR++;
 
@@ -350,7 +349,7 @@ namespace ARProbaProcessing
 
                         } // if (REGRS[IU, IP, IQ, 1] == 5)
 
-                        if (contextPanel.Enquete != Enquete.PanelIleDeFrance && IP != 999)
+                        if (contextPanel.Enquete == Enquete.PanelIleDeFrance || IP != 999)
                         {
                             for (int IG = 1; IG <= NBIND; IG++)
                                 writeBinary.Write(PROBAS[NOP, IU, IQ, IG]);
@@ -434,7 +433,7 @@ namespace ARProbaProcessing
                         // BOUCLE INDIVIDUS
                         for (int II = 1; II <= NIND; II++)
                         {
-                            KECR[IS][IU, IQ4, II] = (KHI2[IS, IU, IH, II] + KHI2[IS, IU, IH + 1, II])*5;      //  [STATIONS, LV/Sa/Di, QH, INDIVS]
+                            KECR[IS][IU, IQ4, II] = (Convert.ToInt16(KHI2[IS, IU, IH, II]) + Convert.ToInt16(KHI2[IS, IU, IH + 1, II]))*5;      //  [STATIONS, LV/Sa/Di, QH, INDIVS]
 
                             if (KECR[IS][IU, IQ4, II] < 0) Console.WriteLine($"{IS}, {IU}, {IQ4}");
 
@@ -586,8 +585,6 @@ namespace ARProbaProcessing
             {
                 IG = IG + 1;
                 int IND = IG;
-                // Ensemble(13 ans et +)
-                KECR[1, IND] = 1;
                 // Ensemble(13 ans et +)
                 KECR[1, IND] = 1;
                 // cible "Hommes"
@@ -952,7 +949,7 @@ namespace ARProbaProcessing
             return sta;
         }
 
-        public int[] HAB_STA_LIST_ID_NOTO_SET_TO_TOTAL_RADIO(ARProba arProba)
+        public int[] HAB_STA_LIST_ID_NOTO_SET_TO_TOTAL_RADIO_FCT(ARProba arProba)
         {
             int[] sta = new int[arProba.HabAndNotoStationList.Count() + 1];
             int totalidx = GetTotalRadioIndex(arProba);

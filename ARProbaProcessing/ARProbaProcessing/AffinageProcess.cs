@@ -70,9 +70,10 @@ namespace ARProbaProcessing
                     SEG1 = new int[] { 999999, 1, 1, 2, 2, 3 },
                     SEG2 = new int[] { 999999, 1, 2, 2 },
                     SEG3 = null,
-                    NIVO = new int[,] { {0, 1,1,2,2,3 },
-                                   {999999, 1,1,2,2,2 },
-                                   {999999, 1,1,1,1,1} },
+                    NIVO = new int[,] { {999999, 0,0,0,0,0 },
+                                        {999999, 1,1,2,2,3 },
+                                        {999999, 1,1,2,2,2 },
+                                        {999999, 1,1,1,1,1} },
                     Year = year,
                     SIGN_LINE_LEN_BEFORE_HAB = SIGN_LINE_LEN_BEFORE_HAB_FCT(arProba),
                     SIGN_LINE_LEN_AFTER_HAB = SIGN_LINE_LEN_AFTER_HAB_WITH_PAD_FCT(arProba),
@@ -178,7 +179,7 @@ namespace ARProbaProcessing
 
             #region entrées Fushab09
 
-            int[] TABRH = HAB_STA_LIST_ID_NOTO_SET_TO_TOTAL_RADIO(arProba);
+            int[] TABRH = HAB_STA_LIST_ID_NOTO_SET_TO_TOTAL_RADIO_FCT(arProba);
             string pathPANSIGN = Path.Combine(OutputPath, "PANSIGN");
             string pathSIGJFC2_BDE = Path.Combine(inputPath, @"Bde\sig" + (year % 100).ToString("00") + "jfc2.bde");
             #endregion
@@ -1052,7 +1053,7 @@ namespace ARProbaProcessing
                     if (
                         (contextPanel.Enquete != Enquete.PanelIleDeFrance && (NOP != 20) && (NOP != 21) && (NOP != 22) && (NOP != 23) && (NOP != 24) && (NOP != 25) && (NOP != 26) && (NOP != 27))
                         ||
-                        (contextPanel.Enquete == Enquete.PanelIleDeFrance && (NOP != 1) && (NOP != 19) && (NOP != 20) && (NOP != 21) && (NOP != 24) && (NOP != 25) && (NOP != 26) && (NOP != 27) && (NOP != 28) && (NOP != 29) && (NOP != 30) && (NOP != 31))
+                        (contextPanel.Enquete == Enquete.PanelIleDeFrance && (NOP != 1) && (NOP != 19) && (NOP != 20) && (NOP != 21) && (NOP != 24) && (NOP != 26) && (NOP != 27) && (NOP != 28) && (NOP != 29) && (NOP != 30) && (NOP != 31) && (NOP != 32))
                         )
                     {
                         for (int ITR = 1; ITR <= 9; ITR++)
@@ -1434,15 +1435,15 @@ namespace ARProbaProcessing
                             if (MINIS[IU, IP, IQ, IC] > 0) N = 1;
                             if (MINIS[IU, IP, IQ, IC] >= NIVREG) TREG[IC] = 0;
                         }
-                        if (N == 0)
+                        if (N == 0) // **IP IU IQ
                         {
                             for (int IC = 1; IC <= NBCEL; IC++)
                             {
                                 TREG[IC] = Convert.ToByte(contextPanel.TRegTest);
-                            }
+                            }// **GOTO100
                         }
                         else
-                        {
+                        {// **ELSE
                             // REGROUPEMENT NIVEAU N1 >> NIVEAU N2
                             bool sortie = false;
                             for (byte IN = 1; IN <= (contextPanel.Enquete == Enquete.PanelIleDeFrance ? 2 : 3); IN++)
@@ -1453,12 +1454,11 @@ namespace ARProbaProcessing
                                     {
                                         for (int I = 1; I <= NBCEL; I++)
                                         {
-
                                             if (contextPanel.NIVO[IN, I] == contextPanel.NIVO[IN, IC]) TREG[I] = TREG[IC];
                                         }
                                     }
                                 }
-                                N = 0;
+                                N = 0; // **TREG
                                 for (int IC = 1; IC <= NBCEL; IC++)
                                 {
                                     if (TREG[IC] == IN)
@@ -1469,18 +1469,18 @@ namespace ARProbaProcessing
                                         {
                                             if (contextPanel.NIVO[IN, I] == contextPanel.NIVO[IN, IC]) IM = IM + MINIS[IU, IP, IQ, I];
                                         }
-
+                                        // ** IM
                                         if (IM < NIVREG)
                                         {
                                             N = 1;
                                             for (int I = 1; I <= NBCEL; I++)
                                             {
                                                 if (contextPanel.NIVO[IN, I] == contextPanel.NIVO[IN, IC]) TREG[I] = Convert.ToByte(IN + 1);
-                                            }
+                                            } // ** TREG5
                                         }
                                     }
                                 }
-
+                                // **TREG2
                                 if (N == 0)
                                 {
                                     sortie = true;
@@ -1499,7 +1499,7 @@ namespace ARProbaProcessing
                                             TREG[I] = Convert.ToByte(contextPanel.TRegTest - 1);
                                         }
                                     }
-                                }
+                                }// ** TREG3
                             }
                         }
                         for (int IC = 1; IC <= NBCEL; IC++)

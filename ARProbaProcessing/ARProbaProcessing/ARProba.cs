@@ -66,7 +66,7 @@ namespace ARProbaProcessing
                 //FilterNatToCadre(@"D:\Work\AR\Probabilisation\FR\Panel Cadre\Panfra", "13");
                 //return;
                 int year = fAffinage.GetYear();
-                Console.WriteLine(2019.ToString("0000") + " ==>");
+                Console.WriteLine(year.ToString("0000") + " ==>");
                 string panelName = fAffinage.GetDirName(); // "Panel_Cadre";
                 Enquete enquete = fAffinage.GetEnquete();
 
@@ -75,7 +75,8 @@ namespace ARProbaProcessing
 
                 // PANEL IDF
                 //var process = new ARProba(@"C:\Affinage\Panel_Idf\Panfra", "20", "");
-                //            process.Run();
+                //process.Run();
+                //return;
 
                 string inputDir = @"c:\Affinage\" + panelName + @"\Panfra" + (year % 100).ToString("00") + @"\Input";
                 string outputDir = @"c:\Affinage\" + panelName + @"\Panfra" + (year % 100).ToString("00") + @"\OutputC";

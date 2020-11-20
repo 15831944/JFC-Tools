@@ -173,7 +173,7 @@ namespace ARProbaProcessing
                 argTypes.Add(typeof(String));
             }
             var methodName = words[0];
-
+            var xx = variableHandlers.GetType().GetMethods();
             variableHandlers.GetType().GetMethod(methodName, argTypes.ToArray()).Invoke(variableHandlers, args.ToArray());
         }
 
@@ -201,7 +201,7 @@ namespace ARProbaProcessing
                 int len = aRProba.SignVars["LV01"].Position - 1;
                 line.Append(len);
             }
-
+                        
             public void SIGN_LINE_LEN_AFTER_HAB(StringBuilder line)
             {
                 int len = aRProba.SigLineLen;
@@ -211,10 +211,23 @@ namespace ARProbaProcessing
 
                 line.Append(len);
             }
+            public void SIGN_LINE_LEN_AFTER_HAB_WITH_PAD(StringBuilder line)
+            {
+                int len = aRProba.SigLineLen;
 
+                var var = aRProba.SignVars[string.Format("DI{0:00}", aRProba.AllHabStationCount + aRProba.HabAndNotoTotalStationListCount)];
+                len = len - (var.Position + var.Repetition) + 1;
+
+                line.Append(len);
+            }
             public void SIGJFC_BDE(StringBuilder line)
             {
                 line.Append(aRProba.FullSigFileShortName);
+            }
+
+            public void NB_STA_ALL_HAB_WITH_TOTAL(StringBuilder line)
+            {
+                line.Append(aRProba.AllHabStationCount + aRProba.HabAndNotoTotalStationListCount);
             }
 
             public void OUTPUT(StringBuilder line)
@@ -308,7 +321,6 @@ namespace ARProbaProcessing
                     }
                 }
             }
-
 
             public void NB_STA_HAB(StringBuilder line)
             {
@@ -421,12 +433,26 @@ namespace ARProbaProcessing
 
             private int GetTotalRadioIndex()
             {
-                var req = from sta in aRProba.HabAndNotoTotalStationList
-                          where sta.Name.Equals("total radio", StringComparison.CurrentCultureIgnoreCase)
-                          select sta;
+                if (aRProba.HabAndNotoTotalStationList.Count() == 0)
+                {
+                    var list = (from sta in aRProba.StationList
+                                where sta.Mode != ARProbaProcessing.ARProba.Station.eSignVariable.None
+                                   && (sta.Name.Equals("total TV", StringComparison.CurrentCultureIgnoreCase)
+                                       || sta.Name.Equals("total radio", StringComparison.CurrentCultureIgnoreCase)
+                                       )
+                                select sta).ToArray();
+                    return list.First().Index;
+                }
+                else
+                {
+                    var req = from sta in aRProba.HabAndNotoTotalStationList
+                              where sta.Name.Equals("total radio", StringComparison.CurrentCultureIgnoreCase)
+                              select sta;
 
-                return req.First().Index;
+                    return req.First().Index;
+                }
             }
+
 
             public void TOTAL_RADIO_INDEX(StringBuilder line)
             {
@@ -491,6 +517,28 @@ namespace ARProbaProcessing
 
                 }
 
+            }
+            public void CRENONIN_NOTO_FILTER(StringBuilder line, string varName)
+            {
+                bool first = true;
+                int count = 0;
+                foreach (var station in aRProba.HabAndNotoStationList)
+                {
+                    count++;
+                    if (station.Mode == ARProba.Station.eSignVariable.Notoriety)
+                    {
+                        if (first)
+                        {
+                            first = false;
+                        }
+                        else
+                        {
+                            line.AppendLine();
+                            line.Append("     -.AND.");
+                        }
+                        line.Append(string.Format("({0}.NE.{1})", varName, count));
+                    }
+                }
             }
 
             public void CRENONIN_NOTO_HANDLING(StringBuilder line)
