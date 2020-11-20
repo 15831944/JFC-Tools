@@ -975,8 +975,7 @@ namespace ARProbaProcessing
                 var list = (from sta in arProba.StationList
                             where sta.Mode != ARProbaProcessing.ARProba.Station.eSignVariable.None
                                && (sta.Name.Equals("total TV", StringComparison.CurrentCultureIgnoreCase)
-                                   || sta.Name.Equals("total radio", StringComparison.CurrentCultureIgnoreCase)
-                                   )
+                                || sta.Name.Equals("total radio", StringComparison.CurrentCultureIgnoreCase))
                             select sta).ToArray();
                 return list.First().Index;
             }

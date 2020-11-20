@@ -223,7 +223,7 @@ namespace ARProbaProcessing
             get
             {
                 var req = from sta in StationList
-                          where (sta.Mode == Station.eSignVariable.Habit && sta.Comment != "Non disponible")
+                          where (sta.Mode == Station.eSignVariable.Habit) // && sta.Comment != "Non disponible")
                           select sta;
                 return req.Count() + hiddenHabStationCount;
             }
@@ -1353,12 +1353,9 @@ namespace ARProbaProcessing
 
             if (enquete == Enquete.PanelIleDeFrance)
             {
-                hiddenHabStationCount += HabAndNotoTotalStationList.Count();
+                //hiddenHabStationCount += HabAndNotoTotalStationList.Count();
                 HabAndNotoTotalStationList = new Station[0];
             }
-
-            hiddenHabStationCount += HabAndNotoTotalStationList.Count();
-            HabAndNotoTotalStationList = new Station[0];
 
             SignVariable trlv = null;
             SignVariable trsa = null;
@@ -1366,7 +1363,7 @@ namespace ARProbaProcessing
 
             bool beforeDone = false;
 
-            foreach (var var in vars)
+            foreach (KeyValuePair<string, SignVariable> var in vars)
             {
                 string varName = var.Key;
                 if (varName.StartsWith("LV") || varName.StartsWith("SA") || varName.StartsWith("DI"))
