@@ -1882,6 +1882,10 @@ namespace ARProbaProcessing
                 // BOUCLE 1 / 4h
                 for (int IQ = 1; IQ <= 96; IQ++)
                 {
+                    if (IQ==24)
+                    {
+
+                    }
                     sbSortie.AppendLine($"IQ = {IQ}");
                     Console.WriteLine($"--------STATION {NOP} --------1/4h {IQ} ");
                     for (int I = 1; I <= contextPanel.NbSeg; I++)
@@ -2415,7 +2419,7 @@ namespace ARProbaProcessing
                     // BOUCLE 1 / 4h
                     for (int IQ = 1; IQ <= 96; IQ++)
                     {
-                        if (IQ==29)
+                        if (IQ==24)
                         {
 
                         }
@@ -2461,7 +2465,7 @@ namespace ARProbaProcessing
                 // BOUCLE 1 / 4h
                 for (int IQ = 1; IQ <= 96; IQ++)
                 {
-                    if (IQ == 29)
+                    if (IQ == 24)
                     {
 
                     }
@@ -4089,7 +4093,7 @@ namespace ARProbaProcessing
                                 DELTZ2 = DELTZ1;
                                 DELTZ1 = DELTZ0;
                                 DELTZ0 = DELTZ;
-                                if (DZ <= 0.0001)
+                                if (DZ <= 0.0001d)
                                 {
                                     sortie = true;
                                     break; // GO TO 260
@@ -4099,46 +4103,51 @@ namespace ARProbaProcessing
                                     Z -= DZ;
                                     continue; // GOTO 10
                                 }
-                                if (DZ <= 0.0001)
+                                if (DZ <= 0.0001d)
                                 {
-                                    sortie = true;
-                                    break; // GO TO 260
+                                    ZR = RES[1];
+                                    UR = RES[2];
+                                    PR = RES[3];
+                                    TAU = RES[4];
+                                    return;
                                 }
                                 Z2 = Z;
                                 Z += DZ * 2;
-                                DZ /= 10f;
-                                //}
-                                //else
-                                //{
-                                //    sortie = true;
-                                //    break;
-                                //}
+                                DZ /= 10d;
                             }
                             else
                             {
                                 // LA DISTANCE A AUGMENTE
                                 if (ITZ > 2)
                                 {
-                                    if (DZ <= 0.0001)
+                                    if (DZ <= 0.0001d)
                                     {
-                                        sortie = true; // GOTO 260 end
-                                        break;
+                                        ZR = RES[1];
+                                        UR = RES[2];
+                                        PR = RES[3];
+                                        TAU = RES[4];
+                                        return;
                                     }
                                     Z2 = Z;
-                                    Z += 2f * DZ;
-                                    DZ /= 10f;
+                                    Z += 2d * DZ;
+                                    DZ /= 10d;
                                     DELTZ0 = DELTZ2;
+                                    sortie = true;
                                     break; // GOTO 5
                                 }
-                                if (DZ <= 0.0001)
+                                if (DZ <= 0.0001d)
                                 {
-                                    sortie = true; // GOTO 260 end
-                                    break;
+                                    ZR = RES[1];
+                                    UR = RES[2];
+                                    PR = RES[3];
+                                    TAU = RES[4];
+                                    return;
                                 }
                                 Z2 = Z;
                                 Z = Z1;
-                                DZ /= 10f;
+                                DZ /= 10d;
                                 DELTZ0 = DELTZ1;
+                                sortie = true;
                                 break; // GOTO 5
                             }
                         } // for (; ; )  du 10
@@ -4146,17 +4155,13 @@ namespace ARProbaProcessing
                     }// if (Z >= ZR)
                     else
                     {
-                        sortie = true;
-                        break;
+                        ZR = RES[1];
+                        UR = RES[2];
+                        PR = RES[3];
+                        TAU = RES[4];
+                        return;
                     }
-
                 } // for (; ; )  du 5
-                //}
-                ZR = RES[1];
-                UR = RES[2];
-                PR = RES[3];
-                TAU = RES[4];
-                return;
             } // if (V0 > 0.00005)
 
             ZR = ZA;
