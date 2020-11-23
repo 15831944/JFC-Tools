@@ -271,7 +271,6 @@ namespace ARProbaProcessing
 
                                                     R++;
                                                 }
-
                                                 if (R > NICEL) break;
                                                 // RECHERCHE PROCHAIN SAUT
 
@@ -780,8 +779,8 @@ namespace ARProbaProcessing
             for (int I = 1; I <= N; I++)
                 Console.WriteLine(IPOPS[I].ToString());
 
-            if (File.Exists(pathAS5H5H + "c")) File.Delete(pathAS5H5H + "c");
-            StreamWriter swPenetr = new StreamWriter(File.Create(pathAS5H5H + "c"));
+            if (File.Exists(pathAS5H5H )) File.Delete(pathAS5H5H );
+            StreamWriter swPenetr = new StreamWriter(File.Create(pathAS5H5H ));
             //if (File.Exists(pathAS5H5H)) File.Delete(pathAS5H5H);
             //StreamWriter swPenetr = new StreamWriter(File.Create(pathAS5H5H));
             // Header

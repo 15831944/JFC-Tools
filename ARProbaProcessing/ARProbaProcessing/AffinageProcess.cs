@@ -2415,6 +2415,10 @@ namespace ARProbaProcessing
                     // BOUCLE 1 / 4h
                     for (int IQ = 1; IQ <= 96; IQ++)
                     {
+                        if (IQ==29)
+                        {
+
+                        }
                         int IH = fushab09Indiv.KHSA[ITH[IQ], NOSH] - 48;
                         if (IH == 0) IH = 5;
                         int NJOU = 0;
@@ -2457,6 +2461,10 @@ namespace ARProbaProcessing
                 // BOUCLE 1 / 4h
                 for (int IQ = 1; IQ <= 96; IQ++)
                 {
+                    if (IQ == 29)
+                    {
+
+                    }
                     sbSortie.AppendLine($"IQ = {IQ}");
                     Console.WriteLine($"--------STATION {NOP} --------1/4h {IQ} ");
                     for (int I = 1; I <= contextPanel.NbSeg; I++)
@@ -2482,7 +2490,7 @@ namespace ARProbaProcessing
                                 ||
                                (!((NIV == 2 && contextPanel.SEG1[N1] == contextPanel.SEG1[N1 - 1]) ||
                                   (NIV == 3 && contextPanel.SEG2[contextPanel.SEG1[N1]] == contextPanel.SEG2[contextPanel.SEG1[N1 - 1]]) ||
-                                  (contextPanel.Enquete != Enquete.PanelIleDeFrance && NIV == 4 && contextPanel.SEG3[contextPanel.SEG2[contextPanel.SEG1[N1]]] == contextPanel.SEG3[contextPanel.SEG2[contextPanel.SEG1[N1 - 1]]]) ||
+                                  (contextPanel.Enquete != Enquete.PanelIleDeFrance && (NIV == 4) && contextPanel.SEG3[contextPanel.SEG2[contextPanel.SEG1[N1]]] == contextPanel.SEG3[contextPanel.SEG2[contextPanel.SEG1[N1 - 1]]]) ||
                                   (NIV == contextPanel.TRegTest))))
                             {
 
@@ -4160,15 +4168,15 @@ namespace ARProbaProcessing
         private void MINITAU(double[] ZC, double[] X, double ZA, float NB, double U0, double Q, double Z, double U, double P, double V, out double DELTT, ref double DELTA00)
         {
             double[] Y = new double[15 + 1];
-            float T, T1, T2, DT;
+            double T, T1, T2, DT;
             double DMOINS1 = 0, DMOINS2 = 0, DELTA0;
 
             // INCREMENTS INITIAUX
             DELTT = 0;
             DELTA0 = DELTA00;
-            DT = 0.1f;
-            T1 = 0f;
-            T2 = 2f;
+            DT = 0.1d;
+            T1 = 0d;
+            T2 = 2d;
 
             // VARIATION DE LA DISPERSION
             int ITE = 0;
@@ -4179,7 +4187,7 @@ namespace ARProbaProcessing
                 // EVALUATION DE LA DISTANCE
                 for (int N = 2; N <= NB; N++)
                 {
-                    float A = (N - 1) * T;
+                    double A = (N - 1) * T;
                     X[N] = X[N - 1] * (Q + A) / (1 + A);
                 }
                 for (int K = 1; K <= NB; K++)
@@ -4189,11 +4197,11 @@ namespace ARProbaProcessing
                 double DELTA = 0d;
                 for (int K = 1; K <= NB; K++)
                 {
-                    DELTA = DELTA + K * (float)Math.Pow(ZC[K] * 0.01f - Y[K], 2);
+                    DELTA = DELTA + K * (float)Math.Pow(ZC[K] * 0.01d - Y[K], 2);
                 }
-                DELTA = DELTA + 0.1f * (float)Math.Pow(ZA - Z, 2) / ZA;
+                DELTA = DELTA + 0.1d * (float)Math.Pow(ZA - Z, 2) / ZA;
 
-                if (U0 > 0) DELTA = DELTA + 0.1f * (float)Math.Pow(U0 - U, 2) / U0;
+                if (U0 > 0) DELTA = DELTA + 0.1d * (float)Math.Pow(U0 - U, 2) / U0;
 
                 if (DELTA <= DELTA0)
                 {
@@ -4217,25 +4225,25 @@ namespace ARProbaProcessing
                         continue;
                     }
 
-                    if (DT != 0.1) break;
+                    if (DT != 0.1d) break;
                 }
                 else
                 {
                     // LA DISTANCE A AUGMENTE
-                    if (ITE > 2 && DT > 0.0001)
+                    if (ITE > 2 && DT > 0.0001d)
                     {
                         DELTA0 = DMOINS2;
-                        T1 = T - 2f * DT;
+                        T1 = T - 2d * DT;
                         T2 = T;
-                        DT = DT / 10f;
+                        DT = DT / 10d;
                         ITE = 0;
                         T = T1;
                         continue;
                     }
-                    if (ITE <= 2 && DT > 0.0001)
+                    if (ITE <= 2 && DT > 0.0001d)
                     {
                         T2 = T;
-                        DT = DT / 10f;
+                        DT = DT / 10d;
                         ITE = 0;
                         T = T1;
                         continue;
@@ -4245,14 +4253,16 @@ namespace ARProbaProcessing
                     break;
                 }
 
-                T2 = T2 * 2f;
-                T1 = T1 * 2f;
+                T2 = T2 * 2d;
+                T1 = T1 * 2d;
 
-                if (T2 < 16)
+                if (T2 < 16d)
                 {
                     ITE = 0;
                     T = T1;
                 }
+                else
+                    break;
             }
             //    Console.WriteLine($" U= {U}  Z= {Z}  T= {T}  P= {P} ");
         }
@@ -4278,7 +4288,7 @@ namespace ARProbaProcessing
             U = UA;
             U2 = 1d - Z;
             U = U1;
-            if (U0 == 0) U = 0f;
+            if (U0 == 0) U = 0d;
 
             int ITU = 0;
             for (; ; )
@@ -4289,7 +4299,7 @@ namespace ARProbaProcessing
                 {
                     P = (GRP - U) / V;
                     ITU++;
-                    Q = 1f - P;
+                    Q = 1d - P;
                     X[1] = Q;
 
                     MINITAU(ZC, X, ZA, NB, U0, Q, Z, U, P, V, out DELTU, ref DELTA00);
@@ -4304,33 +4314,33 @@ namespace ARProbaProcessing
                         DELTU2 = DELTU1;
                         DELTU1 = DELTU0;
                         DELTU0 = DELTU;
-                        if (U < U2 && U < (1f - Z))
+                        if (U < U2 && U < (1d - Z))
                         {
                             U = U + DU;
-                            if (U >= (1f - Z))
+                            if (U >= (1d - Z))
                             {
                                 DU = U - 1d - Z;
-                                U = 1f - Z - 0.00001f;
+                                U = 1d - Z - 0.00001d;
                             }
                             continue;
                         }
-                        if (DU <= 0.00001)
+                        if (DU <= 0.00001d)
                         {
                             DELTZ = DELTU0;
                             return;
                         }
                         U2 = U;
-                        if (U2 > (1f - Z)) U2 = 1f - Z;
+                        if (U2 > (1d - Z)) U2 = 1d - Z;
                         U1 = U - DU;
                         if (U1 < 0) U1 = 0;
                         U = U1;
-                        DU = DU / 10f;
+                        DU = DU / 10d;
                         continue;
                     }
                     else
                     {
                         // LA DISTANCE A AUGMENTE
-                        if (DU <= 0.00001)
+                        if (DU <= 0.00001d)
                         {
                             DELTZ = DELTU0;
                             return;
@@ -4339,13 +4349,13 @@ namespace ARProbaProcessing
                         if (ITU < 2)
                         {
                             U1 = U - DU;
-                            if (U >= (1f - Z)) DU = U - 1 - Z;
-                            if (U >= (1f - Z)) U = 1f - Z - 0.00001f;
+                            if (U >= (1d - Z)) DU = U - 1d - Z;
+                            if (U >= (1d - Z)) U = 1d - Z - 0.00001d;
                         }
                         if (U1 < 0) U1 = 0;
                         U2 = U;
                         U = U1;
-                        DU = DU / 10f;
+                        DU = DU / 10d;
 
                         if (ITU > 2) DELTU0 = DELTU2;
                         if (ITU <= 2) DELTU0 = DELTU1;
@@ -4353,9 +4363,9 @@ namespace ARProbaProcessing
                         continue;
                     }
                 } // if (V > 0)
-                if (DU > 0.00001f)
+                if (DU > 0.00001d)
                 {
-                    DU = DU / 10f;
+                    DU = DU / 10d;
                     U = U1;
                     ITU = 0;
                     continue;

@@ -224,6 +224,11 @@ namespace ARProbaProcessing
             {
                 line.Append(aRProba.FullSigFileShortName);
             }
+            public void U1XX_COL(StringBuilder line, string colName)
+            {
+                int pos = aRProba.U1xxModalityVars[colName];
+                line.Append(pos);
+            }
 
             public void NB_STA_ALL_HAB_WITH_TOTAL(StringBuilder line)
             {
