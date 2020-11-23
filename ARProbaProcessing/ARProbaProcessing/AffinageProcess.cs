@@ -26,8 +26,6 @@ namespace ARProbaProcessing
 
         public void Run(ARProba arProba, Enquete enquete, string inputPath, string OutputPath)
         {
-
-
             #region BeginProcess
             bool ModeDebug = false;
 
@@ -4045,7 +4043,7 @@ namespace ARProbaProcessing
         // suivant la beta binomiale
         private void MINIMISE(double GRP, double[] ZC, ref double PR, ref double UR, ref double ZR, out double TAU, double ZA, double UA, float NB, bool qhps = false)
         {
-            double DZ, DZ0, DT0, DU, Z, Z1, Z2, DELTA0, DELTZ0, DELTZ1, DELTZ2, DELTA00, DELTZ = 0d;
+            double DZ, DZ0, DT0, Z, Z1, Z2, DELTA0, DELTZ0, DELTZ1, DELTZ2, DELTA00, DELTZ = 0d;
             RES = new double[5] { 0, ZA, UA, 0d, 0d };
             double V0 = 1d - ZA - UR;
             if (V0 > 0.00005)
@@ -4060,7 +4058,7 @@ namespace ARProbaProcessing
                 DELTZ0 = DELTA0;
                 DELTZ1 = DELTA0;
                 DELTZ2 = DELTA0;
-                DZ0 = DT0 = DZ = DU = 0.1d;
+                DZ0 = DT0 = DZ = 0.1d;
 
                 Z = ZA + (1f - ZA) / 2;
                 //if (!qhps || Z >= ZR)  // NE PAS VIRER => petite variation remettre quand sav1qhpa marchera
@@ -4070,9 +4068,10 @@ namespace ARProbaProcessing
                 Z2 = ZR;
                 double U0 = UR;
                 //5 
-                bool sortie = false;
+                
                 for (; ; )
                 {
+                    bool sortie = false;
                     float ITZ = 1;
                     if (Z >= ZR)
                     {
@@ -4086,18 +4085,24 @@ namespace ARProbaProcessing
 
                             if (DELTZ <= DELTZ0)
                             {
-                                //if (!qhps || (DELTZ != DELTZ0 || DELTZ0 != DELTZ1 || DELTZ1 != DELTZ2))
-                                //{ // NE PAS VIRER => petite variation remettre quand sav1qhpa marchera
+                                if (qhps && (DELTZ == DELTZ0 && DELTZ0 == DELTZ1 && DELTZ1 == DELTZ2))
+                                {
+                                    ZR = RES[1];
+                                    UR = RES[2];
+                                    PR = RES[3];
+                                    TAU = RES[4];
+                                    return;
+                                }
 
                                 // LA DISTANCE A DIMINUE
                                 DELTZ2 = DELTZ1;
                                 DELTZ1 = DELTZ0;
                                 DELTZ0 = DELTZ;
-                                if (DZ <= 0.0001d)
-                                {
-                                    sortie = true;
-                                    break; // GO TO 260
-                                }
+                                //if (DZ <= 0.0001d)
+                                //{
+                                //    sortie = true;
+                                //    break; // GO TO 260
+                                //}
                                 if (Z > Z2)
                                 {
                                     Z -= DZ;
@@ -4151,7 +4156,7 @@ namespace ARProbaProcessing
                                 break; // GOTO 5
                             }
                         } // for (; ; )  du 10
-                        if (sortie) break; // ==> goto 5
+                        //if (sortie) break; // ==> goto 5
                     }// if (Z >= ZR)
                     else
                     {
