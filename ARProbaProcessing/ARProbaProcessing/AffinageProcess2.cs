@@ -62,11 +62,14 @@ namespace ARProbaProcessing
                 int IPERS = KHI2[IG, 1];
                 IPERS *= 10;
                 POIDS[IG] = IPERS;
+                sbSortie.AppendLine($" IG={IG} POIDS(IG)={POIDS[IG]}");
             }
 
             FileStream writeStream = new FileStream(pathPANECR, FileMode.Create);
             BinaryWriter writeBinary = new BinaryWriter(writeStream);
 
+            int NbWriteProba = 0;
+            
             // BOUCLE STATIONS
             for (int NOP = 1; NOP <= NBSTA; NOP++)
             {
@@ -264,6 +267,13 @@ namespace ARProbaProcessing
                                                 {
                                                     H = RANK[R];
                                                     PROBAS[NOP, IU, IQ, H] = PR;
+
+                                                    if (NbWriteProba < 100 && PR != 0)
+                                                    {
+                                                        sbSortie.AppendLine($" R={R} RP={RP} PR={PR} NOP={NOP} IU={IU} IQ={IQ} H={H} PROBA = {PROBAS[NOP, IU, IQ, H]}");
+                                                        NbWriteProba++;
+                                                    }
+
                                                     if (PR > 0)
                                                     {
                                                         NG = PR * POIDS[H];
@@ -338,6 +348,10 @@ namespace ARProbaProcessing
                                             NPERR++;
                                             PROBAS[NOP, IU, IQ, H] = 0;
                                         }
+
+                                        if (NOP == 1)
+                                            sbSortie.AppendLine(IQ.ToString() + $" OBJECTIF H={H} POIDS(H)={POIDS[H]}   PROBAS[NOP, IU, IQ, H] ={PROBAS[NOP, IU, IQ, H]}");
+
                                     }
 
                                     GRP = GRP / Convert.ToSingle(IPPS[IN]) / 100f;
@@ -369,7 +383,6 @@ namespace ARProbaProcessing
 
             return PROBAS;
         }
-
         private BSupport transp08(ContextPanel contextPanel, int NIND, int NBSTA, int NBSTAIDF, int[] ISTA, int[,] POIDSEGS, List<int> FILT, List<int> POIDS, byte[,,,] KHI2,
             string pathSortie, string pathYearNat, string pathYearIdf, string pathYearSup)
         {
