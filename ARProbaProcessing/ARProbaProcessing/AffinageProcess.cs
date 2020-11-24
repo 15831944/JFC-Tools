@@ -1856,18 +1856,19 @@ namespace ARProbaProcessing
                         int IJK = 1;
                         for (int I = 3; I <= 21; I++)
                         {
-                            if (I == 8 || I == 9 || I == 15 || I == 16) continue;
-
-                            ushort[] bits = new ushort[7];
-                            for (int b = 1; b <= 6; b++)
-                                bits[b] = JN[I][IG].VSor[b, NOP];
-
-                            if (L1BITFCT(bits, IQ))
+                            if (I != 8 && I != 9 && I != 15 && I != 16)
                             {
-                                PATRON[IQ, IJK, IG] = 1;
-                                NJOU = NJOU + 1;
+                                ushort[] bits = new ushort[7];
+                                for (int b = 1; b <= 6; b++)
+                                    bits[b] = JN[I][IG].VSor[b, NOP];
+
+                                if (L1BITFCT(bits, IQ))
+                                {
+                                    PATRON[IQ, IJK, IG] = 1;
+                                    NJOU = NJOU + 1;
+                                }
+                                IJK = IJK + 1;
                             }
-                            IJK = IJK + 1;
                         }
                         if (NJOU == 0) JATOU[IQ, 1, IG] = 1;
                         if (NJOU == 0 && IH == 5) JATOU[IQ, 2, IG] = 1;
@@ -1912,7 +1913,7 @@ namespace ARProbaProcessing
                                   (contextPanel.Enquete != Enquete.PanelIleDeFrance && NIV == 4 && contextPanel.SEG3[contextPanel.SEG2[contextPanel.SEG1[N1]]] == contextPanel.SEG3[contextPanel.SEG2[contextPanel.SEG1[N1 - 1]]]) ||
                                   (NIV == contextPanel.TRegTest))))
                             {
-                                for (int I = 1; I <= contextPanel.NbSeg; I++)   // 16 or contextPanel.NbSeg ????? bug IDF fortran ?
+                                for (int I = 1; I <= 16; I++)   // 16 or contextPanel.NbSeg ?????
                                 {
                                     for (int J = 1; J <= contextPanel.TRegTest; J++)
                                     {
@@ -1940,7 +1941,7 @@ namespace ARProbaProcessing
                                 for (IG = 1; IG <= NBIND; IG++)
                                 {
                                     int IPERS = KHI2[IG, 1];
-                                    bool KHI2_IG_NIV_EQ_NB_NIV = (NIV == contextPanel.TRegTest && NB[NIV] == 1) || (KHI2[IG, NIV + 1] == NB[NIV]);
+                                    bool KHI2_IG_NIV_EQ_NB_NIV = (NIV == 4 && NB[NIV] == 1) || (KHI2[IG, NIV + 1] == NB[NIV]);
                                     IPERS = IPERS * 10;
                                     if (KHI2_IG_NIV_EQ_NB_NIV)
                                     {
@@ -1949,7 +1950,7 @@ namespace ARProbaProcessing
                                     }
                                     int IAUD = 0;
                                     int NJOU = 0;
-                                    for (int I = 1; I <= 4; I++)
+                                    for (int I = 1; I <= 15; I++)
                                     {
                                         COMB[I] = PATRON[IQ, I, IG];
                                         if (COMB[I] == 1)
@@ -2235,15 +2236,15 @@ namespace ARProbaProcessing
                                 double DIRAC1 = ITTP[IN] / POPS;
                                 double PC1 = IZAP[IN] / POPS;
                                 int IPOP = 0;
-                                for (int I = 2; I <= 5; I++)
+                                for (int I = 2; I <= 16; I++)
                                 {
                                     IPOP = IPOP + COMPT[I, IN] * (I - 1);
                                 }
 
-                                for (int I = 2; I <= 5; I++)
+                                for (int I = 2; I <= 15; I++)
                                 {
-                                    if (I != contextPanel.NbSeg) SEGM[I + 1, IN] += SEGM[I, IN];
-                                    if (I != contextPanel.NbSeg) COMPT[I + 1, IN] += COMPT[I, IN];
+                                    SEGM[I + 1, IN] += SEGM[I, IN];
+                                    COMPT[I + 1, IN] += COMPT[I, IN];
                                 }
 
                                 double GRP = IPOP * 100d;
@@ -3451,10 +3452,6 @@ namespace ARProbaProcessing
                     {
                         for (int L = 1; L <= 96; L++)
                         {
-                            if (IPOP[I, J]==0)
-                            {
-
-                            }
                             COUV[I, J, K, L] = COUV[I, J, K, L] / 12f / Convert.ToSingle(IPOP[I, J]);
                         }
                     }
@@ -3475,7 +3472,6 @@ namespace ARProbaProcessing
                             for (int I = 1; I <= 11; I++)
                                 writer.Write(COUV[I, J, K, L]);
                         }
-
                     }
                 }
             }
@@ -3726,9 +3722,6 @@ namespace ARProbaProcessing
                         // BOUCLE CELLULES
                         for (int N1 = 1; N1 <= contextPanel.NbSeg; N1++)
                         {
-                            int N2 = contextPanel.SEG1[N1];
-                            int N3 = contextPanel.SEG2[N2];
-                            int N4 = (contextPanel.Enquete != Enquete.PanelIleDeFrance) ? contextPanel.SEG3[N3] : 0;
                             int IN = TREG[N1] + 1;
                             if (((N1 == 1) || (IN == 1))
                                 ||

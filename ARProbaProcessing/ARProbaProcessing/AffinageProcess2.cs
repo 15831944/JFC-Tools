@@ -189,6 +189,7 @@ namespace ARProbaProcessing
                                         for (int I = 1; I <= NICEL; I++)
                                         {
                                             H = RANK[I];
+                                            PROBAS[NOP, IU, IQ, H] = 0;
                                         }
                                         GRP = 0;
                                         NPERR = 0;
