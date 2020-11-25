@@ -79,7 +79,7 @@ namespace ARProbaProcessing
                 //return;
 
                 string inputDir = @"c:\Affinage\" + panelName + @"\Panfra" + (year % 100).ToString("00") + @"\Input";
-                string outputDir = @"c:\Affinage\" + panelName + @"\Panfra" + (year % 100).ToString("00") + @"\OutputC";
+                string outputDir = @"c:\Affinage\" + panelName + @"\Panfra" + (year % 100).ToString("00") + @"\Output";
 
                 if (!Directory.Exists(outputDir)) Directory.CreateDirectory(outputDir);
 
@@ -1590,8 +1590,8 @@ namespace ARProbaProcessing
             bool ModeDebug = false;
 
             // Create Output JFC folder if it does not exist
-            if (!Directory.Exists(OutputPath + "jfc"))
-                Directory.CreateDirectory(OutputPath + "jfc");
+            if (!Directory.Exists(OutputPath))
+                Directory.CreateDirectory(OutputPath);
 
             //// Generate the F04 files
             // mettre en commentaire en mode Debug 

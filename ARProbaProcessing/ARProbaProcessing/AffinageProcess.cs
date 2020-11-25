@@ -276,7 +276,7 @@ namespace ARProbaProcessing
             #region entrées Transp08
             int NB_STA_IDF = arProba.HabAndNotoStationList.Count(x => x.IsIdf);
             string pathTransp08 = Path.Combine(OutputPath, "2020.SUP");
-            string pathYearNat = Path.Combine(OutputPath, "PANRA1" + (year % 100).ToString("00") + ".NAT");
+            string pathYearNat = Path.Combine(OutputPath, "PANRA1" + (year % 100).ToString("00") + (enquete == Enquete.PanelIleDeFrance ? ".SUP" : ".NAT"));
             string pathYearIdf = Path.Combine(OutputPath, "PANRA1" + (year % 100).ToString("00") + ".IDF");
             string pathYearSup = Path.Combine(OutputPath, "PANRA1" + (year % 100).ToString("00") + ".SUP");
             int[] STA_IDF_LIST_NO_SUDRAD_MASK = GET_STA_IDF_LIST_NO_SUDRAD_MASK(arProba);
