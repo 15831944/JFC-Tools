@@ -516,7 +516,7 @@ namespace ARProbaProcessing
             return BSUP;
         }
 
-        private int[,] crecib08(int NIND, List<Fushab09Indiv> fushab09Indivs, int COL_AGE, int COL_MENA, string pathPan20Cib)
+        private int[,] crecib08(ContextPanel contextPanel, int NIND, List<Fushab09Indiv> fushab09Indivs,string pathPan20Cib)
         {
             // PANEL RADIO 08 MEDIAMETRIE
             // CREATION DE VECTEURS DE CIBLES DE CONTROLE ASYMPTOTES
@@ -544,8 +544,8 @@ namespace ARProbaProcessing
                 KECR[3, IND] = 0;
 
                 // Construction de la cible des Ménagères moins de 50 ans
-                int AGE = 10 * (fushab09Indiv.AVANT[COL_AGE] - 48) + (fushab09Indiv.AVANT[COL_AGE + 1] - 48);
-                if (((fushab09Indiv.AVANT[COL_MENA] - 48) == 1) && (AGE <= 7))
+                int AGE = 10 * (fushab09Indiv.AVANT[contextPanel.COL_TAB_AGE11] - 48) + (fushab09Indiv.AVANT[contextPanel.COL_TAB_AGE11 + 1] - 48);
+                if (((fushab09Indiv.AVANT[contextPanel.COL_TAB_MENA] - 48) == 1) && (AGE <= 7))
                 {
                     KECR[2, IND] = 1;
                     CPT2 = CPT2 + 1;
@@ -578,7 +578,7 @@ namespace ARProbaProcessing
             return KECR;
         }
 
-        private int[,] crecib08_Idf(int NIND, List<Fushab09Indiv> fushab09Indivs, int COL_SEX, int COL_AGE, string pathPan20Cib)
+        private int[,] crecib08_Idf(ContextPanel contextpanel, int NIND, List<Fushab09Indiv> fushab09Indivs, string pathPan20Cib)
         {
             // PANEL RADIO 08 MEDIAMETRIE
             // CREATION DE VECTEURS DE CIBLES DE CONTROLE ASYMPTOTES
@@ -608,13 +608,13 @@ namespace ARProbaProcessing
                 KECR[4, IND] = 0;
 
                 // Construction de la cible "Hommes"
-                if ((fushab09Indiv.AVANT[COL_SEX] - 48) == 1) KECR[2, IND] = 1;
-                if ((fushab09Indiv.AVANT[COL_SEX] - 48) == 1) CPT2 = CPT2 + 1;
+                if ((fushab09Indiv.AVANT[contextpanel.COL_TAB_SEX] - 48) == 1) KECR[2, IND] = 1;
+                if ((fushab09Indiv.AVANT[contextpanel.COL_TAB_SEX] - 48) == 1) CPT2 = CPT2 + 1;
                 // Construction de la cible "Femmes"
-                if ((fushab09Indiv.AVANT[COL_SEX] - 48) == 2) KECR[3, IND] = 1;
-                if ((fushab09Indiv.AVANT[COL_SEX] - 48) == 2) CPT3 = CPT3 + 1;
+                if ((fushab09Indiv.AVANT[contextpanel.COL_TAB_SEX] - 48) == 2) KECR[3, IND] = 1;
+                if ((fushab09Indiv.AVANT[contextpanel.COL_TAB_SEX] - 48) == 2) CPT3 = CPT3 + 1;
                 // Construction de la cible des 13 - 34 ans
-                int AGE = 10 * (fushab09Indiv.AVANT[COL_AGE] - 48) + (fushab09Indiv.AVANT[COL_AGE+1] - 48);
+                int AGE = 10 * (fushab09Indiv.AVANT[contextpanel.COL_TAB_AGE11] - 48) + (fushab09Indiv.AVANT[contextpanel.COL_TAB_AGE11 + 1] - 48);
                 if (AGE <= 4) KECR[4, IND] = 1;
             }
 
@@ -1104,8 +1104,20 @@ namespace ARProbaProcessing
             return res;
         }
 
-        private void GetIndiceUXXX(string pathUxxxDesc, Enquete enquete, out int IND_CSP, out int IND_AGE, out int IND_SEX, out int IND_REG)
+        private void GetIndiceUXXX(string pathUxxxDesc, Enquete enquete, out int IND_CSP, out int IND_AGE, out int IND_SEX, out int IND_REG,
+            out List<int> age35a59, out List<int> age60Plus,
+            out List<int> age20a24, out List<int> age25a34, out List<int> age35a49, out List<int> age50a64, out List<int> age65Plus)
         {
+            age35a59 = new List<int>();
+            age60Plus = new List<int>();
+
+            age20a24 = new List<int>();
+            age25a34 = new List<int>();
+            age35a49 = new List<int>();
+            age50a64 = new List<int>();
+            age65Plus = new List<int>();
+
+            bool ageSearch = false;
             // Pour pannat 2020
             IND_CSP = -1;
             IND_AGE = -1;
@@ -1128,14 +1140,63 @@ namespace ARProbaProcessing
                          (enquete == Enquete.PanelIleDeFrance && s.Contains("Age") && s.Contains("13 cl.")))
                 {
                     IND_AGE = int.Parse(s.Substring(0, s.IndexOf(':'))) + 2;
+                    ageSearch = true;
                 }
                 else if (s.Contains(": Régions UDA :"))
                 {
                     IND_REG = int.Parse(s.Substring(0, s.IndexOf(':'))) + 2;
                 }
-                if ((enquete == Enquete.PanelIleDeFrance && IND_SEX != -1 && IND_AGE != -1)
-                    || (enquete != Enquete.PanelIleDeFrance && IND_SEX != -1 && IND_CSP != -1 && IND_AGE != -1 && IND_REG != -1))
+
+                // Calcul reponse >= 30 <60 et >=60
+                else if (ageSearch)
+                {
+                    if (s.Contains("ans"))
+                    {
+                        string[] question = s.Split(':');
+                        string reponse = question[1].Replace("ans", "").Replace("à","").Replace(" ", "").Replace("et", "").Replace("+", "");
+                        string[] ages = reponse.Split('-');
+                        if (int.Parse(ages[0]) >= 60)
+                        {
+                            age60Plus.Add(int.Parse(question[0]));
+                        }
+                        else if(int.Parse(ages[0]) >= 35)
+                        {
+                            age35a59.Add(int.Parse(question[0]));
+                        }
+
+                        // pour caudtotp
+                        if (int.Parse(ages[0]) >= 65)
+                        {
+                            age65Plus.Add(int.Parse(question[0]));
+                        }
+                        else if (int.Parse(ages[0]) >= 50)
+                        {
+                            age50a64.Add(int.Parse(question[0]));
+                        }
+                        else if (int.Parse(ages[0]) >= 35)
+                        {
+                            age35a49.Add(int.Parse(question[0]));
+                        }
+                        else if (int.Parse(ages[0]) >= 25)
+                        {
+                            age25a34.Add(int.Parse(question[0]));
+                        }
+                        else if (int.Parse(ages[0]) >= 20)
+                        {
+                            age25a34.Add(int.Parse(question[0]));
+                        }
+                    }
+                    else
+                    {
+                        ageSearch = false;
+
+                    }
+                }
+
+                if ((enquete == Enquete.PanelIleDeFrance && IND_SEX != -1 && IND_AGE != -1 && !ageSearch)
+                    || (enquete != Enquete.PanelIleDeFrance && IND_SEX != -1 && IND_CSP != -1 && IND_AGE != -1 && IND_REG != -1 && !ageSearch))
                     break;
+
             }
 
             if (IND_SEX == -1)

@@ -119,56 +119,58 @@ namespace ARProbaProcessing
             int nbJour = 23;
             //int IDXSUDRAD = 999;
 
-
             #region Definition colonnes
-            int COL_AGE3 = arProba.SignVars["AGE3"].Position - 1;
-            int COL_RUDA = arProba.SignVars["RUDA"].Position - 1;
-            int COL_PIAB = arProba.SignVars["PIAB"].Position - 1;
-            int COL_CSCI = arProba.SignVars["CSCI"].Position - 1;
-            int COL_SEX = arProba.SignVars["SEXE"].Position - 1;
-            int COL_AGE11 = arProba.SignVars["AG11"].Position - 1;
-            int COL_HAB = arProba.SignVars["HAB7"].Position - 1;
-            int COL_MENA = arProba.SignVars["MENA"].Position - 1;
-            int COL_RDA = arProba.SignVars["RDA"].Position - 1;
-            int COL_CSCC = arProba.SignVars["CSCC"].Position - 1;
-            int COL_NIEL = arProba.SignVars["NIEL"].Position - 1;
-            int COL_PG22 = arProba.SignVars["PG22"].Position - 1;
-            int COL_ENFA = arProba.SignVars["ENFA"].Position - 1;
-            int COL_ENF1 = arProba.SignVars["ENF1"].Position - 1;
-            int COL_ENF2 = arProba.SignVars["ENF2"].Position - 1;
-            int COL_ENF3 = arProba.SignVars["ENF3"].Position - 1;
-            int COL_ENF4 = arProba.SignVars["ENF4"].Position - 1;
-            int COL_NPER = arProba.SignVars["NPER"].Position - 1;
-            int COL_APRES = GetCOLAPRES(arProba, "ETVIE") - 1;
-            int COL_CELL = arProba.SignVars["CELL"].Position - 1;
+            contextPanel.COL_AGE3 = arProba.SignVars["AGE3"].Position - 1;
+            contextPanel.COL_RUDA = arProba.SignVars["RUDA"].Position - 1;
+            contextPanel.COL_PIAB = arProba.SignVars["PIAB"].Position - 1;
+            contextPanel.COL_CSCI = arProba.SignVars["CSCI"].Position - 1;
+            contextPanel.COL_SEX = arProba.SignVars["SEXE"].Position - 1;
+            contextPanel.COL_AGE11 = arProba.SignVars["AG11"].Position - 1;
+            contextPanel.COL_HAB = arProba.SignVars["HAB7"].Position - 1;
+            contextPanel.COL_MENA = arProba.SignVars["MENA"].Position - 1;
+            contextPanel.COL_RDA = arProba.SignVars["RDA"].Position - 1;
+            contextPanel.COL_CSCC = arProba.SignVars["CSCC"].Position - 1;
+            contextPanel.COL_NIEL = arProba.SignVars["NIEL"].Position - 1;
+            contextPanel.COL_PG22 = arProba.SignVars["PG22"].Position - 1;
+            contextPanel.COL_ENFA = arProba.SignVars["ENFA"].Position - 1;
+            contextPanel.COL_ENF1 = arProba.SignVars["ENF1"].Position - 1;
+            contextPanel.COL_ENF2 = arProba.SignVars["ENF2"].Position - 1;
+            contextPanel.COL_ENF3 = arProba.SignVars["ENF3"].Position - 1;
+            contextPanel.COL_ENF4 = arProba.SignVars["ENF4"].Position - 1;
+            contextPanel.COL_NPER = arProba.SignVars["NPER"].Position - 1;
+            contextPanel.COL_APRES = GetCOLAPRES(arProba, "ETVIE") - 1;
+            contextPanel.COL_CELL = arProba.SignVars["CELL"].Position - 1;
 
-            int COL_TAB_CSCI = arProba.SignVars["CSCI"].Position;
-            int COL_TAB_SEX = arProba.SignVars["SEXE"].Position;
-            int COL_TAB_AGE11 = arProba.SignVars["AG11"].Position;
-            int COL_TAB_HAB = arProba.SignVars["HAB7"].Position;
-            int COL_TAB_MENA = arProba.SignVars["MENA"].Position;
-            int COL_TAB_RDA = arProba.SignVars["RDA"].Position;
-            int COL_TAB_CSCC = arProba.SignVars["CSCC"].Position;
-            int COL_TAB_NIEL = arProba.SignVars["NIEL"].Position;
-            int COL_TAB_PG22 = arProba.SignVars["PG22"].Position;
-            int COL_TAB_ENFA = arProba.SignVars["ENFA"].Position;
-            int COL_TAB_ENF1 = arProba.SignVars["ENF1"].Position;
-            int COL_TAB_ENF2 = arProba.SignVars["ENF2"].Position;
-            int COL_TAB_ENF3 = arProba.SignVars["ENF3"].Position;
-            int COL_TAB_ENF4 = arProba.SignVars["ENF4"].Position;
-            int COL_TAB_NPER = arProba.SignVars["NPER"].Position;
-            int COL_TAB_APRES = GetCOLAPRES(arProba, "ETVIE");
-            int COL_TAB_CELL = arProba.SignVars["CELL"].Position;
-            int COL_TAB_AGE3 = arProba.SignVars["AGE3"].Position;
-            int COL_TAB_RUDA = arProba.SignVars["RUDA"].Position;
-            int COL_TAB_PIAB = arProba.SignVars["PIAB"].Position;
+            contextPanel.COL_TAB_CSCI = arProba.SignVars["CSCI"].Position;
+            contextPanel.COL_TAB_SEX = arProba.SignVars["SEXE"].Position;
+            contextPanel.COL_TAB_AGE11 = arProba.SignVars["AG11"].Position;
+            contextPanel.COL_TAB_HAB = arProba.SignVars["HAB7"].Position;
+            contextPanel.COL_TAB_MENA = arProba.SignVars["MENA"].Position;
+            contextPanel.COL_TAB_RDA = arProba.SignVars["RDA"].Position;
+            contextPanel.COL_TAB_CSCC = arProba.SignVars["CSCC"].Position;
+            contextPanel.COL_TAB_NIEL = arProba.SignVars["NIEL"].Position;
+            contextPanel.COL_TAB_PG22 = arProba.SignVars["PG22"].Position;
+            contextPanel.COL_TAB_ENFA = arProba.SignVars["ENFA"].Position;
+            contextPanel.COL_TAB_ENF1 = arProba.SignVars["ENF1"].Position;
+            contextPanel.COL_TAB_ENF2 = arProba.SignVars["ENF2"].Position;
+            contextPanel.COL_TAB_ENF3 = arProba.SignVars["ENF3"].Position;
+            contextPanel.COL_TAB_ENF4 = arProba.SignVars["ENF4"].Position;
+            contextPanel.COL_TAB_NPER = arProba.SignVars["NPER"].Position;
+            contextPanel.COL_TAB_APRES = GetCOLAPRES(arProba, "ETVIE");
+            contextPanel.COL_TAB_CELL = arProba.SignVars["CELL"].Position;
+            contextPanel.COL_TAB_AGE3 = arProba.SignVars["AGE3"].Position;
+            contextPanel.COL_TAB_RUDA = arProba.SignVars["RUDA"].Position;
+            contextPanel.COL_TAB_PIAB = arProba.SignVars["PIAB"].Position;
 
-            GetIndiceUXXX(PathGRPWave + ".desc", enquete, out int IND_CSP, out int IND_AGE, out int IND_SEX, out int IND_REG);
+            GetIndiceUXXX(PathGRPWave + ".desc", enquete, out contextPanel.IND_CSP, out contextPanel.IND_AGE, out contextPanel.IND_SEX, out contextPanel.IND_REG, 
+                out contextPanel.Age35a59, out contextPanel.Age60Plus,
+                out contextPanel.Age20a24, out contextPanel.Age25a34, out contextPanel.Age35a49, out contextPanel.Age50a64, out contextPanel.Age65Plus);
+
             #endregion Definition colonnes
 
             #region entrées lecpanel
             string pathSIGJFC_BDE = Path.Combine(inputPath, @"Bde\sig" + (year % 100).ToString("00") + "jfc.bde");
-            lecpanel(pathSIGJFC_BDE, COL_AGE3, COL_RUDA, COL_PIAB, out lstPoids, out lstAges, out lstFiltreIDF);
+            lecpanel(contextPanel, pathSIGJFC_BDE, out lstPoids, out lstAges, out lstFiltreIDF);
             #endregion entrées lecpanel
 
             #region entrées regr5jp2
@@ -302,7 +304,7 @@ namespace ARProbaProcessing
             #endregion entrées Asymp
 
 
-            int NBINDIV = segpanel(contextPanel, COL_PIAB, COL_CSCI, COL_SEX, COL_AGE11, COL_RUDA, pathSIGJFC_BDE, pathSortie1);
+            int NBINDIV = segpanel(contextPanel, pathSIGJFC_BDE, pathSortie1);
 
             //NbStation = arProba.HabAndNotoTotalStationListCount;
             VsorPoid[][] JN = ecrpan1j(contextPanel, pathF04, pathJNNIV, NBINDIV, nbStationHabNotoTotal, nbStationTotal, ITS, year);   // [Jour 1..23][Individus 1..N] = {VOSR[,]?, Poid[]}
@@ -315,7 +317,7 @@ namespace ARProbaProcessing
 
             int[,] NINI_IND_STA = crenonin(contextPanel, nbJour, NB_STA_HAB_NOTO, fushab09Indivs, JN, stationApres, pathNinities); // [INDIV, STATIONS] 
 
-            ecrsegpa(contextPanel, pathSIGJFC_BDE, pathSegs, COL_PIAB, COL_CSCI, COL_SEX, COL_AGE11, COL_RUDA, NbStation, NBINDIV, SIGN_LINE_LEN_FULL, pathSortie5,
+            ecrsegpa(contextPanel, pathSIGJFC_BDE, pathSegs,NbStation, NBINDIV, SIGN_LINE_LEN_FULL, pathSortie5,
                      out int[,] POIDSEGM, out int IPOP);
 
             short[,,,] cellules = calcregr(contextPanel, NBINDIV, NB_STA_HAB_NOTO, NINI_IND_STA, POIDSEGM, JN, pathCellule); // int[LV/Sa/Di, STATIONS, QH, CELL];
@@ -324,10 +326,7 @@ namespace ARProbaProcessing
 
             byte[,,,] audiences = caud1qhp(NBINDIV, NB_STA_HAB_NOTO, JN, POIDSEGM, pathAudQhInd); // audiences[STATIONS, INdiv, QH, 1..3]
 
-            float[] noteIndiv = caudtotp(contextPanel, NBINDIV, NB_STA_HAB_NOTO, COL_TAB_PIAB, COL_TAB_CSCI, COL_TAB_SEX, COL_TAB_AGE11, COL_TAB_RUDA,
-                 COL_TAB_HAB, COL_TAB_MENA, COL_TAB_RDA, COL_TAB_CSCC, COL_TAB_NIEL,
-             COL_TAB_PG22, COL_TAB_ENF1, COL_TAB_ENF2, COL_TAB_ENF3, COL_TAB_ENF4, COL_TAB_ENFA,
-             COL_TAB_NPER, COL_TAB_APRES, COL_TAB_CELL, JN, POIDSEGM, fushab09Indivs, pathNoteIndiv);
+            float[] noteIndiv = caudtotp(contextPanel, NBINDIV, NB_STA_HAB_NOTO, JN, POIDSEGM, fushab09Indivs, pathNoteIndiv);
 
             float[,,,] ZUPTAUSE = sav1qhpa(contextPanel, NBINDIV, NB_STA_HAB_NOTO, regrs, POIDSEGM, fushab09Indivs, JNByWeek, JN, pathZuptause, pathSortiesav1qhpa); // [STATIONS, QH, DATAS ZR-UR-PR-TAUX, CELL];
 
@@ -336,8 +335,8 @@ namespace ARProbaProcessing
             float[,,,] ZUPTAUDI = sav1qhpd(contextPanel, NBINDIV, NB_STA_HAB_NOTO, regrs, POIDSEGM, fushab09Indivs, JNByWeek, JN, pathZuptaudi, pathSortiesav1qhpd); // [STATIONS, QH, DATAS ZR-UR-PR-TAUX, CELL];
 
             float[,,,] Couverture = (enquete == Enquete.PanelIleDeFrance) ?
-                cgrp75br_Idf(contextPanel, PathGRPWave, IND_AGE, IND_SEX, NbStation, NbGRPModulation, NbGRPStation, ISTAcgrp75br, pathSortie8, pathNOUVOGRP) : // [LV/Sa/Di, QH, 4 + 1, CELL];
-                cgrp75br(contextPanel, PathGRPWave, IND_CSP, IND_AGE, IND_SEX, IND_REG, NbStation, NbGRPModulation, NbGRPStation, ISTAcgrp75br, pathSortie8, pathNOUVOGRP);  // [LV/Sa/Di, QH, 4 + 1, CELL];
+                cgrp75br_Idf(contextPanel, PathGRPWave, NbStation, NbGRPModulation, NbGRPStation, ISTAcgrp75br, pathSortie8, pathNOUVOGRP) : // [LV/Sa/Di, QH, 4 + 1, CELL];
+                cgrp75br(contextPanel, PathGRPWave, NbStation, NbGRPModulation, NbGRPStation, ISTAcgrp75br, pathSortie8, pathNOUVOGRP);  // [LV/Sa/Di, QH, 4 + 1, CELL];
 
             cont75br(contextPanel, NBINDIV, NB_STA_HAB_NOTO, popLV, popS, popD, Couverture, pathSortie9);
 
@@ -360,8 +359,8 @@ namespace ARProbaProcessing
             BSupport BSUP = transp08(contextPanel, NBINDIV, NB_STA_HAB_NOTO, NB_STA_IDF, STA_IDF_LIST_NO_SUDRAD_MASK, POIDSEGM, lstFiltreIDF, lstPoids, PROBAS, pathTransp08, pathYearNat, pathYearIdf, pathYearSup);
 
             int[,] PANCIB = (enquete == Enquete.PanelIleDeFrance) ?
-                crecib08_Idf(NBINDIV, fushab09Indivs, COL_TAB_SEX, COL_TAB_AGE11, pathPan20Cib) :
-                crecib08(NBINDIV, fushab09Indivs, COL_TAB_AGE11, COL_TAB_MENA, pathPan20Cib); // [3 + 1, NIND + 1]
+                crecib08_Idf(contextPanel, NBINDIV, fushab09Indivs, pathPan20Cib) :
+                crecib08(contextPanel, NBINDIV, fushab09Indivs, pathPan20Cib); // [3 + 1, NIND + 1]
 
             penetr(NBINDIV, nbStationHabNotoTotal, JN, lstPoids, pathPenetr, int.Parse(arProba.U1xxPopTxt[0]), strStations);
 
@@ -392,7 +391,7 @@ namespace ARProbaProcessing
             #endregion Endprocess
         }
 
-        private void lecpanel(string Path_SIGJFC_BDE, int COL_AGE3, int COL_RUDA, int COL_PIAB, out List<int> lstPoids, out List<int> lstAges, out List<int> lstFiltreIDF)
+        private void lecpanel(ContextPanel contextPanel, string Path_SIGJFC_BDE, out List<int> lstPoids, out List<int> lstAges, out List<int> lstFiltreIDF)
         {
             // PANEL RADIO 08 MEDIAMETRIE(nouveau format)
             // CONTROLE DES POIDS DE REDRESSEMENT
@@ -439,18 +438,18 @@ namespace ARProbaProcessing
             foreach (string strIndiv in KHI2)
             {
                 IAGE = 1;
-                if (strIndiv[COL_AGE3] == '1')
+                if (strIndiv[contextPanel.COL_AGE3] == '1')
                     IAGE = 2;
 
-                // Filtre REGION PARISIENNE(RÃ©gion Uda)
+                // Filtre REGION PARISIENNE(Région Uda)
                 ICL = 0;
-                if (strIndiv[COL_RUDA] == '1')
+                if (strIndiv[contextPanel.COL_RUDA] == '1')
                 {
                     ICL = 1;
                     COMPTIDF = COMPTIDF + 1;
                 }
 
-                IPERS = int.Parse(strIndiv.Substring(COL_PIAB, 5));
+                IPERS = int.Parse(strIndiv.Substring(contextPanel.COL_PIAB, 5));
                 if (IPERS <= 0) continue;
                 if (IPERS > 3276) Console.WriteLine($"IPERS= {IPERS}");
 
@@ -467,7 +466,7 @@ namespace ARProbaProcessing
             Console.WriteLine("NbIndiv : " + IG + " Population : " + IPOP + " NbIndivIDF : " + COMPTIDF);
         }
 
-        private int segpanel(ContextPanel contextPanel, int COL_PIAB, int COL_CSCI, int COL_SEX, int COL_AGE, int COL_RUDA, string pathSIGJFC_BDE, string pathSortie1)
+        private int segpanel(ContextPanel contextPanel, string pathSIGJFC_BDE, string pathSortie1)
         {
             // PANEL RADIO 08 MEDIAMETRIE(nouveau format)
             // CONTROLE DES VOLUMES DES SEGMENTS
@@ -484,7 +483,7 @@ namespace ARProbaProcessing
             foreach (string strIndiv in KHI2)
             {
                 // CALCUL DU POIDS(Colonnes 9 à 13 inclues)
-                IPERS = int.Parse(strIndiv.Substring(COL_PIAB, 5));
+                IPERS = int.Parse(strIndiv.Substring(contextPanel.COL_PIAB, 5));
 
                 if (IPERS <= 0) continue;
                 IG++;
@@ -500,8 +499,8 @@ namespace ARProbaProcessing
                 //   ICSP = 3 correspond aux inactifs
 
                 ICSP = 1;
-                if ((strIndiv[COL_CSCI] == '1') || (int.Parse(strIndiv[COL_CSCI].ToString()) > 4)) ICSP = 2;
-                if (int.Parse(strIndiv[COL_CSCI].ToString()) > 6) ICSP = 3;
+                if ((strIndiv[contextPanel.COL_CSCI] == '1') || (int.Parse(strIndiv[contextPanel.COL_CSCI].ToString()) > 4)) ICSP = 2;
+                if (int.Parse(strIndiv[contextPanel.COL_CSCI].ToString()) > 6) ICSP = 3;
 
                 //  --------------------
                 //   Sexe de l'interviewé
@@ -510,7 +509,7 @@ namespace ARProbaProcessing
                 //   ISEX = 1 correspond aux Hommes
                 //   ISEX = 2 correspond aux Femmes
 
-                ISEX = int.Parse(strIndiv[COL_SEX].ToString());
+                ISEX = int.Parse(strIndiv[contextPanel.COL_SEX].ToString());
 
                 //  ----------------- -
                 //   Age de l'interviewé
@@ -519,10 +518,10 @@ namespace ARProbaProcessing
                 //  IAGE = 1 correspond aux 13 - 34 ans
                 //  IAGE = 2 correspond aux 35 - 59 ans
                 //  IAGE = 3 correspond aux 60 ans et +
-                AGE = int.Parse(strIndiv.Substring(COL_AGE, 2));
+                AGE = int.Parse(strIndiv.Substring(contextPanel.COL_AGE11, 2));
                 IAGE = 1;
-                if (AGE > 4) IAGE = 2;
-                if (AGE > 9) IAGE = 3;
+                if (contextPanel.Age35a59.Contains(AGE)) IAGE = 2;
+                if (contextPanel.Age60Plus.Contains(AGE)) IAGE = 3;
 
                 //  --------------------------
                 //   Région UDA de l'interviewé
@@ -531,7 +530,7 @@ namespace ARProbaProcessing
                 //   IREG = 1 correspond aux 6 UDA Nord
                 //   IREG = 2 correspond aux 3 UDA Sud
                 IREG = 1;
-                if (int.Parse(strIndiv[COL_RUDA].ToString()) > 6) IREG = 2;
+                if (int.Parse(strIndiv[contextPanel.COL_RUDA].ToString()) > 6) IREG = 2;
 
                 //C-------------------------------------------------------------------------- -
                 //  C On fonction des variables précédemment calculées, on détermine les segments
@@ -657,6 +656,12 @@ namespace ARProbaProcessing
                 IG = 0;
 
                 string pathJN = Path.Combine(pathF04, "JN" + IJ.ToString("00") + "NI" + (year % 100).ToString("00") + ".F04");
+                FileInfo fi = new FileInfo(pathJN);
+                if (fi.Length != 130 * 2 + NBIND * (3 * 2 + NB_STA_TOTAL * 6 * 2))
+                {
+                    throw new Exception($"ecrpan1j : taille du fichier d'entree JN incorrecte NBIND {NBIND} NB_STA_TOTAL {NB_STA_TOTAL}");
+                };
+
                 FileStream fs = File.Open(pathJN, FileMode.Open);
                 fs.Seek(0, SeekOrigin.Begin);
                 BinaryReader br = new BinaryReader(fs);
@@ -1139,7 +1144,7 @@ namespace ARProbaProcessing
             return KHI2;
         }
 
-        private void ecrsegpa(ContextPanel contextPanel, string pathSig, string pathSegs, int COL_PIAB, int COL_CSCI, int COL_SEX, int COL_AGE, int COL_RUDA, int NBSTA, int NBIND, int SIGN_LINE_LEN_FULL, string pathSortie5,
+        private void ecrsegpa(ContextPanel contextPanel, string pathSig, string pathSegs, int NBSTA, int NBIND, int SIGN_LINE_LEN_FULL, string pathSortie5,
             out int[,] SEGM, out int IPOP)
         {
             // PANEL RADIO 08 MEDIAMETRIE(nouveau format)
@@ -1164,7 +1169,7 @@ namespace ARProbaProcessing
             {
                 ISEG = 0;
                 // CALCUL DU POIDS(Colonnes 9 à 13 inclues)
-                int IPERS = int.Parse(strIndiv.Substring(COL_PIAB, 5));
+                int IPERS = int.Parse(strIndiv.Substring(contextPanel.COL_PIAB, 5));
 
                 if (IPERS > 0)
                 {
@@ -1182,8 +1187,8 @@ namespace ARProbaProcessing
                     // ICSP = 2 correspond aux CSP -
                     // ICSP = 3 correspond aux inactifs
                     ICSP = 1;
-                    if ((strIndiv[COL_CSCI] == '1') || (int.Parse(strIndiv[COL_CSCI].ToString()) > 4)) ICSP = 2;
-                    if (int.Parse(strIndiv[COL_CSCI].ToString()) > 6) ICSP = 3;
+                    if ((strIndiv[contextPanel.COL_CSCI] == '1') || (int.Parse(strIndiv[contextPanel.COL_CSCI].ToString()) > 4)) ICSP = 2;
+                    if (int.Parse(strIndiv[contextPanel.COL_CSCI].ToString()) > 6) ICSP = 3;
 
                     //--------------------
                     // Sexe de l'interviewé
@@ -1191,7 +1196,7 @@ namespace ARProbaProcessing
                     // Le sexe de l'interviewé est codé sur une colonne (colonne #COL,SEXE#)
                     // ISEX = 1 correspond aux Hommes
                     // ISEX = 2 correspond aux Femmes
-                    ISEX = int.Parse(strIndiv[COL_SEX].ToString());
+                    ISEX = int.Parse(strIndiv[contextPanel.COL_SEX].ToString());
 
                     //------------------ -
                     // Age de l'interviewé
@@ -1200,10 +1205,10 @@ namespace ARProbaProcessing
                     // IAGE = 1 correspond aux 13 - 34 ans
                     // IAGE = 2 correspond aux 35 - 59 ans
                     // IAGE = 3 correspond aux 60 ans et +
-                    int AGE = int.Parse(strIndiv.Substring(COL_AGE, 2));
+                    int AGE = int.Parse(strIndiv.Substring(contextPanel.COL_AGE11, 2));
                     IAGE = 1;
-                    if (AGE > 4) IAGE = 2;
-                    if (AGE > 9) IAGE = 3;
+                    if (contextPanel.Age35a59.Contains(AGE)) IAGE = 2;
+                    if (contextPanel.Age60Plus.Contains(AGE)) IAGE = 3;
 
                     //--------------------------
                     // Région UDA de l'interviewé
@@ -1213,24 +1218,11 @@ namespace ARProbaProcessing
                     // IREG = 2 correspond aux 3 UDA Sud
 
                     IREG = 1;
-                    if (int.Parse(strIndiv[COL_RUDA].ToString()) > 6) IREG = 2;
+                    if (int.Parse(strIndiv[contextPanel.COL_RUDA].ToString()) > 6) IREG = 2;
 
                     //-------------------------------------------------------------------------- -
                     // On fonction des variables précédemment calculées, on détermine les segments
                     //-------------------------------------------------------------------------- -
-
-                    if (contextPanel.Enquete == Enquete.PanelIleDeFrance)
-                    {
-                        // Segment 1 = Hommes de 13 à 34 ans
-                        if ((ISEX == 1) && (IAGE == 1)) ISEG = 1;
-                        // Segment 2 = Femmes de 13 à 34 ans
-                        if ((ISEX == 2) && (IAGE == 1)) ISEG = 2;
-                        // Segment 3 = Hommes de 35 à 59 ans
-                        if ((ISEX == 1) && (IAGE == 2)) ISEG = 3;
-                        // Segment 4 = Femmes de 35 à 59 ans
-                        if ((ISEX == 2) && (IAGE == 2)) ISEG = 4;
-                    }
-
                     if (contextPanel.Enquete == Enquete.PanelIleDeFrance)
                     {
                         if ((ISEX == 1) && (IAGE == 1)) ISEG = 1;
@@ -1600,10 +1592,6 @@ namespace ARProbaProcessing
         }
 
         private float[] caudtotp(ContextPanel contextPanel, int NBIND, int NBSTA,
-            int COL_PIAB, int COL_CSCI, int COL_SEX, int COL_AGE11, int COL_RUDA,
-            int COL_HAB, int COL_MENA, int COL_RDA, int COL_CSCC, int COL_NIEL,
-            int COL_PG22, int COL_ENF1, int COL_ENF2, int COL_ENF3, int COL_ENF4, int COL_TAB_ENFA,
-            int COL_NPER, int COL_APRES, int COL_CELL,
             VsorPoid[][] JN, int[,] POIDS, List<Fushab09Indiv> fushab09Indivs, string pathNoteIndiv)
         {
             // PANEL RADIO 08 MEDIAMETRIE(nouveau format)
@@ -1649,65 +1637,75 @@ namespace ARProbaProcessing
 
                 //  **CRITERES**
                 // SEXE
-                NINI[IG, 1] = fushab09Indiv.AVANT[COL_SEX] - 48;
+                NINI[IG, 1] = fushab09Indiv.AVANT[contextPanel.COL_TAB_SEX] - 48;
                 // AGE
-                int AGE = 10 * (fushab09Indiv.AVANT[COL_AGE11] - 48) + (fushab09Indiv.AVANT[COL_AGE11 + 1] - 48);
+                int AGE = 10 * (fushab09Indiv.AVANT[contextPanel.COL_TAB_AGE11] - 48) + (fushab09Indiv.AVANT[contextPanel.COL_TAB_AGE11 + 1] - 48);
                 NINI[IG, 2] = 1;
-                if (AGE > 2) NINI[IG, 2] = 2;
-                if (AGE > 4) NINI[IG, 2] = 3;
-                if (AGE > 7) NINI[IG, 2] = 4;
-                if (AGE > 10) NINI[IG, 2] = 5;
+                //if (AGE > 2) NINI[IG, 2] = 2; // 25-34 ans
+                //if (AGE > 4) NINI[IG, 2] = 3; // >= 35  <=49
+                //if (AGE > 7) NINI[IG, 2] = 4; // >= 50  <= 64
+                //if (AGE > 10) NINI[IG, 2] = 5; // >65
+
+                NINI[IG, 2] = 1; // < 25
+                if (contextPanel.Age25a34.Contains(AGE)) NINI[IG, 2] = 2;  // >= 25  <= 34
+                if (contextPanel.Age35a49.Contains(AGE)) NINI[IG, 2] = 3;  // >= 35  <=49
+                if (contextPanel.Age50a64.Contains(AGE)) NINI[IG, 2] = 4;  // >= 50  <= 64
+                if (contextPanel.Age65Plus.Contains(AGE)) NINI[IG, 2] = 5; // >65
                 // AGE
                 NINI[IG, 3] = 1;
-                if (AGE > 7) NINI[IG, 3] = 2;
+                //if (AGE > 7) NINI[IG, 3] = 2;
+                if (contextPanel.Age50a64.Contains(AGE) || contextPanel.Age65Plus.Contains(AGE)) NINI[IG, 3] = 2;  // >= 50  <= 64
                 // AGE
                 NINI[IG, 4] = 1;
-                if (AGE > 1) NINI[IG, 4] = 2;
+                //if (AGE > 1) NINI[IG, 4] = 2; // >= 20
+                if (contextPanel.Age20a24.Contains(AGE) || contextPanel.Age25a34.Contains(AGE) || contextPanel.Age35a49.Contains(AGE) || 
+                    contextPanel.Age50a64.Contains(AGE) || contextPanel.Age65Plus.Contains(AGE))
+                    NINI[IG, 4] = 2;
                 // Profession Individu
-                NINI[IG, 5] = fushab09Indiv.AVANT[COL_CSCI] - 48;
+                NINI[IG, 5] = fushab09Indiv.AVANT[contextPanel.COL_TAB_CSCI] - 48;
                 // Région UDA
-                NINI[IG, 6] = fushab09Indiv.AVANT[COL_RUDA] - 48;
+                NINI[IG, 6] = fushab09Indiv.AVANT[contextPanel.COL_TAB_RUDA] - 48;
                 // Région UDA
                 NINI[IG, 7] = 1;
-                if ((fushab09Indiv.AVANT[COL_RUDA] - 48) > 1) NINI[IG, 7] = 2;
-                if ((fushab09Indiv.AVANT[COL_RUDA] - 48) > 6) NINI[IG, 7] = 3;
+                if ((fushab09Indiv.AVANT[contextPanel.COL_TAB_RUDA] - 48) > 1) NINI[IG, 7] = 2;
+                if ((fushab09Indiv.AVANT[contextPanel.COL_TAB_RUDA] - 48) > 6) NINI[IG, 7] = 3;
                 // Habitat
                 NINI[IG, 8] = 1;
-                if ((fushab09Indiv.AVANT[COL_HAB] - 48) > 1) NINI[IG, 8] = 2;
-                if ((fushab09Indiv.AVANT[COL_HAB] - 48) > 2) NINI[IG, 8] = 3;
-                if ((fushab09Indiv.AVANT[COL_HAB] - 48) > 4) NINI[IG, 8] = 4;
-                if ((fushab09Indiv.AVANT[COL_HAB] - 48) > 6) NINI[IG, 8] = 5;
+                if ((fushab09Indiv.AVANT[contextPanel.COL_TAB_HAB] - 48) > 1) NINI[IG, 8] = 2;
+                if ((fushab09Indiv.AVANT[contextPanel.COL_TAB_HAB] - 48) > 2) NINI[IG, 8] = 3;
+                if ((fushab09Indiv.AVANT[contextPanel.COL_TAB_HAB] - 48) > 4) NINI[IG, 8] = 4;
+                if ((fushab09Indiv.AVANT[contextPanel.COL_TAB_HAB] - 48) > 6) NINI[IG, 8] = 5;
                 // Ménagère
-                NINI[IG, 9] = (fushab09Indiv.AVANT[COL_MENA] - 48);
+                NINI[IG, 9] = (fushab09Indiv.AVANT[contextPanel.COL_TAB_MENA] - 48);
                 // Responsable des achats
-                NINI[IG, 10] = (fushab09Indiv.AVANT[COL_RDA] - 48);
+                NINI[IG, 10] = (fushab09Indiv.AVANT[contextPanel.COL_TAB_RDA] - 48);
                 // Profession du chef de famille
-                NINI[IG, 11] = (fushab09Indiv.AVANT[COL_CSCC] - 48);
+                NINI[IG, 11] = (fushab09Indiv.AVANT[contextPanel.COL_TAB_CSCC] - 48);
                 // Région NIELSEN
-                NINI[IG, 12] = (fushab09Indiv.AVANT[COL_NIEL] - 48);
+                NINI[IG, 12] = (fushab09Indiv.AVANT[contextPanel.COL_TAB_NIEL] - 48);
                 // Région INSEE
-                int INSEE = 10 * (fushab09Indiv.AVANT[COL_PG22] - 48) + (fushab09Indiv.AVANT[COL_PG22 + 1] - 48);
+                int INSEE = 10 * (fushab09Indiv.AVANT[contextPanel.COL_TAB_PG22] - 48) + (fushab09Indiv.AVANT[contextPanel.COL_TAB_PG22 + 1] - 48);
                 NINI[IG, 13] = INSEE;
                 // Nb d'enfants de moins de 6 ans
-                NINI[IG, 14] = fushab09Indiv.AVANT[COL_ENF1] - 48;
+                NINI[IG, 14] = fushab09Indiv.AVANT[contextPanel.COL_TAB_ENF1] - 48;
                 // Nb d'enfants de 6 à 8 ans
-                NINI[IG, 15] = fushab09Indiv.AVANT[COL_ENF2] - 48;
+                NINI[IG, 15] = fushab09Indiv.AVANT[contextPanel.COL_TAB_ENF2] - 48;
                 // Nb d'enfant de 9 à 10 ans
-                NINI[IG, 16] = fushab09Indiv.AVANT[COL_ENF3] - 48;
+                NINI[IG, 16] = fushab09Indiv.AVANT[contextPanel.COL_TAB_ENF3] - 48;
                 // Nb d'enfant de 11 à 14 ans
-                NINI[IG, 17] = fushab09Indiv.AVANT[COL_ENF4] - 48;
+                NINI[IG, 17] = fushab09Indiv.AVANT[contextPanel.COL_TAB_ENF4] - 48;
                 // Nb de personnes vivant dans le foyer
-                NINI[IG, 18] = fushab09Indiv.AVANT[COL_NPER] - 48;
+                NINI[IG, 18] = fushab09Indiv.AVANT[contextPanel.COL_TAB_NPER] - 48;
                 // Etape de la vie
-                int ETAPE = 10 * (fushab09Indiv.APRES[COL_APRES] - 48) + fushab09Indiv.APRES[COL_APRES + 1] - 48;
+                int ETAPE = 10 * (fushab09Indiv.APRES[contextPanel.COL_TAB_APRES] - 48) + fushab09Indiv.APRES[contextPanel.COL_TAB_APRES + 1] - 48;
                 NINI[IG, 19] = ETAPE;
                 //Console.WriteLine(ETAPE);
                 // Cellule
                 if (contextPanel.Enquete == Enquete.PanelIleDeFrance)
-                    NINI[IG, 20] = fushab09Indiv.AVANT[COL_TAB_ENFA] - 48;
+                    NINI[IG, 20] = fushab09Indiv.AVANT[contextPanel.COL_TAB_ENFA] - 48;
                 else
                 {
-                    int CELLULE = 10 * (fushab09Indiv.AVANT[COL_CELL] - 48) + (fushab09Indiv.AVANT[COL_CELL + 1] - 48);
+                    int CELLULE = 10 * (fushab09Indiv.AVANT[contextPanel.COL_TAB_CELL] - 48) + (fushab09Indiv.AVANT[contextPanel.COL_TAB_CELL + 1] - 48);
                     NINI[IG, 20] = CELLULE;
                 }
             }
@@ -3096,7 +3094,6 @@ namespace ARProbaProcessing
         /// <param name="NotorieteStation"></param>
         /// <returns></returns>
         private float[,,,] cgrp75br(ContextPanel contextPanel, string PathGRPWave,
-            int IND_CSP, int IND_AGE, int IND_SEX, int IND_REG,
             int NbStation, int NbGRPModulation, int NbGRPStation, int[] ISTA, string pathSortie8, string pathNOUVOGRP)
         {
             if (NbStation == 0
@@ -3104,6 +3101,11 @@ namespace ARProbaProcessing
                 || NbGRPStation == 0)
                 return null;
 
+            FileInfo fi = new FileInfo(PathGRPWave);
+            if (fi.Length % (NbGRPModulation * 2 + NbGRPStation * 96) != 0)
+            {
+                throw new Exception($"cgrp75br : taille du fichier d'entree {PathGRPWave} incorrecte NbGRPModulation {NbGRPModulation} NbGRPStation {NbGRPStation}");
+            };
 
             // PANEL RADIO 08 MEDIAMETRIE(nouveau format)
             // CALCUL DES GRP 75000 POUR CALAGE
@@ -3165,15 +3167,15 @@ namespace ARProbaProcessing
                     //int IND_REG = 12 + 2;
 
                     ICSP = 1;
-                    if (KHI2[IND_CSP] == 1 || KHI2[IND_CSP] > 4) ICSP = 2;
-                    if (KHI2[IND_CSP] > 6) ICSP = 3;
-                    ISEX = KHI2[IND_SEX];
+                    if (KHI2[contextPanel.IND_CSP] == 1 || KHI2[contextPanel.IND_CSP] > 4) ICSP = 2;
+                    if (KHI2[contextPanel.IND_CSP] > 6) ICSP = 3;
+                    ISEX = KHI2[contextPanel.IND_SEX];
                     if (ISEX > 2) ISEX = 2;
                     IAGE = 1; // < 35
-                    if ((KHI2[IND_AGE] >= 5) && (KHI2[IND_AGE] <= 9)) IAGE = 2;  // >= 35     <= 59
-                    if ((KHI2[IND_AGE] == 10) || (KHI2[IND_AGE] == 11)) IAGE = 3; // >=60
+                    if (contextPanel.Age35a59.Contains(KHI2[contextPanel.IND_AGE])) IAGE = 2;// >= 35     <= 59
+                    if (contextPanel.Age60Plus.Contains(KHI2[contextPanel.IND_AGE])) IAGE = 3; // >=60
                     IREG = 1;
-                    if (KHI2[IND_REG] > 6) IREG = 2;
+                    if (KHI2[contextPanel.IND_REG] > 6) IREG = 2;
 
                     if (IAGE == 3)
                     {
@@ -3324,7 +3326,6 @@ namespace ARProbaProcessing
         /// <param name="NotorieteStation"></param>
         /// <returns></returns>
         private float[,,,] cgrp75br_Idf(ContextPanel contextPanel, string PathGRPWave,
-            int IND_AGE, int IND_SEX,
             int NbStation, int NbGRPModulation, int NbGRPStation, int[] ISTA, string pathSortie8, string pathNOUVOGRP)
         {
             if (NbStation == 0
@@ -3332,6 +3333,11 @@ namespace ARProbaProcessing
                 || NbGRPStation == 0)
                 return null;
 
+            FileInfo fi = new FileInfo(PathGRPWave);
+            if (fi.Length % (NbGRPModulation * 2 + NbGRPStation * 96) != 0)
+            {
+                throw new Exception($"cgrp75br_Idf : taille du fichier d'entree {PathGRPWave} incorrecte NbGRPModulation {NbGRPModulation} NbGRPStation {NbGRPStation}");
+            };
 
             // PANEL RADIO 08 MEDIAMETRIE(nouveau format)
             // CALCUL DES GRP 75000 POUR CALAGE
@@ -3380,12 +3386,12 @@ namespace ARProbaProcessing
                     if (KHI2[2] == 6) IU = 2;
                     if (KHI2[2] == 7) IU = 3;
 
-                    ISEX = KHI2[IND_SEX];
+                    ISEX = KHI2[contextPanel.IND_SEX];
                     if (ISEX > 2) ISEX = 2;
                     IAGE = 1; // < 35
+                    if (contextPanel.Age35a59.Contains(KHI2[contextPanel.IND_AGE])) IAGE = 2;// >= 35     <= 59
+                    if (contextPanel.Age60Plus.Contains(KHI2[contextPanel.IND_AGE])) IAGE = 3; // >=60
 
-                    if (KHI2[IND_AGE] > 6) IAGE = 2;
-                    if (KHI2[IND_AGE] > 11) IAGE = 3;
                     if ((IAGE == 1) && (ISEX == 1)) ISEG = 1;
                     if ((IAGE == 1) && (ISEX == 2)) ISEG = 2;
                     if ((IAGE == 2) && (ISEX == 1)) ISEG = 3;
@@ -4418,6 +4424,62 @@ namespace ARProbaProcessing
         public int SIGN_LINE_LEN_BEFORE_HAB;
         public int SIGN_LINE_LEN_AFTER_HAB;
         public int NB_STA_ALL_HAB;
+
+        public List<int> Age35a59;
+        public List<int> Age60Plus;
+
+        public List<int> Age20a24;
+        public List<int> Age25a34;
+        public List<int> Age35a49;
+        public List<int> Age50a64;
+        public List<int> Age65Plus;
+
+        public int IND_CSP;
+        public int IND_AGE;
+        public int IND_SEX;
+        public int IND_REG;
+
+        public int COL_AGE3;
+        public int COL_RUDA;
+        public int COL_PIAB;
+        public int COL_CSCI;
+        public int COL_SEX;
+        public int COL_AGE11;
+        public int COL_HAB;
+        public int COL_MENA;
+        public int COL_RDA;
+        public int COL_CSCC;
+        public int COL_NIEL;
+        public int COL_PG22;
+        public int COL_ENFA;
+        public int COL_ENF1;
+        public int COL_ENF2;
+        public int COL_ENF3;
+        public int COL_ENF4;
+        public int COL_NPER;
+        public int COL_APRES;
+        public int COL_CELL;
+
+        public int COL_TAB_CSCI;
+        public int COL_TAB_SEX;
+        public int COL_TAB_AGE11;
+        public int COL_TAB_HAB;
+        public int COL_TAB_MENA;
+        public int COL_TAB_RDA;
+        public int COL_TAB_CSCC;
+        public int COL_TAB_NIEL;
+        public int COL_TAB_PG22;
+        public int COL_TAB_ENFA;
+        public int COL_TAB_ENF1;
+        public int COL_TAB_ENF2;
+        public int COL_TAB_ENF3;
+        public int COL_TAB_ENF4;
+        public int COL_TAB_NPER;
+        public int COL_TAB_APRES;
+        public int COL_TAB_CELL;
+        public int COL_TAB_AGE3;
+        public int COL_TAB_RUDA;
+        public int COL_TAB_PIAB;
     }
 
     public struct VsorPoid
