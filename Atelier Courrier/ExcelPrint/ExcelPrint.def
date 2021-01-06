@@ -1,0 +1,6 @@
+; ExcelPrint.def : déclare les paramètres de module pour la DLL.
+
+LIBRARY      "ExcelPrint"
+
+EXPORTS
+    ; Les exportations explicites peuvent être placées ici

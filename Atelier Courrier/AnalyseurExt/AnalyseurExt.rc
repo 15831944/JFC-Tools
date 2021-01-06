@@ -1,0 +1,748 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+#include "grid\gxresrc.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// French (France) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_FRA)
+#ifdef _WIN32
+LANGUAGE LANG_FRENCH, SUBLANG_FRENCH
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 2,6,2,0
+ PRODUCTVERSION 2,6,2,0
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x2L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040c04e4"
+        BEGIN
+            VALUE "CompanyName", "JFC Informatique & Média"
+            VALUE "FileDescription", "Analyseur"
+            VALUE "FileVersion", "2, 6, 4, 0"
+            VALUE "InternalName", "AnalyseurExt"
+            VALUE "LegalCopyright", "Copyright (C) JFC Informatique & Média. Tous droits réservés. 2004-2008"
+            VALUE "OriginalFilename", "AnalyseurExt.dll"
+            VALUE "ProductName", "Analyseur"
+            VALUE "ProductVersion", "2, 6, 4, 0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x40c, 1252
+    END
+END
+
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "#include ""grid\\gxresrc.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)\r\n"
+    "LANGUAGE 9, 1\r\n"
+    "#pragma code_page(1252)\r\n"
+    "#include ""res\\AnalyseurExt.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""afxres.rc""     // Standard components\r\n"
+    "#endif\r\n"
+    "#include ""grid\\gxres.rc""\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_AN_DLG_ANALYSEUR DIALOGEX 0, 0, 480, 355
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_MINIMIZEBOX | WS_MAXIMIZEBOX | WS_POPUP | WS_CLIPSIBLINGS | WS_CLIPCHILDREN | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME
+EXSTYLE WS_EX_APPWINDOW
+CAPTION "Tris croisés"
+MENU IDR_AN_MENU
+FONT 8, "MS Shell Dlg", 400, 0, 0x0
+BEGIN
+    CONTROL         "Table",IDC_AN_TABLE,"GXWND",WS_BORDER | WS_VSCROLL | WS_HSCROLL | WS_TABSTOP,7,20,355,320
+    CONTROL         "",IDC_AN_BOX_CONFIG,"Static",SS_GRAYFRAME | SS_SUNKEN,369,3,109,350
+    CONTROL         "",IDC_AN_BOX_GRID,"Static",SS_GRAYFRAME | SS_SUNKEN,3,3,363,350
+    CTEXT           "",IDC_AN_GRID_TITLE,110,7,252,12,SS_CENTERIMAGE
+    CTEXT           "Terrains",IDC_AN_LABEL_TERRAINS,373,7,68,12,SS_CENTERIMAGE
+    CTEXT           "Cible",IDC_AN_LABEL_CIBLES,373,49,101,12,SS_CENTERIMAGE
+    CTEXT           "Grandeurs",IDC_AN_LABEL_GRANDEURS,373,91,101,12,SS_CENTERIMAGE
+    LISTBOX         IDC_AN_LIST_TERRAINS,373,21,101,25,LBS_OWNERDRAWVARIABLE | LBS_HASSTRINGS | LBS_USETABSTOPS | LBS_NOINTEGRALHEIGHT | LBS_EXTENDEDSEL | LBS_DISABLENOSCROLL | NOT WS_BORDER | WS_VSCROLL | WS_TABSTOP,WS_EX_STATICEDGE
+    LISTBOX         IDC_AN_LIST_CIBLES,373,63,101,25,LBS_OWNERDRAWVARIABLE | LBS_HASSTRINGS | LBS_USETABSTOPS | LBS_NOINTEGRALHEIGHT | LBS_DISABLENOSCROLL | NOT WS_BORDER | WS_VSCROLL | WS_TABSTOP,WS_EX_STATICEDGE
+    LISTBOX         IDC_AN_LIST_GRANDEURS,373,105,101,48,LBS_OWNERDRAWVARIABLE | LBS_HASSTRINGS | LBS_USETABSTOPS | LBS_NOINTEGRALHEIGHT | LBS_EXTENDEDSEL | LBS_DISABLENOSCROLL | NOT WS_BORDER | WS_VSCROLL | WS_TABSTOP,WS_EX_STATICEDGE
+    CTEXT           "Outils de marquage",IDC_AN_LABEL_MARQUAGE,373,325,101,12,SS_CENTERIMAGE
+    RADIOBUTTON     "Base 100",IDC_AN_BUT_BASE100,389,339,35,12,BS_PUSHLIKE | BS_FLAT | NOT WS_VISIBLE
+    RADIOBUTTON     "Classer",IDC_AN_BUT_ORDONNER,443,340,35,12,BS_PUSHLIKE | BS_FLAT | NOT WS_VISIBLE
+    CONTROL         "",IDC_AN_PROGRESS,"msctls_progress32",WS_BORDER | 0x1,7,343,355,6
+    CTEXT           "Résultats cellule",IDC_AN_LABEL_RESULT,373,156,101,12,SS_CENTERIMAGE
+    RADIOBUTTON     "Grandeur",IDC_AN_BUT_GRANDEUR,374,171,47,12,BS_PUSHLIKE | BS_FLAT
+    RADIOBUTTON     "H%",IDC_AN_BUT_HORIZ,426,171,47,12,BS_PUSHLIKE | BS_FLAT
+    RADIOBUTTON     "V%",IDC_AN_BUT_VERT,374,185,47,12,BS_PUSHLIKE | BS_FLAT
+    RADIOBUTTON     "IC",IDC_AN_BUT_GLOBAL,426,185,47,12,BS_PUSHLIKE | BS_FLAT
+    RADIOBUTTON     "Exclusifs",IDC_AN_BUT_EXCLU,373,218,47,12,BS_PUSHLIKE | BS_FLAT | NOT WS_VISIBLE
+    RADIOBUTTON     "Dupliquants",IDC_AN_BUT_DUPLI,426,218,47,12,BS_PUSHLIKE | BS_FLAT | NOT WS_VISIBLE
+    COMBOBOX        IDC_COMBO_TRI_GRANDEURS,383,293,91,73,CBS_DROPDOWNLIST | NOT WS_VISIBLE | WS_VSCROLL | WS_TABSTOP
+    COMBOBOX        IDC_COMBO_TRI_RESULTATS,383,293,91,59,CBS_DROPDOWNLIST | NOT WS_VISIBLE | WS_VSCROLL | WS_TABSTOP
+    COMBOBOX        IDC_COMBO_TYPETRI,383,293,91,45,CBS_DROPDOWNLIST | NOT WS_VISIBLE | WS_VSCROLL | WS_TABSTOP
+    COMBOBOX        IDC_COMBO_MODETRI,383,293,91,47,CBS_DROPDOWNLIST | NOT WS_VISIBLE | WS_VSCROLL | WS_TABSTOP
+    CTEXT           "Paramètres de tri",IDC_AN_LABEL_TRI,383,279,91,12,SS_CENTERIMAGE | NOT WS_VISIBLE
+    RADIOBUTTON     "Grandeur",IDC_AN_BUT_GRANDEUR3,373,171,40,12,BS_PUSHLIKE | BS_FLAT
+    RADIOBUTTON     "H%",IDC_AN_BUT_HORIZ3,416,171,18,12,BS_PUSHLIKE | BS_FLAT
+    RADIOBUTTON     "V%",IDC_AN_BUT_VERT3,435,171,18,12,BS_PUSHLIKE | BS_FLAT
+    RADIOBUTTON     "IC",IDC_AN_BUT_GLOBAL3,454,171,20,12,BS_PUSHLIKE | BS_FLAT
+    RADIOBUTTON     "Grandeur",IDC_AN_BUT_GRANDEUR2,373,171,102,12,BS_PUSHLIKE | BS_FLAT
+    RADIOBUTTON     "H%",IDC_AN_BUT_HORIZ2,373,185,102,12,BS_PUSHLIKE | BS_FLAT
+    RADIOBUTTON     "V%",IDC_AN_BUT_VERT2,373,200,102,12,BS_PUSHLIKE | BS_FLAT
+    RADIOBUTTON     "IC",IDC_AN_BUT_GLOBAL2,373,214,102,12,BS_PUSHLIKE | BS_FLAT
+    RADIOBUTTON     "Surlignage...",IDC_AN_BUT_PARAMSURLIGNAGE,389,339,68,12,BS_PUSHLIKE | BS_FLAT
+    PUSHBUTTON      "",IDC_AN_BUT_PREC_SURLIGN,373,339,14,12,BS_ICON | BS_CENTER | BS_VCENTER | BS_FLAT
+    PUSHBUTTON      "",IDC_AN_BUT_RAZ_SURLIGN,460,339,14,12,BS_ICON | BS_CENTER | BS_VCENTER | BS_FLAT
+    PUSHBUTTON      "+ Moy.",IDC_AN_BUT_MOYENNE_TABLEAU,373,230,27,12
+    CTEXT           "Var.Moy.",IDC_AN_LABEL_VAR_MOY,403,230,55,12,SS_CENTERIMAGE
+    LISTBOX         IDC_AN_LIST_VAR_MOY,373,245,101,74,LBS_OWNERDRAWFIXED | LBS_HASSTRINGS | LBS_USETABSTOPS | LBS_NOINTEGRALHEIGHT | LBS_DISABLENOSCROLL | NOT WS_BORDER | WS_VSCROLL | WS_TABSTOP,WS_EX_STATICEDGE
+    PUSHBUTTON      "",IDC_AN_BUT_RAZ_VAR_MOY,461,230,14,12,BS_ICON | BS_CENTER | BS_VCENTER | BS_FLAT
+    PUSHBUTTON      "Modifier le tableau >>",IDC_AN_BUT_VECTORIELLE,8,7,99,13,BS_CENTER | BS_FLAT
+    PUSHBUTTON      "",IDC_AN_BUT_TERRAIN_DOWN,460,6,14,12,BS_CENTER | BS_FLAT
+    PUSHBUTTON      "",IDC_AN_BUT_TERRAIN_UP,445,6,14,12,BS_CENTER | BS_FLAT
+    LISTBOX         IDC_AN_LIST_TERRAINS2,453,21,8,11,LBS_OWNERDRAWVARIABLE | LBS_HASSTRINGS | LBS_USETABSTOPS | LBS_NOINTEGRALHEIGHT | LBS_EXTENDEDSEL | LBS_DISABLENOSCROLL | NOT WS_VISIBLE | NOT WS_BORDER | WS_VSCROLL | WS_TABSTOP,WS_EX_STATICEDGE
+END
+
+IDD_AN_ABOUTBOX DIALOGEX 0, 0, 235, 55
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "A propos des Tris croisés"
+FONT 8, "MS Shell Dlg", 0, 0, 0x0
+BEGIN
+    ICON            IDI_AN_ICON,IDC_AN_STATIC_I,11,17,20,20
+    LTEXT           "Tris croisés",IDC_AN_STATIC_V,40,10,119,8,SS_NOPREFIX
+    LTEXT           "Copyright (C) JFC Informatique & Média 2003-2011",IDC_AN_STATIC_C,40,25,148,8,SS_NOPREFIX
+    DEFPUSHBUTTON   "OK",IDOK,178,7,50,14,WS_GROUP
+END
+
+IDD_AN_DLG_CIBLE DIALOGEX 0, 0, 190, 198
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,135,5,50,14,BS_FLAT
+    PUSHBUTTON      "Annuler",IDCANCEL,135,21,50,14,BS_FLAT
+    LISTBOX         IDC_AN_LIST_SELCIBLE,8,25,116,53,LBS_SORT | LBS_OWNERDRAWVARIABLE | LBS_HASSTRINGS | LBS_NOINTEGRALHEIGHT | NOT WS_VISIBLE | NOT WS_BORDER | WS_VSCROLL | WS_TABSTOP,WS_EX_STATICEDGE
+    LISTBOX         IDC_AN_LIST_CIBLES,8,24,116,161,LBS_SORT | LBS_OWNERDRAWVARIABLE | LBS_HASSTRINGS | LBS_NOINTEGRALHEIGHT | LBS_EXTENDEDSEL | NOT WS_BORDER | WS_VSCROLL | WS_TABSTOP,WS_EX_STATICEDGE
+    CONTROL         "",IDC_AN_STATIC_CIBLE,"Static",SS_GRAYFRAME | SS_SUNKEN,3,3,126,189,WS_EX_TRANSPARENT
+    CTEXT           "Cible",IDC_AN_STATIC_TTLCIBLE,8,7,116,14,SS_CENTERIMAGE
+END
+
+IDD_AN_DLG_SRC_UNIQUE DIALOGEX 0, 0, 305, 186
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Choisir la source et les terrains"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    CONTROL         "",IDC_AN_STATIC_SOURCE,"Static",SS_GRAYFRAME | SS_SUNKEN,3,3,237,181,WS_EX_TRANSPARENT
+    CTEXT           "Source",IDC_AN_STATIC_TTLSOURCE,7,7,229,14,SS_CENTERIMAGE
+    COMBOBOX        IDC_AN_COMBO_SOURCE,7,23,229,63,CBS_DROPDOWNLIST | CBS_OWNERDRAWFIXED | CBS_HASSTRINGS | WS_VSCROLL | WS_TABSTOP
+    CTEXT           "Segments",IDC_AN_STATIC_TTLSEGMENT,123,39,113,14,SS_CENTERIMAGE
+    CTEXT           "Terrains",IDC_AN_STATIC_TTLTERRAIN,7,39,113,14,SS_CENTERIMAGE
+    CTEXT           "Type de poids",IDC_AN_STATIC_TTLPOIDS,123,90,113,14,SS_CENTERIMAGE
+    LISTBOX         IDC_AN_LIST_TERRAIN,7,55,113,125,LBS_MULTIPLESEL | LBS_OWNERDRAWVARIABLE | LBS_HASSTRINGS | LBS_NOINTEGRALHEIGHT | NOT WS_BORDER | WS_VSCROLL | WS_TABSTOP,WS_EX_STATICEDGE
+    LISTBOX         IDC_AN_LIST_SEGMENT,123,55,113,32,LBS_MULTIPLESEL | LBS_OWNERDRAWVARIABLE | LBS_HASSTRINGS | LBS_NOINTEGRALHEIGHT | NOT WS_BORDER | WS_VSCROLL | WS_TABSTOP,WS_EX_STATICEDGE
+    LISTBOX         IDC_AN_LIST_POIDS,123,106,113,74,LBS_OWNERDRAWVARIABLE | LBS_HASSTRINGS | LBS_NOINTEGRALHEIGHT | NOT WS_BORDER | WS_VSCROLL | WS_TABSTOP,WS_EX_STATICEDGE
+    PUSHBUTTON      "OK",IDOK,243,7,59,14,BS_FLAT
+    PUSHBUTTON      "Annuler",IDCANCEL,243,24,59,14,BS_FLAT
+END
+
+IDD_AN_DLG_PARAMS DIALOGEX 0, 0, 268, 197
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Définir la structure du tableau"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    CONTROL         "",IDC_AN_STATIC_BASE100,"Static",SS_GRAYFRAME | SS_SUNKEN,3,3,201,35,WS_EX_TRANSPARENT
+    CTEXT           "Référence base 100",IDC_AN_STATIC_TTLBASE100,7,7,193,14,SS_CENTERIMAGE
+    CONTROL         "Univers ciblé",IDC_AN_BASE_UNIVERS,"Button",BS_AUTORADIOBUTTON,7,24,96,10,WS_EX_TRANSPARENT
+    CONTROL         "Niche ciblé",IDC_AN_BASE_NICHE,"Button",BS_AUTORADIOBUTTON,106,24,95,10,WS_EX_TRANSPARENT
+    CONTROL         "",IDC_AN_STATIC_OPTIONS,"Static",SS_GRAYFRAME | SS_SUNKEN,3,41,201,152,WS_EX_TRANSPARENT
+    CTEXT           "En ligne",IDC_AN_STATIC_TTLOPTIONS,8,45,63,14,SS_CENTERIMAGE
+    CONTROL         "Niche",IDC_AN_OPTION_NICHE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,8,62,58,10,WS_EX_TRANSPARENT
+    CONTROL         "Contre niche",IDC_AN_OPTION_CONTRENICHE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,8,74,58,10
+    CONTROL         "Item moyen",IDC_AN_OPTION_ITEMMOYEN,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,8,86,58,10
+    CONTROL         "Items",IDC_AN_OPTION_ITEMS,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,8,98,58,10
+    CTEXT           "Nom des grandeurs",IDC_AN_STATIC_TTLGRANDEURS,8,114,95,14,SS_CENTERIMAGE
+    CONTROL         "En ligne",IDC_AN_GRANDEUR_LIGNE,"Button",BS_AUTORADIOBUTTON,7,131,96,11
+    CONTROL         "En colonne",IDC_AN_GRANDEUR_COLONNE,"Button",BS_AUTORADIOBUTTON,7,144,96,11
+    CTEXT           "Nom des terrains",IDC_AN_STATIC_TTLTERRAINS,106,114,95,14,SS_CENTERIMAGE
+    CONTROL         "En ligne",IDC_AN_TERRAIN_LIGNE,"Button",BS_AUTORADIOBUTTON,106,131,95,11
+    CONTROL         "En colonne",IDC_AN_TERRAIN_COLONNE,"Button",BS_AUTORADIOBUTTON,106,144,95,11
+    CTEXT           "Linéarisation",IDC_AN_STATIC_TTLSURLIGNAGE,8,158,193,14,SS_CENTERIMAGE
+    CONTROL         "Par page",IDC_AN_SURLIGNAGE_PAGE,"Button",BS_AUTORADIOBUTTON,7,176,96,11
+    CONTROL         "Globalité du tableau",IDC_AN_SURLIGNAGE_GLOBAL,"Button",BS_AUTORADIOBUTTON,106,176,95,11
+    DEFPUSHBUTTON   "OK",IDOK,208,8,56,14,BS_FLAT
+    PUSHBUTTON      "Annuler",IDCANCEL,208,24,56,14,BS_FLAT
+    CTEXT           "En colonne",IDC_AN_STATIC_TTLOPTIONS2,74,45,62,14,SS_CENTERIMAGE
+    CTEXT           "En page",IDC_AN_STATIC_TTLOPTIONS3,139,45,62,14,SS_CENTERIMAGE
+    CONTROL         "Niche",IDC_AN_OPTION_NICHE2,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,74,62,58,10,WS_EX_TRANSPARENT
+    CONTROL         "Contre niche",IDC_AN_OPTION_CONTRENICHE2,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,74,74,58,10
+    CONTROL         "Item moyen",IDC_AN_OPTION_ITEMMOYEN2,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,74,86,58,10
+    CONTROL         "Items",IDC_AN_OPTION_ITEMS2,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,74,98,58,10
+    CONTROL         "Niche",IDC_AN_OPTION_NICHE3,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,140,62,58,10,WS_EX_TRANSPARENT
+    CONTROL         "Contre niche",IDC_AN_OPTION_CONTRENICHE3,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,140,74,58,10
+    CONTROL         "Item moyen",IDC_AN_OPTION_ITEMMOYEN3,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,140,86,58,10
+    CONTROL         "Items",IDC_AN_OPTION_ITEMS3,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,140,98,58,10
+END
+
+IDD_AN_DLG_SURLIGNAGE DIALOGEX 0, 0, 334, 138
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_POPUP | WS_THICKFRAME
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    CTEXT           "Surlignage",IDC_AN_LABEL1,7,6,285,14,SS_CENTERIMAGE
+    CONTROL         "",IDC_AN_STATIC_BOX1,"Static",SS_ETCHEDFRAME | SS_SUNKEN,3,3,328,132,WS_EX_TRANSPARENT
+    PUSHBUTTON      "X",IDC_AN_BUT_EXIT1,311,6,16,14,BS_FLAT
+    CONTROL         "",IDC_AN_LIST_ITEMS1,"SysListView32",LVS_REPORT | LVS_ALIGNLEFT | LVS_OWNERDATA | WS_BORDER | WS_TABSTOP,7,23,320,109
+    PUSHBUTTON      "",IDC_AN_BUT_EXPORT,294,6,15,14,BS_FLAT
+    CTEXT           "Sélectionner une grandeur en cliquant sur une cellule du tableau",IDC_INFO_TEXT_FILIGRAMME,54,73,235,13,0,WS_EX_TRANSPARENT
+END
+
+IDD_AN_DLG_PARAMS_TRI DIALOGEX 0, 0, 254, 187
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Paramètres tri"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    LISTBOX         IDC_AN_LIST_TRI_GRANDEURS,133,65,109,54,LBS_NOINTEGRALHEIGHT | NOT WS_BORDER | WS_VSCROLL | WS_TABSTOP,WS_EX_STATICEDGE
+    CTEXT           "Grandeurs de tri",IDC_AN_STATIC_TTL_GRANDEURTRI,133,50,110,14,SS_CENTERIMAGE
+    LISTBOX         IDC_AN_LIST_TRI_RESULTATS,11,65,110,54,LBS_NOINTEGRALHEIGHT | NOT WS_BORDER | WS_VSCROLL | WS_TABSTOP,WS_EX_STATICEDGE
+    CTEXT           "Résultats cellule",IDC_AN_STATIC_TTL_RESULTTRI,11,50,110,14,SS_CENTERIMAGE
+    DEFPUSHBUTTON   "OK",IDOK,141,167,50,14
+    PUSHBUTTON      "Annuler",IDCANCEL,197,167,50,14
+    CONTROL         "",IDC_AN_STATIC_ORDRE_TRI,"Static",SS_GRAYFRAME | SS_SUNKEN,7,7,240,37,WS_EX_TRANSPARENT
+    CONTROL         "",IDC_AN_STATIC_GRANDEUR_TRI,"Static",SS_GRAYFRAME | SS_SUNKEN,129,47,118,77,WS_EX_TRANSPARENT
+    CONTROL         "",IDC_AN_STATIC_RESULT_TRI,"Static",SS_GRAYFRAME | SS_SUNKEN,7,46,119,77,WS_EX_TRANSPARENT
+    CONTROL         "",IDC_AN_STATIC_NATURE_TRI,"Static",SS_GRAYFRAME | SS_SUNKEN,7,126,240,37,WS_EX_TRANSPARENT
+    CTEXT           "Ordre de tri",IDC_AN_STATIC_TTL_ORDRETRI,11,9,231,13,SS_CENTERIMAGE
+    CTEXT           "Nature de tri",IDC_AN_STATIC_TTL_NATURETRI,11,129,232,14,SS_CENTERIMAGE
+    CONTROL         "Croissant",IDC_AN_RAD_CROISSANT,"Button",BS_AUTORADIOBUTTON,13,27,53,10
+    CONTROL         "Décroissant",IDC_AN_RAD_DECROISSANT,"Button",BS_AUTORADIOBUTTON,73,27,53,10
+    CONTROL         "Aucun tri",IDC_AN_RAD_AUCUNTRI,"Button",BS_AUTORADIOBUTTON,131,27,53,10
+    CONTROL         "Global",IDC_AN_RAD_GLOBAL,"Button",BS_AUTORADIOBUTTON,14,147,53,10
+    CONTROL         "Par question",IDC_AN_RAD_PARBLOC,"Button",BS_AUTORADIOBUTTON,73,147,53,10
+END
+
+IDD_AN_DLG_PARAMS_SURLIGN DIALOGEX 0, 0, 268, 179
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Paramètres de surlignage"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "OK",ID_AN_OK_SURLIGN,176,160,41,14
+    PUSHBUTTON      "Annuler",ID_AN_CANCEL_SURLIGN,219,160,41,14
+    CONTROL         "",IDC_AN_STATIC_OBJETS_SURLIGN,"Static",SS_GRAYFRAME | SS_SUNKEN,7,7,254,43,WS_EX_TRANSPARENT
+    CTEXT           "Résultats Cellules",IDC_AN_STATIC_TTL_RES_SURLIGN,11,10,121,13,SS_CENTERIMAGE
+    PUSHBUTTON      "Définir",IDC_AN_DEFDEFAUT,180,118,36,14
+    COMBOBOX        IDC_AN_COMBO_RES_SURLIGN,18,28,110,84,CBS_DROPDOWN | WS_VSCROLL | WS_TABSTOP
+    COMBOBOX        IDC_AN_COMBO_GRD_SURLIGN,140,28,110,68,CBS_DROPDOWN | WS_VSCROLL | WS_TABSTOP
+    CONTROL         "",IDC_AN_STATIC_VAL_SURLIGN,"Static",SS_GRAYFRAME | SS_SUNKEN,7,52,165,122,WS_EX_TRANSPARENT
+    CTEXT           "Valeurs / Bornes",IDC_AN_STATIC_TTL_VAL_SURLIGN,14,56,152,13,SS_CENTERIMAGE
+    EDITTEXT        IDC_AN_EDIT_VALEUR_SURLIGN,112,95,42,12,ES_AUTOHSCROLL
+    CONTROL         "De",IDC_AN_RAD_BORNEINF,"Button",BS_AUTORADIOBUTTON,18,144,26,10
+    EDITTEXT        IDC_AN_EDIT_BORNEINF_SURLIGN,48,143,42,12,ES_AUTOHSCROLL
+    LTEXT           " à",IDC_AN_STATIC_ENTRE_BORNES,102,144,8,8
+    EDITTEXT        IDC_AN_EDIT_BORNESUP_SURLIGN,112,143,42,12,ES_AUTOHSCROLL
+    CONTROL         "Supérieur à >",IDC_AN_RAD_SUP,"Button",BS_AUTORADIOBUTTON,18,75,68,10
+    CONTROL         "Supérieur ou égal >=",IDC_AN_RAD_SUPEGAL,"Button",BS_AUTORADIOBUTTON,18,90,82,10
+    CONTROL         "Inférieur à <",IDC_AN_RAD_INF,"Button",BS_AUTORADIOBUTTON,18,105,80,10
+    CONTROL         "Inférieur ou égal à <=",IDC_AN_RAD_INFEGAL,"Button",BS_AUTORADIOBUTTON,18,119,86,10
+    CTEXT           "Grandeurs",IDC_AN_STATIC_TTL_GRD_SURLIGN,136,10,121,13,SS_CENTERIMAGE
+    PUSHBUTTON      "Modifier",IDC_AN_MODIF_COULEUR,209,72,48,14
+    CONTROL         "Ext. Bornes",IDC_AN_CHK_OUTBORNES,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,108,159,55,8
+    CONTROL         "",IDC_AN_STATIC_COULEUR_SURLIGN,"Static",SS_GRAYFRAME | SS_SUNKEN,176,52,85,40,WS_EX_TRANSPARENT
+    CTEXT           "Couleur",IDC_AN_STATIC_TTL_COULEUR,180,56,77,13,SS_CENTERIMAGE
+    LTEXT           "",IDC_AN_CADRE_COULEUR,179,72,23,14,WS_BORDER
+    PUSHBUTTON      "Effacer",IDC_AN_EFFACER_DEFDEFAUT,220,118,37,14,NOT WS_VISIBLE
+    LTEXT           "%",IDC_AN_PRCT_BORNEINF,93,145,9,10
+    LTEXT           "%",IDC_AN_PRCT_BORNESUP,157,145,8,10
+    LTEXT           "%",IDC_AN_PRCT_VALEUR,157,97,8,10
+    PUSHBUTTON      "Afficher",IDC_AN_SET_PARAM_DEFAUT,220,118,37,14
+    CONTROL         "",IDC_AN_STATIC_CONFIG_DEFAUT,"Static",SS_GRAYFRAME | SS_SUNKEN,176,96,85,43,WS_EX_TRANSPARENT
+    CTEXT           "Config. par défaut",IDC_AN_STATIC_TTL_CONFIGDEF,180,101,77,13,SS_CENTERIMAGE
+    GROUPBOX        "",IDC_AN_STATIC_CADRE_VAL_SURLIGN,14,71,152,63,0,WS_EX_TRANSPARENT
+    GROUPBOX        "",IDC_AN_STATIC_CADRE_BORNES_SURLIGN,14,135,152,35,0,WS_EX_TRANSPARENT
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO 
+BEGIN
+    IDD_AN_DLG_ANALYSEUR, DIALOG
+    BEGIN
+        LEFTMARGIN, 4
+        RIGHTMARGIN, 479
+        BOTTOMMARGIN, 351
+    END
+
+    IDD_AN_ABOUTBOX, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 228
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 48
+    END
+
+    IDD_AN_DLG_CIBLE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 183
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 191
+    END
+
+    IDD_AN_DLG_PARAMS, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 261
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 190
+    END
+
+    IDD_AN_DLG_SURLIGNAGE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 142
+    END
+
+    IDD_AN_DLG_PARAMS_TRI, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 247
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 180
+    END
+
+    IDD_AN_DLG_PARAMS_SURLIGN, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 261
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 172
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDI_AN_ICON             ICON                    "res\\Analyser.ico"
+IDI_AN_CHECKOFF         ICON                    "res\\CheckOff.ico"
+IDI_AN_CHECKON          ICON                    "res\\CheckOn.ico"
+IDI_AN_RADIOOFF         ICON                    "res\\RadioOff.ico"
+IDI_AN_RADIOON          ICON                    "res\\RadioOn.ico"
+IDI_AN_RADIOON1         ICON                    "res\\RadioOn1.ico"
+IDI_AN_RADIOOFF1        ICON                    "res\\RadioOff1.ico"
+IDI_AN_UNDO             ICON                    "res\\Undo2.ico"
+IDI_AN_RAZ              ICON                    "res\\raz.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDR_AN_MENU MENU 
+BEGIN
+    POPUP "&Tableau"
+    BEGIN
+        MENUITEM "&Nouveau",                    ID_FILE_NEW
+        MENUITEM "&Ouvrir...",                  ID_FILE_OPEN
+        MENUITEM "&Modifier...",                IDM_AN_TABLEAU_MODIFIER
+        MENUITEM "&Enregistrer",                ID_FILE_SAVE
+        MENUITEM "Enregistrer &sous...",        ID_FILE_SAVE_AS
+        MENUITEM "&Fermer",                     ID_FILE_CLOSE
+        MENUITEM SEPARATOR
+        MENUITEM "Appliquer un &canevas...",    IDM_AN_TABLEAU_APPLIQUER_CANEVAS
+        MENUITEM "Enre&gistrer un canevas...",  IDM_AN_TABLEAU_ENREGISTRER_CANEVAS
+        MENUITEM SEPARATOR
+        MENUITEM "Exporter vers un f&ichier",   IDM_AN_TABLEAU_EXPORTER_FICHIER
+        MENUITEM "Exporter vers le &presse papier", IDM_AN_TABLEAU_EXPORTER_PRESSEPAPIER
+        POPUP "Exporter vers E&xcel"
+        BEGIN
+            MENUITEM "&Avec découpage",             IDM_AN_TABLEAU_EXPORTER_EXCEL_AVECDECOUP
+            MENUITEM "Sans découpage",              IDM_AN_TABLEAU_EXPORTER_EXCEL_SANSDECOUP
+        END
+        MENUITEM "&Imprimer",                   IDM_AN_TABLEAU_IMPRIMER
+        MENUITEM SEPARATOR
+        MENUITEM SEPARATOR
+        MENUITEM "&Quitter",                    IDM_AN_TABLEAU_QUITTER
+    END
+    POPUP "&Source"
+    BEGIN
+        MENUITEM "Choisir la &source et les terrains...", IDM_AN_SOURCE_CHOISIR_TERRAINS
+        MENUITEM SEPARATOR
+        MENUITEM "Choisir les &univers...",     IDM_AN_SOURCE_CHOISIR_UNIVERS
+    END
+    POPUP "&Paramètres"
+    BEGIN
+        MENUITEM "Interpréter l'univers comme une &cible", IDM_AN_PARAMETRES_INTERPRETER_UNIVERS_COMME_CIBLE
+        MENUITEM SEPARATOR
+        MENUITEM "Définir la &structure du tableau...", IDM_AN_PARAMETRES_DEFINIR_STRUCTURE_TABLEAU
+        MENUITEM SEPARATOR
+        MENUITEM "Prendre en compte la marge d'erreur", IDM_AN_PARAMETRES_PRISE_EN_COMPTE_MARGERREUR, CHECKED
+        MENUITEM SEPARATOR
+        MENUITEM "Calculer les &Exclusifs",     ID_AN_PARAM_EXCLUSIFS
+        MENUITEM "Calculer les &Dupliquants",   ID_AN_PARAM_DUPLICANTS
+        MENUITEM SEPARATOR
+        MENUITEM "Modifier la &Base 100",       ID_AN_PARAM_BASE100
+        MENUITEM SEPARATOR
+        POPUP "Calcul Moyenne"
+        BEGIN
+            MENUITEM "0 &inclus",                   ID_AN_PARAM_MOYENNE_0_INCLUS, CHECKED
+            MENUITEM "0 &exclus",                   ID_AN_PARAM_MOYENNE_0_EXCLUS
+        END
+        POPUP "Mode Moyenne"
+        BEGIN
+            MENUITEM "Moyenne &Tableau",            ID_AN_PARAM_MOYENNE_TABLEAU
+            MENUITEM "Moyenne sur les &lignes",     ID_AN_PARAM_MOYENNE_LIGNE, CHECKED
+            MENUITEM "Moyenne sur les colonnes",    ID_AN_PARAM_MOYENNE_COLONNE
+        END
+        POPUP "Type d'indice"
+        BEGIN
+            MENUITEM "Indice &Affinité",            IDM_AN_GLOBAL_AFFINITE, CHECKED
+            MENUITEM "Pourcentage ou Indice de &structures", IDM_AN_GLOBAL_STRUCTURE
+            MENUITEM "Indice de &proximité",        IDM_AN_GLOBAL_PROXIMITY
+        END
+        MENUITEM "Force Item Quanti",           IDM_AN_PARAMETRES_FORCE_QUANTI
+    END
+    POPUP "Outils"
+    BEGIN
+        MENUITEM "Linéarisation du tableau",    IDM_AN_OUTILS_LINEARISATION
+        MENUITEM "Surlignage...",               IDM_AN_OUTILS_SURLIGNAGE
+        MENUITEM "&Transposer",                 IDM_AN_TABLEAU_TRANSPOSER
+    END
+    POPUP "&Affichage"
+    BEGIN
+        MENUITEM SEPARATOR
+        POPUP "Disposition résultats"
+        BEGIN
+            MENUITEM "En &Lignes",                  IDM_AN_DISPO_LIGNES, CHECKED
+            MENUITEM "En &Colonnes",                IDM_AN_DISPO_COLONNES
+            MENUITEM "2 x 2",                       IDM_AN_DISPO_2PAR2
+        END
+        MENUITEM SEPARATOR
+        POPUP "Affichage effectif en milliers"
+        BEGIN
+            MENUITEM "&Oui",                        ID_AN_PARAM_AFFICH_EFFECTIF_MILLIERS, CHECKED
+            MENUITEM "&Non",                        ID_AN_PARAM_AFFICH_EFFECTIF_GLOBAL
+        END
+        POPUP "Affichage Moyenne"
+        BEGIN
+            MENUITEM "Avec 2 décimales",            ID_AN_PARAM_AFFICH_MOYENNE_2DEC, CHECKED
+            MENUITEM "Sans décimale",               ID_AN_PARAM_AFFICH_MOYENNE_SANSDEC
+        END
+        MENUITEM SEPARATOR
+        POPUP "&Choisir la palette de couleurs"
+        BEGIN
+            MENUITEM "&Vert bouteille",             IDM_AN_PALETTE_1
+            MENUITEM "&Emeraude",                   IDM_AN_PALETTE_2
+            MENUITEM "&Bleu pastel",                IDM_AN_PALETTE_3
+            MENUITEM "&Ocean",                      IDM_AN_PALETTE_4
+            MENUITEM "&Lilas",                      IDM_AN_PALETTE_5
+            MENUITEM "&Sahara",                     IDM_AN_PALETTE_6
+            MENUITEM "&Terre de Sienne",            IDM_AN_PALETTE_7
+            MENUITEM "R&ubis",                      IDM_AN_PALETTE_8
+            MENUITEM "&Gris souris",                IDM_AN_PALETTE_9
+            MENUITEM "&Rose",                       IDM_AN_PALETTE_10
+            MENUITEM "Rose &kaki",                  IDM_AN_PALETTE_11
+            MENUITEM "Gr&is Rose",                  IDM_AN_PALETTE_12
+            MENUITEM "S&able",                      IDM_AN_PALETTE_13
+            MENUITEM "&CafeChocolat",               IDM_AN_PALETTE_14
+            MENUITEM "&Bleu Clair",                 IDM_AN_PALETTE_15
+        END
+    END
+    POPUP "&?"
+    BEGIN
+        MENUITEM "&A propos de...",             IDM_AN_ABOUTBOX
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDB_AN_MULTISEL         BITMAP                  "res\\multisel.bmp"
+IDB_AN_EXPORT_SURLIGN   BITMAP                  "res\\clipboard.bmp"
+IDB_AN_PUPITRE          BITMAP                  "res\\PupitreTC.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Cursor
+//
+
+IDC_AN_BASE100          CURSOR                  "res\\fleche.cur"
+IDC_AN_EXCL             CURSOR                  "res\\an_base1.cur"
+IDC_AN_DUP              CURSOR                  "res\\an_excl1.cur"
+IDC_AN_TRI              CURSOR                  "res\\an_tri.cur"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE 
+BEGIN
+    IDS_AN_NICHE            "Niche"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_AN_REPONDANTS       "Répondants"
+    IDS_AN_GLISSE           "Un glissé-lâché permet d'effacer certains éléments seulement et de les déplacer d'une colonne à l'autre"
+    IDS_AN_ABR_EFFECTIVE    "E.(000)"
+    IDS_AN_ITEMDUPLIQUANT   "Dupliquants"
+    IDS_AN_CTRL_INDEXDROPDOWNLIST "Indexed Combo Ctrl for Grid"
+    IDS_AN_LINE             "Lignes"
+    IDS_AN_COLUMN           "Colonnes"
+    IDS_AN_ABR_NBCAS        "N. cas"
+    IDS_AN_AVERAGEQUANTUM   "Valeur moyenne"
+    IDS_AN_CENTRAGE         "Centrage % cible"
+    IDS_AN_EFFECTIVE        "Effectif (000)"
+    IDS_AN_NBCAS            "Nombre de cas"
+    IDS_AN_PENETRATION      "Pénétration % cible"
+    IDS_AN_QUANTITY         "Quant. agrégée (000)"
+    IDS_AN_TITRE_CHOISIR_UNIVERS "Choisir les univers"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_AN_CONTRENICHE      "Contre niche"
+    IDS_AN_ITEMEXCLUSIVE    "Exclusifs"
+    IDS_AN_ITEMMOYEN        "Item moyen"
+    IDS_AN_ABR_GLOBAL       "G%"
+    IDS_AN_ABR_QUANTITY     "Q.(000)"
+    IDS_AN_ABR_CORRELATION  "IA"
+    IDS_AN_ABR_AVERAGEQUANTUM "V.moy."
+    IDS_AN_ABR_PROXIMITY    "IP"
+    IDS_AN_ABR_PENETRATION  "P%"
+    IDS_AN_SITES            "Sites"
+    IDS_AN_ABR_CENTRAGE     "C%"
+    IDS_AN_ABR_EFFECTIVEBRUT "Eff."
+    IDS_AN_EFFECTIVEBRUT    "Effectif"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_AN_CONCOMITENCE     "Indice C. % cible"
+    IDS_AN_COEFFYULE        "Indice P. % cible"
+    IDS_AN_APPNAME          "Tris croisés"
+    IDS_AN_ABR_CONCOMITENCE "IC"
+    IDS_AN_TITRE_CHOISIR_CIBLES "Choisir les cibles"
+    IDS_AN_ABR_COEFFYULE    "IP"
+    IDS_AN_NONAME           "Sans nom"
+    IDS_AN_LABEL_UNIVERS    "Univers"
+    IDS_AN_NICHECIBLE       "Niche ciblé"
+    IDS_AN_MENU_CHOISIR_UNIVERS "Choisir les &univers..."
+    IDS_AN_MENU_CHOISIR_CIBLES "Choisir les &cibles..."
+    IDS_AN_ZSCORE           "Score"
+    IDS_AN_CORRELATION      "Indice de corrélation entre items"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_AN_ABR_ZSCORE       "Score"
+    IDS_AN_PROXIMITY        "Indice de proximité entre items"
+    IDS_AN_INDAFFINITE      "Indice Affinité"
+    IDS_AN_SAVETABLEAU      "Voulez vous enregistrer le tableau en cours?"
+    IDS_AN_ABR_INDAFFINITE  "IA"
+    IDS_AN_PAGE             "Pages"
+    IDS_AN_RESULTAT         "Résultat"
+    IDS_AN_MESS_SELQULIGNE  "Veuillez sélectionner des questions à mettre en ligne"
+    IDS_AN_LABEL_CIBLES     "Cibles"
+    IDS_AN_MESS_SELQUCOL    "Veuillez sélectionner des questions à mettre en colonne"
+    IDS_AN_MESS_SELQUPAGE   "Veuillez sélectionner des questions à mettre en page"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_AN_INDGLOBAL        "Pourcentages ou indices de structure"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_AN_LABEL_GRANDEUR   "Grandeur"
+    IDS_AN_AVERAGEQUANTUM_P00 "Valeur moyenne (.00)"
+    IDS_AN_ABR_AVERAGEQUANTUM_P00 "V.Moy.(.00)"
+    IDS_AN_ABR_NOTHING      "-"
+    IDS_AN_MESS_AUCUN_ITEM_IDENT "Aucun item identique n'a été trouvé"
+    IDS_AN_LABEL_GLOBAL     "Global"
+    IDS_AN_LABEL_INDICE_PROXIMITE "Indice proximité"
+    IDS_AN_LABEL_INDICE_CORRELATION "Indice corrélation"
+    IDS_AN_LABEL_INDICE_STRUCTURE "Indice structure"
+    IDS_AN_LABEL_H_CORRELATION "H% Corrélation"
+    IDS_AN_LABEL_H_STRUCTURE "H% Structure"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_AN_ABR_HORIZ        "H%"
+    IDS_AN_ABR_VERT         "V%"
+    IDS_AN_NON_DEFINI       "Non défini"
+END
+
+#endif    // French (France) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////
+// Neutral (Sys. Default) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_NEUSD)
+#ifdef _WIN32
+LANGUAGE LANG_NEUTRAL, SUBLANG_SYS_DEFAULT
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_AN_DLG_SITE DIALOGEX 0, 0, 305, 198
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Sélection des sites"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,238,3,60,14,BS_FLAT
+    PUSHBUTTON      "Annuler",IDCANCEL,238,20,60,14,BS_FLAT
+    LISTBOX         IDC_AN_LIST_SITES,6,24,223,165,LBS_SORT | LBS_OWNERDRAWVARIABLE | LBS_NOINTEGRALHEIGHT | LBS_EXTENDEDSEL | NOT WS_BORDER | WS_VSCROLL | WS_TABSTOP,WS_EX_STATICEDGE
+    CTEXT           "Site",IDC_AN_STATIC_TTLSITE,7,6,79,15,SS_CENTERIMAGE
+    EDITTEXT        IDC_AN_EDIT_SEARCH,89,7,140,14,ES_AUTOHSCROLL
+    CONTROL         "",IDC_AN_STATIC_SITE,"Static",SS_GRAYFRAME | SS_SUNKEN,3,3,229,190,WS_EX_TRANSPARENT
+    PUSHBUTTON      "Annuler filtre",IDC_AN_ALL_SITES,238,162,60,14,BS_FLAT
+    PUSHBUTTON      "Annuler sélection",IDC_AN_NOSEL_SITE,238,179,60,14,BS_FLAT
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO 
+BEGIN
+    IDD_AN_DLG_SITE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 298
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 191
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+#endif    // Neutral (Sys. Default) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.K.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENG)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_UK
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDR_AN_MENU_GLOBAL MENU 
+BEGIN
+    POPUP "Global"
+    BEGIN
+        MENUITEM "Indice de corrélation",       IDM_AN_GLOBAL_AFFINITE
+        MENUITEM "Pourcentages ou indices de structure", IDM_AN_GLOBAL_STRUCTURE
+        MENUITEM "Indice de proximité",         IDM_AN_GLOBAL_PROXIMITY
+        MENUITEM "Score",                       IDM_AN_GLOBAL_ZSCORE
+    END
+END
+
+#endif    // English (U.K.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+LANGUAGE 9, 1
+#pragma code_page(1252)
+#include "res\AnalyseurExt.rc2"  // non-Microsoft Visual C++ edited resources
+#include "afxres.rc"     // Standard components
+#endif
+#include "grid\gxres.rc"
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

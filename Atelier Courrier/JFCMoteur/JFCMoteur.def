@@ -1,0 +1,6 @@
+; JFCMoteur.def : déclare les paramètres de module pour la DLL.
+
+LIBRARY      "JFCMoteur"
+
+EXPORTS
+    ; Les exportations explicites peuvent être placées ici

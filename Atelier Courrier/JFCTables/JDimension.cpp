@@ -1,0 +1,24 @@
+// JDimension.cpp: implementation of the JDimension class.
+//
+//////////////////////////////////////////////////////////////////////
+
+#include "stdafx.h"
+#include "JDimension.h"
+
+
+#ifdef _DEBUG
+#define new DEBUG_NEW
+#endif
+
+//////////////////////////////////////////////////////////////////////
+// Construction/Destruction
+//////////////////////////////////////////////////////////////////////
+
+JDimension::JDimension(JUnt32 id, const JChar* lbl) : IElem(id, lbl)
+{
+}
+
+
+JDimension::~JDimension()
+{
+}

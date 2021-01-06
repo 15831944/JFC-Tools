@@ -1,0 +1,6 @@
+; JFCOffre.def : déclare les paramètres de module pour la DLL.
+
+LIBRARY      "JFCOffre"
+
+EXPORTS
+    ; Les exportations explicites peuvent être placées ici

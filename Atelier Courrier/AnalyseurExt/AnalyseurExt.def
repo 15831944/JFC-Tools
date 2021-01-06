@@ -1,0 +1,6 @@
+; AnalyseurExt.def : Declares the module parameters for the DLL.
+
+LIBRARY      "AnalyseurExt"
+
+EXPORTS
+    ; Explicit exports can go here

@@ -1,0 +1,14 @@
+REGEDIT
+; Ce fichier .REG peut être utilisé par votre programme d'installation.
+;   Si aucun programme d'installation n'est disponible, les entrées suivantes sont
+;   automatiquement inscrites dans votre InitInstance via un appel à
+;   CWinApp::RegisterShellFileTypes et à COleObjectFactory::UpdateRegistryAll.
+
+HKEY_CLASSES_ROOT\RepItemsBuddy.Application = RepItemsBuddy Application
+HKEY_CLASSES_ROOT\RepItemsBuddy.Application\CLSID = {FFD031BB-3C04-4866-9097-68BEFD040655}
+
+HKEY_CLASSES_ROOT\CLSID\{FFD031BB-3C04-4866-9097-68BEFD040655} = RepItemsBuddy Application
+HKEY_CLASSES_ROOT\CLSID\{FFD031BB-3C04-4866-9097-68BEFD040655}\ProgId = RepItemsBuddy.Application
+
+
+HKEY_CLASSES_ROOT\CLSID\{FFD031BB-3C04-4866-9097-68BEFD040655}\LocalServer32 = RepItemsBuddy.EXE

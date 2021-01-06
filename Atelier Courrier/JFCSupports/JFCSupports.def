@@ -1,0 +1,6 @@
+; JFCSupports.def : déclare les paramètres de module pour la DLL.
+
+LIBRARY      "JFCSupports"
+
+EXPORTS
+    ; Les exportations explicites peuvent être placées ici

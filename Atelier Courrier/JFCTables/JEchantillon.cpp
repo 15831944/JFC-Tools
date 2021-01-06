@@ -1,0 +1,23 @@
+// JEchantillon.cpp: implementation of the JEchantillon class.
+//
+//////////////////////////////////////////////////////////////////////
+
+#include "stdafx.h"
+#include "JEchantillon.h"
+
+
+#ifdef _DEBUG
+#define new DEBUG_NEW
+#endif
+
+//////////////////////////////////////////////////////////////////////
+// Construction/Destruction
+//////////////////////////////////////////////////////////////////////
+
+JEchantillon::JEchantillon(JUnt32 id, const JChar* lbl) : IElem(id, lbl)
+{
+}
+
+JEchantillon::~JEchantillon()
+{
+}

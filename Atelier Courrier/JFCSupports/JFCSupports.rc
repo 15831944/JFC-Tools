@@ -1,0 +1,145 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// Français (France) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_FRA)
+#ifdef _WIN32
+LANGUAGE LANG_FRENCH, SUBLANG_FRENCH
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDI_SU_ICON_ALL         ICON                    "res\\All.ico"
+IDI_SU_ICON_C_BGREEN    ICON                    "res\\Centre_B_Green.ico"
+IDI_SU_ICON_C_BLUE      ICON                    "res\\Centre_Blue.ico"
+IDI_SU_ICON_C_BROWN     ICON                    "res\\Centre_Brown.ico"
+IDI_SU_ICON_C_GREY      ICON                    "res\\Centre_Grey.ico"
+IDI_SU_ICON_C_LGREEN    ICON                    "res\\Centre_L_Green.ico"
+IDI_SU_ICON_C_ORANGE    ICON                    "res\\Centre_Orange.ico"
+IDI_SU_ICON_F_BGREEN    ICON                    "res\\Famille_B_Green.ico"
+IDI_SU_ICON_F_BLUE      ICON                    "res\\Famille_Blue.ico"
+IDI_SU_ICON_F_BROWN     ICON                    "res\\Famille_Brown.ico"
+IDI_SU_ICON_F_GREY      ICON                    "res\\Famille_Grey.ico"
+IDI_SU_ICON_F_LGREEN    ICON                    "res\\Famille_L_Green.ico"
+IDI_SU_ICON_F_ORANGE    ICON                    "res\\Famille_Orange.ico"
+IDI_SU_ICON_TITRE0      ICON                    "res\\titre0.ico"
+IDI_SU_ICON_TITRE1      ICON                    "res\\titre1.ico"
+IDI_SU_ICON_TITRE2      ICON                    "res\\titre2.ico"
+IDI_SU_ICON_F_ROSE      ICON                    "res\\Famille_Rose.ico"
+IDI_SU_ICON_C_ROSE      ICON                    "res\\Centre_Rose.ico"
+IDI_SU_ICON_F_ICE_BLUE  ICON                    "res\\Famille_IceBlue.ico"
+IDI_SU_ICON_C_ICE_BLUE  ICON                    "res\\Centre_IceBlue.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDR_SU_MENUCTXTREE MENU 
+BEGIN
+    POPUP "CtxMenuFamille"
+    BEGIN
+        // MENUITEM "Ajouter un Centre",           IDM_SU_CTXFAMILLE_ADDC
+        MENUITEM "Renommer",                    IDM_SU_CTXFAMILLE_RENAME
+        MENUITEM "Supprimer",                   IDM_SU_CTXFAMILLE_SUPPR
+    END
+    POPUP "CtxMenuCentre"
+    BEGIN
+        MENUITEM "Renommer",                    IDM_SU_CTXCENTRE_RENAME
+        MENUITEM "Supprimer",                   IDM_SU_CTXCENTRE_SUPPR
+    END
+    POPUP "CtxMenuSupport"
+    BEGIN
+        MENUITEM "Retirer",                     IDM_SU_CTXSUPPORT_SUPPR
+    END
+    POPUP "CtxMenuOut"
+    BEGIN
+        MENUITEM "Ajouter une Famille",         IDM_SU_CTXALL_ADDF
+        MENUITEM "Tout Supprimer",              IDM_SU_CTXALL_SUPPR
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE 
+BEGIN
+    IDS_SU_SUPPRALLREGROUP  "Voulez vous supprimer toutes les Familles avec leur descendance ?"
+    IDS_SU_SUPPRCENTRE      "Voulez vous supprimer le Centre d'intérêt et sa descendance ?"
+    IDS_SU_SUPPRFAMILLE     "Voulez vous supprimer la Famille et sa descendance ?"
+    IDS_SU_SUPPRSUPPORT     "Voulez vous retirer le Support ?"
+    IDS_SU_LBLAPPARIE       "%1 (%2, %3!d!)"
+    IDS_SU_LBLAPPARENTE     "%1, MW=%2!d!"
+    IDS_SU_TITRESNA         "Titres non attribués"
+    IDS_SU_TTFAMILLES       "Toutes familles"
+    IDS_SU_ATP              "Atelier Presse"
+    IDS_SU_LBLAPPARENTE_NOM "%1  (%2, MW=%3!d!)"
+    IDS_SU_FAMILLE_EXISTANTE "Famille déjà existante"
+    IDS_SU_CENTRE_EXISTANTE "Centre déjà existant"
+    IDS_SU_NEW_CENTRE       "Nouveau Centre"
+    IDS_SU_NEW_FAMILLE      "Nouvelle Famille"
+END
+
+#endif    // Français (France) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

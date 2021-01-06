@@ -1,0 +1,322 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// French (France) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_FRA)
+#ifdef _WIN32
+LANGUAGE LANG_FRENCH, SUBLANG_FRENCH
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_FRA)\r\n"
+    "LANGUAGE 12, 1\r\n"
+    "#pragma code_page(1252)\r\n"
+    "#include ""res\\Atelier Presse.rc2""  // ressources non modifiées par Microsoft Visual C++\r\n"
+    "#include ""afxres.rc""         // Composants standard\r\n"
+    "#endif\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_ATP_MAINFRAME       ICON                    "res\\Atelier Presse.ico"
+IDI_ATP_ANALYSEUR       ICON                    "res\\Analyser.ico"
+IDI_ATP_REPSUPPORT      ICON                    "res\\RepSupports.ico"
+IDI_ATP_CREUSET         ICON                    "res\\Creuset.ico"
+IDI_ATP_REPITEM         ICON                    "res\\RepItems.ico"
+IDI_ATP_FILE2           ICON                    "res\\file2.ico"
+IDI_ATP_FILE1           ICON                    "res\\file.ico"
+IDI_ATP_NOMENCL         ICON                    "res\\Nomenclature.ico"
+IDI_ATP_FOLDER          ICON                    "res\\Fold.ico"
+IDI_ATP_CHOIXSUPPORT    ICON                    "res\\ChoixSupports.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_ABOUTBOX DIALOGEX 0, 0, 538, 262
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME
+CAPTION "À propos de Atelier Presse"
+FONT 8, "MS Shell Dlg", 0, 0, 0x1
+BEGIN
+    CONTROL         "",IDC_ATP_EXPLORER,
+                    "{8856F961-340A-11D0-A96B-00C04FD705A2}",WS_TABSTOP,1,7,535,251
+END
+
+IDD_ATP_DIALOG DIALOGEX 0, 0, 143, 142
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_MINIMIZEBOX | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_APPWINDOW
+CAPTION "Atelier Presse"
+MENU IDR_ATP_MENU
+FONT 8, "MS Shell Dlg", 0, 0, 0x1
+BEGIN
+    PUSHBUTTON      "Grille calendaire",IDC_ATP_CREUSET,6,70,129,14
+    PUSHBUTTON      "Test de plans",IDC_ATP_PLAN,6,54,129,14
+    PUSHBUTTON      "Répertoire des items",IDC_ATP_REPITEM,6,6,129,14
+    PUSHBUTTON      "Répertoire des supports",IDC_ATP_REPSUPPORT,6,103,129,14
+    PUSHBUTTON      "Répertoire des annonceurs",IDC_ATP_NOMENCL,6,119,129,14
+    PUSHBUTTON      "Tris croisés",IDC_ATP_ANALYSEUR,6,87,129,14
+    PUSHBUTTON      "Analyse de l'offre",IDC_ATP_CHOIXSUPPORT,6,22,129,14
+    CONTROL         "",IDC_ATP_BK,"Static",SS_ETCHEDFRAME,2,2,137,135
+END
+
+IDD_ATP_DLGPATH DIALOGEX 0, 0, 407, 74
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Définir les chemins vers les données"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,348,6,54,14,BS_FLAT
+    PUSHBUTTON      "Annuler",IDCANCEL,348,23,54,14,BS_FLAT
+    CONTROL         "",IDC_ATP_BK,"Static",SS_ETCHEDFRAME,2,2,340,71
+    CTEXT           "Configuration",IDC_ATP_TTL,6,6,332,14,SS_CENTERIMAGE
+    LTEXT           "Sources    :",IDC_ATP_STATICPATHSRC,6,26,38,8
+    CTEXT           "custom",IDC_ATP_EDITPATHSRC,44,23,270,14,SS_CENTERIMAGE
+    PUSHBUTTON      "...",IDC_ATP_BTNPATHSRC,322,23,15,14
+    CTEXT           "custom",IDC_ATP_EDITPATHTRF,44,39,270,14,SS_CENTERIMAGE
+    LTEXT           "Tarifs        :",IDC_ATP_STATICPATHTRF,6,42,38,8
+    PUSHBUTTON      "...",IDC_ATP_BTNPATHTRF,322,39,15,14
+    LTEXT           "Utilisateur :",IDC_ATP_STATICPATHUSER,6,58,38,8
+    CTEXT           "custom",IDC_ATP_EDITPATHUSER,44,55,270,14,SS_CENTERIMAGE
+    PUSHBUTTON      "...",IDC_ATP_BTNPATHUSER,322,55,15,14
+END
+
+IDD_ATP_SEUILS DIALOGEX 0, 0, 257, 127
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Définir les seuils statistiques"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,201,7,50,14,BS_FLAT
+    PUSHBUTTON      "Annuler",IDCANCEL,201,24,50,14,BS_FLAT
+    CONTROL         "",IDC_FD_BK,"Static",SS_ETCHEDFRAME,3,3,193,60
+    CTEXT           "Seuils statistiques en nb de cas pour les %",IDC_FD_TTL,7,7,185,14,SS_CENTERIMAGE
+    EDITTEXT        IDC_FD_SEUILA,158,28,31,12,ES_CENTER | ES_AUTOHSCROLL | ES_NUMBER
+    EDITTEXT        IDC_FD_SEUILL,158,45,31,12,ES_CENTER | ES_AUTOHSCROLL | ES_NUMBER
+    LTEXT           "Avertissement (résultat en rouge) :",IDC_FD_TXT,13,27,139,13,SS_CENTERIMAGE
+    LTEXT           "Limite d'utilisation (indiqué par un #) :",IDC_FD_TXT2,13,45,138,13,SS_CENTERIMAGE
+    CONTROL         "",IDC_FD_BK_MARGE_ERREUR,"Static",SS_ETCHEDFRAME,3,65,193,60
+    CTEXT           "Marge d'erreur en % sur les effectifs",IDC_FD_TTL_MARGE_ERREUR,7,70,185,14,SS_CENTERIMAGE
+    EDITTEXT        IDC_FD_SEUIL_MARGERREUR_UTIL,158,91,23,12,ES_CENTER | ES_AUTOHSCROLL | ES_NUMBER
+    EDITTEXT        IDC_FD_SEUIL_MARGERREUR_APPLI,158,108,23,12,ES_CENTER | ES_AUTOHSCROLL | ES_NUMBER
+    LTEXT           "Seuil d'alerte (résultat en rouge) :",IDC_FD_TXT3,13,90,139,13,SS_CENTERIMAGE
+    LTEXT           "Seuil rédhibitoire (indiqué par ***) : ",IDC_FD_TXT4,13,108,138,13,SS_CENTERIMAGE
+    LTEXT           "%",IDC_PRCT_MARGE_UTIL,184,92,8,8
+    LTEXT           "%",IDC_PRCT_MARGE_APPLI,184,110,8,8
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 2,6,2,0
+ PRODUCTVERSION 2,6,2,0
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040c04e4"
+        BEGIN
+            VALUE "CompanyName", "JFC Informatique & Média"
+            VALUE "FileDescription", "Atelier Presse"
+            VALUE "FileVersion", "2, 6, 4, 0"
+            VALUE "InternalName", "Atelier Presse.exe"
+            VALUE "LegalCopyright", "Copyright (C) JFC Informatique & Média. Tous droits réservés. 2004-2008"
+            VALUE "OriginalFilename", "Atelier Presse.exe"
+            VALUE "ProductName", "Atelier Presse"
+            VALUE "ProductVersion", "2, 6, 4, 0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x40c, 1252
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO 
+BEGIN
+    IDD_ABOUTBOX, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 531
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 255
+    END
+
+    IDD_ATP_DLGPATH, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 400
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 67
+    END
+
+    IDD_ATP_SEUILS, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 250
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 120
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDB_ATP_SPLASH          BITMAP                  "res\\Splash.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDR_ATP_MENU MENU 
+BEGIN
+    POPUP "&Paramètres"
+    BEGIN
+        MENUITEM "Choisir les chemins vers les &données...", IDM_ATP_PATH
+        MENUITEM "Définir les &seuils statistiques...", IDM_ATP_SEUILSTAT
+    END
+    POPUP "&?"
+    BEGIN
+        MENUITEM "&À propos de Atelier Presse...", IDM_ABOUTBOX
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog Info
+//
+
+IDD_ABOUTBOX DLGINIT
+BEGIN
+    IDC_ATP_EXPLORER, 0x376, 160, 0
+0x0000, 0x0000, 0x004c, 0x0000, 0x52fe, 0x0000, 0x2a2b, 0x0000, 0x0000, 
+0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 
+0x0000, 0x0000, 0x004c, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0001, 
+0x0000, 0xd0e0, 0x0057, 0x3573, 0x11cf, 0x69ae, 0x0008, 0x2e2b, 0x6212, 
+0x0008, 0x0000, 0x0000, 0x0000, 0x004c, 0x0000, 0x1401, 0x0002, 0x0000, 
+0x0000, 0x00c0, 0x0000, 0x0000, 0x4600, 0x0080, 0x0000, 0x0000, 0x0000, 
+0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 
+0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0001, 0x0000, 
+0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 
+    0
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE 
+BEGIN
+    IDS_ABOUTBOX            "&À propos de Atelier Presse..."
+    IDS_ATP_TTLTRFPATH      "Veuillez choisir le dossier racine des tarifs."
+    IDS_ATP_STRCHOIXSUPPORT "Pour ouvrir Echelles/Mapping/Cumulativité/Duplication"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_ATP_STRCREUSET      "Pour ouvrir le creuset en mode calendaire"
+    IDS_ATP_STRPLAN         "Pour ouvrir le creuset en mode tableur"
+    IDS_ATP_STRNOMENCL      "Pour ouvrir le répertoire des annonceurs"
+    IDS_ATP_STRREPITEM      "Pour ouvrir le répertoire des items"
+    IDS_ATP_STRREPSUPPORT   "Pour ouvrir le répertoire des supports"
+    IDS_ATP_STRANALYSEUR    "Pour ouvrir l'analyseur"
+    IDS_ATP_TTLSRCPATH      "Veuillez choisir le dossier racine des sources."
+    IDS_ATP_TTLUSERPATH     "Veuillez choisir le dossier racine données utilisateur."
+END
+
+#endif    // French (France) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_FRA)
+LANGUAGE 12, 1
+#pragma code_page(1252)
+#include "res\Atelier Presse.rc2"  // ressources non modifiées par Microsoft Visual C++
+#include "afxres.rc"         // Composants standard
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

@@ -1,0 +1,635 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// French (France) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_FRA)
+#ifdef _WIN32
+LANGUAGE LANG_FRENCH, SUBLANG_FRENCH
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_FRA)\r\n"
+    "LANGUAGE 12, 1\r\n"
+    "#pragma code_page(1252)\r\n"
+    "#include ""res\\ChoixSupportExt.rc2""  // ressources non modifiées par Microsoft Visual C++\r\n"
+    "#include ""afxres.rc""     // Composants standard\r\n"
+    "#endif\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 2,6,2,0
+ PRODUCTVERSION 2,6,2,0
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x2L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040c04e4"
+        BEGIN
+            VALUE "CompanyName", "JFC Informatique & Média"
+            VALUE "FileDescription", "Choix Support"
+            VALUE "FileVersion", "2, 6, 4, 0"
+            VALUE "InternalName", "ChoixSupportExt"
+            VALUE "LegalCopyright", "Copyright (C) JFC Informatique & Média. Tous droits réservés. 2003-2011"
+            VALUE "OriginalFilename", "ChoixSupportExt.dll"
+            VALUE "ProductName", "Choix Support"
+            VALUE "ProductVersion", "2, 6, 4, 0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x40c, 1252
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_CS_DLG_CHOIXSUPPORT DIALOGEX 0, 0, 478, 364
+STYLE DS_SETFONT | DS_FIXEDSYS | DS_CENTER | WS_MINIMIZEBOX | WS_MAXIMIZEBOX | WS_POPUP | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME
+EXSTYLE WS_EX_APPWINDOW
+CAPTION "Choix Supports"
+MENU IDR_CS_MENU
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    CONTROL         "",IDC_CS_CADRE_BTNFIXE,"Static",SS_BLACKFRAME,373,342,103,21,WS_EX_STATICEDGE
+    CONTROL         "",IDC_CS_CADRE_SEL1,"Static",SS_BLACKFRAME,373,0,103,250,WS_EX_STATICEDGE
+    CTEXT           "Terrains",IDC_CS_LABEL_TERRAINS,378,3,93,14,SS_CENTERIMAGE
+    LISTBOX         IDC_CS_LIST_TERRAINS,378,18,93,32,LBS_OWNERDRAWVARIABLE | LBS_HASSTRINGS | LBS_USETABSTOPS | LBS_NOINTEGRALHEIGHT | LBS_EXTENDEDSEL | LBS_DISABLENOSCROLL | NOT WS_BORDER | WS_VSCROLL | WS_TABSTOP,WS_EX_STATICEDGE
+    CTEXT           "Cibles",IDC_CS_LABEL_CIBLES,378,52,93,14,SS_CENTERIMAGE
+    LISTBOX         IDC_CS_LIST_CIBLES,378,68,93,32,LBS_OWNERDRAWVARIABLE | LBS_HASSTRINGS | LBS_USETABSTOPS | LBS_NOINTEGRALHEIGHT | LBS_EXTENDEDSEL | LBS_DISABLENOSCROLL | NOT WS_BORDER | WS_VSCROLL | WS_TABSTOP,WS_EX_STATICEDGE
+    CTEXT           "Format",IDC_CS_LABEL_FORMATS,378,145,93,14,SS_CENTERIMAGE
+    LISTBOX         IDC_CS_LIST_FORMATS,378,161,93,40,LBS_OWNERDRAWVARIABLE | LBS_HASSTRINGS | LBS_USETABSTOPS | LBS_NOINTEGRALHEIGHT | LBS_DISABLENOSCROLL | NOT WS_BORDER | WS_VSCROLL | WS_TABSTOP,WS_EX_STATICEDGE
+    CONTROL         "",IDC_CS_CADRE_SEL2,"Static",SS_BLACKFRAME | NOT WS_VISIBLE,373,252,103,88,WS_EX_STATICEDGE
+    CONTROL         "",IDC_CS_CADRE_ONGLET,"Static",SS_BLACKFRAME,1,342,369,21,WS_EX_STATICEDGE
+    RADIOBUTTON     "Echelles",IDC_CS_ECHELLES,5,346,88,14,BS_PUSHLIKE | BS_FLAT
+    RADIOBUTTON     "Mapping",IDC_CS_MAPPING,96,346,88,14,BS_PUSHLIKE | BS_FLAT
+    RADIOBUTTON     "Cumulation",IDC_CS_CUMULATIVITE,187,346,88,14,BS_PUSHLIKE | BS_FLAT
+    RADIOBUTTON     "Duplication",IDC_CS_DUPLICATION,278,346,88,14,BS_PUSHLIKE | BS_FLAT
+    CONTROL         "",IDC_CS_CADRE_RESULT,"Static",SS_BLACKFRAME | NOT WS_VISIBLE,1,0,369,340,WS_EX_STATICEDGE
+    CTEXT           "Réf. affinité",IDC_CS_LABEL_REFAFF,378,121,93,9,SS_CENTERIMAGE | NOT WS_VISIBLE,WS_EX_STATICEDGE
+    LISTBOX         IDC_CS_LIST_REFAFF,378,116,93,12,LBS_OWNERDRAWVARIABLE | LBS_HASSTRINGS | LBS_USETABSTOPS | LBS_NOINTEGRALHEIGHT | LBS_DISABLENOSCROLL | NOT WS_VISIBLE | NOT WS_BORDER | WS_VSCROLL | WS_TABSTOP,WS_EX_STATICEDGE
+    RADIOBUTTON     "Filtre d'audience",IDC_CS_LABEL_FILTRE_AUDIENCE,377,346,95,14,BS_PUSHLIKE | BS_FLAT
+    CTEXT           "Niveau",IDC_CS_LABEL_NIVEAU,378,203,93,14,SS_CENTERIMAGE
+    RADIOBUTTON     "Familles",IDC_CS_LABEL_FAMILLES,377,219,95,13,BS_PUSHLIKE | BS_FLAT
+    RADIOBUTTON     "Supports",IDC_CS_LABEL_SUPPORTS,377,234,95,13,BS_PUSHLIKE | BS_FLAT
+    CTEXT           "Seg. Population",IDC_CS_LABEL_SEGPOP,378,102,93,14,SS_CENTERIMAGE
+    LISTBOX         IDC_CS_LIST_SEGPOP,378,118,93,25,LBS_OWNERDRAWVARIABLE | LBS_HASSTRINGS | LBS_USETABSTOPS | LBS_NOINTEGRALHEIGHT | LBS_EXTENDEDSEL | LBS_DISABLENOSCROLL | NOT WS_BORDER | WS_VSCROLL | WS_TABSTOP,WS_EX_STATICEDGE
+    RADIOBUTTON     "Creuset",IDC_CS_LABEL_CREUSET,377,335,94,15,BS_PUSHLIKE | BS_FLAT | NOT WS_VISIBLE | WS_DISABLED
+END
+
+IDD_CS_DLG_ECHELLES DIALOGEX 0, 0, 186, 95
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_SYSMENU
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    CONTROL         "",IDC_CS_CADRE_ECH,"Static",SS_BLACKFRAME,0,0,185,94
+    CTEXT           "TITRE SOURCE + SOURCE AUDIENCE au jj/mm/dddd",IDC_CS_TITRE_ECHELLE,5,3,174,14,SS_CENTERIMAGE
+    CONTROL         "Grille Echelle",IDC_CS_GRID_ECHELLE,"GXWND",WS_BORDER | WS_VSCROLL | WS_HSCROLL | WS_TABSTOP,5,20,173,66
+    CONTROL         "",IDC_CS_PROGRESS_RESULTECH,"msctls_progress32",WS_BORDER,5,87,173,6
+END
+
+IDD_CS_DLG_MAPPING DIALOGEX 0, 0, 186, 174
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_SYSMENU
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    CONTROL         "",IDC_CS_SPLIT_HORZ,"JFControl",WS_TABSTOP,1,100,180,2
+    CONTROL         "Graphe Mapping",IDC_CS_MAPPING,"JFControl",WS_TABSTOP,4,20,177,76
+    CONTROL         "Grille Mapping",IDC_CS_GRID_MAPPING,"GXWND",NOT WS_VISIBLE | WS_BORDER | WS_VSCROLL | WS_HSCROLL | WS_TABSTOP,4,105,177,60
+    CTEXT           "TITRE SOURCE + SOURCE AUDIENCE au jj/mm/dddd",IDC_CS_TITRE_MAPPING,4,3,176,14,SS_CENTERIMAGE
+    CONTROL         "",IDC_CS_PROGRESS_RESULTMAP,"msctls_progress32",WS_BORDER,4,166,178,6
+    CONTROL         "",IDC_CS_CADRE_GRIDMAP,"Static",SS_GRAYFRAME | SS_SUNKEN,0,102,185,72
+    CONTROL         "",IDC_CS_CADRE_MAPPING,"Static",SS_BLACKFRAME | SS_SUNKEN,0,0,185,100
+END
+
+IDD_CS_DLG_CUMULATIVITE DIALOGEX 0, 0, 186, 169
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_SYSMENU
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    CONTROL         "",IDC_CS_SPLIT2_HORZ,"JFControl",WS_TABSTOP,1,100,180,2
+    SCROLLBAR       IDC_CS_SCROLLGRAPH,1,158,183,8
+    CONTROL         "",IDC_CS_GRAPHCUM,"JFControl",WS_TABSTOP,0,103,184,55
+    CONTROL         "Grille Cumulativite",IDC_CS_GRID_CUMULATIVITE,"GXWND",WS_BORDER | WS_VSCROLL | WS_HSCROLL | WS_TABSTOP,5,18,173,79
+    CONTROL         "",IDC_CS_CADRE_CUMULATIVITE,"Static",SS_BLACKFRAME | SS_SUNKEN,0,1,185,99,WS_EX_TRANSPARENT
+    CONTROL         "",IDC_CS_CADRE_GRAPHCUM,"Static",SS_BLACKFRAME | SS_SUNKEN | NOT WS_VISIBLE,0,102,185,65,WS_EX_TRANSPARENT
+    CTEXT           "TITRE SOURCE + SOURCE AUDIENCE au jj/mm/dddd",IDC_CS_TITRE_CUMULATIVITE,5,3,174,14,SS_CENTERIMAGE
+    CONTROL         "",IDC_CS_PROGRESS_RESULTCUM,"msctls_progress32",WS_BORDER,4,93,175,6
+END
+
+IDD_CS_DLG_DUPLICATION DIALOGEX 0, 0, 186, 95
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_SYSMENU
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    CONTROL         "",IDC_CS_CADRE_DUPLICATION,"Static",SS_BLACKFRAME | SS_SUNKEN,0,0,185,94,WS_EX_TRANSPARENT
+    CTEXT           "TITRE SOURCE + SOURCE AUDIENCE au jj/mm/dddd",IDC_CS_TITRE_DUPLICATION,5,3,174,14,SS_CENTERIMAGE
+    CONTROL         "Grille Duplication",IDC_CS_GRID_DUPLICATION,"GXWND",WS_BORDER | WS_VSCROLL | WS_HSCROLL | WS_TABSTOP,5,20,173,68
+    CONTROL         "",IDC_CS_PROGRESS_RESULTDUP,"msctls_progress32",WS_BORDER,5,88,173,6
+END
+
+IDD_CS_DLG_PUPITRE_ECH DIALOGEX 0, 0, 120, 71
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_SYSMENU
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    CTEXT           "Grandeurs",IDC_CS_LABEL_GRANDEURS,5,4,109,11,SS_CENTERIMAGE
+    LISTBOX         IDC_CS_LIST_GRANDEURS,5,17,109,49,LBS_OWNERDRAWVARIABLE | LBS_HASSTRINGS | LBS_USETABSTOPS | LBS_NOINTEGRALHEIGHT | LBS_EXTENDEDSEL | LBS_DISABLENOSCROLL | NOT WS_BORDER | WS_VSCROLL | WS_TABSTOP,WS_EX_STATICEDGE
+    CONTROL         "",IDC_CS_STATIC_PUPITRE_ECH,"Static",SS_BLACKFRAME,0,0,119,70
+END
+
+IDD_CS_DLG_PUPITRE_MAP DIALOGEX 0, 0, 121, 89
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_SYSMENU
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    CONTROL         "",IDC_CS_STATIC_PUPITRE_MAP,"Static",SS_BLACKFRAME,0,0,121,89
+    CTEXT           "Abscisse",IDC_CS_LABEL_ABS_MAPPING,6,3,109,11,SS_CENTERIMAGE
+    CTEXT           "Ordonnée",IDC_CS_LABEL_ORD_MAPPING,6,39,109,12,SS_NOTIFY | SS_CENTERIMAGE,WS_EX_STATICEDGE
+    LISTBOX         IDC_LIST_GRANDABS,6,16,109,21,LBS_OWNERDRAWVARIABLE | LBS_HASSTRINGS | LBS_USETABSTOPS | LBS_NOINTEGRALHEIGHT | LBS_DISABLENOSCROLL | NOT WS_BORDER | WS_VSCROLL | WS_TABSTOP,WS_EX_STATICEDGE
+    LISTBOX         IDC_LIST_GRANDORD,6,52,109,34,LBS_OWNERDRAWVARIABLE | LBS_HASSTRINGS | LBS_USETABSTOPS | LBS_NOINTEGRALHEIGHT | LBS_DISABLENOSCROLL | NOT WS_BORDER | WS_VSCROLL | WS_TABSTOP,WS_EX_STATICEDGE
+END
+
+IDD_CS_DLG_PUPITRE_CUM DIALOGEX 0, 0, 104, 109
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_SYSMENU
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    CONTROL         "",IDC_CS_STATIC_PUPITRE_CUM,"Static",SS_BLACKFRAME,0,0,103,108
+    CTEXT           "Courbes",IDC_CS_LABEL_COURBES,4,53,94,11,SS_CENTERIMAGE
+    CONTROL         "Custom1",IDC_CS_GRID_COLOR_CUM,"GXWND",WS_BORDER | WS_VSCROLL | WS_HSCROLL | WS_TABSTOP,4,66,94,25
+    CTEXT           "Grandeurs",IDC_CS_LABEL_GRANDCUM,4,3,94,11,SS_CENTERIMAGE
+    LISTBOX         IDC_CS_LIST_GRANDCUM,4,16,94,34,LBS_OWNERDRAWVARIABLE | LBS_HASSTRINGS | LBS_USETABSTOPS | LBS_NOINTEGRALHEIGHT | LBS_DISABLENOSCROLL | NOT WS_BORDER | WS_VSCROLL | WS_TABSTOP,WS_EX_STATICEDGE
+    RADIOBUTTON     "Séparées",IDC_CS_LABEL_SEPCOLOR,4,92,46,14,BS_PUSHLIKE | BS_FLAT
+    RADIOBUTTON     "Groupées",IDC_CS_LABEL_GROUPCOLOR,54,92,44,14,BS_PUSHLIKE | BS_FLAT
+END
+
+IDD_CS_DLG_PUPITRE_DUP DIALOGEX 0, 0, 91, 64
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_SYSMENU
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    CONTROL         "",IDC_CS_STATIC_PUPITRE_DUP,"Static",SS_BLACKFRAME,0,0,91,63
+    CTEXT           "Grandeurs",IDC_CS_LABEL_GRANDDUP,5,4,80,11,SS_CENTERIMAGE
+    LISTBOX         IDC_CS_LIST_GRANDDUP,5,17,80,39,LBS_OWNERDRAWVARIABLE | LBS_HASSTRINGS | LBS_USETABSTOPS | LBS_NOINTEGRALHEIGHT | LBS_DISABLENOSCROLL | NOT WS_BORDER | WS_VSCROLL | WS_TABSTOP,WS_EX_STATICEDGE
+END
+
+IDD_CS_DLG_PLATEAU DIALOGEX 0, 0, 191, 78
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Définir un nouveau plateau"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,138,5,50,14
+    PUSHBUTTON      "Annuler",IDCANCEL,138,22,50,14
+    CONTROL         "",IDC_CS_FOND,"Static",SS_ETCHEDFRAME,3,5,131,69
+    CTEXT           "Cartouche",IDC_CS_TITRE,6,6,124,14,SS_CENTERIMAGE
+    PUSHBUTTON      "Date tarifaire",IDC_CS_DATETAR,6,22,124,14,BS_FLAT
+    PUSHBUTTON      "Offre",IDC_CS_OFFRE,6,39,124,14,BS_FLAT
+    PUSHBUTTON      "Format",IDC_CS_FORMAT,6,56,124,14,BS_FLAT
+END
+
+IDD_CS_ABOUTBOX DIALOGEX 0, 0, 235, 47
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "A propos du choix supports"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,189,7,39,14
+    ICON            "IDI_RS_MAINFRAME",IDC_STATIC,6,11,20,20
+    LTEXT           "Choix Supports",IDC_STATIC,29,10,119,8,SS_NOPREFIX
+    LTEXT           "Copyright JFC Informatique et Média (C) 2003-2011",IDC_STATIC,29,22,168,8
+END
+
+IDD_CS_DLG_ORDRE_HEADER DIALOGEX 0, 0, 183, 87
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+CAPTION "Ordre des entêtes tableau"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,130,10,50,14
+    CONTROL         "",IDC_CS_BK_ORDREHEADER,"Static",SS_ETCHEDFRAME,3,4,123,76
+    PUSHBUTTON      "Entêtes terrains",IDC_CS_BTN_HEADER1,9,10,111,14
+    PUSHBUTTON      "Entêtes cibles",IDC_CS_BTN_HEADER2,22,36,98,14
+    PUSHBUTTON      "Entêtes grandeurs",IDC_CS_BTN_HEADER3,35,62,84,14
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDFRAME | SS_SUNKEN,69,25,1,11
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDFRAME | SS_SUNKEN,69,51,1,11
+    DEFPUSHBUTTON   "Annuler",IDCANCEL,130,27,50,14
+END
+
+IDD_CS_DLG_ORDRE_GRAND_ECH DIALOGEX 0, 0, 226, 242
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Ordre affichage grandeurs échelle"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    CONTROL         "",IDC_CS_BK_ORDRE_GRDECH,"Static",SS_ETCHEDFRAME,4,7,159,220
+    CONTROL         "",IDC_CS_LST_GRANDEURS,"SysListView32",LVS_REPORT | LVS_ALIGNLEFT | WS_TABSTOP,9,25,148,197,WS_EX_CLIENTEDGE
+    DEFPUSHBUTTON   "OK",IDOK,169,7,50,14
+    PUSHBUTTON      "Annuler",IDCANCEL,169,24,50,14
+    CTEXT           "Grandeurs disponibles",IDC_CS_LABEL_TITRE,10,10,110,13,SS_CENTERIMAGE
+    PUSHBUTTON      "",IDC_CS_GRD_UP,123,9,16,14,BS_FLAT
+    PUSHBUTTON      "",IDC_CS_GRD_DOWN,141,9,16,14,BS_FLAT
+    CONTROL         "Visibilité des rangs",IDC_CHECK1,"Button",BS_3STATE | WS_TABSTOP,12,230,137,8
+END
+
+IDD_CS_DLG_RANG_RESULT DIALOGEX 0, 0, 174, 222
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Sélection rangs résultats"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,117,7,50,14
+    PUSHBUTTON      "Annuler",IDCANCEL,117,24,50,14
+    CONTROL         "",IDC_CS_BK_ORDRE_GRDECH,"Static",SS_ETCHEDFRAME,6,7,106,210
+    CTEXT           "Grandeurs disponibles",IDC_CS_LABEL_TITRE,10,9,95,13,SS_CENTERIMAGE
+    CONTROL         "",IDC_CS_LST_GRANDEURS,"SysListView32",LVS_REPORT | LVS_OWNERDRAWFIXED | LVS_ALIGNLEFT | LVS_NOSCROLL | LVS_NOCOLUMNHEADER | LVS_NOSORTHEADER | WS_TABSTOP,10,24,95,187,WS_EX_CLIENTEDGE | WS_EX_STATICEDGE
+    PUSHBUTTON      "Aucun",IDC_CS_AUCUN_RANG,117,201,50,14
+    PUSHBUTTON      "Tous",IDC_CS_TOUS_RANG,117,184,50,14
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO 
+BEGIN
+    IDD_CS_DLG_CHOIXSUPPORT, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 471
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 357
+    END
+
+    IDD_CS_DLG_ECHELLES, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 179
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 88
+    END
+
+    IDD_CS_DLG_MAPPING, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 178
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 167
+    END
+
+    IDD_CS_DLG_CUMULATIVITE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 179
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 162
+        HORZGUIDE, 106
+    END
+
+    IDD_CS_DLG_DUPLICATION, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 179
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 88
+    END
+
+    IDD_CS_DLG_PUPITRE_ECH, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 113
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 64
+    END
+
+    IDD_CS_DLG_PUPITRE_MAP, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 114
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 82
+    END
+
+    IDD_CS_DLG_PUPITRE_CUM, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 97
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 106
+    END
+
+    IDD_CS_DLG_PUPITRE_DUP, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 84
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 57
+    END
+
+    IDD_CS_DLG_PLATEAU, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 184
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 71
+    END
+
+    IDD_CS_ABOUTBOX, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 228
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 40
+    END
+
+    IDD_CS_DLG_ORDRE_HEADER, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 176
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 80
+    END
+
+    IDD_CS_DLG_ORDRE_GRAND_ECH, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 219
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 237
+    END
+
+    IDD_CS_DLG_RANG_RESULT, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 167
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 215
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDI_CS_CHECKOFF         ICON                    "res\\CheckOff.ico"
+IDI_CS_ICON             ICON                    "res\\ChoixSupports.ico"
+IDI_CS_LEDOFF           ICON                    "res\\LedOff.ico"
+IDI_CS_LEDON            ICON                    "res\\LedOn.ico"
+IDI_CS_LEDSEL           ICON                    "res\\LedSel.ico"
+IDI_CS_FLECHE           ICON                    "res\\Switch.ico"
+IDI_CS_CHECKON          ICON                    "res\\CheckOn.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDR_CS_MENU MENU 
+BEGIN
+    POPUP "&Plateau"
+    BEGIN
+        MENUITEM "&Nouveau...",                 IDM_CS_PLATEAU_NOUVEAU
+        MENUITEM "&Ouvrir...",                  IDM_CS_PLATEAU_OUVRIR
+        MENUITEM "&Fermer",                     IDM_CS_PLATEAU_FERMER
+        MENUITEM SEPARATOR
+        MENUITEM "En&registrer",                IDM_CS_PLATEAU_ENREGISTRER
+        MENUITEM "Enregi&strer sous...",        IDM_CS_PLATEAU_ENREGISTRERSOUS
+        MENUITEM SEPARATOR
+        MENUITEM "&Importer un plateau depuis le Creuset", IDM_CS_PLATEAU_IMPORTETUDE
+        MENUITEM SEPARATOR
+        POPUP "Exporter vers un &fichier"
+        BEGIN
+            MENUITEM "&Echelle",                    IDM_CS_EXPORTER_FICHIER_ECHELLE
+            MENUITEM "Echelle par c&ibles",         IDM_CS_EXPORTER_FICHIER_ECHELLE_PARCIBLE
+            MENUITEM "&Mapping",                    IDM_CS_EXPORTER_FICHIER_MAPPING
+            MENUITEM "Graphique M&apping",          IDM_CS_EXPORTER_FICHIER_GRAPHMAPPING
+            MENUITEM "&Cumulativité",               IDM_CS_EXPORTER_FICHIER_CUMULATIVITE
+            MENUITEM "Graphique C&umulativité",     IDM_CS_EXPORTER_FICHIER_GRAPHCUMUL
+            MENUITEM "&Duplication",                IDM_CS_EXPORTER_FICHIER_DUPLICATION
+        END
+        POPUP "Exporter vers le &presse papier"
+        BEGIN
+            MENUITEM "&Echelle",                    IDM_CS_EXPORTER_PRESSEPAPIER_ECHELLE
+            MENUITEM "Echelle par c&ibles",         IDM_CS_EXPORTER_PRESSEPAPIER_ECHELLE_PARCIBLE
+            MENUITEM "&Mapping",                    IDM_CS_EXPORTER_PRESSEPAPIER_MAPPING
+            MENUITEM "Graphique M&apping",          IDM_CS_EXPORTER_PRESSEPAPIER_GRAPHMAPPING
+            MENUITEM "&Cumulativité",               IDM_CS_EXPORTER_PRESSEPAPIER_CUMULATIVITE
+            MENUITEM "Graphique C&umulativité",     IDM_CS_EXPORTER_PRESSEPAPIER_GRAPHCUMUL
+            MENUITEM "&Duplication",                IDM_CS_EXPORTER_PRESSEPAPIER_DUPLICATION
+        END
+        POPUP "Exporter vers E&xcel"
+        BEGIN
+            MENUITEM "&Echelle",                    33002
+            MENUITEM "&Mapping",                    33005
+            MENUITEM "&Cumulativité",               33007
+            MENUITEM "&Duplication",                33008
+        END
+        MENUITEM SEPARATOR
+        POPUP "&Impression"
+        BEGIN
+            MENUITEM "&Echelle",                    IDM_CS_PRINT_ECHELLE
+            MENUITEM "Echelle par c&ible",          IDM_CS_PRINT_ECHELLE_PARCIBLE
+            MENUITEM "&Mapping",                    IDM_CS_PRINT_MAPPING
+            MENUITEM "&Cumulativité",               IDM_CS_PRINT_CUMULATIVITE
+            MENUITEM "&Duplication",                IDM_CS_PRINT_DUPLICATION
+        END
+        MENUITEM SEPARATOR
+        MENUITEM "&Quitter",                    IDM_CS_PLATEAU_QUITTER
+    END
+    POPUP "&Offre"
+    BEGIN
+        MENUITEM "&Sources/Supports",           IDM_CS_SOURCES
+        MENUITEM "&Cibles...",                  IDM_CS_CIBLES
+        MENUITEM "&Formats...",                 IDM_CS_FORMATS
+        MENUITEM "Changer la &date tarifaire...", IDM_CS_PERIODETARIF
+    END
+    POPUP "&Options de calcul"
+    BEGIN
+        MENUITEM "Privilégier l'audience L&NM pour les magazines", IDM_CS_OPT_LNMMAGAZINE
+        MENUITEM "Privilégier l'audience L&DP pour les quotidiens", IDM_CS_OPT_LDPQUOTIDIEN
+        POPUP "&Méthode de calcul des audiences"
+        BEGIN
+            MENUITEM "Avec GRP+ &Brut",             IDM_CS_MODEL
+            MENUITEM "Avec GR&P+",                  IDM_CS_MODELETAL
+            MENUITEM "Sans &GRP+",                  IDM_CS_PROBABILIT
+        END
+        MENUITEM "&Reprises en main",           IDM_CS_OPT_REPRISEENMAIN, CHECKED
+        POPUP "&Calcul des familles"
+        BEGIN
+            MENUITEM "Résultats &cumulés",          IDM_CS_OPT_FAM_CUMUL
+            MENUITEM "Résultats &moyennés",         IDM_CS_OPT_FAM_MOYENNE, CHECKED
+        END
+        MENUITEM SEPARATOR
+        POPUP "&Nb Insertions"
+        BEGIN
+            MENUITEM "1 insertion",                 IDM_CS_1_INSERTION, CHECKED
+            MENUITEM "2 insertions",                IDM_CS_2_INSERTIONS
+            MENUITEM "3 insertions",                IDM_CS_3_INSERTIONS
+            MENUITEM "4 insertions",                IDM_CS_4_INSERTIONS
+            MENUITEM "5 insertions",                IDM_CS_5_INSERTIONS
+            MENUITEM "6 insertions",                IDM_CS_6_INSERTIONS
+            MENUITEM "7 insertions",                IDM_CS_7_INSERTIONS
+            MENUITEM "8 insertions",                IDM_CS_8_INSERTIONS
+            MENUITEM "9 insertions",                IDM_CS_9_INSERTIONS
+            MENUITEM "10 insertions",               IDM_CS_10_INSERTIONS
+            MENUITEM SEPARATOR
+            MENUITEM "12 insertions (Mensuel)",     IDM_CS_12_INSERTIONS
+            MENUITEM "24 insertions (Bi-Mensuel)",  IDM_CS_24_INSERTIONS
+            MENUITEM "53 insertions (Hebdomadaire)", IDM_CS_53_INSERTIONS
+            MENUITEM "105 insertions (Bi-Hebdomadaire)", IDM_CS_105_INSERTIONS
+            MENUITEM "365 insertions (Quotidien)",  IDM_CS_365_INSERTIONS
+        END
+    END
+    POPUP "Aff&ichage"
+    BEGIN
+        MENUITEM "&Ordre des entêtes...",       IDM_CS_ORDRE_ENTETES
+        MENUITEM "Ordre et rang des &grandeurs", IDM_CS_ORDRE_GRANDECH
+        MENUITEM SEPARATOR
+        POPUP "&Choisir la palette de couleurs"
+        BEGIN
+            MENUITEM "&Vert bouteille",             IDM_CS_PALETTE_1
+            MENUITEM "&Emeraude",                   IDM_CS_PALETTE_2
+            MENUITEM "&Bleu pastel",                IDM_CS_PALETTE_3
+            MENUITEM "&Ocean",                      IDM_CS_PALETTE_4
+            MENUITEM "&Lilas",                      IDM_CS_PALETTE_5
+            MENUITEM "&Sahara",                     IDM_CS_PALETTE_6
+            MENUITEM "&Terre de Sienne",            IDM_CS_PALETTE_7
+            MENUITEM "R&ubis",                      IDM_CS_PALETTE_8
+            MENUITEM "&Gris souris",                IDM_CS_PALETTE_9
+            MENUITEM "&Rose",                       IDM_CS_PALETTE_10
+            MENUITEM "Rose &kaki",                  IDM_CS_PALETTE_11
+            MENUITEM "Gr&is Rose",                  IDM_CS_PALETTE_12
+            MENUITEM "S&able",                      IDM_CS_PALETTE_13
+            MENUITEM "&CafeChocolat",               IDM_CS_PALETTE_14
+			MENUITEM "&Bleu Clair",					IDM_CS_PALETTE_15
+        END
+        MENUITEM SEPARATOR
+        POPUP "Nb décimales pour les coûts"
+        BEGIN
+            MENUITEM "Aucune décimale",             ID_CS_NBD_AUCUNEDECIMALE
+            MENUITEM "1 décimale",                  ID_CS_NBD_1DECIMALE
+            MENUITEM "2 décimales",                 ID_CS_NBD_2DECIMALE
+        END
+    END
+    POPUP "?"
+    BEGIN
+        MENUITEM "A propos de ... ",            IDM_CS_ABOUTBOX
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDB_CS_LEDNEUTRE        BITMAP                  "res\\Neutre.bmp"
+IDB_CS_LEDORANGE        BITMAP                  "res\\Orange.bmp"
+IDB_CS_LEDROUGE         BITMAP                  "res\\Rouge.bmp"
+IDB_CS_LEDVERT          BITMAP                  "res\\Vert.bmp"
+IDB_CS_UP               BITMAP                  "res\\Arrow_Up.BMP"
+IDB_CS_DOWN             BITMAP                  "res\\Arrow_Down.BMP"
+IDB_CS_BITMAP_RANG      BITMAP                  "res\\Treesel.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE 
+BEGIN
+    IDS_CS_MOTABAQUE        "Modélisation macro-probabiliste brute"
+    IDS_CS_FILTER           """Plateaux Choix Supports (*.ofr)|*.ofr|Tous les fichiers (*.*)|*.*||"""
+    IDS_CS_MOTABAQUEETAL    "Modélisation macro-probabiliste"
+    IDS_CS_MOTPROBA         "Algorithme full-binomial"
+    IDS_CS_CTRL_INDEXDROPDOWNLIST "Combo box cellule format"
+    IDS_CS_MENUFAMILLE      "Inserer dans une famille"
+    IDS_CS_TITREADDED       "%1 ajouté dans %2"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_CS_FILTER_ATP       "Etudes Creuset (*.atp)|*.atp|Tous les fichiers (*.*)|*.*||"
+    IDS_CS_A_UN_AN          "A un an"
+    IDS_CS_ABSCISSE_ND      "Abscisse n.d."
+    IDS_CS_ORDONNEE_ND      "Ordonnée n.d."
+END
+
+#endif    // French (France) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_FRA)
+LANGUAGE 12, 1
+#pragma code_page(1252)
+#include "res\ChoixSupportExt.rc2"  // ressources non modifiées par Microsoft Visual C++
+#include "afxres.rc"     // Composants standard
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

@@ -1,0 +1,23 @@
+// JFiltreAudience.cpp: implementation of the JFiltreAudience class.
+//
+//////////////////////////////////////////////////////////////////////
+
+#include "stdafx.h"
+#include "JFiltreAudience.h"
+
+
+#ifdef _DEBUG
+#define new DEBUG_NEW
+#endif
+
+//////////////////////////////////////////////////////////////////////
+// Construction/Destruction
+//////////////////////////////////////////////////////////////////////
+
+JFiltreAudience::JFiltreAudience(JUnt32 id, const JChar* lbl) : IElem(id, lbl)
+{
+}
+
+JFiltreAudience::~JFiltreAudience()
+{
+}
