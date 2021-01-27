@@ -27,8 +27,8 @@
             System.Threading.Thread.Sleep(1000)
         Next
         Ping.Dispose()
-        Ping = Nothing
-        PingReply = Nothing
+        'Ping = Nothing
+        'PingReply = Nothing
 
     End Sub
 

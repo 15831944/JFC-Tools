@@ -191,13 +191,13 @@ Partial Class AUService
         '
         'Label_Version
         '
-        Me.Label_Version.AutoSize = True
         Me.Label_Version.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label_Version.Location = New System.Drawing.Point(69, 356)
+        Me.Label_Version.Location = New System.Drawing.Point(12, 355)
         Me.Label_Version.Name = "Label_Version"
-        Me.Label_Version.Size = New System.Drawing.Size(27, 9)
+        Me.Label_Version.Size = New System.Drawing.Size(84, 10)
         Me.Label_Version.TabIndex = 17
         Me.Label_Version.Text = "1.0.0.0"
+        Me.Label_Version.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         '
         'PictureBoxAbout
         '

@@ -4,15 +4,11 @@ Option Explicit On
 Module mCrypter
 
     Public Function CryptePass(ByVal Pass As String, ByVal Randomize As Short) As String
-        Dim ee, cc, aa, bb, dd, FF As String
+        Dim cc, aa, bb, dd, FF As String
         Dim e, c, a, b, d, f As Short
 
         aa = ""
         bb = ""
-        cc = ""
-        dd = ""
-        ee = ""
-        FF = ""
 
         c = Randomize
         d = CShort(Int(c / 16))
@@ -20,13 +16,13 @@ Module mCrypter
 
         For a = 1 To CShort(Len(Pass))
             cc = Hex(Asc((Mid(Pass, a, 1))) Xor c)
-            aa = aa + Trim(Hex(CLng(Val("&h" + Mid(cc, 2, 1))) Xor d) + Hex(CLng(Val("&h" + Mid(cc, 1, 1))) Xor e))
+            aa += Trim(Hex(CLng(Val("&h" + Mid(cc, 2, 1))) Xor d) + Hex(CLng(Val("&h" + Mid(cc, 1, 1))) Xor e))
         Next
 
-        aa = aa + Hex(c)
+        aa += Hex(c)
 
         For b = CShort(Len(aa)) To 1 Step -1
-            bb = bb + Mid(aa, b, 1)
+            bb += Mid(aa, b, 1)
         Next
 
         bb = Right$(bb, 1) + Mid(bb, 1, Len(bb) - 1)

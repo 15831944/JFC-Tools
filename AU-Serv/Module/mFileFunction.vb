@@ -8,37 +8,8 @@ Module mFileFunction
     Public Const BACKSLASH As Short = 6
     Public Const SLASH As Short = 5
     Public Const PATH As Short = 4
-    Public Const FILENAME As Short = 3
-    Public Const EXTENSION_ONLY As Short = 2
-    Public Const FILENAME_ONLY As Short = 1
-    Public Const PATH_FILENAME_ONLY As Short = 8
 
     'Private MaClasse As clsProcess
-
-    Public Function ParsePath(ByVal szPath As String, ByVal nOperation As Short) As String
-
-        Dim nPosSlash, nPosPoint, nLenPath As Integer
-
-        nPosPoint = InStrRev(szPath, ".") - 1
-        nPosSlash = InStrRev(szPath, "\")
-        nLenPath = Len(szPath)
-
-        If nOperation = EXTENSION_ONLY Then
-            Return Right(szPath, nLenPath - nPosPoint)
-        ElseIf nOperation = FILENAME_ONLY Then
-            Return Mid(szPath, nPosSlash + 1, nPosPoint - nPosSlash)
-        ElseIf nOperation = FILENAME Then
-            Return Right(szPath, nLenPath - nPosSlash)
-        ElseIf nOperation = PATH Then
-            Return Left(szPath, nPosSlash)
-        ElseIf nOperation = PATH_FILENAME_ONLY Then
-            Return Left(szPath, nPosPoint)
-        Else
-            Return szPath
-        End If
-
-
-    End Function
 
     Public Function ReadInfoToFile(ByVal NomFic As String, Optional ByRef nOperation As Short = 0) As String
 
@@ -96,12 +67,11 @@ Module mFileFunction
 
     End Sub
 
-
     Public Function Add(ByVal svString As String, ByVal nOperation As Short, Optional ByVal svPath As String = "") As String
 
         If nOperation = SLASH Then
             If (svString <> "") And (svString <> "/") Then
-                If (Right(svString, 1) <> "/") Then svString = svString & "/"
+                If (Right(svString, 1) <> "/") Then svString &= "/"
                 If (Left(svString, 1) <> "/") Then svString = "/" & svString
             Else
                 svString = "/"
@@ -109,7 +79,7 @@ Module mFileFunction
 
         ElseIf nOperation = BACKSLASH Then
             If (svString <> "") Then
-                If Right(svString, 1) <> "\" Then svString = svString & "\"
+                If Right(svString, 1) <> "\" Then svString &= "\"
             End If
 
         ElseIf nOperation = PATH Then
@@ -130,6 +100,7 @@ Module mFileFunction
 
     Public Function IsDirectoryWritable(ByVal path As String) As Boolean
         Dim info As New IO.DirectoryInfo(path)
+        If info.Exists = False Then Return False
         Return (info.Attributes And IO.FileAttributes.ReadOnly) <> IO.FileAttributes.ReadOnly
     End Function
 

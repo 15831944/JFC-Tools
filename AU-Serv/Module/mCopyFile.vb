@@ -1,7 +1,7 @@
 Option Strict On
 Option Explicit On
 
-Imports VB = Microsoft.VisualBasic
+Imports System.Timers
 
 Module mCopyFile
 
@@ -23,6 +23,12 @@ Module mCopyFile
     Dim m_bProgress As Boolean
     Dim m_Percent As Short
 
+    'Public Shared ReadOnly Property Timer As Double
+    '    Get
+    '        Return (CDbl((DateTime.Now.Ticks Mod &HC92A69C000)) / 10000000)
+    '    End Get
+    'End Property
+
     Public Function CopyFileWithProgress(ByRef Source As String, ByRef Destination As String) As Boolean ', OverwriteDestination As Boolean, Restartable As Boolean) As Long
 
         Dim OverwriteDestination, Restartable As Boolean
@@ -35,7 +41,7 @@ Module mCopyFile
         If OverwriteDestination = False Then dwFlags = COPY_FILE_FAIL_IF_EXISTS 'erreur si fichier existe
         If Restartable Then dwFlags = dwFlags Or COPY_FILE_RESTARTABLE 'redémarrable
 
-        m_Timer = VB.Timer()
+        m_Timer = Date.Now.TimeOfDay.TotalSeconds 'Microsoft.VisualBasic.Timer
         m_bProgress = False
         m_Percent = 0
 
@@ -51,7 +57,7 @@ Module mCopyFile
             Percent = CShort(Int((CDbl(TotalBytesTransferred * 10000) / CDbl(TotalFileSize * 10000)) * 100))
 
             System.Windows.Forms.Application.DoEvents()
-            If ((VB.Timer() - m_Timer) > 1 And Percent < 50) Or m_bProgress Then
+            If ((Date.Now.TimeOfDay.TotalSeconds - m_Timer) > 1 And Percent < 50) Or m_bProgress Then
                 If Not m_bProgress Then m_bProgress = True
                 If Percent > m_Percent Then
                     AUService.CopyFileExProgress((m_Percent))

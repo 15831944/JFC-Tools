@@ -64,7 +64,7 @@ Module mLaunchAppAndWait
 
             If lHnd_Patch <> 0 Then CloseHandle(lHnd_Patch)
 
-            lHnd_Patch = 0
+            'lHnd_Patch = 0
 
             If AUService.bUseProcessExecute Then MyProc.Close()
 

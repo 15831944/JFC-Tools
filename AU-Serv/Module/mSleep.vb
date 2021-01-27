@@ -1,8 +1,6 @@
 Option Strict On
 Option Explicit On
 
-Imports VB = Microsoft.VisualBasic
-
 Module mSleep
 
     Public Declare Sub Sleep Lib "kernel32" (ByVal dwMilliseconds As Integer)
@@ -10,8 +8,8 @@ Module mSleep
     Public Sub SleepTimer(ByVal dwMilliseconds As Integer)
 
         Dim Time As Double
-        Time = VB.Timer()
-        While (VB.Timer() - Time) < (dwMilliseconds / 1000)
+        Time = Date.Now.TimeOfDay.TotalSeconds
+        While (Date.Now.TimeOfDay.TotalSeconds - Time) < (dwMilliseconds / 1000)
             System.Windows.Forms.Application.DoEvents()
         End While
 
@@ -25,7 +23,7 @@ Module mSleep
         System.Windows.Forms.Application.DoEvents()
         While nvHalfSecond > nvBouble
             Sleep((100))
-            nvBouble = nvBouble + 0.2
+            nvBouble += 0.2
             System.Windows.Forms.Application.DoEvents()
         End While
 

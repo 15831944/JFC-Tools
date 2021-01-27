@@ -14,32 +14,32 @@ Module mGetClass
 	Private Const mcWSVISIBLE As Integer = &H10000000
 	Private Const mconMAXLEN As Short = 255
 
-	Private Function fGetClassName(ByRef Hwnd As Integer) As String
+	Private Function FGetClassName(ByRef Hwnd As Integer) As String
 		Dim strBuffer As String
 		Dim intCount As Short
-		
+
 		strBuffer = New String(Chr(0), mconMAXLEN - 1)
-        intCount = CShort(apiGetClassName(Hwnd, strBuffer, mconMAXLEN))
+		intCount = CShort(apiGetClassName(Hwnd, strBuffer, mconMAXLEN))
 		If intCount > 0 Then
-            fGetClassName = Left(strBuffer, intCount)
-        Else
-            fGetClassName = strBuffer
-        End If
-	End Function
-	
-	Private Function fGetCaption(ByRef Hwnd As Integer) As String
-		Dim strBuffer As String
-		Dim intCount As Short
-		
-		strBuffer = New String(Chr(0), mconMAXLEN - 1)
-        intCount = CShort(apiGetWindowText(Hwnd, strBuffer, mconMAXLEN))
-		If intCount > 0 Then
-            fGetCaption = Left(strBuffer, intCount)
-        Else
-            fGetCaption = strBuffer
+			FGetClassName = Left(strBuffer, intCount)
+		Else
+			FGetClassName = strBuffer
 		End If
 	End Function
-	
+
+	Private Function FGetCaption(ByRef Hwnd As Integer) As String
+		Dim strBuffer As String
+		Dim intCount As Short
+
+		strBuffer = New String(Chr(0), mconMAXLEN - 1)
+		intCount = CShort(apiGetWindowText(Hwnd, strBuffer, mconMAXLEN))
+		If intCount > 0 Then
+			FGetCaption = Left(strBuffer, intCount)
+		Else
+			FGetCaption = strBuffer
+		End If
+	End Function
+
 	Public Function FindClass(ByRef TaskClassList As String) As Boolean
         Dim TaskMessage As String = ""
 		
@@ -65,7 +65,7 @@ Module mGetClass
                 End If
 				FindClass = True
 			End If
-			i = i + 1
+			i += 1
 		Loop 
 		
 		If FindClass Then
@@ -74,32 +74,32 @@ Module mGetClass
 		End If
 		
 	End Function
-	
-    Public Function fEnumWindows(ByVal NameClass As String) As String
-        Dim lngx As Integer
-        Dim lngStyle As Integer
-        Dim strCaption As String
 
-        lngx = apiGetDesktopWindow()
-        'Return the first child to Desktop
-        lngx = apiGetWindow(lngx, mcGWCHILD)
+	Public Function FEnumWindows(ByVal NameClass As String) As String
+		Dim lngx As Integer
+		Dim lngStyle As Integer
+		Dim strCaption As String
 
-        Do While Not lngx = 0
-            strCaption = fGetCaption(lngx)
-            If Len(strCaption) > 0 Then
-                lngStyle = apiGetWindowLong(lngx, mcGWLSTYLE)
-                'enum visible windows only
-                If CBool(lngStyle And mcWSVISIBLE) Then
-                    If (UCase(NameClass) = UCase(fGetClassName(lngx))) Then
-                        fEnumWindows = fGetCaption(lngx)
-                        Exit Function
-                    End If
-                End If
-            End If
-            lngx = apiGetWindow(lngx, mcGWHWNDNEXT)
-        Loop
-        fEnumWindows = ""
+		lngx = apiGetDesktopWindow()
+		'Return the first child to Desktop
+		lngx = apiGetWindow(lngx, mcGWCHILD)
 
-    End Function
+		Do While Not lngx = 0
+			strCaption = fGetCaption(lngx)
+			If Len(strCaption) > 0 Then
+				lngStyle = apiGetWindowLong(lngx, mcGWLSTYLE)
+				'enum visible windows only
+				If CBool(lngStyle And mcWSVISIBLE) Then
+					If (UCase(NameClass) = UCase(fGetClassName(lngx))) Then
+						FEnumWindows = fGetCaption(lngx)
+						Exit Function
+					End If
+				End If
+			End If
+			lngx = apiGetWindow(lngx, mcGWHWNDNEXT)
+		Loop
+		FEnumWindows = ""
+
+	End Function
 
 End Module

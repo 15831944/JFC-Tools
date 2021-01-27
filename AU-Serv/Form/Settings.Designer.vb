@@ -22,6 +22,7 @@ Partial Class Settings
     'Ne la modifiez pas à l'aide de l'éditeur de code.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
+        Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Settings))
         Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
         Me.OK_Button = New System.Windows.Forms.Button()
@@ -33,6 +34,7 @@ Partial Class Settings
         Me.PictureBox1 = New System.Windows.Forms.PictureBox()
         Me.ComboAllUpdates = New System.Windows.Forms.ComboBox()
         Me.Label1 = New System.Windows.Forms.Label()
+        Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
         Me.TableLayoutPanel1.SuspendLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
@@ -109,7 +111,7 @@ Partial Class Settings
         Me.TextProxy.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.TextProxy.Location = New System.Drawing.Point(102, 92)
         Me.TextProxy.Name = "TextProxy"
-        Me.TextProxy.Size = New System.Drawing.Size(297, 22)
+        Me.TextProxy.Size = New System.Drawing.Size(300, 22)
         Me.TextProxy.TabIndex = 8
         '
         'LabelProxy
@@ -190,5 +192,5 @@ Partial Class Settings
     Friend WithEvents PictureBox1 As System.Windows.Forms.PictureBox
     Friend WithEvents ComboAllUpdates As System.Windows.Forms.ComboBox
     Friend WithEvents Label1 As System.Windows.Forms.Label
-
+    Friend WithEvents ToolTip1 As ToolTip
 End Class

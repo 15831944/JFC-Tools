@@ -66,7 +66,7 @@ Module mGetWindows
                 End If
                 FindWindow = True
             End If
-            i = i + 1
+            i += 1
         Loop
 
         If FindWindow Then

@@ -13,14 +13,12 @@ Module mDecrypter
 
             aa = ""
             bb = ""
-            cc = ""
-            dd = ""
 
             FF = Right(Pass, 1) & Left(Pass, 1)
             ee = Mid(Pass, 2, Len(Pass) - 2)
             f = 0
             For b = 1 To CShort(Len(ee)) Step 2
-                f = f + CShort(Val("&h" & Mid(ee, b, 2)))
+                f += CShort(Val("&h" & Mid(ee, b, 2)))
             Next
 
             If FF = Right(Hex(f), 2) Then
@@ -30,7 +28,7 @@ Module mDecrypter
                 cc = Mid(cc, 2, Len(cc) - 1) & Left(cc, 1)
 
                 For a = c To 1 Step -1
-                    aa = aa & Mid(cc, a, 1)
+                    aa &= Mid(cc, a, 1)
                 Next
 
                 '****** Checksum ******
@@ -42,7 +40,7 @@ Module mDecrypter
 
                 For b = 1 To CShort(Len(aa) - 2) Step 2
                     cc = Trim(Hex(CLng(Val("&h" & Mid(aa, b + 1, 1))) Xor e) & Hex(CLng(Val("&h" & Mid(aa, b, 1))) Xor d))
-                    bb = bb & Chr(CInt(CLng(Val("&h" & cc)) Xor c))
+                    bb &= Chr(CInt(CLng(Val("&h" & cc)) Xor c))
                 Next
 
                 DecryptePass = bb

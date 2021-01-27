@@ -1,8 +1,6 @@
 ﻿Option Strict On
 Option Explicit On
 
-'#Const TEST_MAC_ADRESS = True
-
 Imports System.Net.NetworkInformation
 
 Public Class MacAddress
@@ -16,15 +14,11 @@ Public Class MacAddress
         Dim Id As String
     End Structure
 
-
-
     Public Shared bVirtual As Boolean
     Public Shared bDebug As Boolean
 
     'Déclaration : Constante de séparation des digits de l'adresse MAC
     Shared Function GetValue(Optional ByVal sMacAddressCurrent As String = Nothing) As String
-
-#If Not TEST_MAC_ADRESS Then
 
         'Déclaration : Collection des Interfaces Réseau
         Dim nics As NetworkInterface() = NetworkInterface.GetAllNetworkInterfaces()
@@ -101,34 +95,6 @@ Public Class MacAddress
         Next
 
         If bDebug And bExitFunction Then Return sMacAddressCurrent : Exit Function
-
-#Else
-        sMacAddressCurrent = Nothing
-
-        Dim Network As New ArrayList
-        Dim sAdress(0) As String
-        Dim TestNetWork As NETWORK_INTERFACE
-
-        Dim ListNetWork() As String = {
-        "16/10/2018 10:15:46;{6534F537-F24F-4F12-B44B-74D6C378266C};Microsoft Wi-Fi Direct Virtual Adapter;Wireless80211;Down;36F39A1A8BA0;Connexion au réseau local* 1",
-        "16/10/2018 10:15:46;{CF0FB2F0-D429-462C-A361-16412CD8CAB0};Microsoft Wi-Fi Direct Virtual Adapter #2;Wireless80211;Down;34F39A1A8BA1;Connexion au réseau local* 2",
-        "16/10/2018 10:15:46;{A50A1D00-F5A4-4E25-A569-D738420E624D};Realtek USB FE Family Controller;Ethernet;Up;A0CEC8C1197F;Ethernet 3",
-        "16/10/2018 10:15:46;{151485E7-7E70-4B03-9537-BAE67114BB6A};Intel(R) Dual Band Wireless-AC 8260;Wireless80211;Down;34F39A1A8BA0;Wi-Fi",
-        "16/10/2018 10:15:46;{CF455983-9D9A-4F9F-AC5B-FEC175B90DCF};Bluetooth Device (Personal Area Network);Ethernet;Down;34F39A1A8BA4;Connexion réseau Bluetooth",
-        "16/10/2018 10:15:46;{A568DE25-0B58-11E8-B5A7-806E6F6E6963};Software Loopback Interface 1;Loopback;Up;;Loopback Pseudo-Interface 1"}
-
-        For Each line As String In ListNetWork
-            Dim SplitLine() As String = Split(line, ";")
-            TestNetWork.Id = SplitLine(1)
-            TestNetWork.Description = SplitLine(2)
-            TestNetWork.MacAddress = SplitLine(5)
-            TestNetWork.Status = (SplitLine(4) = "Up")
-            TestNetWork.Ethernet = (SplitLine(3) = "Ethernet")
-            TestNetWork.Wireless = (SplitLine(3) = "Wireless80211")
-            If TestNetWork.MacAddress <> "" Then Network.Add(TestNetWork)
-        Next
-
-#End If
 
         'Cherche carte Ethernet connecté
         sAdress = CheckNetwork(Network)

@@ -5,7 +5,7 @@ Module mFindFile
 
     Public Function FindFile(ByVal mPath As String, ByRef mfichier As String) As Integer
 
-        If Right(mPath, 1) <> "\" Then mPath = mPath & "\"
+        If Right(mPath, 1) <> "\" Then mPath &= "\"
 
         Dim nvConv As Integer
         Dim fileNames() As String = Nothing
@@ -37,7 +37,7 @@ Module mFindFile
 
     Public Function FindFileFirst(ByVal mPath As String, ByRef mfichier As String, ByVal lfichier As Integer) As Integer
 
-        If Right(mPath, 1) <> "\" Then mPath = mPath & "\"
+        If Right(mPath, 1) <> "\" Then mPath &= "\"
 
         Dim nvConv As Integer
         Dim fileNames() As String = Nothing

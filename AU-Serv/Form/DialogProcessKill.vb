@@ -3,10 +3,7 @@ Option Explicit On
 
 Public Class DialogProcessKill
 
-    Dim ProcessDic As New Dictionary(Of String, Integer)
-
-    'Pour tous les processus en cours sur l'ordinateur local
-    Dim ListProcess As Process()
+    ReadOnly ProcessDic As New Dictionary(Of String, Integer)
 
     Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
         Me.DialogResult = System.Windows.Forms.DialogResult.Yes
@@ -31,13 +28,9 @@ Public Class DialogProcessKill
 
         Cancel_Button.Text = mLanguageAU.GetString(BUTTON_NO)
 
-        'Cancel_Button.Select() ' DialogProcessKill.AcceptButton = Cancel_Button
-
         Kill_Button.Text = mLanguageAU.GetString(BUTTON_STOP_PROCESS)
 
         LabelProcess.Text = mLanguageAU.GetString(MSG_PROCESS_WARNING) + vbNewLine + vbNewLine + mLanguageAU.GetString(MSG_CONTINUE)
-
-        'Me.StartPosition = FormStartPosition.CenterScreen 'AUService.StartPosition
 
         System.Windows.Forms.Application.DoEvents()
 
@@ -59,11 +52,11 @@ Public Class DialogProcessKill
 
             If MsgBox(mLanguageAU.GetString(MSG_PROCESS_CRITICAL) + CheckedElements, CType(MsgBoxStyle.Critical + MsgBoxStyle.YesNo + MsgBoxStyle.DefaultButton2, MsgBoxStyle), Me.Text) = MsgBoxResult.Yes Then
 
-                For Each NameProcess In CheckedListBoxProcessKill.CheckedItems
+                For Each NameProcess As String In CheckedListBoxProcessKill.CheckedItems
 
                     Try
 
-                        ListProcess(ProcessDic(CStr(NameProcess))).Kill()
+                        Process.GetProcessById(ProcessDic(CStr(NameProcess))).Kill()
 
                     Catch ex As Exception
 
@@ -83,59 +76,81 @@ Public Class DialogProcessKill
 
         End If
 
-
     End Sub
 
     Private Sub Refresh_List_Process()
 
-        Erase ListProcess
-
+        CheckedListBoxProcessKill.Items.Clear()
         ProcessDic.Clear()
 
-        ListProcess = Process.GetProcesses()
-
-        CheckedListBoxProcessKill.Items.Clear()
-
-        'Pour tous les processus ataaetud en cours sur l'ordinateur local
-        'Dim proc As Process() = Process.GetProcessesByName("ataaetud")
-
-        'Dim PathCurrentProcessus As String = "C:\ARTRADIO\"
         Dim PathCurrentProcessus As String = Application.StartupPath & "\"
+        Dim currentId As Integer = Process.GetCurrentProcess.Id
+        Dim currentSessionID As Integer = Process.GetCurrentProcess().SessionId
+        Dim appData As String = System.Environment.GetFolderPath(System.Environment.SpecialFolder.ApplicationData)
 
-        Dim szMsgProcess As String = ""
+        If PathCurrentProcessus.StartsWith(appData, StringComparison.OrdinalIgnoreCase) Then 'Modification pour les environnements RDP/RDS/Citrix...
 
-        For processus = 0 To ListProcess.Length - 1
+            For Each pProcess As Process In Process.GetProcesses().Where(Function(p) p.SessionId = currentSessionID)
 
-            Try
+                Try
 
-                If InStr(ListProcess(processus).MainModule.FileName, PathCurrentProcessus, CompareMethod.Text) = 1 And ListProcess(processus).Id <> Process.GetCurrentProcess.Id Then
-                    'If ListProcess(processus).MainModule.FileName.Contains(PathCurrentProcessus) And ListProcess(processus).Id <> Process.GetCurrentProcess.Id Then
+                    If pProcess.MainModule.FileName.StartsWith(PathCurrentProcessus, StringComparison.OrdinalIgnoreCase) And pProcess.Id <> currentId Then
 
-                    Dim NameProcess As String = ListProcess(processus).ProcessName
-                    Dim TitleMainWindow As String = ListProcess(processus).MainWindowTitle
+                        If (AUService.ExcludeSubDir <> Nothing And InStr(pProcess.MainModule.FileName, AUService.ExcludeSubDir, CompareMethod.Text) = 0) Or AUService.ExcludeSubDir = Nothing Then
 
-                    If (AUService.ExcludeSubDir <> Nothing And InStr(ListProcess(processus).MainModule.FileName, AUService.ExcludeSubDir, CompareMethod.Text) = 0) Or AUService.ExcludeSubDir = Nothing Then
+                            Dim TitleMainWindow As String = pProcess.MainWindowTitle
+                            Dim NameProcess As String = pProcess.ProcessName
 
-                        If TitleMainWindow <> "" Then
-                            NameProcess = NameProcess + " (" + TitleMainWindow + ")"
+                            If TitleMainWindow <> "" Then
+                                NameProcess = NameProcess + " (" + TitleMainWindow + ")"
+                            End If
+
+                            CheckedListBoxProcessKill.Items.Add(NameProcess, True)
+                            ProcessDic.Add(NameProcess, pProcess.Id)
+
                         End If
-
-                        ProcessDic.Add(NameProcess, processus)
-
-                        szMsgProcess = szMsgProcess + vbNewLine + " - " + NameProcess
-
-                        CheckedListBoxProcessKill.Items.Add(NameProcess, True)
 
                     End If
 
-                End If
+                Catch ex As Exception
+                    'Impossible de récupérer le FileName des process Systèmes
+                    ' Prévoir logs
+                End Try
 
-            Catch ex As Exception
-                'Impossible de récupérer le FileName des process Systèmes
-                ' Prévoir logs
-            End Try
+            Next
 
-        Next
+        Else
+
+            For Each pProcess As Process In Process.GetProcesses()
+
+                Try
+
+                    If pProcess.MainModule.FileName.StartsWith(PathCurrentProcessus, StringComparison.OrdinalIgnoreCase) And pProcess.Id <> currentId Then
+
+                        If (AUService.ExcludeSubDir <> Nothing And InStr(pProcess.MainModule.FileName, AUService.ExcludeSubDir, CompareMethod.Text) = 0) Or AUService.ExcludeSubDir = Nothing Then
+
+                            Dim TitleMainWindow As String = pProcess.MainWindowTitle
+                            Dim NameProcess As String = pProcess.ProcessName
+
+                            If TitleMainWindow <> "" Then
+                                NameProcess = NameProcess + " (" + TitleMainWindow + ")"
+                            End If
+
+                            CheckedListBoxProcessKill.Items.Add(NameProcess, True)
+                            ProcessDic.Add(NameProcess, pProcess.Id)
+
+                        End If
+
+                    End If
+
+                Catch ex As Exception
+                    'Impossible de récupérer le FileName des process Systèmes
+                    ' Prévoir logs
+                End Try
+
+            Next
+
+        End If
 
         If ProcessDic.Count = 0 Then
             Me.DialogResult = System.Windows.Forms.DialogResult.OK
@@ -156,21 +171,6 @@ Public Class DialogProcessKill
 
     End Sub
 
-    Private Sub CheckedListBoxProcessKill_ItemCheck(ByVal sender As Object, ByVal e As System.Windows.Forms.ItemCheckEventArgs) Handles CheckedListBoxProcessKill.ItemCheck
-
-        'Kill_Button.Enabled = (CheckedListBoxProcessKill.CheckedItems.Count > 0)
-        'System.Windows.Forms.Application.DoEvents()
-
-    End Sub
-
-    Private Sub CheckedListBoxProcessKill_SelectedValueChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles CheckedListBoxProcessKill.SelectedValueChanged
-
-    End Sub
-
-    Private Sub CheckedListBoxProcessKill_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CheckedListBoxProcessKill.SelectedIndexChanged
-        'Kill_Button.Enabled = CheckedListBoxProcessKill.CheckedItems.Count > 0
-    End Sub
-
     Private Sub Label_Version_DoubleClick(ByVal sender As Object, ByVal e As System.EventArgs) Handles Label_Version.DoubleClick
         AUService.LaunchQuickSupport()
     End Sub
@@ -181,30 +181,50 @@ Public Class DialogProcessKill
 
     Public Sub KillProcess()
 
-        Erase ListProcess
-
-        ProcessDic.Clear()
-
-        ListProcess = Process.GetProcesses()
-
         Dim PathCurrentProcessus As String = Application.StartupPath & "\"
+        Dim currentId As Integer = Process.GetCurrentProcess.Id
+        Dim currentSessionID As Integer = Process.GetCurrentProcess().SessionId
+        Dim appData As String = System.Environment.GetFolderPath(System.Environment.SpecialFolder.ApplicationData)
 
-        For processus = 0 To ListProcess.Length - 1
+        If PathCurrentProcessus.StartsWith(appData, StringComparison.OrdinalIgnoreCase) Then 'Modification pour les environnements RDP/RDS/Citrix...
 
-            Try
+            For Each pProcess As Process In Process.GetProcesses().Where(Function(p) p.SessionId = currentSessionID)
 
-                If InStr(ListProcess(processus).MainModule.FileName, PathCurrentProcessus, CompareMethod.Text) = 1 And ListProcess(processus).Id <> Process.GetCurrentProcess.Id Then
+                Try
 
-                    ListProcess(processus).Kill()
+                    If pProcess.MainModule.FileName.StartsWith(PathCurrentProcessus, StringComparison.OrdinalIgnoreCase) And pProcess.Id <> currentId Then
 
-                End If
+                        pProcess.Kill()
 
-            Catch ex As Exception
-                'Impossible de récupérer le FileName des process Systèmes
+                    End If
 
-            End Try
+                Catch ex As Exception
+                    'Impossible de récupérer le FileName des process Systèmes
 
-        Next
+                End Try
+
+            Next
+
+        Else
+
+            For Each pProcess As Process In Process.GetProcesses()
+
+                Try
+
+                    If pProcess.MainModule.FileName.StartsWith(PathCurrentProcessus, StringComparison.OrdinalIgnoreCase) And pProcess.Id <> currentId Then
+
+                        pProcess.Kill()
+
+                    End If
+
+                Catch ex As Exception
+                    'Impossible de récupérer le FileName des process Systèmes
+
+                End Try
+
+            Next
+
+        End If
 
     End Sub
 

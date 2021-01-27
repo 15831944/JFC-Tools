@@ -1,5 +1,5 @@
 ' <summary>
-' Auto generated mLanguageAU class from C:\InstallShield 2018 Projects\AU-Serv 5.8.8.1.180313 (HTTPS)\Module\mLanguageAU.xls
+' Auto generated mLanguageAU class from C:\InstallShield 2019 Projects\AU-Serv 5.8.9.7.190722 (RadioPlus)\Module\mLanguageAU.xls
 ' </summary>
 Public Module mLanguageAU
     Dim Languages(4) As String
@@ -19,10 +19,10 @@ Public Module mLanguageAU
 
     Dim CurrentLanguage As Integer
 
-    Dim Message_en(76) As String
-    Dim Message_fr(76) As String
-    Dim Message_it(76) As String
-    Dim Message_pl(76) As String
+    Dim Message_en(77) As String
+    Dim Message_fr(77) As String
+    Dim Message_it(77) As String
+    Dim Message_pl(77) As String
 
     ''''''''''''''''''''''''''''''''''''''''''''''''
     ' Message ID definition
@@ -102,6 +102,7 @@ Public Module mLanguageAU
     Public Const MSG_UPDATE_SYSTEM_UPDATE As Integer = 73
     Public Const MSG_NO_LAUNCH As Integer = 74
     Public Const MSG_LICENSE_NOT_RECOGNIZED As Integer = 75
+    Public Const MSG_INVALID_CONFIG As Integer = 76
 
     ''''''''''''''''''''''''''''''''''''''''''''''''
     ' Initialization of the module
@@ -192,6 +193,7 @@ Public Module mLanguageAU
         Message_en(73) = "An update of the update system is available, do you want to do it?"
         Message_en(74) = "Please contact your supplier."
         Message_en(75) = "license not recognized, please contact your supplier."
+        Message_en(76) = "Invalid configuration, please contact your supplier."
 
         Message_fr(0) = "Etes-vous sûr de vouloir quitter l'application ?"
         Message_fr(1) = "Veuillez patienter, s'il vous plait."
@@ -269,6 +271,7 @@ Public Module mLanguageAU
         Message_fr(73) = "Une mise à jour du système de mise à jour est disponible, voulez-vous l'effectuer ?"
         Message_fr(74) = "Veuillez contacter votre fournisseur."
         Message_fr(75) = "Licence non reconnue, veuillez contacter votre fournisseur."
+        Message_fr(76) = "Configuration invalide, veuillez contacter votre fournisseur."
 
         Message_it(0) = "Vuoi davvero per chiudere l'applicazione?"
         Message_it(1) = "Attendere prego …"
@@ -346,6 +349,7 @@ Public Module mLanguageAU
         Message_it(73) = "MSG_UPDATE_SYSTEM_CONFIRM"
         Message_it(74) = "MSG_NO_LAUNCH"
         Message_it(75) = "MSG_LICENSE_NOT_RECOGNIZED"
+        Message_it(76) = "MSG_INVALID_CONFIG"
 
         Message_pl(0) = "Czy na pewno chcesz zamknac aplikacje?"
         Message_pl(1) = "Prosze czekac …"
@@ -423,6 +427,7 @@ Public Module mLanguageAU
         Message_pl(73) = "MSG_UPDATE_SYSTEM_CONFIRM"
         Message_pl(74) = "MSG_NO_LAUNCH"
         Message_pl(75) = "MSG_LICENSE_NOT_RECOGNIZED"
+        Message_pl(76) = "MSG_INVALID_CONFIG"
 
 
     End Sub

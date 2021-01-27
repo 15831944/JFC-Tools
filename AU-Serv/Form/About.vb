@@ -18,8 +18,6 @@ Public NotInheritable Class About
         Me.LabelProductName.Text = My.Application.Info.Title 'My.Application.Info.ProductName
         Me.LabelVersion.Text = String.Format("Version {0}", My.Application.Info.Version.ToString) + " (v" + Application.ProductVersion.ToString() + ")"
 
-        'Label_Version.Text = Application.ProductVersion.ToString()
-
         ButtonReturn.Enabled = AUService.bReturnLicence
 
         Me.LabelCopyright.Text = My.Application.Info.Copyright

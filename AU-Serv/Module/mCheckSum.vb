@@ -12,7 +12,7 @@ Module mCheckSum
     '|         http://vbcode.8m.com/    \
     '|\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
-    Private Crc32Table(255) As Integer
+    Private ReadOnly Crc32Table(255) As Integer
 
     Private Function InitCrc32(Optional ByVal Seed As Integer = &HEDB88320, Optional ByVal Precondition As Integer = &HFFFFFFFF) As Integer
         'Declaration des variables
@@ -29,7 +29,7 @@ Module mCheckSum
                 'Masque le bits de poid faible
                 lTempCrc32 = lCrc32 And &HFFFFFFFE
                 'Decale les bit vers la droite
-                lTempCrc32 = lTempCrc32 \ &H2
+                lTempCrc32 \= &H2
                 'Masque le bit de poid fort
                 lTempCrc32 = lTempCrc32 And &H7FFFFFFF
                 'Verifie si le CRC = 0 et mix avec la valeur Seed
@@ -66,7 +66,7 @@ Module mCheckSum
             'Masque les bits 0 à 255 (poid faible)
             lAccValue = CRC32 And &HFFFFFF00
             'Divise par 256 (decalage vers la droite)
-            lAccValue = lAccValue \ &H100
+            lAccValue \= &H100
             'Masque les bits de poid fort
             lAccValue = lAccValue And &HFFFFFF
             'Recupere le module de 256
@@ -129,7 +129,7 @@ Module mCheckSum
             ReDim data(buffer - 1)
             FileGet(FileNumber, data)
 
-            nCount = nCount + buffer
+            nCount += buffer
 
             lCrc32Value = AddCrc32(data, lCrc32Value)
 
@@ -155,14 +155,14 @@ Module mCheckSum
         Dim FileSize As Integer
         Dim nvData As Integer = 1
 
-        AppendString = ""
+        'AppendString = ""
         FileSize = Len(svData)
 
         ReDim FileData(FileSize - 1)
 
         While nvData < FileSize
             FileData(nvData - 1) = CByte(Asc(Mid(svData, nvData, 2)))
-            nvData = nvData + 2
+            nvData += 2
         End While
 
         'Initialise le tableau du CRC

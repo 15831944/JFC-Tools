@@ -31,10 +31,24 @@ Public Module MessageCode
     Public Const CODE_LICENSE_NOT_CHANGED As Integer = 29
     Public Const CODE_EXCEPTION As Integer = 26
     Public Const CODE_INITAILIZE_INSTALL As Integer = 27
+    Public Const CODE_MOVE_EDI As Integer = 30
+    Public Const CODE_ERROR As Integer = 33
     Public Const CODE_LICENSE_NOT_RECOGNIZED As Integer = 35
+    Public Const CODE_ERROR_ACCES_FILE As Integer = 40
+    Public Const CODE_DOWNLOADED_ERROR_SIZE As Integer = 41
+    Public Const CODE_DOWNLOADED_ERROR_CRC As Integer = 42
+    Public Const CODE_PACKAGE_EXTRACT As Integer = 43
+    Public Const CODE_PACKAGE_EXTRACT_FAIL As Integer = 44
+    Public Const CODE_ERROR_CRC_CONFIG_FILE As Integer = 45
+    Public Const CODE_ERROR_CRC_ACCES_FILE As Integer = 46
+    Public Const CODE_ADD_CRC_CONFIG_FILE As Integer = 47
+    Public Const CODE_DOWNLOAD_RESUME As Integer = 48
     Public Const CODE_UPDATE_AU_SERV As Integer = 50
     Public Const CODE_SYNCHRONIZE_UPDATE As Integer = 55
     Public Const CODE_PARAMETER_INFO As Integer = 69
+    Public Const CODE_REDISTRUBUABLE As Integer = 70
+    Public Const CODE_WIN7RTM As Integer = 71
+    Public Const CODE_FRAMEWORK As Integer = 72
     Public Const CODE_KILLPROCESS As Integer = 88
     Public Const CODE_LOCKAPP As Integer = 99
 

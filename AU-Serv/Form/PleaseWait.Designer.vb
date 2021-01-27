@@ -43,14 +43,15 @@ Partial Class PleaseWait
         Me.ProgressBarPleaseWait.Location = New System.Drawing.Point(12, 43)
         Me.ProgressBarPleaseWait.Name = "ProgressBarPleaseWait"
         Me.ProgressBarPleaseWait.Size = New System.Drawing.Size(470, 23)
-        Me.ProgressBarPleaseWait.Style = System.Windows.Forms.ProgressBarStyle.Marquee
         Me.ProgressBarPleaseWait.TabIndex = 1
         '
         'PleaseWait
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.CausesValidation = False
         Me.ClientSize = New System.Drawing.Size(494, 78)
+        Me.ControlBox = False
         Me.Controls.Add(Me.ProgressBarPleaseWait)
         Me.Controls.Add(Me.Label1)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None

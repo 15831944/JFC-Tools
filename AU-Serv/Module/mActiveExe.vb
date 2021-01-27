@@ -3,9 +3,57 @@ Option Explicit On
 
 Public Module mActiveExe
 
-    Public Function ActiveExe(ByVal szFile As String, Optional ByVal Active As Boolean = True, Optional ByVal Message As Boolean = False) As Integer
+    Public Function GetExeApplication() As String
 
-        'MsgBox(szFile + " : " + CStr(Active), MsgBoxStyle.Information)
+        If AUService.svCodeAppli = "R" Then
+            Return "ataaetud.exe"
+
+        ElseIf AUService.svCodeAppli = "I" Then
+            Return "AtelierInternet.exe"
+
+        ElseIf AUService.svCodeAppli = "A" Then
+            Return "AtelierInternet.exe"
+
+        ElseIf AUService.svCodeAppli = "M" Then
+            Return "AtelierInternet.exe"
+
+        ElseIf AUService.svCodeAppli = "V" Then
+            Return "AtelierInternet.exe"
+
+        ElseIf AUService.svCodeAppli = "C" Then
+            Return "AtelierCourrier.exe"
+
+        ElseIf AUService.svCodeAppli = "O" Then
+            Return "BalViewer.exe"
+
+        ElseIf AUService.svCodeAppli = "D" Then
+            Return "ataaetud.exe"
+
+        ElseIf AUService.svCodeAppli = "L" Then
+            Return "KM.Medial.App.exe"
+
+        ElseIf AUService.svCodeAppli = "P" Then
+            Return "Atelier Presse.exe"
+
+        ElseIf AUService.svCodeAppli = "S" Then
+            Return "AtelierPresse.exe"
+
+        ElseIf AUService.svCodeAppli = "U" Then
+            Return "bin\ARPlus.exe"
+
+        ElseIf AUService.svCodeAppli = "F" Then
+            Return "AtelierInternet.exe"
+
+        ElseIf AUService.svCodeAppli = "H" Then
+            Return "Choices4U.exe"
+
+        Else
+            Return Nothing
+        End If
+
+    End Function
+
+    Public Function ActiveExe(ByVal szFile As String, Optional ByVal Active As Boolean = True, Optional ByVal Message As Boolean = False) As Integer
 
         If IO.File.Exists(szFile) Then
 

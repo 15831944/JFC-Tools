@@ -54,8 +54,8 @@ Module mFunction
 		nLen = Len(ConvertCount)
 		
 		For CountChar = 1 To LenCount - nLen
-			Char_Renamed = Char_Renamed & "0"
-		Next 
+            Char_Renamed &= "0"
+        Next 
 		
 		ConvertCount = Char_Renamed & ConvertCount
 		
@@ -128,7 +128,7 @@ Module mFunction
 
         Dim nPos As Integer
 
-        nPos = InStr(sValue, StringFrom)
+        nPos = InStr(sValue, StringFrom, CompareMethod.Text)
         While nPos > 0
             sValue = Left(sValue, nPos - 1) & StringTo & Right(sValue, Len(sValue) - (nPos + Len(StringFrom) - 1))
             nPos = InStr(sValue, StringFrom)
@@ -156,6 +156,10 @@ Module mFunction
     Public Function StrCompTextVersions(ByVal version1 As String, ByVal version2 As String) As Integer
 
         StrCompTextVersions = 0
+
+        If version1 = Nothing Or version2 = Nothing Then
+            Return 1
+        End If
 
         ' 1  version1 > version2
         '-1  version1 < version2

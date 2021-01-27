@@ -9,9 +9,9 @@ Public Class ListBoxEX
     Public Shadows Event ValueMemberChanged(ByVal sender As Object, ByVal e As EventArgs)
     Public Shadows Event VisibleChanged(ByVal sender As Object, ByVal e As EventArgs)
 
-    Private WithEvents mListBox As System.Windows.Forms.ListBox
+    Private WithEvents MListBox As System.Windows.Forms.ListBox
 
-    Private Images As New ArrayList
+    Private ReadOnly Images As New ArrayList
 
     Public Shadows Function Items(ByVal idx As Integer) As ItemEX
         Return mListBox.Items(idx)
@@ -86,7 +86,7 @@ Public Class ListBoxEX
         mListBox.Items.Add(New ItemEX(_User, _Text, _ImageIndex, _UserID))
     End Sub
 
-    Private Sub mListBox_Resize(ByVal sender As Object, ByVal e As System.EventArgs) Handles mListBox.Resize
+    Private Sub MListBox_Resize(ByVal sender As Object, ByVal e As System.EventArgs) Handles MListBox.Resize
         RaiseEvent Resize(sender, e, 1)
     End Sub
 
@@ -132,7 +132,7 @@ Public Class ListBoxEX
         Dim nPosNewLine As Integer = InStr(svValue, vbNewLine, CompareMethod.Text)
         CountLine = 1
         While nPosNewLine > 0
-            CountLine = CountLine + 1
+            CountLine += 1
             nPosNewLine = InStr(nPosNewLine + 1, svValue, vbNewLine, CompareMethod.Text)
         End While
     End Function

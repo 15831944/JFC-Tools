@@ -4,21 +4,8 @@ Option Explicit On
 Public Class DialogProductCode
 
     Public svSerie As String
-    'Public svChangeCompanyName As String
 
     Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
-
-        'If TextCompanyName.ReadOnly = False Then
-
-        '    If TextCompanyName.Text = Nothing Then
-        '        MsgBox(mLanguageAU.GetString(MSG_INVALID_COMPANY_NAME).Replace("#COMPANY#", ""), MsgBoxStyle.Critical, My.Application.Info.Title)
-        '        Exit Sub
-        '    End If
-
-        '    svChangeCompanyName = TextCompanyName.Text
-        'Else
-        '    svChangeCompanyName = ""
-        'End If
 
         If CheckFormatProductCode() Then
             svSerie = svSerie.Replace("-", "")
@@ -36,12 +23,11 @@ Public Class DialogProductCode
 
 
     Private Sub DialogProductCode_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+
         Label_Version.Text = Application.ProductVersion.ToString()
 
         Me.Icon = AUService.Icon
         Me.Text = AUService.Text + " - Process"
-
-        'OK_Button.Text = mLanguageAU.GetString(BUTTON_YES)
 
         Cancel_Button.Text = mLanguageAU.GetString(BUTTON_STOP)
 
@@ -54,15 +40,12 @@ Public Class DialogProductCode
         If AUService.svCompanyName <> "" Then
             TextCompanyName.Text = AUService.svCompanyName
         Else
-            'TextCompanyName.ReadOnly = False
             TextCompanyName.Text = ""
         End If
 
         TextCompanyName.Text = AUService.svCompanyName
 
         System.Windows.Forms.Application.DoEvents()
-
-        'Me.TextProductCode.Text = String.Format("{0:##,###,##0}", TextProductCode.Text)
 
     End Sub
 
@@ -80,11 +63,6 @@ Public Class DialogProductCode
         Dim a As Integer = Asc(e.KeyChar)
         If Not a < 32 And a <> 45 And Not (a >= 48 And a <= 57) And Not (a >= 65 And a <= 90) And Not (a >= 97 And a <= 122) Then
             e.KeyChar = Nothing
-            'ElseIf (TextProductCode.TextLength Mod 6) = 0 And Asc(a) <> 45 Then
-            '    If TextProductCode.TextLength <> 0 Then
-            '        TextProductCode.Text = TextProductCode.Text + "-"
-            '        TextProductCode.SelectionStart = TextProductCode.TextLength
-            '    End If
         End If
     End Sub
 
@@ -133,7 +111,7 @@ Public Class DialogProductCode
 
             If (CharCode >= 48 And CharCode <= 57) Or (CharCode >= 65 And CharCode <= 90) Then
 
-                NewProductCode = NewProductCode + Chr(CharCode)
+                NewProductCode += Chr(CharCode)
 
             End If
 
@@ -158,44 +136,14 @@ Public Class DialogProductCode
 
     End Sub
 
-    Private Sub TextProductCode_KeyUp(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles TextProductCode.KeyUp
-        Dim d As Double = 0
-    End Sub
-
-    Private Sub TextProductCode_StyleChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles TextProductCode.StyleChanged
-        Dim d As Double = 0
-    End Sub
-
     Private Sub TextProductCode_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TextProductCode.TextChanged
 
         TextProductCode.Text = TextProductCode.Text.Replace(" ", "")
 
-        'Dim d As Double = 0
-        'Dim tb As TextBox = TextProductCode
-
-        'If (Double.TryParse(tb.Text, d)) Then
-
-        '    tb.Text = d.ToString("#,###,###,###.0000")
-        '    tb.BackColor = SystemColors.Window
-
-        'Else
-
-        '    tb.BackColor = Color.Red
-
-        'End If
-
     End Sub
-
-   
 
     Private Sub Label_Version_DoubleClick(ByVal sender As Object, ByVal e As System.EventArgs) Handles Label_Version.DoubleClick
         AUService.LaunchQuickSupport()
-    End Sub
-
-    Private Sub TextCompanyName_DoubleClick(sender As Object, e As System.EventArgs) Handles TextCompanyName.DoubleClick
-        'If AUService.KeyStatus(Keys.ControlKey) Then
-        '    TextCompanyName.ReadOnly = False
-        'End If
     End Sub
 
 End Class

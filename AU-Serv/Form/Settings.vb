@@ -1,16 +1,7 @@
-﻿Imports System.Windows.Forms
-
+﻿Option Strict On
+Option Explicit On
 
 Public Class Settings
-
-    Private Sub HandleKeyDown(ByVal sender As Object, ByVal e As KeyEventArgs) Handles MyBase.KeyDown
-
-        If e.KeyCode = Keys.O AndAlso e.Modifiers = Keys.Control + Keys.Alt + Keys.Shift Then
-            Label1.ForeColor = ComboAllUpdates.ForeColor
-            ComboAllUpdates.Visible = True
-        End If
-
-    End Sub
 
     Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
 
@@ -32,12 +23,6 @@ Public Class Settings
             Select_WriteIniString("Parametres", "Proxy", "", AUService.AUServiceIni)
         End If
 
-        If ComboAllUpdates.Visible = True And AUService.svPatch <> ComboAllUpdates.Text Then
-            Select_WriteIniString("Parametres", "Patch", ComboAllUpdates.Text, AUService.AUServiceIni)
-            AUService.svPatch = ComboAllUpdates.Text
-            AUService.HttpSendMessage(CODE_SYNCHRONIZE_UPDATE, , "Synchronize", ComboAllUpdates.Text)
-        End If
-
         Me.DialogResult = System.Windows.Forms.DialogResult.OK
 
         Me.Close()
@@ -56,73 +41,16 @@ Public Class Settings
         TextProxy.Text = Select_GetIniString("Parametres", "Proxy", AUService.AUServiceIni)
         ComboAllUpdates.Text = Select_GetIniString("Parametres", "Patch", AUService.AUServiceIni).Trim
 
-        ComboAllUpdates.Visible = False
+        ComboAllUpdates.Visible = False Or AUService.bForceSynchonize Or (AUService.bSynchonize And AUService.Label_Info_Maj.Text = mLanguageAU.GetString(MSG_ACCES_NO_SYNCHRO))
         Label1.ForeColor = Label1.BackColor
         Me.KeyPreview = True
 
         Me.Show()
 
-        'Label1.Visible = ComboAllUpdates.Visible
-
     End Sub
 
-    'Private Sub CheckUpdateAuto_Click(sender As Object, e As System.EventArgs)
-
-    '    If AUService.bAutomaticUpdate = True Then
-    '        CheckUpdateAuto.CheckState = CheckState.Checked
-    '    Else
-    '        CheckUpdateAuto.CheckState = CheckState.Unchecked
-    '    End If
-    '    If CheckUpdateAuto.CheckState = CheckState.Checked Then
-    '        Select_WriteIniString("Parametres", "AutomaticUpdate", "1", AUService.AUServiceIni)
-    '        AUService.bAutomaticUpdate = True
-    '    Else
-    '        Select_WriteIniString("Parametres", "AutomaticUpdate", "0", AUService.AUServiceIni)
-    '        AUService.bAutomaticUpdate = False
-    '    End If
-    'End Sub
-
-   
-
-    Private Sub PictureBox1_DoubleClick(sender As Object, e As System.EventArgs) Handles PictureBox1.DoubleClick
-
-
-        Dim svInitialize As String = Select_GetIniString("Parametres", "Initialize", AUService.AUServiceIni)
-
-        If (svInitialize <> "") Then
-
-            Dim bValue As Boolean = False
-
-            Dim svKeyInstall As String = ParsePath(svInitialize, FILENAME_ONLY)
-
-            Try
-                bValue = CBool(My.Computer.Registry.GetValue("HKEY_CURRENT_USER\Software\JFC", svKeyInstall, False))
-            Catch ex As Exception
-                bValue = False
-            End Try
-
-            'bValue = True
-            'svKeyInstall = "AtelierRadioConfig"
-
-            If bValue And svKeyInstall <> Nothing Then
-                If MsgBox(mLanguageAU.GetString(MSG_RESET_APP), CType(MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation + MsgBoxStyle.DefaultButton2, MsgBoxStyle), My.Application.Info.Title) = MsgBoxResult.Yes Then
-                    My.Computer.Registry.SetValue("HKEY_CURRENT_USER\Software\JFC", svKeyInstall, False)
-                    Me.DialogResult = System.Windows.Forms.DialogResult.OK
-                    Me.Close()
-                End If
-            End If
-
-        End If
-
-
+    Private Sub TextProxy_MouseMove(sender As Object, e As MouseEventArgs) Handles TextProxy.MouseMove
+        ToolTip1.SetToolTip(TextProxy, "http=http://login:password@server:port or http=https://login:password@server:port")
     End Sub
 
-    'Private Sub Label1_DoubleClick(ByVal sender As Object, ByVal e As System.EventArgs) Handles Label1.DoubleClick
-    '    ComboAllUpdates.Visible = True
-    '    Label1.ForeColor = ComboAllUpdates.ForeColor
-    'End Sub
-
-    Private Sub ComboAllUpdates_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ComboAllUpdates.SelectedIndexChanged
-
-    End Sub
 End Class
