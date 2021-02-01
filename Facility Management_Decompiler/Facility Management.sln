@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30804.86
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Facility Management", "Facility Management\Facility Management.csproj", "{49EF6252-2F49-4AB4-8537-72166802869E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kantar.MediaPlanning.Logger", "Kantar.MediaPlanning.Logger\Kantar.MediaPlanning.Logger.csproj", "{142719F8-2156-4B6D-BF4C-E685879E6AB7}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{49EF6252-2F49-4AB4-8537-72166802869E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{49EF6252-2F49-4AB4-8537-72166802869E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{49EF6252-2F49-4AB4-8537-72166802869E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{49EF6252-2F49-4AB4-8537-72166802869E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{142719F8-2156-4B6D-BF4C-E685879E6AB7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{142719F8-2156-4B6D-BF4C-E685879E6AB7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{142719F8-2156-4B6D-BF4C-E685879E6AB7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{142719F8-2156-4B6D-BF4C-E685879E6AB7}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A26EBCB2-17BF-41F4-A3CA-A491C7316DF6}
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,302 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{49EF6252-2F49-4AB4-8537-72166802869E}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>Facility_Management</RootNamespace>
+    <AssemblyName>Facility Management</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <Deterministic>true</Deterministic>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>Facility_Management.My.MyApplication</StartupObject>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="ICSharpCodeAU.SharpZipLib, Version=1.1.0.145, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>BinLib\ICSharpCodeAU.SharpZipLib.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.VisualBasic" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="CreateUpdate.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CreateUpdate.Designer.cs">
+      <DependentUpon>CreateUpdate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DataRecovery.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DataRecovery.Designer.cs">
+      <DependentUpon>DataRecovery.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DataRecoveryP.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DataRecoveryP.Designer.cs">
+      <DependentUpon>DataRecoveryP.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form1.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form1.Designer.cs">
+      <DependentUpon>Form1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormBox.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormBox.Designer.cs">
+      <DependentUpon>FormBox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GetElements.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GetElements.Designer.cs">
+      <DependentUpon>GetElements.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MacAddress.cs" />
+    <Compile Include="mCheckSum.cs" />
+    <Compile Include="mConnection.cs" />
+    <Compile Include="mControlFormBox.cs" />
+    <Compile Include="mCopyFile.cs" />
+    <Compile Include="mEasyCrypt.cs" />
+    <Compile Include="mFileIni.cs" />
+    <Compile Include="mFunction.cs" />
+    <Compile Include="mHddSerial.cs" />
+    <Compile Include="mLaunchAppAndWait.cs" />
+    <Compile Include="mMapDrive.cs" />
+    <Compile Include="My\MyApplication.cs" />
+    <Compile Include="My\MyComputer.cs" />
+    <Compile Include="My\MyProject.cs" />
+    <Compile Include="My\MySettings.cs" />
+    <Compile Include="My\MySettingsProperty.cs" />
+    <Compile Include="PleaseWait.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PleaseWait.Designer.cs">
+      <DependentUpon>PleaseWait.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="CreateUpdate.resx">
+      <DependentUpon>CreateUpdate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form1.resx">
+      <DependentUpon>Form1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <None Include="Resources\CreateUpdate.Icon" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Image1.bmp" />
+    <None Include="Resources\Image2.jpg" />
+    <Resource Include="Resources\Add.bmp" />
+    <Content Include="Resources\Add_all_icon.bmp" />
+    <Content Include="Resources\Add_package.bmp" />
+    <Content Include="Resources\Ajouter.bmp" />
+    <Content Include="Resources\archive2.bmp" />
+    <Content Include="Resources\avertissement.bmp" />
+    <Content Include="Resources\compress.bmp" />
+    <Content Include="Resources\conversion.bmp" />
+    <Content Include="Resources\Copy_to_Folder.bmp" />
+    <Content Include="Resources\corbeille.bmp" />
+    <Content Include="Resources\couper.bmp" />
+    <Content Include="Resources\couper_fichier.bmp" />
+    <Content Include="Resources\Create.bmp" />
+    <Content Include="Resources\Delete.bmp" />
+    <Content Include="Resources\dernier.bmp" />
+    <Content Include="Resources\disquedur.bmp" />
+    <Content Include="Resources\document_a_exportation.bmp" />
+    <Content Include="Resources\document_export.bmp" />
+    <Content Include="Resources\document_noexport.bmp" />
+    <Content Include="Resources\dossier.bmp" />
+    <Content Include="Resources\Duplicate.bmp" />
+    <Content Include="Resources\Dupliquer.bmp" />
+    <Content Include="Resources\Edit.bmp" />
+    <Content Include="Resources\find.bmp" />
+    <Content Include="Resources\Folder_Add.bmp" />
+    <Content Include="Resources\ftp.bmp" />
+    <Content Include="Resources\Globe.bmp" />
+    <Content Include="Resources\globe1.bmp" />
+    <Content Include="Resources\gnome.bmp" />
+    <Content Include="Resources\graphique.bmp" />
+    <Content Include="Resources\import.bmp" />
+    <Content Include="Resources\ImportData.bmp" />
+    <Content Include="Resources\import_icon.bmp" />
+    <Content Include="Resources\index.bmp" />
+    <Content Include="Resources\Info.bmp" />
+    <None Include="Resources\kantar.png" />
+    <None Include="Resources\kantar1.png" />
+    <Content Include="Resources\Maj.bmp" />
+    <Content Include="Resources\Package.bmp" />
+    <Content Include="Resources\Package2.bmp" />
+    <Content Include="Resources\personne.bmp" />
+    <Content Include="Resources\premier.bmp" />
+    <Content Include="Resources\Preview.bmp" />
+    <Content Include="Resources\radar_wifi_icone.bmp" />
+    <Content Include="Resources\reload.bmp" />
+    <Content Include="Resources\rename.bmp" />
+    <Content Include="Resources\reseau.bmp" />
+    <Content Include="Resources\Services.bmp" />
+    <Content Include="Resources\skip.bmp" />
+    <Content Include="Resources\sortie.bmp" />
+    <Content Include="Resources\status.bmp" />
+    <Content Include="Resources\Supervisor.bmp" />
+    <Content Include="Resources\Supprimer.bmp" />
+    <Content Include="Resources\SupprimerAll.bmp" />
+    <Content Include="Resources\system.bmp" />
+    <Content Include="Resources\Tarifs.bmp" />
+    <Content Include="Resources\telecharger.bmp" />
+    <Content Include="Resources\terre.bmp" />
+    <Content Include="Resources\tiroir.bmp" />
+    <Content Include="Resources\tools.bmp" />
+    <Content Include="Resources\Tools2.bmp" />
+    <Content Include="Resources\Undo.bmp" />
+    <Content Include="Resources\Update.bmp" />
+    <Content Include="Resources\Upload.bmp" />
+    <Content Include="Resources\users_into.bmp" />
+    <Content Include="Resources\utilisateur.bmp" />
+    <Content Include="Resources\utilisateurs.bmp" />
+    <Content Include="Resources\wait.bmp" />
+    <Content Include="Resources\Wizard.bmp" />
+    <Content Include="Resources\Wizard_Wand.bmp" />
+    <Content Include="Resources\xml.bmp" />
+    <Content Include="Resources\zip.bmp" />
+    <Content Include="Resources\zip1.bmp" />
+    <Content Include="Resources\zip2.bmp" />
+    <Content Include="Resources\_Auto.bmp" />
+    <Content Include="Ressources\Atelier Courrier Plus.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Ressources\Atelier Courrier.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Ressources\Atelier Internet II.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Ressources\Atelier Metridom.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Ressources\Atelier Presse II.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Ressources\Atelier Presse.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Ressources\Atelier Radio.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Ressources\Belgium.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Ressources\Brazil.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Ressources\Choices.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Ressources\England.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Ressources\French.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Ressources\Italy.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Ressources\Kazahstan.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Ressources\Metridom.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Ressources\Morocco.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Ressources\Norway.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Ressources\Poland.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Ressources\Russia.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Ressources\Slovakia.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Ressources\Spain.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Ressources\Sweden.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Kantar.MediaPlanning.Logger\Kantar.MediaPlanning.Logger.csproj">
+      <Project>{142719f8-2156-4b6d-bf4c-e685879e6ab7}</Project>
+      <Name>Kantar.MediaPlanning.Logger</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
