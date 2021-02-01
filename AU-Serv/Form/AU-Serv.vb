@@ -2012,6 +2012,8 @@ DlgProductCode:
             End Try
         End If
 
+        Dim dirInfo As DirectoryInfo = IO.Directory.CreateDirectory(pathInstallShieldTmp)
+
         Dim MyProc As New Process()
         Dim lPid_Execute As Integer
 
