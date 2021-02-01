@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30804.86
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kantar.MediaPlanning.AffinageAutoStartTool", ".\Kantar.MediaPlanning.AffinageAutoStartTool\Kantar.MediaPlanning.AffinageAutoStartTool.csproj", "{B82DB48F-F753-4D22-9E83-85577BDE2065}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kantar.MediaPlanning.Logger", ".\Kantar.MediaPlanning.Logger\Kantar.MediaPlanning.Logger.csproj", "{142719F8-2156-4B6D-BF4C-E685879E6AB7}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B82DB48F-F753-4D22-9E83-85577BDE2065}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B82DB48F-F753-4D22-9E83-85577BDE2065}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B82DB48F-F753-4D22-9E83-85577BDE2065}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B82DB48F-F753-4D22-9E83-85577BDE2065}.Release|Any CPU.Build.0 = Release|Any CPU
+		{142719F8-2156-4B6D-BF4C-E685879E6AB7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{142719F8-2156-4B6D-BF4C-E685879E6AB7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{142719F8-2156-4B6D-BF4C-E685879E6AB7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{142719F8-2156-4B6D-BF4C-E685879E6AB7}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {01423878-E4C3-435D-838D-F0B47A067D85}
+	EndGlobalSection
+EndGlobal
