@@ -277,6 +277,7 @@
     <None Include="Resources\kantarc.png" />
     <None Include="Resources\image002.png" />
     <None Include="Resources\image009.png" />
+    <EmbeddedResource Include="Resources\Kantar_Logo.jpg" />
     <Content Include="Resources\LogoJFC.gif" />
     <None Include="Resources\patienter.gif" />
   </ItemGroup>

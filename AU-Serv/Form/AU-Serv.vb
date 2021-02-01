@@ -1,6 +1,7 @@
 ﻿Option Strict On
 Option Explicit On
 
+Imports System.IO
 Imports System.Net
 
 Friend Class AUService
@@ -1955,6 +1956,20 @@ DlgProductCode:
 
     End Sub
 
+    Private Function DeleteFileAndFolder(ByVal path As String) As Boolean
+
+        For Each pFile As String In IO.Directory.GetFiles(path)
+            IO.File.Delete(pFile)
+        Next
+
+        For Each pFolder As String In IO.Directory.GetDirectories(path)
+            DeleteFileAndFolder(pFolder)
+        Next
+
+        IO.Directory.Delete(path, False)
+
+    End Function
+
     Private Function LaunchPatchAndWait(ByVal svPath As String, ByVal svFile As String) As Boolean
 
         Dim nvTimeMilliseconds As Integer = 20
@@ -1982,6 +1997,20 @@ DlgProductCode:
         ProgressBar2.MarqueeAnimationSpeed = nvTimeMilliseconds
 
         System.Windows.Forms.Application.DoEvents()
+
+        Dim pathInstallShieldTmp As String = IO.Path.Combine(svDisk1Folder, "Tmp")
+
+        Dim env_TMP As String = Environment.GetEnvironmentVariable("TMP")
+
+        Environment.SetEnvironmentVariable("TMP", pathInstallShieldTmp)
+
+        If IO.Directory.Exists(pathInstallShieldTmp) Then
+            Try
+                DeleteFileAndFolder(pathInstallShieldTmp)
+            Catch ex As Exception
+
+            End Try
+        End If
 
         Dim MyProc As New Process()
         Dim lPid_Execute As Integer
@@ -2026,6 +2055,8 @@ DlgProductCode:
             IO.File.Delete(SetupIss$)
             If IO.File.Exists(SetupLog$) Then IO.File.Delete(SetupLog$)
         End If
+
+        Environment.SetEnvironmentVariable("TMP", env_TMP)
 
         ProgressBar2.Style = ProgressBarStyle.Blocks
         ProgressBar2.MarqueeAnimationSpeed = 100

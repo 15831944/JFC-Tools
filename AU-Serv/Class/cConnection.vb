@@ -967,7 +967,7 @@ restart:
 
                 Dim Update() As String = Split(AccesUpdate, ";")
 
-                If CLng(Update(1)) < FileLen(LocalFile) Then Return False
+                'If CLng(Update(1)) < FileLen(LocalFile) Then Return False
 
                 Dim GetAppBuild As String = Update(0)
 
