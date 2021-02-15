@@ -1,0 +1,1001 @@
+// Included header files ----------------------------------------------------
+#include "ifx.h"
+
+//    DeleteFile (TARGETDIR ^ "Modules\\ISURF.Wrap.dll");
+//    DeleteDir(TARGETSRC ^ "S50037\\T00001", ROOT);
+
+#define PRODUCT_NAME	"Atelier Internet" // II"
+//#define FRENCH_LANGUAGE 
+
+#define Feature_Transfer_Data	TRUE  // True = FeatureTransferData or False = FeatureMoveData
+#define Log_Delete_File			TRUE
+//#define LOG_UPDATE				TRUE  // Add bLogUpdate
+//#define OPTION_UPDATE			TRUE  // Add QuickSupport, CheckProcess...
+
+//#define	HAVAS					TRUE
+//szFileNameOnly
+
+//////////////////// installation declarations ///////////////////
+prototype ReadFileLine1(STRING,STRING,BYREF STRING);
+prototype WriteFileLine1(STRING,STRING,STRING);
+prototype OnDeleteFile(STRING);
+prototype STRING Xml2Txt(STRING);
+prototype CheckApp();
+prototype OnFeatureErrorInfo();
+
+// ----- global variables ------
+STRING	TARGETSRC, TARGETXUS, szNewMaj, szMaj, szLogPath, szLogFile, szFileNameOnly;
+BOOL	bLogUpdate, bSourcesReseau;
+
+//---------------------------------------------------------------------------
+// OnBegin
+//---------------------------------------------------------------------------
+function OnBegin()
+	NUMBER nResult,nPos1, nPos2,nvNewMaj, nvLineNumber1, nvLineNumber2, nvType, nvSize, nvFileHandle;  
+	STRING szPathName,szDriveName, szLastMaj, svResult, svFileTxt;
+	LIST listID;
+	STRING szSearchStr, svReturnLine, svLogUpdate, svDATE, svTIME;
+begin
+	
+	ParsePath (szFileNameOnly, PACKAGE_LOCATION, FILENAME_ONLY);
+
+	nPos1 = 0;
+	nPos2 = StrLength(szFileNameOnly)-1;
+	
+	StrSub (szNewMaj, szFileNameOnly, 1, 4);
+
+	if StrToNum(nvNewMaj, szNewMaj) >= ISERR_SUCCESS && StrFind(szFileNameOnly,"_") = 5 then;   		
+		nResult = NumToStr(szNewMaj, nvNewMaj);
+		nResult = StrToNum(nvNewMaj, szNewMaj);
+
+#ifdef FRENCH_LANGUAGE
+		szMaj = " n° ";
+#else
+		szMaj = " number ";
+#endif
+
+	else
+		szNewMaj = "";
+		szMaj = "";
+	endif;
+
+   	SdProductName ( PRODUCT_NAME);
+    SetTitle( PRODUCT_NAME , 0, BACKGROUNDCAPTION );
+
+#ifdef FRENCH_LANGUAGE
+	SetDialogTitle (DLG_STATUS, "Mise à jour " + PRODUCT_NAME + szMaj + szNewMaj );
+#else
+  	SetDialogTitle (DLG_STATUS, PRODUCT_NAME + " update" + szMaj + szNewMaj);
+#endif
+  	
+    //TARGETDIR = PROGRAMFILES ^ "JFC\\Atelier Internet II";
+    
+    TARGETDIR = WINDISK ^ "Atelier Internet";
+  	
+	if CMDLINE = "" then
+   		
+ 		Dlg_Path:
+		Disable (BACKBUTTON);
+
+#ifdef FRENCH_LANGUAGE
+		nResult = AskDestPath ("", "Veulliez indiquer où se trouve l'application " + PRODUCT_NAME + ".", TARGETDIR, 0);
+#else
+		nResult = AskDestPath ("", "Please, enter the " + PRODUCT_NAME + " installation location.", TARGETDIR, 0);
+#endif
+
+        Enable (BACKBUTTON);
+        
+		if TARGETDIR = ""  || !Is(FILE_EXISTS,TARGETDIR ^ "AtelierInternet.exe") then
+
+#ifdef FRENCH_LANGUAGE
+			MessageBox ( "L'application " + PRODUCT_NAME + " n'a pas été trouvée !!!", WARNING);
+#else
+			MessageBox ( "Could not find the " + PRODUCT_NAME + " software", WARNING);
+#endif
+
+	   		goto Dlg_Path;
+		endif;
+
+	  	if Is (FILE_LOCKED, TARGETDIR ^ "AtelierInternet.exe") then
+
+#ifdef FRENCH_LANGUAGE
+			MessageBox ( "Veuillez quitter l'application " + PRODUCT_NAME + " avant de continuer.", WARNING);
+#else
+			MessageBox ( "Please, close the application " + PRODUCT_NAME + " before going on.", SEVERE);
+#endif
+
+			goto Dlg_Path;
+  		endif;
+		
+		if szNewMaj != "1" && szNewMaj != "" then
+			ReadFileLine1(TARGETDIR ^ "FRET" , "Fret.dat", szLastMaj);
+			if szLastMaj != "" then
+				StrToNum(nResult, szLastMaj);
+				nResult++;
+				NumToStr(szLastMaj, nResult);
+				//if szNewMaj != szLastMaj then
+				if szNewMaj < szLastMaj then
+
+					SetDialogTitle (DLG_ASK_YESNO, PRODUCT_NAME + " installShield");
+#ifdef FRENCH_LANGUAGE
+					if AskYesNo ("Problème d'ordre croissant au niveau des mises à jour !!! \n\n( Erreur: " + szNewMaj + "-" + szLastMaj + " ), voulez-vous continer ?", NO) = NO then
+#else
+					if AskYesNo ("Update increasing order error detected !!! (Error: " + szNewMaj + "-" + szLastMaj + "), Ignore and carry on?", NO) = NO then
+#endif
+
+			  	 		abort;
+			   		endif;
+			   	endif;
+		   	endif;
+		endif;
+  	else
+  	   	TARGETDIR = CMDLINE;
+	  	StrRemoveLastSlash (TARGETDIR);
+  	  	if Is (FILE_LOCKED, TARGETDIR ^ "AtelierInternet.exe") then
+		    abort;
+ 	 	endif;
+  	endif;
+	
+	
+	if Is(FILE_EXISTS, TARGETDIR ^ "AU-Serv.ini") then
+		if GetProfString(TARGETDIR ^ "AU-Serv.ini", "Parametres", "LogUpdate", svLogUpdate ) = 0 then
+			StrTrim(svLogUpdate);
+			bLogUpdate = (svLogUpdate = "1");
+		else
+			bLogUpdate = FALSE;
+		endif;
+	else
+		bLogUpdate = FALSE;
+	endif;
+	
+	
+	if bLogUpdate then
+		
+		if szFileNameOnly != "" then
+			szLogFile = szFileNameOnly + ".out";
+		else
+
+			GetSystemInfo (TIME, nResult, svTIME ); 
+			GetSystemInfo (DATE, nResult, svDATE ); 
+			szFileNameOnly = svDATE + svTIME;
+			StrReplace(szFileNameOnly, "-", "",0);
+			StrReplace(szFileNameOnly, ":", "",0);		
+			szLogFile = szFileNameOnly + ".out";
+			
+		endif;
+
+		szLogPath = TARGETDIR ^ "FRET";
+		
+		if !Is(PATH_EXISTS, szLogPath) then
+			CreateDir(szLogPath);
+		endif;
+	
+
+		if !Is(FILE_EXISTS, szLogPath ^ szLogFile) then
+			DeleteFile(szLogPath ^ szLogFile);
+		endif;
+
+		OpenFileMode (FILE_MODE_APPEND); 
+
+		CreateFile (nvFileHandle, szLogPath, szLogFile);
+
+		WriteLine(nvFileHandle, "OnBegin");
+
+		CloseFile (nvFileHandle); 
+
+	endif;	
+	
+	
+	
+    TARGETXUS = TARGETDIR ^ "AtelierInternet.xus";
+
+	CheckApp();
+	
+	if TARGETSRC = "" then
+	  	TARGETSRC = TARGETDIR ^ "Sources";
+ 	endif;
+    
+	bSourcesReseau = (StrFind(TARGETSRC,TARGETDIR) != 0);
+    
+	ChangeDirectory (TARGETDIR);
+
+  	if Is ( FILE_EXISTS,SUPPORTDIR ^ "Patch.txt") then
+  		svFileTxt = TARGETDIR ^ "Fret" ^ szFileNameOnly + ".txt";
+  		CopyFile (SUPPORTDIR ^ "Patch.txt", svFileTxt);
+
+		if CMDLINE ="" then
+	  		listID = ListCreate (STRINGLIST);
+	  		ListReadFromFile (listID, SUPPORTDIR ^ "Patch.txt");
+	  		Disable (BACKBUTTON);
+	  		nResult = SdShowInfoList ( "Patch" + szMaj + szNewMaj, " ", listID ); 
+	  		if (nResult = BACK) goto Dlg_Path;
+	  		ListDestroy (listID);
+	  	endif;
+
+  	endif;
+    
+	nResult = FeatureSetTarget(MEDIA, "<TARGETSRC>", TARGETSRC);
+	  
+end;
+
+//---------------------------------------------------------------------------
+// OnFirstUIAfter
+//---------------------------------------------------------------------------
+function OnFirstUIAfter()
+	NUMBER nResult;
+	STRING svLogUpdate;
+	STRING szFind, szReplace, svReturnLine, szPath, svResult, szAttributes, sTemp;
+	NUMBER nvLineReturn, nvResult, nTemp;
+begin
+
+	if bLogUpdate then
+		FileInsertLine(szLogPath ^ szLogFile, "OnFirstUIAfter", 0, BEFORE);
+	endif;
+	
+	
+#ifdef HAVAS
+
+	try
+
+		if bLogUpdate then
+			
+			FileInsertLine(szLogPath ^ szLogFile, "StrReplace:", 0, BEFORE);
+			
+			ParsePath(szPath, TARGETXUS, PATH);
+
+			if !Is(PATH_EXISTS,szPath) then
+				FileInsertLine(szLogPath ^ szLogFile, "- PATH_NOT_EXISTS: " +  szPath , 0, BEFORE);
+			endif;
+			
+			if !Is(DIR_WRITEABLE,szPath) then
+				FileInsertLine(szLogPath ^ szLogFile, "- DIR_NOT_WRITEABLE: " +  szPath , 0, BEFORE);
+			endif;
+
+			if Is(FILE_LOCKED,TARGETXUS) then
+				FileInsertLine(szLogPath ^ szLogFile, "- FILE_LOCKED: " +  TARGETXUS , 0, BEFORE);
+			endif;
+			
+			if !Is(FILE_WRITEABLE,TARGETXUS) then
+				FileInsertLine(szLogPath ^ szLogFile, "- FILE_NOT_WRITEABLE: " +  TARGETXUS , 0, BEFORE);
+			endif;
+
+			if Is(FILE_EXISTS,TARGETXUS) then
+				FileInsertLine(szLogPath ^ szLogFile, "- FILE_EXISTS: " +  TARGETXUS , 0, BEFORE);
+				
+			   // Get the file attributes into nvResult. 
+				if (GetFileInfo (TARGETXUS, FILE_ATTRIBUTE, nvResult, svResult) = 0) then 
+
+				  // Test for no attribute. 
+				  if (nvResult = FILE_ATTR_NORMAL) then 
+
+					  // No attributes are set.  Add that info to the list 
+					  szAttributes = "  *File attributes: Normal";
+
+				  else 
+						// Append attributes to this string. 
+						szAttributes = "  *File attributes: "; 
+
+						// Is it archived? 
+						if (FILE_ATTR_ARCHIVED & nvResult) then 
+							szAttributes = szAttributes + "archived "; 
+						endif; 
+
+						// Is it hidden? 
+						if (FILE_ATTR_HIDDEN & nvResult) then 
+							szAttributes = szAttributes + "hidden "; 
+						endif; 
+
+						// Is it read-only? 
+						if (FILE_ATTR_READONLY & nvResult) then 
+							szAttributes = szAttributes + "read-only "; 
+						endif; 
+
+						// Is it a system file? 
+						if (FILE_ATTR_SYSTEM & nvResult) then 
+							szAttributes = szAttributes + "system "; 
+						endif; 
+
+						// Is it a directory? 
+						if (FILE_ATTR_DIRECTORY & nvResult) then 
+							szAttributes = szAttributes + "directory "; 
+						endif; 
+					endif; 
+
+					FileInsertLine(szLogPath ^ szLogFile, szAttributes , 0, BEFORE);			
+					
+				endif;    
+
+			endif;
+			
+			szFind = "\\\\frmitch-fs04\\JFC-App\\Donnee\\Internet\\Melodie\\Sources";
+			szReplace = "\\\\ntap01\\reso$\\Atelier Internet\\Sources";
+
+			nResult = FileGrep(TARGETXUS,szFind,svReturnLine, nvLineReturn,RESTART);
+			
+			while (nResult = 0)
+
+				if bLogUpdate then
+					FileInsertLine(szLogPath ^ szLogFile, "- " + svReturnLine, 0, BEFORE);
+				endif;
+					
+				StrReplace(svReturnLine, szFind, szReplace, 0);
+
+				if bLogUpdate then
+					FileInsertLine(szLogPath ^ szLogFile, "- " + svReturnLine, 0, BEFORE);
+				endif;
+				
+				if FileInsertLine (TARGETXUS, svReturnLine, nvLineReturn,REPLACE) = 0 then
+					if bLogUpdate then
+						FileInsertLine(szLogPath ^ szLogFile, "- FileInsertLine: OK" , 0, BEFORE);
+					endif;
+				elseif bLogUpdate then
+					FileInsertLine(szLogPath ^ szLogFile, "- FileInsertLine: KO", 0, BEFORE);
+				endif;
+				
+				nResult = FileGrep(TARGETXUS,szFind,svReturnLine, nvLineReturn,CONTINUE);
+
+			endwhile;
+			
+		endif;	  
+
+	catch 
+
+		if bLogUpdate then
+			nTemp = Err.Number;
+			NumToStr(sTemp, nTemp);
+			FileInsertLine(szLogPath ^ szLogFile, "- ERROR: " + sTemp, 0, BEFORE);
+		endif;
+
+	endcatch; 
+	
+#endif
+	
+	
+#ifdef LOG_UPDATE
+	if Is(FILE_EXISTS, TARGETDIR ^ "AU-Serv.ini") then
+		if GetProfString(TARGETDIR ^ "AU-Serv.ini", "Parametres", "LogUpdate", svLogUpdate ) != 0 then
+			nResult = WriteProfString(TARGETDIR ^ "AU-Serv.ini", "Parametres", "LogUpdate", "1" );
+		endif;
+	endif;
+#endif	
+	
+
+#ifdef OPTION_UPDATE
+	if Is(FILE_EXISTS, TARGETDIR ^ "AU-Serv.ini") then
+		nResult = WriteProfString(TARGETDIR ^ "AU-Serv.ini", "Parametres", "QuickSupport", "qs.exe");	
+		nResult = WriteProfString(TARGETDIR ^ "AU-Serv.ini", "Parametres", "CheckProcess", "1");	
+	endif;
+#endif
+
+
+#ifdef FRENCH_LANGUAGE
+	SdShowMsg("Mise à jour des paramètres de configuration.",TRUE);
+#else
+	SdShowMsg("Update of the configuration settings.",TRUE);
+#endif
+
+    // DeleteFile (TARGETDIR ^ "Modules\\ISURF.Wrap.dll");
+    
+    // DeleteDir(TARGETSRC ^ "S50037\\T00001", ROOT);
+
+	// DeleteDir(TARGETSRC ^ "S30038", ROOT);	
+	
+	OnDeleteFile(TARGETSRC);    
+	
+	OnDeleteFile(TARGETDIR);    
+        
+	WriteFileLine1(TARGETDIR ^ "FRET","Fret.dat",szNewMaj);
+	
+    SdShowMsg("",FALSE);
+
+	if CMDLINE = "" then
+
+#ifdef FRENCH_LANGUAGE
+		MessageBox ("Mise à jour " + PRODUCT_NAME + szMaj + szNewMaj + " terminée", INFORMATION);
+#else
+		MessageBox (PRODUCT_NAME + " update" + szMaj + szNewMaj + " completed", INFORMATION);
+#endif
+
+	endif;
+  
+end;
+
+//---------------------------------------------------------------------------
+// OnDeleteFile
+//---------------------------------------------------------------------------
+function OnDeleteFile(svDir)
+	NUMBER nResult, nvResult;
+	STRING svFileSpec, svResult, svFile, svPath;
+begin
+
+	svFileSpec = "*.Delete";
+
+	nResult = FindAllFiles (svDir, svFileSpec, svResult , RESET); 
+
+
+    while(nResult = 0) 
+    
+		if bLogUpdate then
+			FileInsertLine(szLogPath ^ szLogFile, "OnDeleteFile: " +  svResult , 0, BEFORE);
+		endif;
+
+        // Find the next matching file name. 
+        ParsePath(svFile,svResult,FILENAME_ONLY);
+        ParsePath(svPath,svResult,PATH);
+
+        if Is(FILE_EXISTS, svPath + svFile) then
+			nvResult = DeleteFile(svPath + svFile);
+		elseif Is(PATH_EXISTS, svPath + svFile) then
+			nvResult = DeleteDir(svPath + svFile, ALLCONTENTS);
+			nvResult = DeleteDir(svPath + svFile, ROOT);
+		endif;
+		
+		nvResult = DeleteFile(svResult);
+
+        nResult = FindAllFiles(svDir, svFileSpec, svResult , CONTINUE); 
+
+    endwhile; 
+
+  
+end;
+
+//---------------------------------------------------------------------------
+// OnEnd
+//---------------------------------------------------------------------------
+function OnEnd()
+	NUMBER nResult, nvFileHandle;
+	STRING sResult;
+begin
+
+	if bLogUpdate then
+		FileInsertLine(szLogPath ^ szLogFile, "OnEnd", 0, BEFORE);
+	endif;
+
+	if CMDLINE != "" then
+	
+		if Is(FILE_EXISTS, TARGETDIR ^ "AU-Serv.err") then
+
+			if bLogUpdate then
+				FileInsertLine(szLogPath ^ szLogFile, "- FILE_EXISTS: AU-Serv.err" , 0, BEFORE);
+			endif;
+			
+			nResult = DeleteFile (TARGETDIR ^ "AU-Serv.err");
+
+			if bLogUpdate then
+				NumToStr(sResult, nResult);
+				FileInsertLine(szLogPath ^ szLogFile, "  *DeleteFile: " + sResult , 0, BEFORE);
+			endif;
+
+			if Is(FILE_EXISTS, TARGETDIR ^ "AU-Serv.err") then
+
+				if bLogUpdate then
+					FileInsertLine(szLogPath ^ szLogFile, "- FILE_STILL_EXISTS: AU-Serv.err" , 0, BEFORE);
+				endif;
+
+				Delay(2);
+				nResult = RenameFile(TARGETDIR ^ "AU-Serv.err", TARGETDIR ^ szFileNameOnly + ".err");
+
+				if bLogUpdate then
+					NumToStr(sResult, nResult);
+					FileInsertLine(szLogPath ^ szLogFile, "  *RenameFile: " + sResult , 0, BEFORE);
+				endif;
+				
+				if nResult != 0 then
+					nResult = OpenFileMode (FILE_MODE_APPEND);
+					if (CreateFile (nvFileHandle, TARGETDIR, "RenameFile.err") < 0) then 
+
+						if bLogUpdate then
+							FileInsertLine(szLogPath ^ szLogFile, "  *CreateFile failed: RenameFile.err"  , 0, BEFORE);
+						endif;
+
+					//MessageBox ("CreateFile failed.", SEVERE); 
+					elseif (WriteLine(nvFileHandle, szFileNameOnly) < 0) then 
+
+						if bLogUpdate then
+							FileInsertLine(szLogPath ^ szLogFile, "  *WriteLine failed: RenameFile.err"  , 0, BEFORE);
+						endif;
+						
+					//MessageBox ("WriteLine failed.", SEVERE); 
+					endif;
+					nResult = CloseFile ( nvFileHandle );
+				endif; 
+			endif;
+		endif;
+	endif;
+end;
+
+//---------------------------------------------------------------------------
+// OnAbort
+//---------------------------------------------------------------------------
+function OnAbort()
+    STRING szCaption, szError;
+    NUMBER nError;
+    OBJECT ErrorInfo;
+begin
+
+	if bLogUpdate then 
+		if szLogPath != "" && szLogFile != "" then
+
+			FileInsertLine(szLogPath ^ szLogFile, "OnAbort", 0, BEFORE);
+
+			OnFeatureErrorInfo();
+
+		endif;
+	endif;
+	
+end;    
+
+ 
+//---------------------------------------------------------------------------
+// OnCanceling
+//---------------------------------------------------------------------------
+function OnCanceling()
+begin
+
+	if bLogUpdate then
+		FileInsertLine(szLogPath ^ szLogFile, "OnCanceling", 0, BEFORE);
+	endif;
+
+	abort;
+end;
+
+//---------------------------------------------------------------------------
+// OnFileLocked
+//---------------------------------------------------------------------------
+function OnFileLocked(szFile)
+begin
+
+	if bLogUpdate then
+		FileInsertLine(szLogPath ^ szLogFile, "OnFileLocked=" + szFile, 0, BEFORE);
+	endif;
+
+	// TODO: Enable this code if you want to show a confirmation dialog box.	
+	//return SdExceptions(LOCKED, szFile);
+	
+	// Return ERR_PERFORM_AFTER_REBOOT so that the file will be updated
+	// w/o confirmation.
+	return ERR_PERFORM_AFTER_REBOOT;
+end;
+
+
+//---------------------------------------------------------------------------
+// OnFirstUIBefore                                            
+//---------------------------------------------------------------------------
+function OnFirstUIBefore()
+	NUMBER	nResult;
+begin	
+
+	if bLogUpdate then
+		FileInsertLine(szLogPath ^ szLogFile, "OnFirstUIBefore", 0, BEFORE);
+	endif;  
+
+	FeatureSelectItem(MEDIA,"Application", TRUE);
+	FeatureSelectItem(MEDIA,"Sources", Is(DIR_WRITEABLE,TARGETSRC) && !bSourcesReseau);
+	
+	nResult = FeatureSelectItem(MEDIA,"UpdateCMD", CMDLINE != "");
+	nResult = FeatureSelectItem(MEDIA,"UpdateNoCMD", CMDLINE = "");	
+	
+	if bLogUpdate then
+		if Is(DIR_WRITEABLE,TARGETSRC) then
+			FileInsertLine(szLogPath ^ szLogFile, "- SourcesWriteable=OUI" , 0, BEFORE);
+		else
+			FileInsertLine(szLogPath ^ szLogFile, "- SourcesWriteable=NON" , 0, BEFORE);
+		endif;
+		if bSourcesReseau then
+			FileInsertLine(szLogPath ^ szLogFile, "- SourcesReseau=OUI" , 0, BEFORE);
+		else
+			FileInsertLine(szLogPath ^ szLogFile, "- SourcesReseau=NON" , 0, BEFORE);
+		endif;		
+	endif;
+	
+	
+end;
+ 
+//---------------------------------------------------------------------------
+// OnMoveData
+//
+// The OnMoveData event is called by OnShowUI to initiate the file
+// transfer of the setup.
+//
+// Note: This event will not be called automatically in a
+// program...endprogram style setup.
+//---------------------------------------------------------------------------
+function OnMoveData()
+number	nResult, nMediaFlags, nvDisk, nTemp;
+string  sResult;
+begin
+
+	if bLogUpdate then
+		FileInsertLine(szLogPath ^ szLogFile, "OnMoveData", 0, BEFORE);
+	endif;  
+
+	// Don't install the DISK1COMPONENT if MAINT_OPTION_NONE was specified.
+	if( MAINT_OPTION = MAINT_OPTION_NONE ) then
+		FeatureSelectItem( MEDIA, DISK1COMPONENT, FALSE );
+	endif;
+
+    // Updated in 11.5, disable the cancel button during file transfer unless
+	// this is non-maintenance mode or repair mode.
+    if( MAINTENANCE && ( !REINSTALLMODE || UPDATEMODE ) ) then
+        Disable( CANCELBUTTON );
+    endif;
+
+    // Show Status
+	// Note: Start status window at 1 in case CreateInstallationInfo call
+	// is lengthy.
+	SetStatusWindow( 1, "" );
+	Enable( STATUSEX );
+	StatusUpdate( ON, 100 );
+
+	// Create the uninstall infomation (after displaying the progress dialog)
+	// Don't create uninstall information if MAINT_OPTION_NONE was specified.
+	if( MAINT_OPTION != MAINT_OPTION_NONE ) then
+		CreateInstallationInfo();
+	endif;
+
+	try
+		// Move Data
+#ifdef Feature_Transfer_Data
+		nResult = FeatureTransferData( MEDIA );
+#else	
+		nResult=FeatureMoveData (MEDIA, nvDisk, 0);
+#endif
+	catch 
+		if bLogUpdate then
+			FileInsertLine(szLogPath ^ szLogFile, "Move Data: Exception" , 0, BEFORE);
+		endif;
+	endcatch; 
+
+	if bLogUpdate then
+		NumToStr(sResult, nResult);
+
+#ifdef Feature_Transfer_Data
+		FileInsertLine(szLogPath ^ szLogFile, "FeatureTransferData: " +  sResult , 0, BEFORE);
+#else	
+		FileInsertLine(szLogPath ^ szLogFile, "FeatureMoveData: " +  sResult , 0, BEFORE);
+#endif
+
+
+	endif;
+
+    // Moved in 11.0, Check for failure before creating uninstall key.
+    // Handle move data error and abort if error occured.
+	if( nResult < ISERR_SUCCESS ) then
+		OnComponentError();
+		abort;
+	endif;	    
+
+	// Create uninstall key, if DISK1COMPONENT was installed.
+	if( IFX_DISK1INSTALLED ) then
+
+		// Store text-subs for maintenance mode later, only do this when
+		// disk 1 is installed. Note that any text-subs that are updated after
+        // this call will not be remembered during maintenance mode.
+		FeatureSaveTarget("");
+
+		// Write uninstall information.
+		MaintenanceStart();
+
+		// Customize Uninstall Information
+		OnCustomizeUninstInfo();
+
+	endif;
+
+    // Disable Status
+	Disable( STATUSEX );
+
+end;
+
+ 
+//---------------------------------------------------------------------------
+// Function: ReadFileLine1(svChemin,svFichier,svLigne)
+//---------------------------------------------------------------------------
+function ReadFileLine1(svChemin,svFichier,svLigne)
+    NUMBER  nvFileHandle;
+begin 
+
+	if Is(FILE_EXISTS, svChemin ^ svFichier)then
+		OpenFileMode (FILE_MODE_APPEND);
+	    OpenFile (nvFileHandle, svChemin, svFichier);
+	    	GetLine (nvFileHandle, svLigne);
+		CloseFile (nvFileHandle);
+	endif;
+		
+end;
+
+//---------------------------------------------------------------------------
+// Function: WriteFileLine1(svChemin,svFichier,svLigne)
+//---------------------------------------------------------------------------
+function WriteFileLine1(svChemin,svFichier,svLigne)
+    NUMBER  nvFileHandle;
+begin 
+
+	if Is(FILE_EXISTS, svChemin ^ svFichier) = TRUE then
+		SRCDIR = svChemin; 
+	    FileInsertLine (svFichier, svLigne , 0, REPLACE);
+	else
+		OpenFileMode (FILE_MODE_APPEND);
+	    CreateFile (nvFileHandle, svChemin, svFichier);
+	    	WriteLine(nvFileHandle, svLigne );
+	    CloseFile (nvFileHandle);
+	endif;
+		
+end;
+ 
+
+//---------------------------------------------------------------------------
+// Xml2Txt
+//---------------------------------------------------------------------------
+function STRING Xml2Txt(szData)
+	NUMBER 	nvResult;
+begin
+    
+	// AtelierInternet.exe setup /targetspath:"C:\Atelier Internet II\JFCTargets"
+	
+	nvResult = StrReplace ( szData, "&amp;", "&" , 0);
+	nvResult = StrReplace ( szData, "Ã©", "é", 0);
+	nvResult = StrReplace ( szData, "Ã¢", "â", 0);
+	nvResult = StrReplace ( szData, "Ãª", "ê", 0);
+	nvResult = StrReplace ( szData, "Ã®", "î", 0);
+	nvResult = StrReplace ( szData, "Ã´", "ô", 0);
+	nvResult = StrReplace ( szData, "Ã»", "û", 0);
+	nvResult = StrReplace ( szData, "Ã¤", "ä", 0);
+	nvResult = StrReplace ( szData, "Ã«", "ë", 0);
+	nvResult = StrReplace ( szData, "Ã¯", "ï", 0);
+	nvResult = StrReplace ( szData, "Ã¶", "ö", 0);
+	nvResult = StrReplace ( szData, "Ã¼", "ü", 0);
+	nvResult = StrReplace ( szData, "Ã¿", "ÿ", 0);
+	nvResult = StrReplace ( szData, "Ã ", "à", 0);
+	nvResult = StrReplace ( szData, "Ã¨", "è", 0);
+	nvResult = StrReplace ( szData, "Ã¬", "ì", 0);
+	nvResult = StrReplace ( szData, "Ã²", "ò", 0);
+	nvResult = StrReplace ( szData, "Ã¹", "ù", 0);
+	nvResult = StrReplace ( szData, "Ã§", "ç", 0);
+	nvResult = StrReplace ( szData, "&lt;", "<", 0);
+	nvResult = StrReplace ( szData, "&gt;", ">", 0);
+
+	return szData;
+
+end;
+
+//---------------------------------------------------------------------------
+// CheckApp                                            
+//---------------------------------------------------------------------------
+function CheckApp ()
+	NUMBER 	nResult, nvLineFolder, nvLinePath, nPosStart, nPosEnd;
+	STRING 	svReturnLine, szSearchStr;
+begin
+
+	if Is(FILE_EXISTS, TARGETDIR ^ "AtelierInternet.xus") then
+		if FileGrep ( TARGETXUS, "<path>property.group.melodie.data.source</path>", svReturnLine, nvLinePath, RESTART ) =  0 then
+			szSearchStr =  "<Folder Path=\"";  
+			if FileGrep ( TARGETXUS, szSearchStr, svReturnLine, nvLineFolder, CONTINUE ) = 0 then 
+				if (nvLineFolder - nvLinePath) = 2 then
+					nPosStart = StrFind (svReturnLine, szSearchStr) + StrLength(szSearchStr) ;
+					nPosEnd = StrFindEx (svReturnLine, "\"",nPosStart);
+					nResult = StrSub (TARGETSRC, svReturnLine, nPosStart , nPosEnd - nPosStart);
+					TARGETSRC = Xml2Txt(TARGETSRC);
+				endif;
+			endif;				
+         endif;
+	endif;
+	
+	if TARGETSRC = "" then
+    	TARGETSRC = TARGETDIR ^ "Sources";
+    endif;
+    
+end;
+
+
+//---------------------------------------------------------------------------
+// OnInstallingFile
+//
+// The OnInstallingFile event is called when a file is about to be installed
+// as a result of FeatureTransferData or FeatureMoveData.
+//
+// szFile will contain the full path of file about to be installed.
+//---------------------------------------------------------------------------
+function OnInstallingFile(szFile)
+	STRING szPath, svResult, szAttributes, szFileOnly;
+	NUMBER nvResult, nvFileHandle;
+begin	
+		
+
+if bLogUpdate then
+	FileInsertLine(szLogPath ^ szLogFile, "OnInstallingFile: " +  szFile , 0, BEFORE);
+
+	ParsePath(szPath, szFile, PATH);
+
+	if !Is(PATH_EXISTS,szPath) then
+		FileInsertLine(szLogPath ^ szLogFile, "- PATH_NOT_EXISTS: " +  szPath , 0, BEFORE);
+	endif;
+	
+	if !Is(DIR_WRITEABLE,szPath) then
+		FileInsertLine(szLogPath ^ szLogFile, "- DIR_NOT_WRITEABLE: " +  szPath , 0, BEFORE);
+	endif;
+
+	if Is(FILE_LOCKED,szFile) then
+		FileInsertLine(szLogPath ^ szLogFile, "- FILE_LOCKED: " +  szFile , 0, BEFORE);
+	endif;
+	
+	if !Is(FILE_WRITEABLE,szFile) then
+		FileInsertLine(szLogPath ^ szLogFile, "- FILE_NOT_WRITEABLE: " +  szFile , 0, BEFORE);
+	endif;
+
+	if Is(FILE_EXISTS,szFile) then
+		FileInsertLine(szLogPath ^ szLogFile, "- FILE_EXISTS: " +  szFile , 0, BEFORE);
+		
+	   // Get the file attributes into nvResult. 
+		if (GetFileInfo (szFile, FILE_ATTRIBUTE, nvResult, svResult) = 0) then 
+
+		  // Test for no attribute. 
+		  if (nvResult = FILE_ATTR_NORMAL) then 
+
+			  // No attributes are set.  Add that info to the list 
+			  szAttributes = "  *File attributes: Normal";
+
+		  else 
+				// Append attributes to this string. 
+				szAttributes = "  *File attributes: "; 
+
+				// Is it archived? 
+				if (FILE_ATTR_ARCHIVED & nvResult) then 
+					szAttributes = szAttributes + "archived "; 
+				endif; 
+
+				// Is it hidden? 
+				if (FILE_ATTR_HIDDEN & nvResult) then 
+					szAttributes = szAttributes + "hidden "; 
+				endif; 
+
+				// Is it read-only? 
+				if (FILE_ATTR_READONLY & nvResult) then 
+					szAttributes = szAttributes + "read-only "; 
+				endif; 
+
+				// Is it a system file? 
+				if (FILE_ATTR_SYSTEM & nvResult) then 
+					szAttributes = szAttributes + "system "; 
+				endif; 
+
+				// Is it a directory? 
+				if (FILE_ATTR_DIRECTORY & nvResult) then 
+					szAttributes = szAttributes + "directory "; 
+				endif; 
+			endif; 
+
+			FileInsertLine(szLogPath ^ szLogFile, szAttributes , 0, BEFORE);			
+			
+		endif;
+		
+#ifdef Log_Delete_File
+		nvResult = DeleteFile(szFile);
+		NumToStr(svResult, nvResult);
+		FileInsertLine(szLogPath ^ szLogFile, "  *DeleteFile: " +  svResult , 0, BEFORE);
+		
+		if Is(FILE_EXISTS,szFile) then
+			FileInsertLine(szLogPath ^ szLogFile, "- FILE_STILL_EXISTS: " +  szFile , 0, BEFORE);		
+			nvResult = RenameFile(szFile, szFile + ".tmp");
+			NumToStr(svResult, nvResult);
+			FileInsertLine(szLogPath ^ szLogFile, "  *RenameFile: " +  svResult , 0, BEFORE);
+			
+			if Is(FILE_EXISTS,szFile + ".tmp") then
+				nvResult = DeleteFile(szFile + ".tmp");
+				NumToStr(svResult, nvResult);
+				FileInsertLine(szLogPath ^ szLogFile, "  *DeleteFileTmp: " +  svResult , 0, BEFORE);
+			endif;
+			
+			if Is(FILE_EXISTS,szFile) then
+				FileInsertLine(szLogPath ^ szLogFile, "- FILE_STILL_EXISTS_ALWAYS: " +  szFile , 0, BEFORE);	
+				
+				ParsePath(szFileOnly, szFile, FILENAME);
+				OpenFileMode (FILE_MODE_NORMAL); 
+				nvResult = OpenFile (nvFileHandle, szPath, szFileOnly);
+				NumToStr(svResult, nvResult);
+				if (nvResult < 0) then 
+					FileInsertLine(szLogPath ^ szLogFile, "  *OpenFile failed: " +  svResult , 0, BEFORE); 
+				else
+					FileInsertLine(szLogPath ^ szLogFile, "  *OpenFile: " +  svResult , 0, BEFORE); 
+					nvResult = CloseFile (nvFileHandle);
+					NumToStr(svResult, nvResult);
+					if (nvResult < 0) then 
+						FileInsertLine(szLogPath ^ szLogFile, "  *CloseFile failed: " +  svResult , 0, BEFORE);
+					else
+						FileInsertLine(szLogPath ^ szLogFile, "  *CloseFile: " +  svResult , 0, BEFORE);
+					endif;
+				endif; 
+			endif;
+		endif;
+#endif
+		
+	endif;
+	
+endif;
+
+end;
+
+//---------------------------------------------------------------------------
+// OnInstalledFile
+//
+// The OnInstalledFile event is called after a file is installed as 
+// a result of ComponentTransferData or ComponentMoveData.
+//
+// szFile will contain the full path of file that was just installed.
+//---------------------------------------------------------------------------
+function OnInstalledFile(szFile)
+begin
+	
+	if bLogUpdate then
+		FileInsertLine(szLogPath ^ szLogFile, "OnInstalledFile: " +  szFile , 0, BEFORE);
+	endif;
+	
+end;
+
+
+//---------------------------------------------------------------------------
+// OnComponentError
+//
+// The OnComponentError event is called by OnShowUI when the call
+// to FeatureTransferData or FeatureMoveData returns an error.
+//---------------------------------------------------------------------------
+function void OnComponentError()
+    STRING szCaption, szError;
+    NUMBER nError;
+    OBJECT ErrorInfo;
+begin
+
+	if bLogUpdate then
+		FileInsertLine(szLogPath ^ szLogFile, "OnComponentError", 0, BEFORE);
+
+		OnFeatureErrorInfo();
+	endif;
+
+end;
+
+//---------------------------------------------------------------------------
+// OnFeatureErrorInfo
+//---------------------------------------------------------------------------
+function OnFeatureErrorInfo()
+    STRING szCaption, szError;
+    NUMBER nError;
+    OBJECT ErrorInfo;
+begin
+
+	if bLogUpdate then 
+
+		set ErrorInfo = FeatureErrorInfo();
+
+		szCaption = SdLoadString(IFX_ONCOMPONENTERR_CAPTION);
+		
+		if(IsObject(ErrorInfo))then	
+		
+			nError = ErrorInfo.LastError;
+			NumToStr(szError, nError);
+			
+			if(IsObject(ErrorInfo.Feature))then
+
+				FileInsertLine(szLogPath ^ szLogFile, "FeatureErrorInfo:" , 0, BEFORE);
+				FileInsertLine(szLogPath ^ szLogFile, "- Caption:		" +  szCaption , 0, BEFORE);
+				FileInsertLine(szLogPath ^ szLogFile, "- DisplayName:	" +  ErrorInfo.Feature.DisplayName , 0, BEFORE);
+				FileInsertLine(szLogPath ^ szLogFile, "- Name:			" +  ErrorInfo.Feature.Name , 0, BEFORE);			
+				FileInsertLine(szLogPath ^ szLogFile, "- FileGroup:		" +  ErrorInfo.FileGroup , 0, BEFORE);
+				FileInsertLine(szLogPath ^ szLogFile, "- FileError:		" +  ErrorInfo.FileError.File , 0, BEFORE);
+				FileInsertLine(szLogPath ^ szLogFile, "- Description:	" +  ErrorInfo.FileError.Description , 0, BEFORE);
+				FileInsertLine(szLogPath ^ szLogFile, "- LastError:		" +  szError , 0, BEFORE);
+				
+		   else
+				
+				FileInsertLine(szLogPath ^ szLogFile, "FeatureErrorInfo:" , 0, BEFORE);
+				FileInsertLine(szLogPath ^ szLogFile, "- Caption:		" +  szCaption , 0, BEFORE);
+				FileInsertLine(szLogPath ^ szLogFile, "- FileGroup:		" +  ErrorInfo.FileGroup , 0, BEFORE);
+				FileInsertLine(szLogPath ^ szLogFile, "- FileError:		" +  ErrorInfo.FileError.File , 0, BEFORE);
+				FileInsertLine(szLogPath ^ szLogFile, "- Description:	" +  ErrorInfo.FileError.Description , 0, BEFORE);
+				FileInsertLine(szLogPath ^ szLogFile, "- LastError:		" +  szError , 0, BEFORE);
+
+			endif;
+
+		endif;
+		
+    endif;
+    
+end;

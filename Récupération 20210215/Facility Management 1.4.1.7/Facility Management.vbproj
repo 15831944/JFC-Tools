@@ -1,0 +1,372 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{DFE8C0F4-03BE-4002-9C12-65DACFC10E50}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <StartupObject>Facility_Management.My.MyApplication</StartupObject>
+    <RootNamespace>Facility_Management</RootNamespace>
+    <AssemblyName>Facility Management</AssemblyName>
+    <FileAlignment>512</FileAlignment>
+    <MyType>WindowsForms</MyType>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <OptionExplicit>On</OptionExplicit>
+    <OptionCompare>Binary</OptionCompare>
+    <OptionStrict>On</OptionStrict>
+    <OptionInfer>On</OptionInfer>
+    <ApplicationIcon>zip.ico</ApplicationIcon>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation />
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>1</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <PublishWizardCompleted>true</PublishWizardCompleted>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DocumentationFile>
+    </DocumentationFile>
+    <NoWarn>
+    </NoWarn>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <WarningsAsErrors>41998,41999,42004,42016,42017,42018,42019,42020,42021,42022,42024,42025,42026,42029,42030,42031,42032,42036,42099,42104,42105,42106,42107,42108,42109,42353,42354,42355</WarningsAsErrors>
+    <WarningLevel>1</WarningLevel>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <Prefer32Bit>false</Prefer32Bit>
+    <Optimize>true</Optimize>
+    <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>full</DebugType>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DocumentationFile>
+    </DocumentationFile>
+    <NoWarn>
+    </NoWarn>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <WarningsAsErrors>41998,41999,42004,42016,42017,42018,42019,42020,42021,42022,42024,42025,42026,42029,42030,42031,42032,42036,42099,42104,42105,42106,42107,42108,42109,42353,42354,42355</WarningsAsErrors>
+    <DebugSymbols>true</DebugSymbols>
+    <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
+    <WarningLevel>1</WarningLevel>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>My Project\app.manifest</ApplicationManifest>
+  </PropertyGroup>
+  <PropertyGroup>
+    <TargetZone>LocalIntranet</TargetZone>
+  </PropertyGroup>
+  <PropertyGroup>
+    <GenerateManifests>true</GenerateManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignManifests>true</SignManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestCertificateThumbprint>DCFA8ADF055C76FF9EAE384A5A8B28BC1067CAEC</ManifestCertificateThumbprint>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestKeyFile>Certificat\TheKantarGroupLimited.pfx</ManifestKeyFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>false</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Public|AnyCPU'">
+    <OutputPath>bin\Public\</OutputPath>
+    <WarningLevel>1</WarningLevel>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningsAsErrors>41998,41999,42004,42016,42017,42018,42019,42020,42021,42022,42024,42025,42026,42029,42030,42031,42032,42036,42099,42104,42105,42106,42107,42108,42109,42353,42354,42355</WarningsAsErrors>
+    <NoWarn>
+    </NoWarn>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="ICSharpCodeAU.SharpZipLib, Version=1.1.0.145, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Dlls\ICSharpCodeAU.SharpZipLib.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+  </ItemGroup>
+  <ItemGroup>
+    <Import Include="ICSharpCodeAU.SharpZipLib.Zip" />
+    <Import Include="Microsoft.VisualBasic" />
+    <Import Include="System" />
+    <Import Include="System.Collections" />
+    <Import Include="System.Collections.Generic" />
+    <Import Include="System.Diagnostics" />
+    <Import Include="System.Drawing" />
+    <Import Include="System.Linq" />
+    <Import Include="System.Windows.Forms" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ApplicationEvents.vb" />
+    <Compile Include="Class\cMacAddress.vb" />
+    <Compile Include="Form\DataRecovery.designer.vb">
+      <DependentUpon>DataRecovery.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Form\DataRecovery.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form\CreateUpdate.Designer.vb">
+      <DependentUpon>CreateUpdate.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Form\CreateUpdate.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form\DataRecoveryP.Designer.vb">
+      <DependentUpon>DataRecoveryP.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Form\DataRecoveryP.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form\GetElements.Designer.vb">
+      <DependentUpon>GetElements.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Form\GetElements.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form\FormBox.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form\FormBox.Designer.vb">
+      <DependentUpon>FormBox.vb</DependentUpon>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Module\mConnection.vb" />
+    <Compile Include="Module\mHddSerial.vb" />
+    <Compile Include="Form\PleaseWait.designer.vb">
+      <DependentUpon>PleaseWait.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Form\PleaseWait.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Module\mControlFormBox.vb" />
+    <Compile Include="Module\mFunction.vb" />
+    <Compile Include="Module\mCheckSum.vb" />
+    <Compile Include="Module\mCopyFile.vb" />
+    <Compile Include="Module\mEasyCrypt.vb" />
+    <Compile Include="Module\mFileIni.vb" />
+    <Compile Include="Module\mLaunchAppAndWait.vb" />
+    <Compile Include="Module\mMapDrive.vb" />
+    <Compile Include="My Project\AssemblyInfo.vb" />
+    <Compile Include="My Project\Application.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Application.myapp</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="My Project\Resources.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Settings.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Form\DataRecovery.resx">
+      <DependentUpon>DataRecovery.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form\CreateUpdate.resx">
+      <DependentUpon>CreateUpdate.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form\DataRecoveryP.resx">
+      <DependentUpon>DataRecoveryP.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form\GetElements.resx">
+      <DependentUpon>GetElements.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form\FormBox.resx">
+      <DependentUpon>FormBox.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form\PleaseWait.resx">
+      <DependentUpon>PleaseWait.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="My Project\Resources.resx">
+      <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
+      <CustomToolNamespace>My.Resources</CustomToolNamespace>
+      <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.vb</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="Certificat\TheKantarGroupLimited.pfx" />
+    <None Include="My Project\app.manifest">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="My Project\Application.myapp">
+      <Generator>MyApplicationCodeGenerator</Generator>
+      <LastGenOutput>Application.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="My Project\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <CustomToolNamespace>My</CustomToolNamespace>
+      <LastGenOutput>Settings.Designer.vb</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Drapeaux\France.png" />
+    <None Include="Drapeaux\Italy.png" />
+    <None Include="Drapeaux\Russian Federation.png" />
+    <None Include="Drapeaux\Poland.png" />
+    <None Include="Drapeaux\Spain.png" />
+    <None Include="Drapeaux\United Kingdom%28Great Britain%29.png" />
+    <Content Include="Icon\Facility Management.ico" />
+    <None Include="Images\corbeille.png" />
+    <None Include="Images\nouvelles.png" />
+    <None Include="Images\archive.png" />
+    <None Include="Images\Update.png" />
+    <None Include="Images\forfait.png" />
+    <None Include="Images\Dupliquer.png" />
+    <None Include="Images\Duplicate.png" />
+    <None Include="Images\tools.png" />
+    <None Include="Images\archive2.png" />
+    <None Include="Images\Add-package.png" />
+    <None Include="Icon\zip.ico" />
+    <None Include="Icon\zip-icone-8838.ico" />
+    <None Include="Images\zip.png" />
+    <None Include="Images\compress.png" />
+    <None Include="Images\conversion.png" />
+    <None Include="Images\Import Data.png" />
+    <None Include="Images\Package2.png" />
+    <None Include="Images\Folder Add.png" />
+    <None Include="Images\Copy to Folder.png" />
+    <None Include="Images\Wizard.png" />
+    <None Include="Images\Tarifs.png" />
+    <None Include="Images\Auto.png" />
+    <None Include="Images\Wizard Wand.png" />
+    <None Include="Images\Tools2.png" />
+    <None Include="Images\system.png" />
+    <None Include="Images\Supervisor.png" />
+    <None Include="Images\Services.png" />
+    <None Include="Images\graphique.png" />
+    <None Include="Images\xml.png" />
+    <None Include="Images\zip2.png" />
+    <None Include="Images\Info.png" />
+    <None Include="Images\status.png" />
+    <None Include="Images\find.png" />
+    <None Include="Images\index.png" />
+    <None Include="Images\users_into.png" />
+    <None Include="Images\application-sauvegarder-recherche-x-icone.png" />
+    <None Include="Images\radar-wifi-icone.png" />
+    <None Include="Images\document-a-exportation.png" />
+    <None Include="Resources\import-icon.png" />
+    <None Include="Images\couper.png" />
+    <None Include="Images\couper-fichier.png" />
+    <None Include="Images\import.png" />
+    <None Include="Images\rename.png" />
+    <None Include="Images\skip.png" />
+    <None Include="Images\dernier.png" />
+    <None Include="Images\premier.png" />
+    <None Include="Images\document-export.png" />
+    <None Include="Images\document-noexport.png" />
+    <None Include="Images\gnome.png" />
+    <None Include="Images\utilisateur.png" />
+    <None Include="Images\wait.png" />
+    <None Include="Images\globe.png" />
+    <Content Include="zip.ico" />
+    <None Include="Pays\United Kingdom%28Great Britain%29.png" />
+    <None Include="Pays\Spain.png" />
+    <None Include="Pays\Poland.png" />
+    <None Include="Pays\Russian Federation.png" />
+    <None Include="Pays\Italy.png" />
+    <None Include="Pays\France.png" />
+    <None Include="Images\News.png" />
+    <None Include="Images\microphone.png" />
+    <None Include="Images\ftp.png" />
+    <None Include="Images\tiroir.png" />
+    <None Include="Images\reload.png" />
+    <None Include="Images\disquedur.png" />
+    <None Include="Images\Undo.png" />
+    <None Include="Images\sortie.png" />
+    <None Include="Images\personne.png" />
+    <None Include="Images\dossier.png" />
+    <None Include="Images\avertissement.png" />
+    <None Include="Images\utilisateurs.png" />
+    <None Include="Images\reseau.png" />
+    <None Include="Images\terre.png" />
+    <None Include="Images\telecharger.png" />
+    <None Include="Images\maj.png" />
+    <None Include="Images\ajouter.png" />
+    <None Include="Images\supprimer.png" />
+    <None Include="Images\supprimer-icon.png" />
+    <None Include="Images\Add-all-icon.png" />
+    <None Include="Images\Upload-icon.png" />
+    <None Include="Images\notes-edit-icon.png" />
+    <None Include="Images\Globe-icon.png" />
+    <None Include="Images\Preview-icon.png" />
+    <None Include="Images\New-icon.png" />
+    <None Include="Images\Delete-icon.png" />
+    <None Include="Images\Add-icon.png" />
+    <None Include="Images\Package.png" />
+    <None Include="Icon\fond.jpg" />
+    <None Include="Resources\fond.jpg" />
+    <None Include="Resources\LogoJFC.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

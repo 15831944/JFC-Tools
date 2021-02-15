@@ -1,0 +1,1072 @@
+//---------------------------------------------------------------------------
+// OnBegin
+//
+// The OnBegin event is called directly by the framework after the setup
+// initializes. Note that this event will be called AFTER "Initialization"
+// events (i.e.) OnSetTARGETDIR, OnCheckMediaPassword.
+//
+// Note: This event will not be called automatically in a
+// program...endprogram style setup.
+//---------------------------------------------------------------------------
+
+
+// Included header files ----------------------------------------------------
+#include "ifx.h"
+
+#define PRODUCT_NAME	"Choices"
+#define FRENCH_LANGUAGE 
+#define EXE_NAME		"Choices4U.exe"
+
+//////////////////// installation declarations ///////////////////
+prototype ReadFileLine1(STRING,STRING,BYREF STRING);
+prototype WriteFileLine1(STRING,STRING,STRING);
+prototype OnDeleteFile(STRING);
+prototype CheckApp();
+prototype BOOL OnGetItemSize(STRING, BOOL); 
+prototype OnFeatureErrorInfo();
+prototype STRING IIf(BOOL, STRING, STRING);
+
+// ----- global variables ------
+STRING	szNewMaj, szMaj, szFileNameOnly, szLogFile, szLogPath;
+STRING	SurveyPath_1, SurveyPath_2, SurveyPath_3, SurveyPath_4, VendorFolder, ImportFolder, CommonFolder;
+BOOL	bSurvey_1, bSurvey_2, bSurvey_3, bSurvey_4, bExtractReseau, bLogUpdate;
+
+//---------------------------------------------------------------------------
+// OnBegin
+//---------------------------------------------------------------------------
+function OnBegin()
+	NUMBER nResult,nPos1, nPos2,nvNewMaj, nvLineNumber1, nvLineNumber2, nvType, nvSize, nvFileHandle;  
+	STRING szPathName,szDriveName, szLastMaj, svResult, svFileTxt, svLogUpdate, svDATE, svTIME;
+	LIST listID;
+	NUMBER nIndex;
+begin
+	
+	ParsePath (szFileNameOnly, PACKAGE_LOCATION, FILENAME_ONLY);
+
+	nPos1 = 0;
+	nPos2 = StrLength(szFileNameOnly)-1;
+	
+	StrSub (szNewMaj, szFileNameOnly, 1, 4);
+
+	if StrToNum(nvNewMaj, szNewMaj) >= ISERR_SUCCESS && StrFind(szFileNameOnly,"_") = 5 then;   		
+		nResult = NumToStr(szNewMaj, nvNewMaj);
+		nResult = StrToNum(nvNewMaj, szNewMaj);
+
+#ifdef FRENCH_LANGUAGE
+		szMaj = " n° ";
+#else
+		szMaj = " number ";
+#endif
+
+	else
+		szNewMaj = "";
+		szMaj = "";
+	endif;
+
+   	SdProductName ( PRODUCT_NAME);
+    SetTitle( PRODUCT_NAME , 0, BACKGROUNDCAPTION );
+
+#ifdef FRENCH_LANGUAGE
+	SetDialogTitle (DLG_STATUS, "Mise à jour " + PRODUCT_NAME + szMaj + szNewMaj );
+#else
+  	SetDialogTitle (DLG_STATUS, PRODUCT_NAME + " update" + szMaj + szNewMaj);
+#endif
+
+	if Is(FILE_EXISTS, PROGRAMFILES ^ "Choices" ^ EXE_NAME) then
+		TARGETDIR = PROGRAMFILES ^ "Choices";    
+	else
+		TARGETDIR = WINDISK ^ "Choices";    
+	endif;
+  	
+	if CMDLINE = "" then
+   		
+ 		Dlg_Path:
+		Disable (BACKBUTTON);
+
+#ifdef FRENCH_LANGUAGE
+		nResult = AskDestPath ("", "Veulliez indiquer où se trouve l'application " + PRODUCT_NAME + ".", TARGETDIR, 0);
+#else
+		nResult = AskDestPath ("", "Please, enter the " + PRODUCT_NAME + " installation location.", TARGETDIR, 0);
+#endif
+
+        Enable (BACKBUTTON);
+        
+		if TARGETDIR = ""  || !Is(FILE_EXISTS,TARGETDIR ^ "Choices4U.exe") then
+
+#ifdef FRENCH_LANGUAGE
+			MessageBox ( "L'application " + PRODUCT_NAME + " n'a pas été trouvée !!!", WARNING);
+#else
+			MessageBox ( "Could not find the " + PRODUCT_NAME + " software", WARNING);
+#endif
+
+	   		goto Dlg_Path;
+		endif;
+
+	  	if Is (FILE_LOCKED, TARGETDIR ^ "Choices4U.exe") then
+
+#ifdef FRENCH_LANGUAGE
+			MessageBox ( "Veuillez quitter l'application " + PRODUCT_NAME + " avant de continuer.", WARNING);
+#else
+			MessageBox ( "Please, close the application " + PRODUCT_NAME + " before going on.", SEVERE);
+#endif
+
+			goto Dlg_Path;
+  		endif;
+		
+		if szNewMaj != "1" && szNewMaj != "" then
+			ReadFileLine1(TARGETDIR ^ "FRET" , "Fret.dat", szLastMaj);
+			if szLastMaj != "" then
+				StrToNum(nResult, szLastMaj);
+				nResult++;
+				NumToStr(szLastMaj, nResult);
+				//if szNewMaj != szLastMaj then
+				if szNewMaj < szLastMaj then
+
+					SetDialogTitle (DLG_ASK_YESNO, PRODUCT_NAME + " installShield");
+#ifdef FRENCH_LANGUAGE
+					if AskYesNo ("Problème d'ordre croissant au niveau des mises à jour !!! \n\n( Erreur: " + szNewMaj + "-" + szLastMaj + " ), voulez-vous continer ?", NO) = NO then
+#else
+					if AskYesNo ("Update increasing order error detected !!! (Error: " + szNewMaj + "-" + szLastMaj + "), Ignore and carry on?", NO) = NO then
+#endif
+
+			  	 		abort;
+			   		endif;
+			   	endif;
+		   	endif;
+		endif;
+  	else
+  	
+		TARGETDIR = CMDLINE;
+			
+		if StrFind(CMDLINE,";") > 0 then
+
+			listID = ListCreate (STRINGLIST);
+	 
+			// Get each path from the search path into the list.
+			if (StrGetTokens (listID, CMDLINE, ";") = 0) then
+
+				nIndex = ListCount (listID);
+				
+				if nIndex >= 2 then
+
+					nResult = ListSetIndex (listID, 0);
+					ListCurrentString (listID, SurveyPath_1);
+	 
+					nResult = ListSetIndex (listID, 1);
+					ListCurrentString (listID, VendorFolder);
+					
+					bExtractReseau = TRUE;
+					
+					TARGETDIR = NOTHING; //= FOLDER_TEMP  ^ "Choices";
+				
+					// DeleteDir(TARGETDIR, ALLCONTENTS);
+
+					if nIndex >= 3 then
+						nResult = ListSetIndex (listID, 2);
+						ListCurrentString (listID, ImportFolder);
+					else
+						ImportFolder = NOTHING;
+					endif;
+
+					if nIndex >= 4 then
+						nResult = ListSetIndex (listID, 3);
+						ListCurrentString (listID, CommonFolder);
+					else
+						CommonFolder = NOTHING;
+					endif;
+					
+
+				else
+					
+					abort;
+
+				endif;
+				
+			endif;
+
+			// Remove the list from memory.
+			ListDestroy (listID);
+			
+		endif;
+
+	  	StrRemoveLastSlash (TARGETDIR);
+
+  	endif;
+  	
+	if Is(FILE_EXISTS, TARGETDIR ^ "AU-Serv.ini") then
+		if GetProfString(TARGETDIR ^ "AU-Serv.ini", "Parametres", "LogUpdate", svLogUpdate ) = 0 then
+			StrTrim(svLogUpdate);
+			bLogUpdate = (svLogUpdate = "1");
+		else
+			bLogUpdate = FALSE;
+		endif;
+	else
+		bLogUpdate = FALSE;
+	endif;
+	
+	
+	if bLogUpdate then
+		
+		if szFileNameOnly != "" then
+			szLogFile = szFileNameOnly + ".out";
+		else
+
+			GetSystemInfo (TIME, nResult, svTIME ); 
+			GetSystemInfo (DATE, nResult, svDATE ); 
+			szFileNameOnly = svDATE + svTIME;
+			StrReplace(szFileNameOnly, "-", "",0);
+			StrReplace(szFileNameOnly, ":", "",0);		
+			szLogFile = szFileNameOnly + ".out";
+			
+		endif;
+
+		szLogPath = TARGETDIR ^ "FRET";
+		
+		if !Is(PATH_EXISTS, szLogPath) then
+			CreateDir(szLogPath);
+		endif;
+	
+
+		if !Is(FILE_EXISTS, szLogPath ^ szLogFile) then
+			DeleteFile(szLogPath ^ szLogFile);
+		endif;
+
+		OpenFileMode (FILE_MODE_APPEND); 
+
+		CreateFile (nvFileHandle, szLogPath, szLogFile);
+
+		WriteLine(nvFileHandle, "OnBegin");
+
+		CloseFile (nvFileHandle); 
+
+	endif;	
+
+	if bExtractReseau then
+		nResult = FeatureSetTarget(MEDIA, "<TARGET_SURVEY_1>", SurveyPath_1);
+		bSurvey_1 = Is(DIR_WRITEABLE, SurveyPath_1);
+		bSurvey_2 = FALSE;
+		bSurvey_3 = FALSE;
+		bSurvey_4 = FALSE;
+		SurveyPath_2 = NOTHING;
+		SurveyPath_3 = NOTHING;
+		SurveyPath_4 = NOTHING;
+		//CommonFolder = NOTHING;
+		//ImportFolder = NOTHING;
+	else
+
+	
+  	  	if Is (FILE_LOCKED, TARGETDIR ^ "Choices4U.exe") then
+		    abort;
+ 	 	endif;
+
+		CheckApp();
+		
+		ChangeDirectory (TARGETDIR);
+
+		if Is ( FILE_EXISTS,SUPPORTDIR ^ "Patch.txt") then
+			svFileTxt = TARGETDIR ^ "Fret" ^ szFileNameOnly + ".txt";
+			CopyFile (SUPPORTDIR ^ "Patch.txt", svFileTxt);
+
+			if CMDLINE ="" then
+				listID = ListCreate (STRINGLIST);
+				ListReadFromFile (listID, SUPPORTDIR ^ "Patch.txt");
+				Disable (BACKBUTTON);
+				nResult = SdShowInfoList ( "Patch" + szMaj + szNewMaj, " ", listID ); 
+				if (nResult = BACK) goto Dlg_Path;
+				ListDestroy (listID);
+			endif;
+
+		endif;
+
+		if (SurveyPath_1 != NOTHING) then
+			nResult = FeatureSetTarget(MEDIA, "<TARGET_SURVEY_1>", SurveyPath_1);
+			bSurvey_1 = Is(DIR_WRITEABLE, SurveyPath_1);
+		else
+			bSurvey_1 = FALSE;
+		endif;
+		
+		if (SurveyPath_2 != NOTHING) then
+			nResult = FeatureSetTarget(MEDIA, "<TARGET_SURVEY_2>", SurveyPath_2);
+			bSurvey_2 = Is(DIR_WRITEABLE, SurveyPath_2);
+		else
+			bSurvey_2 = FALSE;
+		endif;
+
+		if (SurveyPath_3 != NOTHING) then
+			nResult = FeatureSetTarget(MEDIA, "<TARGET_SURVEY_3>", SurveyPath_3);
+			bSurvey_3 = Is(DIR_WRITEABLE, SurveyPath_3);
+		else
+			bSurvey_3 = FALSE;
+		endif;
+
+		if (SurveyPath_4 != NOTHING) then
+			nResult = FeatureSetTarget(MEDIA, "<TARGET_SURVEY_4>", SurveyPath_4);
+			bSurvey_4 = Is(DIR_WRITEABLE, SurveyPath_4);
+		else
+			bSurvey_4 = FALSE;
+		endif;
+
+	endif;
+
+	nResult = FeatureSetTarget(MEDIA, "<TARGET_VENDOR>", VendorFolder);
+	nResult = FeatureSetTarget(MEDIA, "<TARGET_COMMON>", CommonFolder);
+	nResult = FeatureSetTarget(MEDIA, "<TARGET_IMPORT>", ImportFolder);
+	
+	  
+end;
+
+//---------------------------------------------------------------------------
+// OnFirstUIAfter
+//---------------------------------------------------------------------------
+function OnFirstUIAfter()
+
+	STRING szLicenceIni, svLicence;
+	
+begin
+
+	if bLogUpdate then
+		FileInsertLine(szLogPath ^ szLogFile, "OnFirstUIAfter", 0, BEFORE);
+	endif;
+
+#ifdef FRENCH_LANGUAGE
+	SdShowMsg("Mise à jour des paramètres de configuration.",TRUE);
+#else
+	SdShowMsg("Update of the configuration settings.",TRUE);
+#endif
+
+	szLicenceIni = TARGETDIR ^ "kmrs.ini";
+	if GetProfString(szLicenceIni, "Choices3", "ActivationCode", svLicence) = 0 then
+		if WriteProfString(FOLDER_COMMON_APPDATA ^ "KMR Software\\kmrs.ini", "Choices3", "ActivationCode", svLicence) < 0 then
+			WriteFileLine1(TARGETDIR ^ "FRET","info.txt","ActivationError");
+			if CMDLINE = "" then
+				MessageBox("Activation Error!!!", SEVERE);
+			endif;
+			abort;
+		else
+			
+			if DeleteFile(szLicenceIni) = 0 then
+				WriteFileLine1(TARGETDIR ^ "FRET","info.txt","ActivationSuccesful");
+			else
+				WriteFileLine1(TARGETDIR ^ "FRET","info.txt","ActivationPartial");
+			endif;
+			
+		endif;
+	endif;
+
+	OnDeleteFile(VendorFolder);    
+	OnDeleteFile(SurveyPath_1);    
+	OnDeleteFile(SurveyPath_2);    
+	OnDeleteFile(SurveyPath_3);    
+	OnDeleteFile(SurveyPath_4);    
+	
+	OnDeleteFile(TARGETDIR);    
+        
+	WriteFileLine1(TARGETDIR ^ "FRET","Fret.dat",szNewMaj);
+	
+    SdShowMsg("",FALSE);
+
+	if CMDLINE = "" then
+
+#ifdef FRENCH_LANGUAGE
+		MessageBox ("Mise à jour " + PRODUCT_NAME + szMaj + szNewMaj + " terminée", INFORMATION);
+#else
+		MessageBox (PRODUCT_NAME + " update" + szMaj + szNewMaj + " completed", INFORMATION);
+#endif
+
+	endif;
+  
+end;
+
+//---------------------------------------------------------------------------
+// OnDeleteFile
+//---------------------------------------------------------------------------
+function OnDeleteFile(svDir)
+	NUMBER nResult, nvResult;
+	STRING svFileSpec, svResult, svFile, svPath;
+begin
+	
+	if svDir != NOTHING then
+	
+		svFileSpec = "*.Delete";
+
+		nResult = FindAllFiles (svDir, svFileSpec, svResult , RESET); 
+
+
+		while(nResult = 0) 
+
+
+			if bLogUpdate then
+				FileInsertLine(szLogPath ^ szLogFile, "OnDeleteFile: " +  svResult , 0, BEFORE);
+			endif;
+		
+			// Find the next matching file name. 
+			ParsePath(svFile,svResult,FILENAME_ONLY);
+			ParsePath(svPath,svResult,PATH);
+
+			if Is(FILE_EXISTS, svPath + svFile) then
+				nvResult = DeleteFile(svPath + svFile);
+			elseif Is(PATH_EXISTS, svPath + svFile) then
+				nvResult = DeleteDir(svPath + svFile, ALLCONTENTS);
+				nvResult = DeleteDir(svPath + svFile, ROOT);
+			endif;
+			
+			nvResult = DeleteFile(svResult);
+
+			nResult = FindAllFiles(svDir, svFileSpec, svResult , CONTINUE); 
+
+		endwhile; 
+		
+	endif;
+  
+end;
+
+//---------------------------------------------------------------------------
+// OnAbort
+//---------------------------------------------------------------------------
+function OnAbort()
+    STRING szCaption, szError;
+    NUMBER nError;
+    OBJECT ErrorInfo;
+begin
+
+	if bLogUpdate then 
+		if szLogPath != "" && szLogFile != "" then
+
+			FileInsertLine(szLogPath ^ szLogFile, "OnAbort", 0, BEFORE);
+
+			OnFeatureErrorInfo();
+
+		endif;
+	endif;
+	
+end;    
+
+//---------------------------------------------------------------------------
+// OnComponentError
+//
+// The OnComponentError event is called by OnShowUI when the call
+// to FeatureTransferData or FeatureMoveData returns an error.
+//---------------------------------------------------------------------------
+function void OnComponentError()
+    STRING szCaption, szError;
+    NUMBER nError;
+    OBJECT ErrorInfo;
+begin
+
+	if bLogUpdate then
+		FileInsertLine(szLogPath ^ szLogFile, "OnComponentError", 0, BEFORE);
+
+		OnFeatureErrorInfo();
+	endif;
+
+end;
+
+//---------------------------------------------------------------------------
+// OnFeatureErrorInfo
+//---------------------------------------------------------------------------
+function OnFeatureErrorInfo()
+    STRING szCaption, szError;
+    NUMBER nError;
+    OBJECT ErrorInfo;
+begin
+
+	if bLogUpdate then 
+
+		set ErrorInfo = FeatureErrorInfo();
+
+		szCaption = SdLoadString(IFX_ONCOMPONENTERR_CAPTION);
+		
+		if(IsObject(ErrorInfo))then	
+		
+			nError = ErrorInfo.LastError;
+			NumToStr(szError, nError);
+			
+			if(IsObject(ErrorInfo.Feature))then
+
+				FileInsertLine(szLogPath ^ szLogFile, "FeatureErrorInfo:" , 0, BEFORE);
+				FileInsertLine(szLogPath ^ szLogFile, "- Caption:		" +  szCaption , 0, BEFORE);
+				FileInsertLine(szLogPath ^ szLogFile, "- DisplayName:	" +  ErrorInfo.Feature.DisplayName , 0, BEFORE);
+				FileInsertLine(szLogPath ^ szLogFile, "- Name:			" +  ErrorInfo.Feature.Name , 0, BEFORE);			
+				FileInsertLine(szLogPath ^ szLogFile, "- FileGroup:		" +  ErrorInfo.FileGroup , 0, BEFORE);
+				FileInsertLine(szLogPath ^ szLogFile, "- FileError:		" +  ErrorInfo.FileError.File , 0, BEFORE);
+				FileInsertLine(szLogPath ^ szLogFile, "- Description:	" +  ErrorInfo.FileError.Description , 0, BEFORE);
+				FileInsertLine(szLogPath ^ szLogFile, "- LastError:		" +  szError , 0, BEFORE);
+				
+		   else
+				
+				FileInsertLine(szLogPath ^ szLogFile, "FeatureErrorInfo:" , 0, BEFORE);
+				FileInsertLine(szLogPath ^ szLogFile, "- Caption:		" +  szCaption , 0, BEFORE);
+				FileInsertLine(szLogPath ^ szLogFile, "- FileGroup:		" +  ErrorInfo.FileGroup , 0, BEFORE);
+				FileInsertLine(szLogPath ^ szLogFile, "- FileError:		" +  ErrorInfo.FileError.File , 0, BEFORE);
+				FileInsertLine(szLogPath ^ szLogFile, "- Description:	" +  ErrorInfo.FileError.Description , 0, BEFORE);
+				FileInsertLine(szLogPath ^ szLogFile, "- LastError:		" +  szError , 0, BEFORE);
+
+			endif;
+
+		endif;
+		
+    endif;
+    
+end;
+
+
+//---------------------------------------------------------------------------
+// OnEnd
+//---------------------------------------------------------------------------
+function OnEnd()
+	NUMBER nResult, nvFileHandle;
+	STRING sResult, LocalDir;
+begin
+
+	if bLogUpdate then
+		FileInsertLine(szLogPath ^ szLogFile, "OnEnd", 0, BEFORE);
+	endif;
+
+	if CMDLINE != "" then
+		
+		ParsePath (LocalDir, PACKAGE_LOCATION, PATH);
+		
+		if Is(FILE_EXISTS, LocalDir ^ "AU-Serv.err") then
+	
+			if bLogUpdate then
+				FileInsertLine(szLogPath ^ szLogFile, "- FILE_EXISTS_1: AU-Serv.err" , 0, BEFORE);
+			endif;
+
+			nResult = DeleteFile (LocalDir ^ "AU-Serv.err");
+			
+			if bLogUpdate then
+				NumToStr(sResult, nResult);
+				FileInsertLine(szLogPath ^ szLogFile, "  *DeleteFile: " + sResult , 0, BEFORE);
+			endif;
+
+
+		endif;
+
+		if Is(FILE_EXISTS, TARGETDIR ^ "AU-Serv.err") then
+	
+			if bLogUpdate then
+				FileInsertLine(szLogPath ^ szLogFile, "- FILE_EXISTS_2: AU-Serv.err" , 0, BEFORE);
+			endif;
+
+			nResult = DeleteFile (TARGETDIR ^ "AU-Serv.err");
+
+			if bLogUpdate then
+				NumToStr(sResult, nResult);
+				FileInsertLine(szLogPath ^ szLogFile, "  *DeleteFile: " + sResult , 0, BEFORE);
+			endif;
+
+		endif;
+
+	endif;
+
+end;
+
+//---------------------------------------------------------------------------
+// OnFileLocked
+//---------------------------------------------------------------------------
+function OnFileLocked(szFile)
+begin
+
+	if bLogUpdate then
+		FileInsertLine(szLogPath ^ szLogFile, "OnFileLocked=" + szFile, 0, BEFORE);
+	endif;
+
+	// TODO: Enable this code if you want to show a confirmation dialog box.	
+	//return SdExceptions(LOCKED, szFile);
+	
+	// Return ERR_PERFORM_AFTER_REBOOT so that the file will be updated
+	// w/o confirmation.
+	return ERR_PERFORM_AFTER_REBOOT;
+end;
+
+
+//---------------------------------------------------------------------------
+// OnFirstUIBefore                                            
+//---------------------------------------------------------------------------
+function OnFirstUIBefore()
+begin	
+	
+	if bLogUpdate then
+		FileInsertLine(szLogPath ^ szLogFile, "OnFirstUIBefore", 0, BEFORE);
+	endif;  
+
+	OnGetItemSize("Survey_1", bSurvey_1);
+	OnGetItemSize("Survey_2", bSurvey_2);
+	OnGetItemSize("Survey_3", bSurvey_3);
+	OnGetItemSize("Survey_4", bSurvey_4);
+	
+	OnGetItemSize("Vendor", VendorFolder != NOTHING);
+	OnGetItemSize("Version", TARGETDIR != NOTHING); //Is(DIR_WRITEABLE, TARGETDIR));
+	OnGetItemSize("Common", CommonFolder != NOTHING);
+	OnGetItemSize("Import", ImportFolder != NOTHING);
+
+	if bLogUpdate then
+	
+		FileInsertLine(szLogPath ^ szLogFile, "- Survey_1=" + IIf(SurveyPath_1 != NOTHING, IIf(Is(DIR_WRITEABLE, SurveyPath_1), "DIR_WRITEABLE", "NO_WRITEABLE"), "NOTHING") , 0, BEFORE);		
+		FileInsertLine(szLogPath ^ szLogFile, "  *SurveyPath_1=" + SurveyPath_1 , 0, BEFORE);
+
+		FileInsertLine(szLogPath ^ szLogFile, "- Survey_2=" + IIf(SurveyPath_2 != NOTHING, IIf(Is(DIR_WRITEABLE, SurveyPath_2), "DIR_WRITEABLE", "NO_WRITEABLE"), "NOTHING") , 0, BEFORE);
+		FileInsertLine(szLogPath ^ szLogFile, "  *SurveyPath_2=" + SurveyPath_2 , 0, BEFORE);
+
+		FileInsertLine(szLogPath ^ szLogFile, "- Survey_3=" + IIf(SurveyPath_3 != NOTHING, IIf(Is(DIR_WRITEABLE, SurveyPath_3), "DIR_WRITEABLE", "NO_WRITEABLE"), "NOTHING") , 0, BEFORE);
+		FileInsertLine(szLogPath ^ szLogFile, "  *SurveyPath_3=" + SurveyPath_3 , 0, BEFORE);
+
+		FileInsertLine(szLogPath ^ szLogFile, "- Survey_4=" + IIf(SurveyPath_4 != NOTHING, IIf(Is(DIR_WRITEABLE, SurveyPath_4), "DIR_WRITEABLE", "NO_WRITEABLE"), "NOTHING") , 0, BEFORE);
+		FileInsertLine(szLogPath ^ szLogFile, "  *SurveyPath_4=" + SurveyPath_4 , 0, BEFORE);
+
+		FileInsertLine(szLogPath ^ szLogFile, "- VendorFolder=" + IIf(VendorFolder != NOTHING, IIf(Is(DIR_WRITEABLE, VendorFolder), "DIR_WRITEABLE", "NO_WRITEABLE"), "NOTHING") , 0, BEFORE);
+		FileInsertLine(szLogPath ^ szLogFile, "  *VendorFolder=" + VendorFolder , 0, BEFORE);
+		
+		FileInsertLine(szLogPath ^ szLogFile, "- Version=" + IIf(TARGETDIR != NOTHING, IIf(Is(DIR_WRITEABLE, TARGETDIR), "DIR_WRITEABLE", "NO_WRITEABLE"), "NOTHING") , 0, BEFORE);
+		FileInsertLine(szLogPath ^ szLogFile, "  *Version=" + TARGETDIR , 0, BEFORE);
+
+		FileInsertLine(szLogPath ^ szLogFile, "- CommonFolder=" + IIf(CommonFolder != NOTHING, IIf(Is(DIR_WRITEABLE, CommonFolder), "DIR_WRITEABLE", "NO_WRITEABLE"), "NOTHING") , 0, BEFORE);
+		FileInsertLine(szLogPath ^ szLogFile, "  *CommonFolder=" + CommonFolder , 0, BEFORE);
+
+		FileInsertLine(szLogPath ^ szLogFile, "- ImportFolder=" + IIf(ImportFolder != NOTHING, IIf(Is(DIR_WRITEABLE, ImportFolder), "DIR_WRITEABLE", "NO_WRITEABLE"), "NOTHING") , 0, BEFORE);
+		FileInsertLine(szLogPath ^ szLogFile, "  *ImportFolder=" + ImportFolder , 0, BEFORE);
+
+	endif;
+
+end;
+
+//---------------------------------------------------------------------------
+// STRING IIf(BOOL,STRING, STRING)
+//---------------------------------------------------------------------------
+function STRING IIf(bExpression,szVal1, szVal2)
+begin
+	if bExpression then
+		return szVal1;
+	else
+		return szVal2;
+	endif;
+end;
+ 
+//---------------------------------------------------------------------------
+// OnMoveData
+//
+// The OnMoveData event is called by OnShowUI to initiate the file
+// transfer of the setup.
+//
+// Note: This event will not be called automatically in a
+// program...endprogram style setup.
+//---------------------------------------------------------------------------
+function OnMoveData()
+number	nResult, nMediaFlags, nvDisk, nTemp;
+string  sResult;
+begin
+
+	if bLogUpdate then
+		FileInsertLine(szLogPath ^ szLogFile, "OnMoveData", 0, BEFORE);
+	endif;  
+
+	// Don't install the DISK1COMPONENT if MAINT_OPTION_NONE was specified.
+	if( MAINT_OPTION = MAINT_OPTION_NONE ) then
+		FeatureSelectItem( MEDIA, DISK1COMPONENT, FALSE );
+	endif;
+
+    // Updated in 11.5, disable the cancel button during file transfer unless
+	// this is non-maintenance mode or repair mode.
+    if( MAINTENANCE && ( !REINSTALLMODE || UPDATEMODE ) ) then
+        Disable( CANCELBUTTON );
+    endif;
+
+    // Show Status
+	// Note: Start status window at 1 in case CreateInstallationInfo call
+	// is lengthy.
+	SetStatusWindow( 1, "" );
+	Enable( STATUSEX );
+	StatusUpdate( ON, 100 );
+
+	// Create the uninstall infomation (after displaying the progress dialog)
+	// Don't create uninstall information if MAINT_OPTION_NONE was specified.
+	if( MAINT_OPTION != MAINT_OPTION_NONE ) then
+		CreateInstallationInfo();
+	endif;
+
+	nResult = FeatureTransferData( MEDIA );
+
+
+	try
+		// Move Data
+		nResult = FeatureTransferData( MEDIA );
+	catch 
+		if bLogUpdate then
+			FileInsertLine(szLogPath ^ szLogFile, "Move Data: Exception" , 0, BEFORE);
+		endif;
+	endcatch; 
+
+	if bLogUpdate then
+		NumToStr(sResult, nResult);
+		FileInsertLine(szLogPath ^ szLogFile, "FeatureTransferData: " +  sResult , 0, BEFORE);
+	endif;
+
+
+    // Moved in 11.0, Check for failure before creating uninstall key.
+    // Handle move data error and abort if error occured.
+	if( nResult < ISERR_SUCCESS ) then
+		OnComponentError();
+		abort;
+	endif;	    
+
+	// Create uninstall key, if DISK1COMPONENT was installed.
+	if( IFX_DISK1INSTALLED ) then
+
+		// Store text-subs for maintenance mode later, only do this when
+		// disk 1 is installed. Note that any text-subs that are updated after
+        // this call will not be remembered during maintenance mode.
+		FeatureSaveTarget("");
+
+		// Write uninstall information.
+		MaintenanceStart();
+
+		// Customize Uninstall Information
+		OnCustomizeUninstInfo();
+
+	endif;
+
+    // Disable Status
+	Disable( STATUSEX );
+
+end;
+
+ 
+//---------------------------------------------------------------------------
+// Function: ReadFileLine1(svChemin,svFichier,svLigne)
+//---------------------------------------------------------------------------
+function ReadFileLine1(svChemin,svFichier,svLigne)
+    NUMBER  nvFileHandle;
+begin 
+
+	if Is(FILE_EXISTS, svChemin ^ svFichier)then
+		OpenFileMode (FILE_MODE_APPEND);
+	    OpenFile (nvFileHandle, svChemin, svFichier);
+	    	GetLine (nvFileHandle, svLigne);
+		CloseFile (nvFileHandle);
+	endif;
+		
+end;
+
+//---------------------------------------------------------------------------
+// Function: WriteFileLine1(svChemin,svFichier,svLigne)
+//---------------------------------------------------------------------------
+function WriteFileLine1(svChemin,svFichier,svLigne)
+    NUMBER  nvFileHandle;
+begin 
+
+	if Is(FILE_EXISTS, svChemin ^ svFichier) = TRUE then
+		SRCDIR = svChemin; 
+	    FileInsertLine (svFichier, svLigne , 0, REPLACE);
+	else
+		OpenFileMode (FILE_MODE_APPEND);
+	    CreateFile (nvFileHandle, svChemin, svFichier);
+	    	WriteLine(nvFileHandle, svLigne );
+	    CloseFile (nvFileHandle);
+	endif;
+		
+end;
+ 
+
+//---------------------------------------------------------------------------
+// CheckApp                                            
+//---------------------------------------------------------------------------
+function CheckApp()
+
+STRING	MyDocuments, MyVendorFolder, MySurveysPath, MyImportFolder, MyCommonFolder, svString, szSaveMEDIAValue, SurveyPath, svCommonAppDataFolder;
+NUMBER	nResult, nvType, nvSize;
+LIST	listSplitSurvey;
+BOOL	bSelected;
+STRING	wintabu_LocalAppData, wintabu_CommonAppData;
+
+begin
+
+	if bLogUpdate then
+		FileInsertLine(szLogPath ^ szLogFile, "CheckApp" , 0, BEFORE);
+	endif;
+
+    RegDBSetDefaultRoot ( HKEY_LOCAL_MACHINE );
+	RegDBGetKeyValueEx ( "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Shell Folders", "Common AppData", nvType, svCommonAppDataFolder, nvSize );
+
+	MyDocuments = FOLDER_PERSONAL;
+
+	StrRemoveLastSlash(MyDocuments);
+	
+	if bLogUpdate then
+		FileInsertLine(szLogPath ^ szLogFile, "- MesDocuments:" + MyDocuments , 0, BEFORE);
+	endif;
+
+	MyVendorFolder = MyDocuments ^ PRODUCT_NAME ^ "vendor";
+	MySurveysPath = MyDocuments ^ PRODUCT_NAME ^ "surveys";
+	MyImportFolder = MyDocuments ^ PRODUCT_NAME ^ "import";
+	MyCommonFolder = MyDocuments ^ PRODUCT_NAME ^ "common";
+
+	wintabu_LocalAppData = FOLDER_LOCAL_APPDATA  ^ "Kantar Media\\Choices\\Settings\\wintabu.ini";
+	wintabu_CommonAppData = svCommonAppDataFolder  ^ "Kantar Media\\Choices\\Settings\\wintabu.ini";
+	
+	if GetProfString(wintabu_LocalAppData, "wintab", "SurveyPath", SurveyPath) = 0 then	
+
+		if bLogUpdate then
+			FileInsertLine(szLogPath ^ szLogFile, "- SurveyPath:" + wintabu_CommonAppData , 0, BEFORE);
+		endif;
+	
+		listSplitSurvey = ListCreate (STRINGLIST);
+		
+		nResult = StrGetTokens( listSplitSurvey, SurveyPath, ";");
+		
+		nResult = ListGetFirstString(listSplitSurvey, SurveyPath);
+
+		while (nResult != END_OF_LIST)
+			
+			StrReplace ( SurveyPath, "<MYDOCUMENTS>", MyDocuments, 0 );
+			
+			if SurveyPath_1 = NOTHING then
+				SurveyPath_1 = SurveyPath;
+			elseif SurveyPath_2 = NOTHING then
+				SurveyPath_2 = SurveyPath;
+			elseif SurveyPath_3 = NOTHING then
+				SurveyPath_3 = SurveyPath;
+			elseif SurveyPath_4 = NOTHING then
+				SurveyPath_4 = SurveyPath;
+			endif;
+
+			nResult = ListGetNextString(listSplitSurvey, SurveyPath);
+
+		endwhile;		
+		
+		nResult = ListDestroy ( listSplitSurvey);
+		
+	elseif GetProfString(wintabu_CommonAppData, "wintab", "SurveyPath", SurveyPath) = 0 then
+
+		if bLogUpdate then
+			FileInsertLine(szLogPath ^ szLogFile, "- SurveyPath:" + wintabu_CommonAppData , 0, BEFORE);
+		endif;
+
+		listSplitSurvey = ListCreate (STRINGLIST);
+		
+		nResult = StrGetTokens( listSplitSurvey, SurveyPath, ";");
+		
+		nResult = ListGetFirstString(listSplitSurvey, SurveyPath);
+
+		while (nResult != END_OF_LIST)
+			
+			StrReplace ( SurveyPath, "<MYDOCUMENTS>", MyDocuments, 0 );
+			
+			if SurveyPath_1 = NOTHING then
+				SurveyPath_1 = SurveyPath;
+			elseif SurveyPath_2 = NOTHING then
+				SurveyPath_2 = SurveyPath;
+			elseif SurveyPath_3 = NOTHING then
+				SurveyPath_3 = SurveyPath;
+			elseif SurveyPath_4 = NOTHING then
+				SurveyPath_4 = SurveyPath;
+			endif;
+
+			nResult = ListGetNextString(listSplitSurvey, SurveyPath);
+
+		endwhile;		
+		
+		nResult = ListDestroy ( listSplitSurvey);
+		
+	endif;
+	
+	if GetProfString(wintabu_LocalAppData, "wintab", "VendorFolder", VendorFolder) = 0 then	
+
+		if bLogUpdate then
+			FileInsertLine(szLogPath ^ szLogFile, "- VendorFolder:" + wintabu_LocalAppData , 0, BEFORE);
+		endif;
+
+	elseif GetProfString(wintabu_CommonAppData, "wintab", "VendorFolder", VendorFolder) = 0 then
+
+		if bLogUpdate then
+			FileInsertLine(szLogPath ^ szLogFile, "- VendorFolder:" + wintabu_CommonAppData , 0, BEFORE);
+		endif;
+		
+	endif;
+
+	if GetProfString(wintabu_LocalAppData, "wintab", "ImportFolder", ImportFolder) = 0 then	
+
+		if bLogUpdate then
+			FileInsertLine(szLogPath ^ szLogFile, "- ImportFolder:" + wintabu_LocalAppData , 0, BEFORE);
+		endif;
+
+	elseif GetProfString(wintabu_CommonAppData, "wintab", "ImportFolder", ImportFolder) = 0 then
+
+		if bLogUpdate then
+			FileInsertLine(szLogPath ^ szLogFile, "- ImportFolder:" + wintabu_CommonAppData , 0, BEFORE);
+		endif;
+		
+	endif;
+
+	if GetProfString(wintabu_LocalAppData, "wintab", "CommonFolder", CommonFolder) = 0 then	
+
+		if bLogUpdate then
+			FileInsertLine(szLogPath ^ szLogFile, "- CommonFolder:" + wintabu_LocalAppData , 0, BEFORE);
+		endif;
+
+	elseif GetProfString(wintabu_CommonAppData, "wintab", "CommonFolder", CommonFolder) = 0 then
+
+		if bLogUpdate then
+			FileInsertLine(szLogPath ^ szLogFile, "- CommonFolder:" + wintabu_CommonAppData , 0, BEFORE);
+		endif;
+		
+	endif;
+
+	StrReplace ( VendorFolder, "<MYDOCUMENTS>", MyDocuments, 0 );
+	StrReplace ( ImportFolder, "<MYDOCUMENTS>", MyDocuments, 0 );
+	StrReplace ( CommonFolder, "<MYDOCUMENTS>", MyDocuments, 0 );
+
+	if SurveyPath_1 = "" then
+		SurveyPath_1 = MySurveysPath;
+	endif;
+
+	if VendorFolder = "" then
+		VendorFolder = MyVendorFolder;
+	endif;
+	
+	if ImportFolder = "" then
+		ImportFolder = MyImportFolder;
+	endif;
+
+	if CommonFolder = "" then
+		CommonFolder = MyCommonFolder;
+	endif;
+    
+	    
+end;
+
+//---------------------------------------------------------------------------
+// OnGetItemSize                                            
+//---------------------------------------------------------------------------
+function BOOL OnGetItemSize(szFeature, bSelect )
+	NUMBER nResult, nvSize;
+	STRING szString;
+begin
+
+	// Get the size of 'szFeature'. 
+	nResult = FeatureGetItemSize (MEDIA,szFeature, nvSize);
+	if nvSize > 0 then
+		nResult = FeatureSelectItem(MEDIA, szFeature, bSelect);
+	else
+		nResult = FeatureSelectItem(MEDIA, szFeature, FALSE);
+	endif;
+
+	return (nvSize > 0);
+
+end;
+
+//---------------------------------------------------------------------------
+// OnCanceling
+//---------------------------------------------------------------------------
+function OnCanceling()
+begin
+
+	if bLogUpdate then
+		FileInsertLine(szLogPath ^ szLogFile, "OnCanceling", 0, BEFORE);
+	endif;
+
+	abort;
+end;
+
+
+//---------------------------------------------------------------------------
+// OnInstallingFile
+//
+// The OnInstallingFile event is called when a file is about to be installed
+// as a result of FeatureTransferData or FeatureMoveData.
+//
+// szFile will contain the full path of file about to be installed.
+//---------------------------------------------------------------------------
+function OnInstallingFile(szFile)
+	STRING szPath, svResult, szAttributes, szFileOnly;
+	NUMBER nvResult, nvFileHandle;
+begin	
+
+if bLogUpdate then
+	FileInsertLine(szLogPath ^ szLogFile, "OnInstallingFile: " +  szFile , 0, BEFORE);
+
+	ParsePath(szPath, szFile, PATH);
+
+	if !Is(PATH_EXISTS,szPath) then
+		FileInsertLine(szLogPath ^ szLogFile, "- PATH_NOT_EXISTS: " +  szPath , 0, BEFORE);
+	endif;
+	
+	if !Is(DIR_WRITEABLE,szPath) then
+		FileInsertLine(szLogPath ^ szLogFile, "- DIR_NOT_WRITEABLE: " +  szPath , 0, BEFORE);
+	endif;
+
+	if Is(FILE_LOCKED,szFile) then
+		FileInsertLine(szLogPath ^ szLogFile, "- FILE_LOCKED: " +  szFile , 0, BEFORE);
+	endif;
+	
+	if !Is(FILE_WRITEABLE,szFile) then
+		FileInsertLine(szLogPath ^ szLogFile, "- FILE_NOT_WRITEABLE: " +  szFile , 0, BEFORE);
+	endif;
+
+	if Is(FILE_EXISTS,szFile) then
+		FileInsertLine(szLogPath ^ szLogFile, "- FILE_EXISTS: " +  szFile , 0, BEFORE);
+		
+	   // Get the file attributes into nvResult. 
+		if (GetFileInfo (szFile, FILE_ATTRIBUTE, nvResult, svResult) = 0) then 
+
+		  // Test for no attribute. 
+		  if (nvResult = FILE_ATTR_NORMAL) then 
+
+			  // No attributes are set.  Add that info to the list 
+			  szAttributes = "  *File attributes: Normal";
+
+		  else 
+				// Append attributes to this string. 
+				szAttributes = "  *File attributes: "; 
+
+				// Is it archived? 
+				if (FILE_ATTR_ARCHIVED & nvResult) then 
+					szAttributes = szAttributes + "archived "; 
+				endif; 
+
+				// Is it hidden? 
+				if (FILE_ATTR_HIDDEN & nvResult) then 
+					szAttributes = szAttributes + "hidden "; 
+				endif; 
+
+				// Is it read-only? 
+				if (FILE_ATTR_READONLY & nvResult) then 
+					szAttributes = szAttributes + "read-only "; 
+				endif; 
+
+				// Is it a system file? 
+				if (FILE_ATTR_SYSTEM & nvResult) then 
+					szAttributes = szAttributes + "system "; 
+				endif; 
+
+				// Is it a directory? 
+				if (FILE_ATTR_DIRECTORY & nvResult) then 
+					szAttributes = szAttributes + "directory "; 
+				endif; 
+			endif; 
+
+			FileInsertLine(szLogPath ^ szLogFile, szAttributes , 0, BEFORE);			
+			
+		endif;
+		
+	endif;
+	
+endif;
+
+end;
+
+//---------------------------------------------------------------------------
+// OnInstalledFile
+//
+// The OnInstalledFile event is called after a file is installed as 
+// a result of ComponentTransferData or ComponentMoveData.
+//
+// szFile will contain the full path of file that was just installed.
+//---------------------------------------------------------------------------
+function OnInstalledFile(szFile)
+begin
+	
+	if bLogUpdate then
+		FileInsertLine(szLogPath ^ szLogFile, "OnInstalledFile: " +  szFile , 0, BEFORE);
+	endif;
+	
+end;
