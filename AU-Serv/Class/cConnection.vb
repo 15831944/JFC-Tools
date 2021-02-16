@@ -917,8 +917,88 @@ restart:
 
     End Function
 
-    Public Function InitializeUpdate(ByVal svString As String, Optional ByVal control As Boolean = False) As Boolean
+    Public Function GetProductCode(ByVal svSerial As String) As String
 
+        Dim URL_PRODUCTCODE As String
+
+        If AUService.svCodeAppli = "R" Then
+            URL_PRODUCTCODE = "/AR/ProductCode.asp"
+        ElseIf AUService.svCodeAppli = "I" Then
+            URL_PRODUCTCODE = "/AI/ProductCode.asp"
+        ElseIf AUService.svCodeAppli = "A" Then
+            URL_PRODUCTCODE = "/AI/ProductCode.asp"
+        ElseIf AUService.svCodeAppli = "M" Then
+            URL_PRODUCTCODE = "/AM/ProductCode.asp"
+        ElseIf AUService.svCodeAppli = "V" Then
+            URL_PRODUCTCODE = "/AV/ProductCode.asp"
+        ElseIf AUService.svCodeAppli = "C" Then
+            URL_PRODUCTCODE = "/AC/ProductCode.asp"
+        ElseIf AUService.svCodeAppli = "B" Then
+            URL_PRODUCTCODE = "/BA/ProductCode.asp"
+        ElseIf AUService.svCodeAppli = "P" Then
+            URL_PRODUCTCODE = "/AP/ProductCode.asp"
+        ElseIf AUService.svCodeAppli = "D" Then
+            URL_PRODUCTCODE = "/MD/ProductCode.asp"
+        ElseIf AUService.svCodeAppli = "L" Then
+            URL_PRODUCTCODE = "/M2/ProductCode.asp"
+        ElseIf AUService.svCodeAppli = "S" Then
+            URL_PRODUCTCODE = "/P2/ProductCode.asp"
+        ElseIf AUService.svCodeAppli = "F" Then
+            URL_PRODUCTCODE = "/FV/ProductCode.asp"
+        ElseIf AUService.svCodeAppli = "G" Then
+            URL_PRODUCTCODE = "/IG/ProductCode.asp"
+        ElseIf AUService.svCodeAppli = "O" Then
+            URL_PRODUCTCODE = "/CP/ProductCode.asp"
+        ElseIf AUService.svCodeAppli = "U" Then
+            URL_PRODUCTCODE = "/RP/ProductCode.asp"
+        ElseIf AUService.svCodeAppli = "H" Then
+            URL_PRODUCTCODE = "/CC/ProductCode.asp"
+        Else
+            Return ""
+        End If
+
+        Dim lgInternet As Integer
+        Dim stUrl As String
+        Dim bOpenInternet As Boolean
+
+        GetProductCode = ""
+
+        stUrl = ServerName + URL_PRODUCTCODE + "?serie=" + svSerial
+
+        If DebugMode Then
+            MsgBox("InternetOpenUrl=" & stUrl, MsgBoxStyle.Information)
+        End If
+
+        If hInternet = 0 Then
+            bOpenInternet = OpenInternet()
+        End If
+
+        lgInternet = InternetOpenUrl(hInternet, stUrl, vbNullString, 0, INTERNET_FLAGS_MASK, 0)
+
+        If DebugMode Then
+            MsgBox("lgInternet=" & CStr(lgInternet), MsgBoxStyle.Information)
+        End If
+
+        If lgInternet = 0 Then
+            Exit Function
+        End If
+
+        System.Windows.Forms.Application.DoEvents()
+
+        If Status(lgInternet) Then
+            GetProductCode = ReadDataToString(lgInternet)
+        End If
+
+        InternetCloseHandle(lgInternet)
+
+        If bOpenInternet Then
+            Disconnect()
+        End If
+
+    End Function
+
+    Public Function InitializeUpdate(ByVal svString As String, Optional ByVal control As Boolean = False) As Boolean
+        
         Dim bOpenInternet As Boolean
 
         If hInternet = 0 Then

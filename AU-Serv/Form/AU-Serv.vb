@@ -701,7 +701,7 @@ Friend Class AUService
 
         bQuickSupport = (StrComp(Select_GetIniString("Parametres", "QuickSupport", AUServiceIni), "Disable", CompareMethod.Text) <> 0)
 
-        bOnlyDownload = (Select_GetIniString$("Parametres", "OnlyDownload", AUServiceIni) = "1")
+        bOnlyDownload = (Select_GetIniString("Parametres", "OnlyDownload", AUServiceIni) = "1")
 
         Dim sWaitClose = Trim(Select_GetIniString("Parametres", "WaitClose", AUServiceIni))
         If sWaitClose = "" Then
@@ -849,6 +849,30 @@ Friend Class AUService
             .InternetFlagsMask = CLng(Val(Select_GetIniString("Parametres", "InternetFlagsMask", AUServiceIni)))
             .RemoteDir = Connection.GetRemoteDir
         End With
+
+
+        '''''
+        ''' Recherche du ProductCode si il a été supprimé
+        '''''
+
+        If svSerie = "" Then
+
+            ' je vais rechercher sur le serveur le ProductCode qui correspond au Serial
+            If svSerialGroup <> "" Then
+                svSerie = Connection.GetProductCode(svSerialGroup)
+            ElseIf svSerialVirtual <> "" Then
+                svSerie = Connection.GetProductCode(svSerialVirtual)
+            ElseIf svSerial <> "" Then
+                svSerie = Connection.GetProductCode(svSerial)
+            Else
+                Select_WriteIniString("Parametres", "Serial", svSerialFound, AUServiceIni)
+                svSerie = Connection.GetProductCode(svSerialFound)
+            End If
+
+            Select_WriteIniString("Parametres", "ProductCode", svSerie, AUServiceIni)
+
+        End If
+
 
         If Mid(svLocalDir, 2, 1) <> ":" And Mid(svLocalDir, 2, 1) <> "\" Then svLocalDir = AppPath + svLocalDir
 
