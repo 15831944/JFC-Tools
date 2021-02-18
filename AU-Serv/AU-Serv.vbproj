@@ -233,6 +233,7 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="Certificat\TheKantarGroupLimited.pfx" />
+    <None Include="Doc\AU-Serv.docx" />
     <None Include="My Project\app.manifest">
       <SubType>Designer</SubType>
     </None>
