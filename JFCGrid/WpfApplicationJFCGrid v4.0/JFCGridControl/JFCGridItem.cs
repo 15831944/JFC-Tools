@@ -340,6 +340,11 @@ namespace JFCGridControl
             }
         }
 
+        public event DataChangedEventHandler OnDataChanged;
+
+        public delegate void DataChangedEventHandler(object sender, JFCExpendItem e);
+
+
         private JFCExpendItem data = null;
         public JFCExpendItem Data
         {
@@ -351,6 +356,8 @@ namespace JFCGridControl
                     Source = data.Obj;
                 else
                     Source = null;
+
+                OnDataChanged(this, value);
             }
         }
 
