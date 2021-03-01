@@ -8,14 +8,28 @@ namespace ARProbaProcessing
 {
     public partial class AffinageProcess
     {
-        private byte[,,,] attribp2(ContextPanel contextPanel, int NBIND, int NBSTA, byte[,,,] REGRS, int[,] KHI2, int[,] NINI, float[] NOTES, byte[,,,] AUDI, int[,,,] HABI,
+        private byte[][][][] attribp2(ContextPanel contextPanel, int NBIND, int NBSTA, byte[,,,] REGRS, int[,] KHI2, int[,] NINI, float[] NOTES, byte[][][][] AUDI, int[][][][] HABI,
             float[,,,] ZUPTAUSECOR, float[,,,] ZUPTAUSACOR, float[,,,] ZUPTAUDICOR, string pathSortie, string pathPANECR)
         {
             // PANEL RADIO 08 MEDIAMETRIE(nouveau format)
             // ATTRIBUTION DES PROBAS 1/4h PAR 1/4h,L-V,SAM,DIM
             //        STATION PAR STATION
             // Le nombre de station correspond au nombre de stations (#NB_STA_HAB_NOTO_TOTAL#) - #NB_STA_TOTAL_ONLY# pour Total Radio (et Total TV)
-            byte[,,,] PROBAS = new byte[NBSTA + 1, 3 + 1, 96 + 1, NBIND + 1];
+
+            byte[][][][] PROBAS = new byte[NBSTA + 1][][][]; //  [NBSTA + 1, 3 + 1, 96 + 1, NBIND + 1];
+            for (int i = 1; i <= NBSTA + 1; i++)
+            {
+                PROBAS[i] = new byte[3 + 1][][];
+                for (int j = 1; j <= 3 + 1; j++)
+                {
+                    PROBAS[i][j] = new byte[96 + 1][];
+                    for (int k = 1; k <= 96 + 1; k++)
+                    {
+                        PROBAS[i][j][k] = new byte[NBIND + 1];
+                    }
+                }
+            }
+
             int NSEG = 100;
             int JMAX = NSEG * 2;
             int JSUP = JMAX + 2;
@@ -88,7 +102,7 @@ namespace ARProbaProcessing
                         if (IU == 3) RESUL = ZUPTAUDICOR;
                         for (int I = 1; I <= NBIND; I++)
                         {
-                            PROBAS[NOP, IU, IQ, I] = 0;
+                            PROBAS[NOP][IU][IQ][I] = 0;
                         }
 
                         byte[] AUDI_ = new byte[NBIND + 1];
@@ -96,17 +110,17 @@ namespace ARProbaProcessing
                         int[] NINI_ = new int[NBIND + 1];
                         for (int I = 1; I <= NBIND; I++)
                         {
-                            AUDI_[I] = AUDI[NOP, I, IQ, IU];
-                            HABI_[I] = HABI[NOP, I, IQ, IU];
+                            AUDI_[I] = AUDI[NOP][I][IQ][IU];
+                            HABI_[I] = HABI[NOP][I][IQ][IU];
                             NINI_[I] = NINI[I, NOP];
                         }
 
                         // TRI DES SCORES INDIVIDUELS
                         for (int I = 1; I <= NBIND; I++)
                         {
-                            SCORE[I] = AUDI[NOP, I, IQ, IU];   // [STATIONS, INdiv, QH, 1..3]
+                            SCORE[I] = AUDI[NOP][I][IQ][IU];   // [STATIONS, INdiv, QH, 1..3]
                             if (SCORE[I] < 0) SCORE[I] += 256;
-                            SCORE[I] = 10 * SCORE[I] + HABI[NOP, I, IQ, IU];
+                            SCORE[I] = 10 * SCORE[I] + HABI[NOP][I][IQ][IU];
 
                             NOTI = NOTES[I];
                             if (NINI[I, NOP] == 1) NOTI = 0f;
@@ -164,7 +178,7 @@ namespace ARProbaProcessing
                                         {
                                             IM[NIV]++;
                                             IPPS[NIV] += POIDS[IG];
-                                            PROBAS[NOP, IU, IQ, IG] = 255; // -1 ?
+                                            PROBAS[NOP][IU][IQ][IG] = 255; // -1 ?
                                             II++;
                                             RANK[II] = IG;
                                             SCORE[II] = CELL[IG];
@@ -192,7 +206,7 @@ namespace ARProbaProcessing
                                         for (int I = 1; I <= NICEL; I++)
                                         {
                                             H = RANK[I];
-                                            PROBAS[NOP, IU, IQ, H] = 0;
+                                            PROBAS[NOP][IU][IQ][H] = 0;
                                         }
                                         GRP = 0;
                                         NPERR = 0;
@@ -266,11 +280,11 @@ namespace ARProbaProcessing
                                                 while ((R <= RP) && (R <= NBIND))
                                                 {
                                                     H = RANK[R];
-                                                    PROBAS[NOP, IU, IQ, H] = PR;
+                                                    PROBAS[NOP][IU][IQ][H] = PR;
 
                                                     if (NbWriteProba < 100 && PR != 0)
                                                     {
-                                                        sbSortie.AppendLine($" R={R} RP={RP} PR={PR} NOP={NOP} IU={IU} IQ={IQ} H={H} PROBA = {PROBAS[NOP, IU, IQ, H]}");
+                                                        sbSortie.AppendLine($" R={R} RP={RP} PR={PR} NOP={NOP} IU={IU} IQ={IQ} H={H} PROBA = {PROBAS[NOP][IU][IQ][H]}");
                                                         NbWriteProba++;
                                                     }
 
@@ -338,19 +352,19 @@ namespace ARProbaProcessing
                                     for (int I = 1; I <= NICEL; I++)
                                     {
                                         H = RANK[I];
-                                        if (PROBAS[NOP, IU, IQ, H] != 255)
+                                        if (PROBAS[NOP][IU][IQ][H] != 255)
                                         //                                    if (PROBAS[NOP, IU, IQ, H] >= 0)
                                         {
-                                            GRP += POIDS[H] * PROBAS[NOP, IU, IQ, H];
+                                            GRP += POIDS[H] * PROBAS[NOP][IU][IQ][H];
                                         }
                                         else
                                         {
                                             NPERR++;
-                                            PROBAS[NOP, IU, IQ, H] = 0;
+                                            PROBAS[NOP][IU][IQ][H] = 0;
                                         }
 
                                         if (NOP == 1)
-                                            sbSortie.AppendLine(IQ.ToString() + $" OBJECTIF H={H} POIDS(H)={POIDS[H]}   PROBAS[NOP, IU, IQ, H] ={PROBAS[NOP, IU, IQ, H]}");
+                                            sbSortie.AppendLine(IQ.ToString() + $" OBJECTIF H={H} POIDS(H)={POIDS[H]}   PROBAS[NOP, IU, IQ, H] ={PROBAS[NOP][IU][IQ][H]}");
 
                                     }
 
@@ -366,7 +380,7 @@ namespace ARProbaProcessing
                         if (contextPanel.Enquete == Enquete.PanelIleDeFrance || IP != 999)
                         {
                             for (int IG = 1; IG <= NBIND; IG++)
-                                writeBinary.Write(PROBAS[NOP, IU, IQ, IG]);
+                                writeBinary.Write(PROBAS[NOP][IU][IQ][IG]);
                         }
 
                     } // FIN DE BOUCLE 1/4h
@@ -383,7 +397,7 @@ namespace ARProbaProcessing
 
             return PROBAS;
         }
-        private BSupport transp08(ContextPanel contextPanel, int NIND, int NBSTA, int NBSTAIDF, int[] ISTA, int[,] POIDSEGS, List<int> FILT, List<int> POIDS, byte[,,,] KHI2,
+        private BSupport transp08(ContextPanel contextPanel, int NIND, int NBSTA, int NBSTAIDF, int[] ISTA, int[,] POIDSEGS, List<int> FILT, List<int> POIDS, byte[][][][] KHI2,
             string pathSortie, string pathYearNat, string pathYearIdf, string pathYearSup)
         {
             System.GC.Collect();
@@ -446,7 +460,7 @@ namespace ARProbaProcessing
                         // BOUCLE INDIVIDUS
                         for (int II = 1; II <= NIND; II++)
                         {
-                            KECR[IS][IU, IQ4, II] = (Convert.ToInt16(KHI2[IS, IU, IH, II]) + Convert.ToInt16(KHI2[IS, IU, IH + 1, II]))*5;      //  [STATIONS, LV/Sa/Di, QH, INDIVS]
+                            KECR[IS][IU, IQ4, II] = (Convert.ToInt16(KHI2[IS][IU][IH][II]) + Convert.ToInt16(KHI2[IS][IU][IH+1][II]))*5;      //  [STATIONS, LV/Sa/Di, QH, INDIVS]
 
                             if (KECR[IS][IU, IQ4, II] < 0) Console.WriteLine($"{IS}, {IU}, {IQ4}");
 
