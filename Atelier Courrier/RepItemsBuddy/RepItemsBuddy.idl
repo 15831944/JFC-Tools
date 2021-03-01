@@ -1,0 +1,104 @@
+// RepItemsBuddy.idl : source de la bibliothèque de types pour RepItemsBuddy.exe
+
+// Ce fichier va être traité par le compilateur MIDL pour générer la
+// bibliothèque de types (RepItemsBuddy.tlb).
+
+#include "olectl.h"
+[ uuid(8F51B7DE-9DB7-4B5E-976C-0CB318AA4A96), version(1.0) ]
+library RepItemsBuddy
+{
+	importlib("stdole32.tlb");
+	importlib("stdole2.tlb");
+
+
+	
+	//  Interface de répartition principale pour CRepItemsBuddyDoc
+	
+typedef short BTYPE[];        
+	[ uuid(F6498CEF-C703-46A2-822E-8A9F8FE2184B) ]
+	dispinterface IRepItemsBuddy
+	{
+		properties:
+		[id(3), helpstring("property Vect_Poids")] IDispatch* Vect_Poids;
+
+		methods:
+		[id(1), helpstring("Affiche le Répertoire des Items")] void ShowRepItem();
+		[id(2), helpstring("Charge un terrain")] VARIANT_BOOL LoadTerrain(LONG idSrc, LONG idTerr);
+		[id(4), helpstring("method MoveFirstItem")] void MoveFirstItem(void);
+		[id(5), helpstring("method IsValidItem")] VARIANT_BOOL IsValidItem(void);
+		[id(6), helpstring("method MoveNextItem")] void MoveNextItem(void);
+		[id(7), helpstring("method GetItem")] IDispatch* GetItem(void);
+		[id(8), helpstring("method GetVect_Item")] IDispatch* GetVect_Item(LONG idItem);			
+		[id(9), helpstring("method GetListPoids")] BSTR GetListPoids(void);
+		[id(10), helpstring("method SetPoids")] void SetPoids(LONG idPoids);
+	};
+
+	//  Informations sur la classe CRepItemsBuddyDoc
+	
+	[ uuid(FFD031BB-3C04-4866-9097-68BEFD040655) ]
+	coclass RepItemsBuddy
+	{
+		[default] dispinterface IRepItemsBuddy;
+	};
+	//  Interface de répartition principale pour ItemCible
+		
+	[ uuid(5F358FF4-0546-4400-9BDD-CBCF71B74D6C) ]
+	dispinterface IItemCible
+	{
+		properties:
+			[id(1), helpstring("Libellé de l'item")] BSTR text;
+			[id(2), helpstring("Identifiant de l'item")] LONG ident;
+methods:
+	};
+
+	//  Informations de classe pour ItemCible
+
+	[ uuid(2A600010-3B1D-4ABA-9983-58E37D501506) ]
+	coclass ItemCible
+	{
+		[default] dispinterface IItemCible;
+	};
+
+
+
+	//  Interface de répartition principale pour Vect_Poids
+		
+	[ uuid(20570A63-13D8-4A6E-903A-CC00C8B1E485) ]
+	dispinterface IVect_Poids
+	{
+		properties:
+		[id(1), helpstring("Nb d'individus")] LONG Count;
+		methods:
+		[id(2), propget, helpstring("Recupère le poids d'un individu")] DOUBLE PoidsIndiv(LONG idInd);
+		[id(3), helpstring("method VectPoidsIndivAsArray")]  HRESULT VectPoidsIndivAsArray([in, out] SAFEARRAY(double) *saArray);
+	};
+
+	//  Informations de classe pour Vect_Poids
+
+	[ uuid(83161A80-E924-48B7-99E0-21E69A1A391F) ]
+	coclass Vect_Poids
+	{
+		[default] dispinterface IVect_Poids;
+	};
+	//  Interface de répartition principale pour Vect_Item
+		
+	[ uuid(DC6A2CAB-04A3-42C0-8464-3A5EB46016E8) ]
+	dispinterface IVect_Item
+	{
+		properties:
+		[id(1), helpstring("Nb d'individus")] LONG Count;
+methods:
+		[id(2), propget, helpstring("property Indiv")] VARIANT_BOOL Indiv(LONG idInd);
+		[id(3), propget, helpstring("property IndivAsInt")] LONG IndivAsInt(LONG idInd);
+		[id(4), helpstring("method VectIndivAsArray")] HRESULT VectIndivAsArray([in, out] SAFEARRAY(int) *saArray);
+
+	};
+
+	//  Informations de classe pour Vect_Item
+
+	[ uuid(E0EBDD05-BCAC-4B69-94A8-8B8E4ED542CE) ]
+	coclass Vect_Item
+	{
+		[default] dispinterface IVect_Item;
+	};
+};

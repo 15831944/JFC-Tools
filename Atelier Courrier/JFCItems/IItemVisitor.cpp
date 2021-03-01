@@ -1,0 +1,26 @@
+// IItemVisitor.cpp: implementation of the IItemVisitor class.
+//
+//////////////////////////////////////////////////////////////////////
+
+#include "stdafx.h"
+#include "IItemVisitor.h"
+
+#ifdef _DEBUG
+#undef THIS_FILE
+static char THIS_FILE[]=__FILE__;
+#define new DEBUG_NEW
+#endif
+
+//////////////////////////////////////////////////////////////////////
+// Construction/Destruction
+//////////////////////////////////////////////////////////////////////
+
+IItemVisitor::IItemVisitor()
+{
+
+}
+
+IItemVisitor::~IItemVisitor()
+{
+
+}

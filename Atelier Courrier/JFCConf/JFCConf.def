@@ -1,0 +1,6 @@
+; JFCConf.def : déclare les paramètres de module pour la DLL.
+
+LIBRARY      "JFCConf"
+
+EXPORTS
+    ; Les exportations explicites peuvent être placées ici

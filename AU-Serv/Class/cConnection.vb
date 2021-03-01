@@ -1,20 +1,21 @@
 Option Strict On
 Option Explicit On
 
-Friend Class cConnection
+Friend Class CConnection
 
     Private Declare Function InternetOpen Lib "wininet.dll" Alias "InternetOpenA" (ByVal sAgent As String, ByVal lAccessType As Integer, ByVal sProxyName As String, ByVal sProxyBypass As String, ByVal lFlags As Integer) As Integer
     Private Declare Function HttpQueryInfo Lib "wininet.dll" Alias "HttpQueryInfoA" (ByVal hHttpRequest As Integer, ByVal lInfoLevel As Integer, ByVal sBuffer As String, ByRef lBufferLength As Integer, ByRef lIndex As Integer) As Boolean
-    Private Declare Function HttpSendRequest Lib "wininet.dll" Alias "HttpSendRequestA" (ByVal hHttpRequest As Integer, ByVal sHeaders As String, ByVal lHeadersLength As Integer, ByVal sOptional As String, ByVal lOptionalLength As Integer) As Boolean
     Private Declare Function InternetCloseHandle Lib "wininet.dll" (ByVal hInet As Integer) As Boolean
-    Private Declare Function InternetOpenUrl Lib "wininet.dll" Alias "InternetOpenUrlA" (ByVal hInternetSession As Integer, ByVal sUrl As String, ByVal sHeaders As String, ByVal lHeadersLength As Integer, ByVal lFlags As Integer, ByVal lContext As Long) As Integer
+    Private Declare Function InternetOpenUrl Lib "wininet.dll" Alias "InternetOpenUrlA" (ByVal hInternetSession As Integer, ByVal sUrl As String, ByVal sHeaders As String, ByVal lHeadersLength As Integer, ByVal lFlags As Long, ByVal lContext As Long) As Integer
     Private Declare Function InternetReadFile Lib "wininet.dll" (ByVal hFile As Integer, ByVal sBuffer As String, ByVal lNumBytesToRead As Integer, ByRef lNumberOfBytesRead As Integer) As Boolean
     Private Declare Function InternetSetOption Lib "wininet.dll" Alias "InternetSetOptionA" (ByVal hInternet As Integer, ByVal dwOption As Integer, ByVal lpBuffer As String, ByVal dwBufferLength As Integer) As Boolean
     Private Declare Function InternetConnect Lib "wininet.dll" Alias "InternetConnectA" (ByVal hInternetSession As Integer, ByVal sServerName As String, ByVal nServerPort As Integer, ByVal sUserName As String, ByVal sPassword As String, ByVal lService As Integer, ByVal lFlags As Integer, ByVal lContext As Integer) As Integer
+    Private Declare Function HttpOpenRequest Lib "wininet.dll" Alias "HttpOpenRequestA" (ByVal hHttpSession As Long, ByVal lpszVerb As String, ByVal lpszObjectName As String, ByVal lpszVersion As String, ByVal lpszReferer As String, ByVal lpszAcceptTypes As String, ByVal dwFlags As Long, ByVal dwContext As Long) As Long
+    Private Declare Function HttpSendRequest Lib "wininet.dll" Alias "HttpSendRequestA" (ByVal hHttpRequest As Long, ByVal lpszHeaders As String, ByVal dwHeadersLength As Long, ByVal lpOptional As String, ByVal dwOptionalLength As Long) As Boolean
 
     Public hInternet As Integer
     Public hConnection As Integer
-    Public ServerName As String = "mp.kantarmedia.fr"
+    Public ServerName As String = "https://mp.kantarmedia.fr"
     Public UserName As String
     Public Password As String
     Public RemoteFile As String
@@ -29,7 +30,7 @@ Friend Class cConnection
     Public InternetBuffer As Integer
     Public DebugMode As Boolean = False
 
-    Public InternetFlagsMask As Integer
+    Public InternetFlagsMask As Long
 
     Private DelegateGetFile2String As String
     Private DelegateInternetOpen As Boolean
@@ -49,12 +50,6 @@ Friend Class cConnection
     Const HTTP_STATUS_DENIED As Integer = 401
     Const HTTP_STATUS_NOT_FOUND As Integer = 404
 
-    'Const INTERNET_FLAG_RELOAD As Integer = &H80000000 'Force un chargement à partir du serveur d'origine et non pas depuis le cache.
-    'Const INTERNET_FLAG_NO_CACHE_WRITE As Integer = &H4000000 'N'ajoute pas l'élément retourné dans le cache.
-    'Const INTERNET_FLAG_KEEP_CONNECTION As Integer = &H400000 'Laisse la connexion ouverte (mode KEEP_ALIVE).
-    'Const INTERNET_FLAG_RAW_DATA As Integer = &H40000000 'Retourne les données suivant leur structure d'origine, sinon, la fonction retourne une version de type HTML.
-    'Const INTERNET_FLAGS_MASK As Long = (INTERNET_FLAG_RELOAD Or INTERNET_FLAG_KEEP_CONNECTION Or INTERNET_FLAG_NO_CACHE_WRITE Or INTERNET_FLAG_RAW_DATA)
-
     Const INTERNET_OPTION_PASSWORD As Integer = 29
     Const INTERNET_OPTION_USERNAME As Integer = 28
     Const INTERNET_OPTION_PROXY As Integer = 38
@@ -69,69 +64,22 @@ Friend Class cConnection
     Const INTERNET_OPTION_SETTINGS_CHANGED As Integer = 39
     Const INTERNET_OPTION_REFRESH As Integer = 37
 
-    Const INTERNET_FLAG_SECURE As Integer = &H800000  ' use PCT/SSL if applicable (HTTP)
-    Const INTERNET_FLAG_RAW_DATA As Integer = &H40000000  ' receive the item as raw data
-    Const INTERNET_FLAG_EXISTING_CONNECT As Integer = &H20000000  ' do not create new connection object
-    Const INTERNET_FLAG_RELOAD As Integer = &H80000000  ' retrieve the original item
-    Const INTERNET_FLAG_KEEP_CONNECTION As Integer = &H400000  ' use keep-alive semantics
-    Const INTERNET_FLAG_NO_AUTO_REDIRECT As Integer = &H200000  ' don't handle redirections automatically
-    Const INTERNET_FLAG_READ_PREFETCH As Integer = &H100000  ' do background read prefetch
-    Const INTERNET_FLAG_NO_COOKIES As Integer = &H80000  ' no automatic cookie handling
-    Const INTERNET_FLAG_NO_AUTH As Integer = &H40000  ' no automatic authentication handling
-    Const INTERNET_FLAG_IGNORE_REDIRECT_TO_HTTP As Integer = &H8000 ' ex: https:// to http://
-    Const INTERNET_FLAG_IGNORE_REDIRECT_TO_HTTPS As Integer = &H4000 ' ex: http:// to https://
-    Const INTERNET_FLAG_IGNORE_CERT_DATE_INVALID As Integer = &H2000 ' expired X509 Cert.
-    Const INTERNET_FLAG_IGNORE_CERT_CN_INVALID As Integer = &H1000 ' bad common name in X509 Cert.
-    Const INTERNET_FLAG_MUST_CACHE_REQUEST As Integer = &H10 ' fails if unable to cache request
-    Const INTERNET_FLAG_RESYNCHRONIZE As Integer = &H800 ' asking wininet to update an item if it is newer
-    Const INTERNET_FLAG_HYPERLINK As Integer = &H400 ' asking wininet to do hyperlinking semantic which works right for scripts
-    Const INTERNET_FLAG_NO_UI As Integer = &H200
-    Const INTERNET_FLAG_ASYNC As Integer = &H10000000  ' this request is asynchronous (where supported)
-    Const INTERNET_FLAG_PASSIVE As Integer = &H8000000  ' used for FTP connections
-    Const INTERNET_FLAG_NO_CACHE_WRITE As Integer = &H4000000  ' don't write this item to the cache
-    Const INTERNET_FLAG_DONT_CACHE As Integer = INTERNET_FLAG_NO_CACHE_WRITE
-    Const INTERNET_FLAG_MAKE_PERSISTENT As Integer = &H2000000  ' make this item persistent in cache
-    Const INTERNET_FLAG_OFFLINE As Integer = &H1000000  ' use offline semantics
+    Const INTERNET_FLAG_EXISTING_CONNECT As Long = &H20000000  ' do not create new connection object
+    Const INTERNET_FLAG_RELOAD As Long = 2147483648 '&H80000000  ' retrieve the original item
+    Const INTERNET_FLAG_NO_AUTO_REDIRECT As Long = &H200000  ' don't handle redirections automatically
+    Const INTERNET_FLAG_IGNORE_REDIRECT_TO_HTTP As Long = &H8000 ' ex: https:// to http://
+    Const INTERNET_FLAG_IGNORE_REDIRECT_TO_HTTPS As Long = &H4000 ' ex: http:// to https://
+    Const INTERNET_FLAG_IGNORE_CERT_DATE_INVALID As Long = &H2000 ' expired X509 Cert.
+    Const INTERNET_FLAG_IGNORE_CERT_CN_INVALID As Long = &H1000 ' bad common name in X509 Cert.
 
-    Const FTP_TRANSFER_TYPE_UNKNOWN As Integer = &H0
-    Const FTP_TRANSFER_TYPE_ASCII As Integer = &H1
-    Const FTP_TRANSFER_TYPE_BINARY As Integer = &H2
-
-    Const INTERNET_FLAG_TRANSFER_ASCII As Integer = FTP_TRANSFER_TYPE_ASCII
-    Const INTERNET_FLAG_TRANSFER_BINARY As Integer = FTP_TRANSFER_TYPE_BINARY
-
-    Const SECURITY_INTERNET_MASK As Integer = (INTERNET_FLAG_IGNORE_CERT_CN_INVALID Or _
-                                 INTERNET_FLAG_IGNORE_CERT_DATE_INVALID Or _
-                                 INTERNET_FLAG_IGNORE_REDIRECT_TO_HTTPS Or _
+    Const SECURITY_INTERNET_MASK As Long = (INTERNET_FLAG_IGNORE_CERT_CN_INVALID Or
+                                 INTERNET_FLAG_IGNORE_CERT_DATE_INVALID Or
+                                 INTERNET_FLAG_IGNORE_REDIRECT_TO_HTTPS Or
                                  INTERNET_FLAG_IGNORE_REDIRECT_TO_HTTP)
 
-    'Const INTERNET_FLAGS_MASK As Long = (INTERNET_FLAG_RELOAD _
-    '                            Or INTERNET_FLAG_RAW_DATA _
-    '                            Or INTERNET_FLAG_EXISTING_CONNECT _
-    '                            Or INTERNET_FLAG_ASYNC _
-    '                            Or INTERNET_FLAG_PASSIVE _
-    '                            Or INTERNET_FLAG_NO_CACHE_WRITE _
-    '                            Or INTERNET_FLAG_MAKE_PERSISTENT _
-    '                            Or INTERNET_FLAG_OFFLINE _
-    '                            Or INTERNET_FLAG_SECURE _
-    '                            Or INTERNET_FLAG_KEEP_CONNECTION _
-    '                            Or INTERNET_FLAG_NO_AUTO_REDIRECT _
-    '                            Or INTERNET_FLAG_READ_PREFETCH _
-    '                            Or INTERNET_FLAG_NO_COOKIES _
-    '                            Or INTERNET_FLAG_NO_AUTH _
-    '                            Or SECURITY_INTERNET_MASK _
-    '                            Or INTERNET_FLAG_TRANSFER_ASCII _
-    '                            Or INTERNET_FLAG_TRANSFER_BINARY _
-    '                            Or INTERNET_FLAG_RESYNCHRONIZE _
-    '                            Or INTERNET_FLAG_MUST_CACHE_REQUEST _
-    '                            Or INTERNET_FLAG_HYPERLINK _
-    '                            Or INTERNET_FLAG_NO_UI)
+    Public Const INTERNET_FLAGS_MASK As Long = INTERNET_FLAG_RELOAD Or INTERNET_FLAG_EXISTING_CONNECT ' &HA0000000
 
-    'Public Const INTERNET_FLAGS_MASK As Integer = INTERNET_FLAG_RAW_DATA Or INTERNET_FLAG_EXISTING_CONNECT Or INTERNET_FLAG_RELOAD
-    ' Public Const INTERNET_FLAGS_MASK As Integer = INTERNET_FLAG_RELOAD ' &H80000000
-    Public Const INTERNET_FLAGS_MASK As Integer = INTERNET_FLAG_RELOAD Or INTERNET_FLAG_EXISTING_CONNECT ' &HA0000000
-
-    Public Enum tNewStatus
+    Public Enum TNewStatus
         nsConnected
         nsOperationStarted
         nsOperationSuceeded
@@ -161,12 +109,12 @@ Friend Class cConnection
 
         End If
 
-        InternetOpenHandle = InternetOpen(scUserAgent, _
-                      CInt(IIf((Proxy = ""), _
-                          IIf(DirectConnect, INTERNET_OPEN_TYPE_DIRECT, INTERNET_OPEN_TYPE_PRECONFIG), _
-                          IIf(DirectConnect, INTERNET_OPEN_TYPE_PROXY, INTERNET_OPEN_TYPE_PRECONFIG_WITH_NO_AUTOPROXY))), _
-                      Proxy, _
-                      CStr(IIf((Proxy = ""), vbNullString, "<local>")), _
+        InternetOpenHandle = InternetOpen(scUserAgent,
+                      CInt(IIf((Proxy = ""),
+                          IIf(DirectConnect, INTERNET_OPEN_TYPE_DIRECT, INTERNET_OPEN_TYPE_PRECONFIG),
+                          IIf(DirectConnect, INTERNET_OPEN_TYPE_PROXY, INTERNET_OPEN_TYPE_PRECONFIG_WITH_NO_AUTOPROXY))),
+                      Proxy,
+                      CStr(IIf((Proxy = ""), vbNullString, "<local>")),
                       0)
 
         If DebugMode Then
@@ -214,7 +162,6 @@ Friend Class cConnection
             InternetFlagsMask = INTERNET_FLAGS_MASK
         End If
 
-        'Ouverture d'une connexion Internet global si pas de Proxy
         If Proxy = vbNullString Then
             hInternet = InternetOpenHandle()
         Else
@@ -229,24 +176,6 @@ Friend Class cConnection
             MsgBox("hInternet=" & CStr(hInternet), MsgBoxStyle.Information)
         End If
 
-        ''********************************
-        '' Test de connexion (08-03-2011)
-        ''********************************
-        'Dim lgInternet As Integer
-        'Dim stUrl As String = ServerWeb 
-
-        'If DebugMode Then
-        '    MsgBox("InternetOpenUrl=" & stUrl, MsgBoxStyle.Information)
-        'End If
-
-        'lgInternet = InternetOpenUrl(hInternet, stUrl, vbNullString, 0, InternetFlagsMask, 0)
-        'If lgInternet <> 0 Then
-        '    InternetCloseHandle(lgInternet)
-        'End If
-        '********************************
-
-        'Retourne Vrai si la connexion est établie
-        'OpenInternet = (lgInternet <> 0) '(hInternet <> 0)
         OpenInternet = (hInternet <> 0)
 
         DelegateInternetOpen = OpenInternet
@@ -302,7 +231,7 @@ Friend Class cConnection
 
             System.Windows.Forms.Application.DoEvents()
 
-            sRec = sRec & Mid(sBuffer, 1, ret)
+            sRec &= Mid(sBuffer, 1, ret)
         Loop Until ret <> BytesBuff
 
         System.Windows.Forms.Application.DoEvents()
@@ -314,17 +243,13 @@ Friend Class cConnection
 
     End Function
 
-    Private Sub ReadDataToFile(ByVal hOpen As Integer, Optional ByVal WithEvent As Boolean = True, Optional ByVal TeamViewer As Boolean = False)
+    Private Sub ReadDataToFile(ByVal hOpen As Integer, Optional ByVal WithEvent As Boolean = True, Optional ByVal bPleaseWait As Boolean = False)
 
         Dim sBuffer As String
         Dim ret As Integer
         Dim BytesBuff As Integer
-        Dim SentBytes As Double
+        Dim SentBytes As Int64
         Dim FF As Integer
-
-        If IO.File.Exists(TF(LocalFile)) Then
-            IO.File.Delete(TF(LocalFile))
-        End If
 
         If IO.File.Exists(LocalFile) Then
             IO.File.Delete(LocalFile)
@@ -336,12 +261,15 @@ Friend Class cConnection
         FF = FreeFile()
 
         Try
-            FileOpen(FF, TF(LocalFile), OpenMode.Binary, OpenAccess.Write, OpenShare.LockReadWrite)
+
+            FileOpen(FF, TF(LocalFile), OpenMode.Binary, OpenAccess.ReadWrite, OpenShare.LockReadWrite)
+
         Catch ex As Exception
             MsgBox(mLanguageAU.GetString(MSG_ACCES_PATH_IS_DENIED).Replace("%FOLDER%", Chr(34) + TF(LocalFile) + Chr(34)) & vbCrLf & ex.Message, MsgBoxStyle.Critical, My.Application.Info.Title)
             InternetCloseHandle(hOpen)
             Exit Sub
         End Try
+
 
         Dim bFirstBufferRead As Boolean = True
 
@@ -350,23 +278,31 @@ Friend Class cConnection
                 Exit Do
             End If
 
-            'Modif Russie
             If bFirstBufferRead Then
 
-                Dim sHeaderNew As String = Chr(&H4D) + Chr(&H5A) + Chr(&H90) + Chr(&H0) + Chr(&H3) + Chr(&H0) + Chr(&H0) + Chr(&H0) + Chr(&H4) + Chr(&H0) + Chr(&H0) + Chr(&H0) + Chr(&HFF) + Chr(&HFF) + Chr(&H0) + Chr(&H0)
+                Dim sHeaderNew As String = Nothing
 
-                If Not ReconstructionHeader(sBuffer, sHeaderNew) Then
-                    sHeaderNew = Chr(&H4D) + Chr(&H5A)
+                If IO.Path.GetExtension(LocalFile).ToUpper = ".ZIP" Then
+
+                    sHeaderNew = Chr(&H50) + Chr(&H4B)
                     ReconstructionHeader(sBuffer, sHeaderNew)
+
+                Else
+
+                    sHeaderNew = Chr(&H4D) + Chr(&H5A) + Chr(&H90) + Chr(&H0) + Chr(&H3) + Chr(&H0) + Chr(&H0) + Chr(&H0) + Chr(&H4) + Chr(&H0) + Chr(&H0) + Chr(&H0) + Chr(&HFF) + Chr(&HFF) + Chr(&H0) + Chr(&H0)
+
+                    If Not ReconstructionHeader(sBuffer, sHeaderNew) Then
+                        sHeaderNew = Chr(&H4D) + Chr(&H5A)
+                        ReconstructionHeader(sBuffer, sHeaderNew)
+                    End If
+
                 End If
 
                 bFirstBufferRead = False
 
             End If
 
-            'MsgBox("InternetReadFile", vbInformation)
-
-            If AUService.Button_Fermer.Enabled = False And Not TeamViewer Then
+            If AUService.Button_Fermer.Enabled = False And Not bPleaseWait Then
                 If MsgBox(mLanguageAU.GetString(MSG_STOP_UPDATE), MsgBoxStyle.YesNo Or MsgBoxStyle.Exclamation Or MsgBoxStyle.DefaultButton2) = MsgBoxResult.Yes Then
                     If WithEvent Then RaiseEvent ProgressChanged(-SentBytes)
                     Exit Do
@@ -381,7 +317,12 @@ Friend Class cConnection
 
             FilePut(FF, sBuffer)
 
-            SentBytes = SentBytes + ret
+            SentBytes += ret
+
+            If bPleaseWait Then
+                PleaseWait.ProgressBarPleaseWait.Value = CInt(Int((SentBytes / RemoteSize) * 100))
+                System.Windows.Forms.Application.DoEvents()
+            End If
 
             If WithEvent Then RaiseEvent ProgressChanged(SentBytes)
 
@@ -400,7 +341,7 @@ Friend Class cConnection
         Dim sGenerateHeader As String = ""
 
         For iHeader As Integer = 1 To nLenHeader
-            sGenerateHeader = sGenerateHeader + Chr(&H0)
+            sGenerateHeader += Chr(&H0)
         Next
 
         If sHeaderDwl = sGenerateHeader Then
@@ -470,7 +411,7 @@ Friend Class cConnection
 
     Private Function SetOptionTimeOut(ByVal hOpen As Integer) As Boolean
 
-        Dim conntimeout As Integer = 1000 '(en ms) ici j'ai fait divers essais pour augmenter ou diminuer rien n'y fait
+        Dim conntimeout As Integer = 1000
 
         SetOptionTimeOut = InternetSetOption(hOpen, INTERNET_OPTION_CONNECT_TIMEOUT, CStr(Int(conntimeout)), Len(conntimeout))
 
@@ -498,16 +439,18 @@ Friend Class cConnection
 
     Public Function GetFileToFile() As Boolean
 
-        Dim lgInternet As Integer
-        Dim stUrl As String = "https://" & ServerName & RemoteDir & ParsePath(RemoteFile, FILENAME_ONLY) + "." + CheckSum
+        Dim NumberOfResume As Integer = 0
 
-        GetFileToFile = False
+        Dim lgInternet As Integer
+        Dim stUrl As String = ServerName & RemoteDir & IO.Path.GetFileNameWithoutExtension(RemoteFile) + "." + CheckSum
+
+restart:
 
         stUrl = stUrl.Replace(" ", "%20")
         lgInternet = InternetOpenUrl(hInternet, stUrl, vbNullString, 0, InternetFlagsMask, 0)
 
         If lgInternet = 0 Then
-            Exit Function
+            Return False
         End If
 
         If Status(lgInternet) Then
@@ -516,19 +459,28 @@ Friend Class cConnection
         InternetCloseHandle(lgInternet)
 
         If Not IO.File.Exists(TF(LocalFile)) Then
-            Exit Function
+            Return False
         ElseIf RemoteSize <> FileLen(TF(LocalFile)) Then
-            IO.File.Delete(TF(LocalFile))
+
+            AUService.HttpSendMessage(CODE_DOWNLOADED_ERROR_SIZE)
+
+            NumberOfResume += 1
+
+            If AUService.Button_Fermer.Enabled = True And NumberOfResume < 5 Then GoTo restart
+
+            Return False
+
         ElseIf Append(TF(LocalFile)) <> DeleteZ(CheckSum) Then
             IO.File.Delete(TF(LocalFile))
+            AUService.HttpSendMessage(CODE_DOWNLOADED_ERROR_CRC)
+            Return False
         Else
             IO.File.Move(TF(LocalFile), LocalFile)
-            GetFileToFile = True
+            Return True
         End If
 
     End Function
 
-    'Modif Russie
     Public Function DeleteZ(ByVal sValue As String) As String
         Return Replace(sValue, "Z", "")
     End Function
@@ -536,7 +488,7 @@ Friend Class cConnection
     Public Function GetFileToString() As String
 
         Dim lgInternet As Integer
-        Dim stUrl As String = "https://" & ServerName & RemoteDir & RemoteFile
+        Dim stUrl As String = ServerName & RemoteDir & RemoteFile
 
         GetFileToString = ""
 
@@ -545,11 +497,6 @@ Friend Class cConnection
         If DebugMode Then
             MsgBox("InternetOpenUrl=" & stUrl, MsgBoxStyle.Information)
         End If
-
-        'Dim test As Integer
-        'test = SetOptionTimeOut(hInternet)
-        'test = SetOptionTimeOut(0)
-        'https://mp.kantarmedia.fr/fret2/Internet2/Memis.3AE585AA
 
         lgInternet = InternetOpenUrl(hInternet, stUrl, vbNullString, 0, InternetFlagsMask, 0)
 
@@ -626,10 +573,6 @@ Friend Class cConnection
 
             lgRet = HttpSendRequest(hOpen, vbNullString, 0, vbNullString, 0)
 
-            'InternetConnect()
-            'HttpOpenRequest()
-            'HttpEndRequest()
-
             If DebugMode Then
                 MsgBox("HttpSendRequest=" & CStr(lgRet), MsgBoxStyle.Information)
             End If
@@ -651,8 +594,7 @@ Friend Class cConnection
 
     Public Function GetAutorisationInstall(ByVal svSerialFound As String, ByVal svSerial As String) As String
 
-        Dim URL_AUTORISATION As String = ""
-        'RIAMVCPDLS
+        Dim URL_AUTORISATION As String
 
         If AUService.svCodeAppli = "R" Then
             URL_AUTORISATION = "/AR/Install.asp"
@@ -682,7 +624,7 @@ Friend Class cConnection
             URL_AUTORISATION = "/IG/Install.asp"
         ElseIf AUService.svCodeAppli = "O" Then
             URL_AUTORISATION = "/CP/Install.asp"
-        ElseIf AUService.svCodeAppli = "E" Then
+        ElseIf AUService.svCodeAppli = "U" Then
             URL_AUTORISATION = "/RP/Install.asp"
         ElseIf AUService.svCodeAppli = "H" Then
             URL_AUTORISATION = "/CC/Install.asp"
@@ -696,7 +638,7 @@ Friend Class cConnection
 
         GetAutorisationInstall = Nothing
 
-        stUrl = "https://" + ServerName + URL_AUTORISATION + "?code=" + svSerialFound + "&serie=" + svSerial
+        stUrl = ServerName + URL_AUTORISATION + "?code=" + svSerialFound + "&serie=" + svSerial
 
         If DebugMode Then
             MsgBox("InternetOpenUrl=" & stUrl, MsgBoxStyle.Information)
@@ -732,7 +674,7 @@ Friend Class cConnection
 
     Public Function GetAutorisation(ByVal svSerialFound As String, ByVal svSerial As String, ByVal svCompany As String) As Integer
 
-        Dim URL_AUTORISATION As String = ""
+        Dim URL_AUTORISATION As String
 
         If AUService.svCodeAppli = "R" Then
             URL_AUTORISATION = "/AR/autorisation.asp"
@@ -762,7 +704,7 @@ Friend Class cConnection
             URL_AUTORISATION = "/IG/autorisation.asp"
         ElseIf AUService.svCodeAppli = "O" Then
             URL_AUTORISATION = "/CP/autorisation.asp"
-        ElseIf AUService.svCodeAppli = "E" Then
+        ElseIf AUService.svCodeAppli = "U" Then
             URL_AUTORISATION = "/RP/autorisation.asp"
         ElseIf AUService.svCodeAppli = "H" Then
             URL_AUTORISATION = "/CC/autorisation.asp"
@@ -776,7 +718,7 @@ Friend Class cConnection
 
         GetAutorisation = 0
 
-        stUrl = "https://" + ServerName + URL_AUTORISATION + "?code=" + svSerialFound + "&serie=" + svSerial + "&company=" + svCompany
+        stUrl = ServerName + URL_AUTORISATION + "?code=" + svSerialFound + "&serie=" + svSerial + "&company=" + svCompany
 
         If DebugMode Then
             MsgBox("InternetOpenUrl=" & stUrl, MsgBoxStyle.Information)
@@ -817,7 +759,7 @@ Friend Class cConnection
 
     Public Function ReturnProductCode(ByVal svSerial As String) As Integer
 
-        Dim URL_AUTORISATION As String = ""
+        Dim URL_AUTORISATION As String
 
         If AUService.svCodeAppli = "R" Then
             URL_AUTORISATION = "/AR/uninstall.asp"
@@ -847,7 +789,7 @@ Friend Class cConnection
             URL_AUTORISATION = "/IG/uninstall.asp"
         ElseIf AUService.svCodeAppli = "O" Then
             URL_AUTORISATION = "/CP/uninstall.asp"
-        ElseIf AUService.svCodeAppli = "E" Then
+        ElseIf AUService.svCodeAppli = "U" Then
             URL_AUTORISATION = "/RP/uninstall.asp"
         ElseIf AUService.svCodeAppli = "H" Then
             URL_AUTORISATION = "/CC/uninstall.asp"
@@ -861,7 +803,7 @@ Friend Class cConnection
 
         ReturnProductCode = 0
 
-        stUrl = "https://" + ServerName + URL_AUTORISATION + "?serie=" + svSerial
+        stUrl = ServerName + URL_AUTORISATION + "?serie=" + svSerial
 
         If DebugMode Then
             MsgBox("InternetOpenUrl=" & stUrl, MsgBoxStyle.Information)
@@ -897,7 +839,7 @@ Friend Class cConnection
 
     Public Function GetSociete(ByVal svSerialFound As String, ByVal svSerial As String) As String
 
-        Dim URL_SOCIETE As String = ""
+        Dim URL_SOCIETE As String
 
         If AUService.svCodeAppli = "R" Then
             URL_SOCIETE = "/AR/Install.asp"
@@ -927,7 +869,7 @@ Friend Class cConnection
             URL_SOCIETE = "/IG/Install.asp"
         ElseIf AUService.svCodeAppli = "O" Then
             URL_SOCIETE = "/CP/Install.asp"
-        ElseIf AUService.svCodeAppli = "E" Then
+        ElseIf AUService.svCodeAppli = "U" Then
             URL_SOCIETE = "/RP/Install.asp"
         ElseIf AUService.svCodeAppli = "H" Then
             URL_SOCIETE = "/CC/Install.asp"
@@ -941,7 +883,7 @@ Friend Class cConnection
 
         GetSociete = ""
 
-        stUrl = "https://" + ServerName + URL_SOCIETE + "?code=" + svSerialFound + "&serie=" + svSerial
+        stUrl = ServerName + URL_SOCIETE + "?code=" + svSerialFound + "&serie=" + svSerial
 
         If DebugMode Then
             MsgBox("InternetOpenUrl=" & stUrl, MsgBoxStyle.Information)
@@ -975,20 +917,100 @@ Friend Class cConnection
 
     End Function
 
-    Public Function GetNewUpdate(ByVal AppBuild As String, Optional ByVal test As Boolean = False) As Boolean
+    Public Function GetProductCode(ByVal svSerial As String) As String
 
+        Dim URL_PRODUCTCODE As String
+
+        If AUService.svCodeAppli = "R" Then
+            URL_PRODUCTCODE = "/AR/ProductCode.asp"
+        ElseIf AUService.svCodeAppli = "I" Then
+            URL_PRODUCTCODE = "/AI/ProductCode.asp"
+        ElseIf AUService.svCodeAppli = "A" Then
+            URL_PRODUCTCODE = "/AI/ProductCode.asp"
+        ElseIf AUService.svCodeAppli = "M" Then
+            URL_PRODUCTCODE = "/AM/ProductCode.asp"
+        ElseIf AUService.svCodeAppli = "V" Then
+            URL_PRODUCTCODE = "/AV/ProductCode.asp"
+        ElseIf AUService.svCodeAppli = "C" Then
+            URL_PRODUCTCODE = "/AC/ProductCode.asp"
+        ElseIf AUService.svCodeAppli = "B" Then
+            URL_PRODUCTCODE = "/BA/ProductCode.asp"
+        ElseIf AUService.svCodeAppli = "P" Then
+            URL_PRODUCTCODE = "/AP/ProductCode.asp"
+        ElseIf AUService.svCodeAppli = "D" Then
+            URL_PRODUCTCODE = "/MD/ProductCode.asp"
+        ElseIf AUService.svCodeAppli = "L" Then
+            URL_PRODUCTCODE = "/M2/ProductCode.asp"
+        ElseIf AUService.svCodeAppli = "S" Then
+            URL_PRODUCTCODE = "/P2/ProductCode.asp"
+        ElseIf AUService.svCodeAppli = "F" Then
+            URL_PRODUCTCODE = "/FV/ProductCode.asp"
+        ElseIf AUService.svCodeAppli = "G" Then
+            URL_PRODUCTCODE = "/IG/ProductCode.asp"
+        ElseIf AUService.svCodeAppli = "O" Then
+            URL_PRODUCTCODE = "/CP/ProductCode.asp"
+        ElseIf AUService.svCodeAppli = "U" Then
+            URL_PRODUCTCODE = "/RP/ProductCode.asp"
+        ElseIf AUService.svCodeAppli = "H" Then
+            URL_PRODUCTCODE = "/CC/ProductCode.asp"
+        Else
+            Return ""
+        End If
+
+        Dim lgInternet As Integer
+        Dim stUrl As String
+        Dim bOpenInternet As Boolean
+
+        GetProductCode = ""
+
+        stUrl = ServerName + URL_PRODUCTCODE + "?serie=" + svSerial
+
+        If DebugMode Then
+            MsgBox("InternetOpenUrl=" & stUrl, MsgBoxStyle.Information)
+        End If
+
+        If hInternet = 0 Then
+            bOpenInternet = OpenInternet()
+        End If
+
+        lgInternet = InternetOpenUrl(hInternet, stUrl, vbNullString, 0, INTERNET_FLAGS_MASK, 0)
+
+        If DebugMode Then
+            MsgBox("lgInternet=" & CStr(lgInternet), MsgBoxStyle.Information)
+        End If
+
+        If lgInternet = 0 Then
+            Exit Function
+        End If
+
+        System.Windows.Forms.Application.DoEvents()
+
+        If Status(lgInternet) Then
+            GetProductCode = ReadDataToString(lgInternet)
+        End If
+
+        InternetCloseHandle(lgInternet)
+
+        If bOpenInternet Then
+            Disconnect()
+        End If
+
+    End Function
+
+    Public Function InitializeUpdate(ByVal svString As String, Optional ByVal control As Boolean = False) As Boolean
+        
         Dim bOpenInternet As Boolean
 
         If hInternet = 0 Then
             bOpenInternet = OpenInternet()
         End If
 
-        GetNewReStart(test)
+        GetFileToRootDir(AUService.AppPath + AUService.DisplayNameReStart + ".exe", control)
 
         Dim lgInternet As Integer
-        Dim stUrl As String = "https://" + ServerName + "/fret2/update/"
+        Dim stUrl As String = ServerName + "/fret2/update/"
 
-        GetNewUpdate = False
+        InitializeUpdate = False
 
         stUrl = stUrl.Replace(" ", "%20")
 
@@ -996,12 +1018,11 @@ Friend Class cConnection
             MsgBox("InternetOpenUrl=" & stUrl, MsgBoxStyle.Information)
         End If
 
-        'TEST
         LocalFile = Application.ExecutablePath
 
-        Dim AUServ As String = ParsePath(LocalFile, FILENAME_ONLY)
+        Dim AUServ As String = IO.Path.GetFileNameWithoutExtension(LocalFile)
 
-        lgInternet = InternetOpenUrl(hInternet, stUrl + AUServ + ".Update" + CStr(IIf(test, "Test", "")), vbNullString, 0, InternetFlagsMask, 0)
+        lgInternet = InternetOpenUrl(hInternet, stUrl + AUServ + ".Update" + CStr(IIf(control, "Test", "")), vbNullString, 0, InternetFlagsMask, 0)
 
         If DebugMode Then
             MsgBox("lgInternet=" & CStr(lgInternet), MsgBoxStyle.Information)
@@ -1020,20 +1041,17 @@ Friend Class cConnection
 
         InternetCloseHandle(lgInternet)
 
-        'TEST
-        'AppBuild = "5.8.2.1"
-
-        'Ex: 5.8.0.2,3038425,B69CCD76#END#
         If AccesUpdate <> "" Then
 
-            If InStr(AccesUpdate, AUService.EndOfFile, CompareMethod.Text) > 0 Or InStr(AccesUpdate, AUService.EndOfFileOld, CompareMethod.Text) > 0 Or InStr(AccesUpdate, AUService.EndOfFilePlantage, CompareMethod.Text) > 0 Then
+            If InStr(AccesUpdate, AUService.EndOfFile, CompareMethod.Text) > 0 Then
 
                 Dim Update() As String = Split(AccesUpdate, ";")
 
+                'If CLng(Update(1)) < FileLen(LocalFile) Then Return False
+
                 Dim GetAppBuild As String = Update(0)
 
-                If StrCompTextVersions(GetAppBuild, AppBuild) <> 0 Then
-                    'If StrCompTextVersions(GetAppBuild, AppBuild) > 0 Then 'Pas de mise à jour si version ancienne
+                If StrCompTextVersions(GetAppBuild, svString) <> 0 Then
 
                     If Update.Length >= 4 Then
 
@@ -1057,7 +1075,7 @@ Friend Class cConnection
                                 Disconnect()
                             End If
 
-                            Return GetNewUpdate
+                            Return InitializeUpdate
 
                         End If
 
@@ -1073,15 +1091,14 @@ Friend Class cConnection
                         Exit Function
                     End If
 
-                    Dim AppPath As String = ParsePath(LocalFile, PATH)
+                    Dim AppPath As String = IO.Path.GetDirectoryName(LocalFile)
                     If Not IsDirectoryWritable(AppPath) Then
                         MsgBox(mLanguageAU.GetString(MSG_ACCES_PATH_IS_DENIED).Replace("%FOLDER%", Chr(34) + AppPath + Chr(34)), MsgBoxStyle.Critical, My.Application.Info.Title)
                     End If
 
-                    Dim AUServPath As String = ParsePath(LocalFile, PATH_FILENAME_ONLY)
-                    Dim AUServOld As String = AUServPath & ".backup"
-                    Dim AUServNew As String = AUServPath & ".update"
-                    Dim AUServExe As String = AUServPath & ".exe"
+                    Dim AUServOld As String = IO.Path.ChangeExtension(LocalFile, ".backup")
+                    Dim AUServNew As String = IO.Path.ChangeExtension(LocalFile, ".update")
+                    Dim AUServExe As String = IO.Path.ChangeExtension(LocalFile, ".exe")
 
                     If IO.File.Exists(AUServOld) Then
                         Try
@@ -1153,7 +1170,6 @@ Friend Class cConnection
 
                         If Not IO.File.Exists(TF(LocalFile)) Then
                             Return False
-                            'Exit Function
 
                         ElseIf RemoteSize <> FileLen(TF(LocalFile)) Then
                             Try
@@ -1182,9 +1198,9 @@ Friend Class cConnection
                                 MsgBox("Install file:" + vbNewLine + ex.Message, MsgBoxStyle.Exclamation)
                             End Try
 
-                            GetNewUpdate = True
+                            InitializeUpdate = True
 
-                            AUService.HttpSendMessage(CODE_UPDATE_AU_SERV, , , "Updating", AppBuild, Application.ProductName)
+                            AUService.HttpSendMessage(CODE_UPDATE_AU_SERV, , , "Updating", svString, Application.ProductName)
 
                         End If
 
@@ -1198,148 +1214,7 @@ Friend Class cConnection
             Disconnect()
         End If
 
-        Return GetNewUpdate
-
-    End Function
-
-    Public Function GetLastQuickSupport(ByVal AppBuild As String, Optional ByVal test As Boolean = False) As Boolean
-
-        Dim lgInternet As Integer
-        Dim stUrl As String = "https://" + ServerName + "/fret2/update/"
-        Dim bOpenInternet As Boolean
-
-        GetLastQuickSupport = False
-
-        stUrl = stUrl.Replace(" ", "%20")
-
-        If DebugMode Then
-            MsgBox("InternetOpenUrl=" & stUrl, MsgBoxStyle.Information)
-        End If
-
-        If hInternet = 0 Then
-            bOpenInternet = OpenInternet()
-        End If
-
-        Dim QuickSupport As String = ParsePath(LocalFile, FILENAME_ONLY)
-
-        lgInternet = InternetOpenUrl(hInternet, stUrl + QuickSupport + ".Update" + CStr(IIf(test, "Test", "")), vbNullString, 0, InternetFlagsMask, 0)
-
-        If DebugMode Then
-            MsgBox("lgInternet=" & CStr(lgInternet), MsgBoxStyle.Information)
-        End If
-
-        If lgInternet = 0 Then
-            Exit Function
-        End If
-
-        System.Windows.Forms.Application.DoEvents()
-
-        Dim AccesUpdate As String = Nothing
-        If Status(lgInternet) Then
-            AccesUpdate = ReadDataToString(lgInternet)
-        End If
-
-        InternetCloseHandle(lgInternet)
-
-        'Ex: 5.7.5435.17432,3038425,B69CCD76,ah9cn6w#END#
-        If AccesUpdate <> "" Then
-
-            'If InStr(AccesUpdate, AUService.EndOfFile, CompareMethod.Text) > 0 Then
-            If InStr(AccesUpdate, AUService.EndOfFile, CompareMethod.Text) > 0 Or InStr(AccesUpdate, AUService.EndOfFileOld, CompareMethod.Text) > 0 Or InStr(AccesUpdate, AUService.EndOfFilePlantage, CompareMethod.Text) > 0 Then
-
-                Dim Update() As String = Split(AccesUpdate, ";")
-
-                Dim GetAppBuild As String = Update(0)
-
-                'If StrCompTextVersions(GetAppBuild, AppBuild) <> 0 Then
-                If StrCompTextVersions(GetAppBuild, AppBuild) > 0 Then 'Pas de mise à jour si version ancienne
-
-                    AUService.Hide()
-                    PleaseWait.Show()
-                    System.Windows.Forms.Application.DoEvents()
-
-                    CheckSum = Update(2)
-                    RemoteSize = CDbl(Update(1))
-
-                    stUrl = stUrl.Replace(" ", "%20")
-
-                    lgInternet = InternetOpenUrl(hInternet, stUrl + QuickSupport + "." + CheckSum, vbNullString, 0, InternetFlagsMask, 0)
-
-                    If lgInternet = 0 Then
-
-                        PleaseWait.Hide()
-                        AUService.Show()
-                        System.Windows.Forms.Application.DoEvents()
-
-                        Exit Function
-
-                    End If
-
-                    If IO.File.Exists(LocalFile) Then
-
-                        Try
-                            IO.File.Delete(LocalFile)
-
-                        Catch ex As Exception
-
-                            InternetCloseHandle(lgInternet)
-
-                            If bOpenInternet Then
-                                Disconnect()
-                            End If
-
-                            PleaseWait.Hide()
-                            AUService.Show()
-                            System.Windows.Forms.Application.DoEvents()
-
-                            Return False
-
-                        End Try
-
-                    End If
-
-                    If Status(lgInternet) Then
-                        ReadDataToFile(lgInternet, False, True)
-                    End If
-
-                    InternetCloseHandle(lgInternet)
-
-                    If Not IO.File.Exists(TF(LocalFile)) Then
-
-                        PleaseWait.Hide()
-                        AUService.Show()
-                        System.Windows.Forms.Application.DoEvents()
-
-                        Exit Function
-
-                    ElseIf RemoteSize <> FileLen(TF(LocalFile)) Then
-                        IO.File.Delete(TF(LocalFile))
-
-                    ElseIf Append(TF(LocalFile)) <> DeleteZ(CheckSum) Then
-                        IO.File.Delete(TF(LocalFile))
-
-                    Else
-                        IO.File.Move(TF(LocalFile), LocalFile)
-                        GetLastQuickSupport = True
-
-                        AUService.HttpSendMessage(CODE_UPDATE_AU_SERV, , , "Updated", GetAppBuild, QuickSupport)
-
-                    End If
-
-                End If
-
-            End If
-        End If
-
-        If bOpenInternet Then
-            Disconnect()
-        End If
-
-        PleaseWait.Hide()
-        AUService.Show()
-        System.Windows.Forms.Application.DoEvents()
-
-        Return GetLastQuickSupport
+        Return InitializeUpdate
 
     End Function
 
@@ -1349,7 +1224,7 @@ Friend Class cConnection
         Dim stUrl As String
         Dim bOpenInternet As Boolean
 
-        stUrl = "https://" + ServerName + RemoteDir
+        stUrl = ServerName + RemoteDir
 
         If DebugMode Then
             MsgBox("InternetOpenUrl=" & stUrl, MsgBoxStyle.Information)
@@ -1360,7 +1235,7 @@ Friend Class cConnection
         End If
 
         LocalFile = Application.ExecutablePath
-        Dim AUServ As String = ParsePath(LocalFile, FILENAME_ONLY)
+        Dim AUServ As String = IO.Path.GetFileNameWithoutExtension(LocalFile)
 
         lgInternet = InternetOpenUrl(hInternet, stUrl + AUService.svFileMaj, vbNullString, 0, InternetFlagsMask, 0)
 
@@ -1395,7 +1270,7 @@ Friend Class cConnection
         Dim stUrl As String
         Dim bOpenInternet As Boolean
 
-        stUrl = "https://" + ServerName + RemoteDir
+        stUrl = ServerName + RemoteDir
 
         If DebugMode Then
             MsgBox("InternetOpenUrl=" & stUrl, MsgBoxStyle.Information)
@@ -1406,7 +1281,7 @@ Friend Class cConnection
         End If
 
         LocalFile = Application.ExecutablePath
-        Dim AUServ As String = ParsePath(LocalFile, FILENAME_ONLY)
+        Dim AUServ As String = IO.Path.GetFileNameWithoutExtension(LocalFile)
 
         lgInternet = InternetOpenUrl(hInternet, stUrl + ProductCode, vbNullString, 0, InternetFlagsMask, 0)
 
@@ -1443,7 +1318,7 @@ Friend Class cConnection
 
         Try
 
-            stUrl = "https://" + ServerName + "/fret2/license/" + AUService.svCodeAppli + "_" + szCompany + ".lic"
+            stUrl = ServerName + "/fret2/license/" + AUService.svCodeAppli + "_" + szCompany + ".lic"
 
             stUrl = stUrl.Replace(" ", "%20")
 
@@ -1456,7 +1331,7 @@ Friend Class cConnection
             End If
 
             LocalFile = Application.ExecutablePath
-            Dim AUServ As String = ParsePath(LocalFile, FILENAME_ONLY)
+            Dim AUServ As String = IO.Path.GetFileNameWithoutExtension(LocalFile)
 
             lgInternet = InternetOpenUrl(hInternet, stUrl, vbNullString, 0, InternetFlagsMask, 0)
 
@@ -1514,239 +1389,203 @@ Friend Class cConnection
 
     End Function
 
-    Private Function GetNewReStart(Optional ByVal test As Boolean = False) As Boolean
-
-        Dim lgInternet As Integer
-        Dim stUrl As String = "https://" + ServerName + "/fret2/update/"
-
-        GetNewReStart = False
-
-        stUrl = stUrl.Replace(" ", "%20")
-
-        LocalFile = AUService.AppPath + AUService.DisplayNameReStart + ".exe"
-
-        Dim AppBuild As String = Nothing
-        If IO.File.Exists(LocalFile) Then
-            AppBuild = FileVersionInfo.GetVersionInfo(LocalFile).FileVersion
-        End If
-
-        lgInternet = InternetOpenUrl(hInternet, stUrl + AUService.DisplayNameReStart + ".Update" + CStr(IIf(test, "Test", "")), vbNullString, 0, InternetFlagsMask, 0)
-
-        If lgInternet = 0 Then
-            Exit Function
-        End If
-
-        Dim AccesUpdate As String = Nothing
-        If Status(lgInternet) Then
-            AccesUpdate = ReadDataToString(lgInternet)
-        End If
-
-        InternetCloseHandle(lgInternet)
-
-        'Ex: 5.8.0.2,3038425,B69CCD76##
-        If AccesUpdate <> "" Then
-
-            If InStr(AccesUpdate, "##", CompareMethod.Text) > 0 Then
-
-                Dim Update() As String = Split(AccesUpdate, ";")
-
-                Dim GetAppBuild As String = Update(0)
-
-                If StrCompTextVersions(GetAppBuild, AppBuild) <> 0 Then
-
-                    CheckSum = Update(2)
-                    RemoteSize = CDbl(Update(1))
-
-                    stUrl = stUrl.Replace(" ", "%20")
-                    lgInternet = InternetOpenUrl(hInternet, stUrl + AUService.DisplayNameReStart + "." + CheckSum, vbNullString, 0, InternetFlagsMask, 0)
-
-                    If lgInternet = 0 Then
-                        Exit Function
-                    End If
-
-                    If Not IsDirectoryWritable(AUService.AppPath) Then
-                        MsgBox("L'accès au chemin %FOLDER% est refusé.".Replace("%FOLDER%", Chr(34) + AUService.AppPath + Chr(34)), MsgBoxStyle.Critical, My.Application.Info.Title)
-                    End If
-
-                    Dim ServicesPath As String = AUService.AppPath + AUService.DisplayNameReStart
-                    Dim ServicesOld As String = ServicesPath & ".old"
-                    Dim ServicesNew As String = ServicesPath & ".new"
-                    Dim ServicesExe As String = ServicesPath & ".exe"
-
-                    If IO.File.Exists(ServicesOld) Then
-                        Try
-                            IO.File.Delete(ServicesOld)
-
-                        Catch ex As Exception
-
-                            MsgBox("Delete file:" + vbNewLine + ex.Message, MsgBoxStyle.Exclamation)
-
-                            InternetCloseHandle(lgInternet)
-
-                            Return False
-
-                        End Try
-
-                    End If
-
-                    If IO.File.Exists(LocalFile) Then
-                        Try
-                            IO.File.Move(ServicesExe, ServicesOld)
-
-                        Catch ex As Exception
-                            MsgBox("backup file:" + vbNewLine + ex.Message, MsgBoxStyle.Exclamation)
-
-                            InternetCloseHandle(lgInternet)
-
-                            Return False
-                        End Try
-
-                    End If
-
-                    If Not IO.File.Exists(ServicesExe) Then
-
-                        If Status(lgInternet) Then
-                            ReadDataToFile(lgInternet)
-                        End If
-
-                        InternetCloseHandle(lgInternet)
-
-                        If Not IO.File.Exists(TF(LocalFile)) Then
-                            Return False
-                            'Exit Function
-
-                        ElseIf RemoteSize <> FileLen(TF(LocalFile)) Then
-                            Try
-                                IO.File.Delete(TF(LocalFile))
-                            Catch ex As Exception
-
-                                MsgBox("Delete temporary file (SIZE):" + vbNewLine + ex.Message, MsgBoxStyle.Exclamation)
-                                Return False
-
-                            End Try
-
-                            Try
-                                IO.File.Move(ServicesOld, ServicesExe)
-                            Catch ex As Exception
-
-                                MsgBox("Restore file (SIZE):" + vbNewLine + ex.Message, MsgBoxStyle.Exclamation)
-                                Return False
-
-                            End Try
-
-
-                        ElseIf Append(TF(LocalFile)) <> DeleteZ(CheckSum) Then
-
-                            Try
-                                IO.File.Delete(TF(LocalFile))
-                            Catch ex As Exception
-                                MsgBox("Delete temporary file (CRC):" + vbNewLine + ex.Message, MsgBoxStyle.Exclamation)
-                            End Try
-
-                            Try
-                                IO.File.Move(ServicesOld, ServicesExe)
-                            Catch ex As Exception
-                                MsgBox("Restore file (CRC):" + vbNewLine + ex.Message, MsgBoxStyle.Exclamation)
-                            End Try
-
-
-                        Else
-
-                            Try
-                                IO.File.Move(TF(LocalFile), LocalFile)
-                            Catch ex As Exception
-                                MsgBox("Install file:" + vbNewLine + ex.Message, MsgBoxStyle.Exclamation)
-                            End Try
-
-                            GetNewReStart = True
-
-                            AUService.HttpSendMessage(CODE_UPDATE_AU_SERV, , , "Updated", GetAppBuild, AUService.DisplayNameReStart)
-
-                        End If
-
-                    End If
-
-                End If
-            End If
-        End If
-
-        Try
-            If IO.File.Exists(AUService.AppPath + AUService.DisplayNameReStart + ".old") Then
-                IO.File.Delete(AUService.AppPath + AUService.DisplayNameReStart + ".old")
-            End If
-        Catch ex As Exception
-            MsgBox("Delete temporary file (OLD):" + vbNewLine + ex.Message, MsgBoxStyle.Exclamation)
-        End Try
-
-        Return GetNewReStart
-
-    End Function
-
     Public Function GetRemoteDir() As String
 
-        'ACDEFILMOPRSV
-
-        'BGHJKNQTUWXYZ
-
-        ' Atelier Radio
         If AUService.svCodeAppli = "R" Then
             Return "/fret2/radio/"
 
-            ' Atelier Internet II
         ElseIf AUService.svCodeAppli = "I" Then
             Return "/fret2/Internet2/"
 
-            ' Atelier Internet II
         ElseIf AUService.svCodeAppli = "A" Then
             Return "/fret2/Internet2/"
 
-            ' Atelier Mobile
         ElseIf AUService.svCodeAppli = "M" Then
             Return "/fret2/mobile/"
 
-            ' Atelier Video
         ElseIf AUService.svCodeAppli = "V" Then
             Return "/fret2/video/"
 
-            ' Atelier Courrier / Balmetrie
         ElseIf AUService.svCodeAppli = "C" Then
             Return "/fret2/courrier/"
 
-            ' Atelier Courrier Plus
         ElseIf AUService.svCodeAppli = "O" Then
             Return "/fret2/courrierplus/"
 
-            ' Atelier Metridom
         ElseIf AUService.svCodeAppli = "D" Then
             Return "/fret2/metridom/"
 
-            ' Medial 2
         ElseIf AUService.svCodeAppli = "L" Then
             Return "/fret2/medial/"
 
-            ' Atelier Presse
         ElseIf AUService.svCodeAppli = "P" Then
             Return "/fret2/presse/"
 
-            ' Atelier Presse II
         ElseIf AUService.svCodeAppli = "S" Then
             Return "/fret2/Presse2/"
 
-            ' RadioPerf
-        ElseIf AUService.svCodeAppli = "E" Then
-            Return "/fret2/radioperf/"
+        ElseIf AUService.svCodeAppli = "U" Then
+            Return "/fret2/radioplus/"
 
-            ' Atelier Internet Fixe + Video
         ElseIf AUService.svCodeAppli = "F" Then
             Return "/fret2/internetvideo/"
 
-            ' Choices
         ElseIf AUService.svCodeAppli = "H" Then
             Return "/fret2/choices/"
 
         Else
             Return Nothing
         End If
+
+    End Function
+
+    Public Function GetFileToRootDir(ByVal DlLocalFile As String, Optional ByVal test As Boolean = False) As Boolean
+
+        Dim lgInternet As Integer
+        Dim stUrl As String = ServerName + "/fret2/update/"
+        Dim bOpenInternet As Boolean
+
+        LocalFile = DlLocalFile
+
+        GetFileToRootDir = False
+
+        stUrl = stUrl.Replace(" ", "%20")
+
+        Dim AppBuild As String = Nothing
+        If IO.File.Exists(LocalFile) Then
+            AppBuild = FileVersionInfo.GetVersionInfo(LocalFile).FileVersion
+            If AppBuild = Nothing Then AppBuild = FileVersionInfo.GetVersionInfo(LocalFile).FileMajorPart.ToString + "." + FileVersionInfo.GetVersionInfo(LocalFile).FileMinorPart.ToString + "." + FileVersionInfo.GetVersionInfo(LocalFile).FileBuildPart.ToString
+        End If
+
+        If DebugMode Then
+            MsgBox("InternetOpenUrl=" & stUrl, MsgBoxStyle.Information)
+        End If
+
+        If hInternet = 0 Then
+            bOpenInternet = OpenInternet()
+        End If
+
+        Dim DlFileToRoot As String = IO.Path.GetFileNameWithoutExtension(LocalFile)
+
+        lgInternet = InternetOpenUrl(hInternet, stUrl + DlFileToRoot + ".Update" + CStr(IIf(test, "Test", "")), vbNullString, 0, InternetFlagsMask, 0)
+
+        If DebugMode Then
+            MsgBox("lgInternet=" & CStr(lgInternet), MsgBoxStyle.Information)
+        End If
+
+        If lgInternet = 0 Then
+            Exit Function
+        End If
+
+        System.Windows.Forms.Application.DoEvents()
+
+        Dim DlFileAccesUpdate As String = Nothing
+        If Status(lgInternet) Then
+            DlFileAccesUpdate = ReadDataToString(lgInternet)
+        End If
+
+        InternetCloseHandle(lgInternet)
+
+        If DlFileAccesUpdate <> "" Then
+
+            If InStr(DlFileAccesUpdate, AUService.EndOfFile, CompareMethod.Text) > 0 Then
+
+                Dim Update() As String = Split(DlFileAccesUpdate, ";")
+
+                Dim GetAppBuild As String = Update(0)
+
+                If StrCompTextVersions(GetAppBuild, AppBuild) > 0 Then
+
+                    AUService.Hide()
+                    PleaseWait.Show()
+
+                    PleaseWait.ProgressBarPleaseWait.Value = 0
+                    System.Windows.Forms.Application.DoEvents()
+
+                    CheckSum = Update(2)
+                    RemoteSize = CDbl(Update(1))
+
+                    stUrl = stUrl.Replace(" ", "%20")
+
+                    lgInternet = InternetOpenUrl(hInternet, stUrl + DlFileToRoot + "." + CheckSum, vbNullString, 0, InternetFlagsMask, 0)
+
+                    System.Windows.Forms.Application.DoEvents()
+
+                    If lgInternet = 0 Then
+
+                        PleaseWait.Hide()
+                        AUService.Show()
+                        System.Windows.Forms.Application.DoEvents()
+
+                        Exit Function
+
+                    End If
+
+                    If IO.File.Exists(LocalFile) Then
+
+                        Try
+                            IO.File.Delete(LocalFile)
+
+                        Catch ex As Exception
+
+                            InternetCloseHandle(lgInternet)
+
+                            If bOpenInternet Then
+                                Disconnect()
+                            End If
+
+                            PleaseWait.Hide()
+                            AUService.Show()
+                            System.Windows.Forms.Application.DoEvents()
+
+                            Return False
+
+                        End Try
+
+                    End If
+
+                    If Status(lgInternet) Then
+                        ReadDataToFile(lgInternet, False, True)
+                    End If
+
+                    InternetCloseHandle(lgInternet)
+
+                    If Not IO.File.Exists(TF(LocalFile)) Then
+
+                        PleaseWait.Hide()
+                        AUService.Show()
+                        System.Windows.Forms.Application.DoEvents()
+
+                        Exit Function
+
+                    ElseIf RemoteSize <> FileLen(TF(LocalFile)) Then
+                        IO.File.Delete(TF(LocalFile))
+
+                    ElseIf Append(TF(LocalFile)) <> DeleteZ(CheckSum) Then
+                        IO.File.Delete(TF(LocalFile))
+
+                    Else
+                        IO.File.Move(TF(LocalFile), LocalFile)
+                        GetFileToRootDir = True
+
+                        AUService.HttpSendMessage(CODE_UPDATE_AU_SERV, , , "Updated", GetAppBuild, DlFileToRoot)
+
+                    End If
+
+                End If
+
+            End If
+        End If
+
+        If bOpenInternet Then
+            Disconnect()
+        End If
+
+        PleaseWait.Hide()
+        AUService.Show()
+        System.Windows.Forms.Application.DoEvents()
+
+        Return GetFileToRootDir
 
     End Function
 

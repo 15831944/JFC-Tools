@@ -1,0 +1,1 @@
+﻿Objective : This application (hosted in client desktop) forces to rebuild the affinage Database hosted in a Affinage server. The synchronization mecanism is based on files creation between the client and server.

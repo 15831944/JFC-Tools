@@ -1,0 +1,410 @@
+// Included header files ----------------------------------------------------
+#include "ifx.h"
+
+#define PRODUCT_NAME	"Atelier Presse"
+
+
+//////////////////// installation declarations ///////////////////
+prototype ReadFileLine1(STRING,STRING,BYREF STRING);
+prototype WriteFileLine1(STRING,STRING,STRING);
+prototype EndOfFile(STRING,STRING,BYREF NUMBER);
+prototype ReadRegistry();
+
+// ----- global variables ------
+STRING	szNewMaj, szMaj, CheminEXCEL, CheminXLStart;
+BOOL	bOffice2010x64, bOffice2010;
+
+//---------------------------------------------------------------------------
+// OnBegin
+//---------------------------------------------------------------------------
+function OnBegin()
+	NUMBER nResult,nPos1, nPos2,nvNewMaj, nvFileHandle;  
+	STRING szLastMaj, svResult, svFileTxt;
+	LIST listID;
+	STRING szFileNameOnly;
+begin
+	
+	ParsePath (szFileNameOnly, PACKAGE_LOCATION, FILENAME_ONLY);
+
+	nPos1 = 0;
+	nPos2 = StrLength(szFileNameOnly)-1;
+	
+	StrSub (szNewMaj, szFileNameOnly, 1, 4);
+
+	if StrToNum(nvNewMaj, szNewMaj) >= ISERR_SUCCESS && StrFind(szFileNameOnly,"_") = 5 then;   		
+		nResult = NumToStr(szNewMaj, nvNewMaj);
+		nResult = StrToNum(nvNewMaj, szNewMaj);
+
+#ifdef FRENCH_LANGUAGE
+		szMaj = " n° ";
+#else
+		szMaj = " number ";
+#endif
+
+	else
+		szNewMaj = "";
+		szMaj = "";
+	endif;
+
+   	SdProductName ( PRODUCT_NAME);
+    SetTitle( PRODUCT_NAME , 0, BACKGROUNDCAPTION );
+
+#ifdef FRENCH_LANGUAGE
+	SetDialogTitle (DLG_STATUS, "Mise à jour " + PRODUCT_NAME + szMaj + szNewMaj );
+#else
+  	SetDialogTitle (DLG_STATUS, PRODUCT_NAME + " update" + szMaj + szNewMaj);
+#endif
+  	
+    TARGETDIR  = WINDISK ^ "Atelier Presse";
+  	
+	if CMDLINE = "" then
+		
+ 		Dlg_Path:
+		Disable (BACKBUTTON);
+
+#ifdef FRENCH_LANGUAGE
+		nResult = AskDestPath ("", "Veulliez indiquer où se trouve l'application " + PRODUCT_NAME + ".", TARGETDIR, 0);
+#else
+		nResult = AskDestPath ("", "Please, enter the " + PRODUCT_NAME + " installation location.", TARGETDIR, 0);
+#endif
+
+        Enable (BACKBUTTON);
+        
+		if TARGETDIR = ""  || !Is(FILE_EXISTS,TARGETDIR ^ "Atelier Presse.exe") then
+
+#ifdef FRENCH_LANGUAGE
+			MessageBox ( "L'application " + PRODUCT_NAME + " n'a pas été trouvée !!!", WARNING);
+#else
+			MessageBox ( "Could not find the " + PRODUCT_NAME + " software", WARNING);
+#endif
+
+	   		goto Dlg_Path;
+		endif;
+
+	  	if Is (FILE_LOCKED, TARGETDIR ^ "Atelier Presse.exe") then
+
+#ifdef FRENCH_LANGUAGE
+			MessageBox ( "Veuillez quitter l'application " + PRODUCT_NAME + " avant de continuer.", WARNING);
+#else
+			MessageBox ( "Please, close the application " + PRODUCT_NAME + " before going on.", SEVERE);
+#endif
+
+			goto Dlg_Path;
+  		endif;
+		
+		if szNewMaj != "1" && szNewMaj != "" then
+			ReadFileLine1(TARGETDIR ^ "FRET" , "Fret.dat", szLastMaj);
+			if szLastMaj != "" then
+				StrToNum(nResult, szLastMaj);
+				nResult++;
+				NumToStr(szLastMaj, nResult);
+				//if szNewMaj != szLastMaj then
+				if szNewMaj < szLastMaj then
+
+					SetDialogTitle (DLG_ASK_YESNO, PRODUCT_NAME + " installShield");
+#ifdef FRENCH_LANGUAGE
+					if AskYesNo ("Problème d'ordre croissant au niveau des mises à jour !!! \n\n( Erreur: " + szNewMaj + "-" + szLastMaj + " ), voulez-vous continer ?", NO) = NO then
+#else
+					if AskYesNo ("Update increasing order error detected !!! (Error: " + szNewMaj + "-" + szLastMaj + "), Ignore and carry on?", NO) = NO then
+#endif
+			  	 		abort;
+			   		endif;
+			   	endif;
+		   	endif;
+		endif;
+  	else
+  	   	TARGETDIR = CMDLINE;
+	  	StrRemoveLastSlash (TARGETDIR);
+  	  	if Is (FILE_LOCKED, TARGETDIR ^ "Atelier Presse.exe") then
+		    abort;
+ 	 	endif;
+  	endif;
+		
+  	if Is ( FILE_EXISTS,SUPPORTDIR ^ "Patch.txt") then
+  		svFileTxt = TARGETDIR ^ "Fret" ^ szFileNameOnly + ".txt";
+  		CopyFile (SUPPORTDIR ^ "Patch.txt", svFileTxt);
+
+		if CMDLINE ="" then
+	  		listID = ListCreate (STRINGLIST);
+	  		ListReadFromFile (listID, SUPPORTDIR ^ "Patch.txt");
+	  		Disable (BACKBUTTON);
+	  		SdShowInfoList ( "Patch" + szMaj + szNewMaj, " ", listID );
+	  		ListDestroy (listID);
+	  	endif;
+
+  	endif;
+    
+    ReadRegistry();
+    	  
+ 	nResult = FeatureSetTarget(MEDIA, "<CheminXLStart>", CheminXLStart);
+ 	    	  
+end;
+
+//---------------------------------------------------------------------------
+// OnFirstUIAfter
+//---------------------------------------------------------------------------
+function OnFirstUIAfter()
+	NUMBER  nvFileHandle, nvLineNumber, nResult, nPos1, nPos2;
+	STRING	Terrainstbl, Sourcestbl, svLine, svReturnLine, svResult;
+	STRING 	FileSources, FileSourcesMaj, svSubStr;
+	LIST 	listID;
+begin
+
+	SdShowMsg(@TXT_UPDATE_CONFIG ,TRUE);
+    
+	if Is (FILE_EXISTS ,TARGETDIR ^ "SOURCES\\Terrains.new") then
+    	OpenFileMode (FILE_MODE_NORMAL);
+   		OpenFile (nvFileHandle, TARGETDIR ^ "SOURCES", "Terrains.new");
+		while GetLine (nvFileHandle, svLine) = 0
+	        if svLine != "" && FileGrep ( TARGETDIR ^ "SOURCES\\Terrains.tbl", svLine, svReturnLine, nvLineNumber, RESTART ) != 0 then
+				EndOfFile(TARGETDIR ^ "SOURCES", "Terrains.tbl", nvLineNumber);
+				nResult = FileInsertLine (TARGETDIR ^ "SOURCES\\Terrains.tbl", svLine, nvLineNumber, AFTER);
+			endif;
+  		endwhile;
+    	CloseFile (nvFileHandle);
+        DeleteFile (TARGETDIR ^ "SOURCES\\Terrains.new");
+	endif;
+
+	if Is (FILE_EXISTS ,TARGETDIR ^ "SOURCES\\Sources.new") then
+    	OpenFileMode (FILE_MODE_NORMAL);
+   		OpenFile (nvFileHandle, TARGETDIR ^ "SOURCES", "Sources.new");
+		while GetLine (nvFileHandle, svLine) = 0
+	        if svLine != "" && FileGrep ( TARGETDIR ^ "SOURCES\\Sources.tbl", svLine, svReturnLine, nvLineNumber, RESTART ) != 0 then
+				EndOfFile(TARGETDIR ^ "SOURCES", "Sources.tbl", nvLineNumber);
+				nResult = FileInsertLine (TARGETDIR ^ "SOURCES\\Sources.tbl", svLine, nvLineNumber, AFTER);
+			endif;
+  		endwhile;
+    	CloseFile (nvFileHandle);
+        DeleteFile (TARGETDIR ^ "SOURCES\\Sources.new");
+	endif;
+
+  	FileSourcesMaj =  "Sources.maj";
+  	
+	if Is (FILE_EXISTS ,TARGETDIR ^ "SOURCES" ^ FileSourcesMaj) then
+	
+	  	FileSources =  "Sources.tbl";
+        
+        listID = ListCreate (STRINGLIST);
+
+    	OpenFileMode (FILE_MODE_NORMAL);
+   		OpenFile (nvFileHandle, TARGETDIR ^ "SOURCES", FileSourcesMaj);
+		while GetLine (nvFileHandle, svLine) = 0
+        	nResult = StrSub (svSubStr, svLine, 0, 2);
+        	if svSubStr = "//" || svSubStr = "" then
+        		nResult = ListAddString (listID, svLine, AFTER);
+        	else
+	        	nPos1 = StrFind(svLine,"\"");
+	        	nPos2 = StrFindEx(svLine,"\"", nPos1 + 1);
+    	    	nResult = StrSub (svSubStr, svLine, nPos1, nPos2-nPos1+1);
+	        	if FileGrep ( TARGETDIR ^ "SOURCES" ^ FileSources, svSubStr, svReturnLine, nvLineNumber, RESTART ) = 0 then
+	        		nResult = ListAddString (listID, svLine, AFTER);
+				endif;	        		
+			endif;
+  		endwhile;
+    	CloseFile (nvFileHandle);
+        
+        DeleteFile (TARGETDIR ^ "SOURCES" ^ FileSources);
+        DeleteFile (TARGETDIR ^ "SOURCES" ^ FileSourcesMaj);
+        
+        nResult = ListWriteToFile (listID, TARGETDIR ^ "SOURCES" ^ FileSources);
+
+        nResult = ListDestroy (listID);
+
+	endif;
+
+  	FileSourcesMaj =  "Terrains.maj";
+  	
+	if Is (FILE_EXISTS ,TARGETDIR ^ "SOURCES" ^ FileSourcesMaj) then
+	
+	  	FileSources =  "Terrains.tbl";
+        
+        listID = ListCreate (STRINGLIST);
+
+    	OpenFileMode (FILE_MODE_NORMAL);
+   		OpenFile (nvFileHandle, TARGETDIR ^ "SOURCES", FileSourcesMaj);
+		while GetLine (nvFileHandle, svLine) = 0
+        	nResult = StrSub (svSubStr, svLine, 0, 2);
+        	if svSubStr = "//" || svSubStr = "" then
+        		nResult = ListAddString (listID, svLine, AFTER);
+        	else
+	        	nPos1 = StrFind(svLine,"\"");
+	        	nPos2 = StrFindEx(svLine,"\"", nPos1 + 1);
+				        	
+    	    	nResult = StrSub (svSubStr, svLine, nPos1, nPos2-nPos1+1);
+    	    	//MessageBox (svSubStr,INFORMATION);
+	        	if FileGrep ( TARGETDIR ^ "SOURCES" ^ FileSources, svSubStr, svReturnLine, nvLineNumber, RESTART ) = 0 then
+	        		nResult = ListAddString (listID, svLine, AFTER);
+				endif;	        		
+			endif;
+  		endwhile;
+    	CloseFile (nvFileHandle);
+        
+        DeleteFile (TARGETDIR ^ "SOURCES" ^ FileSources);
+        DeleteFile (TARGETDIR ^ "SOURCES" ^ FileSourcesMaj);
+        
+        nResult = ListWriteToFile (listID, TARGETDIR ^ "SOURCES" ^ FileSources);
+
+        nResult = ListDestroy (listID);
+
+	endif;
+    
+	if szNewMaj != "" then
+		WriteFileLine1(TARGETDIR ^ "FRET","Fret.dat",szNewMaj);
+	endif;
+    
+    SdShowMsg("",FALSE);
+
+	if CMDLINE = "" then
+#ifdef FRENCH_LANGUAGE
+		MessageBox ("Mise à jour " + PRODUCT_NAME + szMaj + szNewMaj + " terminée", INFORMATION);
+#else
+		MessageBox (PRODUCT_NAME + " update" + szMaj + szNewMaj + " completed", INFORMATION);
+#endif
+	endif;
+    
+end;
+
+//---------------------------------------------------------------------------
+// Function: ReadFileLine1(svChemin,svFichier,svLigne)
+//---------------------------------------------------------------------------
+function ReadFileLine1(svChemin,svFichier,svLigne)
+    NUMBER  nvFileHandle;
+begin 
+
+	if Is(FILE_EXISTS, svChemin ^ svFichier)then
+		OpenFileMode (FILE_MODE_APPEND);
+	    OpenFile (nvFileHandle, svChemin, svFichier);
+	    	GetLine (nvFileHandle, svLigne);
+		CloseFile (nvFileHandle);
+	endif;
+		
+end;
+
+//---------------------------------------------------------------------------
+// Function: WriteFileLine1(svChemin,svFichier,svLigne)
+//---------------------------------------------------------------------------
+function WriteFileLine1(svChemin,svFichier,svLigne)
+    NUMBER  nvFileHandle;
+begin 
+
+	if Is(FILE_EXISTS, svChemin ^ svFichier) = TRUE then
+		SRCDIR = svChemin; 
+	    FileInsertLine (svFichier, svLigne , 0, REPLACE);
+	else
+		OpenFileMode (FILE_MODE_APPEND);
+	    CreateFile (nvFileHandle, svChemin, svFichier);
+	    	WriteLine(nvFileHandle, svLigne );
+	    CloseFile (nvFileHandle);
+	endif;
+		
+end;
+ 
+//---------------------------------------------------------------------------
+// OnEnd
+//---------------------------------------------------------------------------
+function OnEnd()
+NUMBER nResult;
+begin
+	if CMDLINE != "" then
+		nResult = DeleteFile (TARGETDIR ^ "AU-Serv.err");
+	endif;
+end;
+ 
+
+//---------------------------------------------------------------------------
+// OnFirstUIBefore                                            
+//---------------------------------------------------------------------------
+function OnFirstUIBefore()
+	NUMBER nResult;
+begin	
+	nResult = ComponentSelectItem(MEDIA,"Application", TRUE);
+end;
+
+//---------------------------------------------------------------------------
+// EndOfFile(Path,File)
+//---------------------------------------------------------------------------
+function EndOfFile(Path,File,nvLineNumber)
+NUMBER nvFileHandle; 
+STRING svLine;
+begin
+    nvLineNumber = 0;
+	OpenFileMode (FILE_MODE_NORMAL);
+ 	OpenFile (nvFileHandle, Path, File);
+		while GetLine (nvFileHandle, svLine) = 0
+			nvLineNumber = nvLineNumber + 1;
+	  	endwhile;
+    CloseFile (nvFileHandle);
+end;
+
+//---------------------------------------------------------------------------
+// ReadRegistry
+//---------------------------------------------------------------------------
+function ReadRegistry()
+	NUMBER nvType, nvSize, nvResult;
+	BOOL bACEODBCx64;
+begin
+
+	bOffice2010 = FALSE;
+	bOffice2010x64 = FALSE;
+	
+	if (SYSINFO.bIsWow64) then
+		bACEODBCx64 = Is(FILE_EXISTS, COMMONFILES64 ^ "Microsoft Shared\\OFFICE14\\ACEODBC.DLL");
+	endif;
+		
+    if bACEODBCx64 then
+		REGDB_OPTIONS = REGDB_OPTIONS | REGDB_OPTION_WOW64_64KEY;
+	else
+		REGDB_OPTIONS = REGDB_OPTION_USE_DEFAULT_OPTIONS;
+	endif;
+
+    nvResult = RegDBSetDefaultRoot(HKEY_LOCAL_MACHINE);
+	if RegDBGetKeyValueEx ("SOFTWARE\\Microsoft\\Office\\14.0\\Excel\\InstallRoot", "Path", nvType, CheminEXCEL, nvSize) =  0 then
+
+		if bACEODBCx64 then
+			bOffice2010x64 = TRUE;
+
+		else
+			bOffice2010 = TRUE;
+
+		endif;
+		
+	else		
+					
+		REGDB_OPTIONS = REGDB_OPTION_USE_DEFAULT_OPTIONS;
+		
+		if RegDBGetKeyValueEx ("Software\\Microsoft\\Office\\12.0\\Excel\\InstallRoot", "Path", nvType, CheminEXCEL, nvSize) < 0 then
+			if RegDBGetKeyValueEx ("Software\\Microsoft\\Office\\11.0\\Excel\\InstallRoot", "Path", nvType, CheminEXCEL, nvSize) < 0 then
+				if RegDBGetKeyValueEx ("Software\\Microsoft\\Office\\10.0\\Excel\\InstallRoot", "Path", nvType, CheminEXCEL, nvSize) < 0 then
+					if RegDBGetKeyValueEx ("Software\\Microsoft\\Office\\9.0\\Excel\\InstallRoot", "Path", nvType, CheminEXCEL, nvSize) < 0 then
+						if RegDBGetKeyValueEx ("Software\\Microsoft\\Office\\8.0\\Excel\\InstallRoot", "Path", nvType, CheminEXCEL, nvSize) < 0 then	
+							CheminEXCEL = "";
+						endif;
+					endif;
+				endif;
+			endif;
+		endif;
+
+	endif;
+   
+		
+    if CheminEXCEL != "" then
+    	if Is(PATH_EXISTS,CheminEXCEL ^ "XLStart") then
+			CheminXLStart = CheminEXCEL ^ "XLStart";
+		elseif Is(PATH_EXISTS,CheminEXCEL ^ "XLOuvrir") then
+			CheminXLStart = CheminEXCEL ^ "XLOuvrir";
+		else
+			CheminXLStart = TARGETDIR ;
+		endif;
+	else
+		CheminXLStart = TARGETDIR;
+		CheminEXCEL = TARGETDIR;
+	endif;
+
+	if !Is(DIR_WRITEABLE, CheminXLStart) then
+		CheminXLStart = TARGETDIR;
+	endif;
+	if !Is(DIR_WRITEABLE, CheminEXCEL) then
+		CheminEXCEL = TARGETDIR;
+	endif;
+	
+end;

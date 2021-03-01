@@ -1,0 +1,45 @@
+
+/*
+//	JFC Informatique et Média
+//	2003
+//
+//	Auteur:
+//	Jérémy DEVILERS
+//
+//
+//	Descriptif:
+//	Definition des plages d'identifiants
+*/
+
+#pragma once
+
+// Famille = 100000
+#define IDFAMILLE_MIN 100000
+#define IDFAMILLE_MAX 199999
+// Centre = 200000
+#define IDCENTRE_MIN 200000
+#define IDCENTRE_MAX 299999
+// TitreApparente = 300000
+#define IDTITREAPPARENTE_MIN 300000
+#define IDTITREAPPARENTE_MAX 399999
+// TitreApparie = 400000
+#define IDTITREAPPARIE_MIN 400000
+#define IDTITREAPPARIE_MAX 499999
+// CoupleFixe = 500000
+#define IDCOUPLEFIXE_MIN 500000
+#define IDCOUPLEFIXE_MAX 599999
+// CoupleLibre = 600000
+#define IDCOUPLELIBRE_MIN 600000
+#define IDCOUPLELIBRE_MAX 699999
+// Lot = 700000
+#define IDLOT_MIN 700000
+#define IDLOT_MAX 799999
+
+// FormatSPE = 800000
+#define IDFORMATSPE_MIN 800000
+#define IDFORMATSPE_MAX 899998
+#define FORMAT_VIRTUEL	IDFORMATSPE_MAX+1
+// TarifMan = 900000
+#define IDFTARIFMAN_MIN 900000
+#define IDTARIFMAN_MAX 999999
+

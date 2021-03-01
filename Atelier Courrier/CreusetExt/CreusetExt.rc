@@ -1,0 +1,1180 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// Neutral resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_NEU)
+#ifdef _WIN32
+LANGUAGE LANG_NEUTRAL, SUBLANG_NEUTRAL
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDR_CR_TOOLBAR          BITMAP                  "res\\toolbar1.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Toolbar
+//
+
+IDR_CR_TOOLBAR TOOLBAR  19, 18
+BEGIN
+    BUTTON      IDM_CR_OFFRECREER
+    BUTTON      IDM_CR_OFFREIMPORT
+END
+
+#endif    // Neutral resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////
+// French (France) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_FRA)
+#ifdef _WIN32
+LANGUAGE LANG_FRENCH, SUBLANG_FRENCH
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDB_CR_LEDVERT          BITMAP                  "Res\\Vert.bmp"
+IDB_CR_LEDNEUTRE        BITMAP                  "Res\\Neutre.bmp"
+IDB_CR_LEDORANGE        BITMAP                  "Res\\Orange.bmp"
+IDB_CR_LEDROUGE         BITMAP                  "Res\\Rouge.bmp"
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_FRA)\r\n"
+    "#ifdef _WIN32\r\n"
+    "LANGUAGE 12, 1\r\n"
+    "#pragma code_page(1252)\r\n"
+    "#endif //_WIN32\r\n"
+    "#include ""res\\CreusetExt.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""l.fra\\afxres.rc""          // Standard components\r\n"
+    "#endif\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDI_CR_LEDOFF           ICON                    "Res\\LedOff.ico"
+IDI_CR_LEDSEL           ICON                    "Res\\LedSel.ico"
+IDR_CR_ATPCREUSET       ICON                    "res\\Creuset.ico"
+IDI_CR_LEDON            ICON                    "Res\\LedOn.ico"
+IDI_CR_ECHELLE          ICON                    "Res\\echelle.ico"
+IDI_CR_RESULT           ICON                    "Res\\Result.ico"
+IDI_CR_FLECHE           ICON                    "Res\\Switch.ico"
+IDI_CR_CRB              ICON                    "Res\\grph1.ico"
+IDI_CR_HISTO            ICON                    "Res\\grph2.ico"
+IDI_CR_FSUPP            ICON                    "Res\\fsupp.ico"
+IDI_CR_ZOOM             ICON                    "Res\\Zoom.ico"
+IDI_CR_FHAUT            ICON                    "Res\\fHaut.ico"
+IDI_CR_FBAS             ICON                    "Res\\fBas.ico"
+IDI_CR_QUESTION         ICON                    "Res\\Question_Brown.ico"
+IDI_CR_THEME            ICON                    "Res\\Theme_Brown.ico"
+IDI_CR_LOCK             ICON                    "res\\lock.ico"
+IDI_CR_STATE2           ICON                    "res\\check.ico"
+IDI_CR_LEDNEUTRE        ICON                    "Res\\LedNeutre.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDR_CR_ATPCREUSET MENU 
+BEGIN
+    POPUP "&Etude"
+    BEGIN
+        MENUITEM "&Nouvelle...",                IDM_CR_ETUDE_NOUVELLE
+        MENUITEM "&Ouvrir...",                  IDM_CR_ETUDE_OUVRIR
+        MENUITEM "&Fermer",                     IDM_CR_ETUDE_FERMER
+        MENUITEM "Importer un p&lateau...",     IDM_CR_IMPORT_PLATEAU
+        MENUITEM SEPARATOR
+        MENUITEM "En&registrer",                IDM_CR_ETUDE_ENREGISTRER
+        MENUITEM "Enregistrer &sous...",        IDM_CR_ETUDE_ENREGISTRER_SOUS
+        MENUITEM SEPARATOR
+        POPUP "Exporter vers un &fichier"
+        BEGIN
+            MENUITEM "E&chelle",                    IDM_CR_EXPORT_ECHELLE
+            MENUITEM "&Hypothèses de plan",         IDM_CR_EXPORT_RESULTPLAN
+            MENUITEM "&Grille calendaire",          IDM_CR_EXPORT_RESULTCALEND
+            MENUITEM SEPARATOR
+            MENUITEM "&Tout",                       IDM_CR_EXPORT_TOUT
+            MENUITEM SEPARATOR
+            MENUITEM "Graphe résultat",             ID_EXPORTERDANSUNFICHIER_GRAPHER, INACTIVE
+            MENUITEM "Tous les graphes résultats",  ID_EXPORTERDANSUNFICHIER_TOUSLESGRAPHESR, INACTIVE
+        END
+        POPUP "Exporter vers le &presse papier"
+        BEGIN
+            MENUITEM "E&chelle",                    IDM_CR_CLIPBOARD_ECHELLE
+            MENUITEM "&Hypothèses de plan",         IDM_CR_CLIPBOARD_RESULTPLAN
+            MENUITEM "&Grille calendaire",          IDM_CR_CLIPBOARD_RESULTCALEND
+            MENUITEM "Graphe &résultat",            ID_GRAPHE_GRPJOUR
+            MENUITEM SEPARATOR
+            MENUITEM "&Tout",                       IDM_CR_CLIPBOARD_TOUT
+        END
+        POPUP "Exporter vers E&xcel"
+        BEGIN
+            MENUITEM "E&chelle",                    IDM_CR_EXCEL_ECHELLE
+            MENUITEM "&Hypothèses de plan",         IDM_CR_EXCEL_RESULTPLAN
+            MENUITEM "&Grille calendaire",          IDM_CR_EXCEL_RESULTCALEND
+            MENUITEM SEPARATOR
+            MENUITEM "&Tout",                       IDM_CR_EXCEL_TOUT
+        END
+        MENUITEM SEPARATOR
+        POPUP "&Imprimer"
+        BEGIN
+            MENUITEM "E&chelle",                    IDM_CR_PRINT_ECHELLE
+            MENUITEM "&Hypothèses de plan",         IDM_CR_PRINT_RESULTPLAN
+            MENUITEM "&Grille calendaire",          IDM_CR_PRINT_RESULTCALEND
+            MENUITEM SEPARATOR
+            MENUITEM "&Tout",                       IDM_CR_PRINT_TOUT
+        END
+        MENUITEM SEPARATOR
+        MENUITEM "&Quitter",                    IDM_CR_EXIT
+    END
+    POPUP "&Offre"
+    BEGIN
+        MENUITEM "&Sources/Supports...",        IDM_CR_OFFRE_SOURCES
+        MENUITEM "&Cibles...",                  IDM_CR_OFFRE_CIBLES
+        MENUITEM "&Formats...",                 IDM_CR_OFFRE_FORMATS
+        MENUITEM "&Items de ventilation...",    IDM_CR_OFFRE_ITEMSDEVENTILATION, INACTIVE
+        MENUITEM SEPARATOR
+        MENUITEM "&Prolonger la période de l'étude...", IDM_CR_PERIODE_ETUDE
+        MENUITEM "Définir la période de &travail...", IDM_CR_PERIMETRE_PERIODE
+    END
+    POPUP "&Hypothèse"
+    BEGIN
+        MENUITEM "&Valider (coller dans le plan maître)", IDM_CR_CREER_VERSION_PLANREF
+        MENUITEM SEPARATOR
+        MENUITEM "Copier",                      IDM_CR_HYPO_COPIER
+        MENUITEM SEPARATOR
+        MENUITEM "Coller",                      IDM_CR_HYPO_COLLER
+        MENUITEM "Ajouter",                     IDM_CR_HYPO_ADD_1
+        MENUITEM "Ajouter à la suite",          IDM_CR_HYPO_ADD_2
+        MENUITEM SEPARATOR
+        MENUITEM "Charger le &plan-maître",     IDM_CR_TRANSFERT_PLANREF
+        MENUITEM "Charger une &version...",     IDM_CR_CHARGER_VERSION_PLANREF
+        MENUITEM SEPARATOR
+        MENUITEM "&Donner un nom...",           IDM_CR_NAMEHYPOTH
+        MENUITEM SEPARATOR
+        MENUITEM "&Supprimer les insertions",   IDM_CR_SUPPINS_HYPACT
+        MENUITEM "S&upprimer dans toutes les hypothèses", IDM_CR_SUPPINS_TOUTESHYPS
+    END
+    POPUP "Op&tions de calcul"
+    BEGIN
+        POPUP "&Evaluation des plans"
+        BEGIN
+            MENUITEM "&A la volée",                 IDM_CR_COMPUTEREALTIME, CHECKED
+            MENUITEM "&Différée",                   33034
+        END
+        MENUITEM "Privilégier la LNM pour les &magazines", IDM_CR_OPT_LNMMAGAZINE, CHECKED
+        MENUITEM "Privilégier la LDP pour les &quotidiens", IDM_CR_OPT_LDPQUOTIDIEN, CHECKED
+        MENUITEM "Privilégier la LDP à &30 jours pour les bimestriels", IDM_CR_OPTIONS_LDPBIMESTR, CHECKED
+        POPUP "&Méthode de calcul des audiences"
+        BEGIN
+            MENUITEM "Avec GRP+ &Brut",             IDM_CR_MODEL
+            MENUITEM "Avec GR&P+",                  IDM_CR_MODELETAL
+            MENUITEM "Sans &GRP+",                  IDM_CR_PROBABILIT
+        END
+        POPUP "Re&prise en main d'un jour moyen"
+        BEGIN
+            MENUITEM "&Reprises en main globales",  IDM_CR_REPRISES
+            MENUITEM "&Nb. moyen de jours de lecture seulement", IDM_CR_NOREPRISES
+        END
+        MENUITEM SEPARATOR
+        MENUITEM "&Filtres d'audience",         IDM_CR_OPT_FILTRE_AUDIENCE
+        MENUITEM "&Courbe de réponse",          IDM_CR_OPT_COURBE_REPONSE
+        MENUITEM SEPARATOR
+        MENUITEM "&Gestion des cibles pondérées", IDM_CR_CREER_CIBLEPOND
+        MENUITEM "&Utiliser des cibles pondérées", IDM_CR_UTIL_CIBLEPOND
+    END
+    POPUP "Aff&ichage"
+    BEGIN
+        POPUP "Choisir la &palette de couleurs"
+        BEGIN
+            MENUITEM "&Vert bouteille",             IDM_CR_PALETTE_1
+            MENUITEM "&Emeraude",                   IDM_CR_PALETTE_2
+            MENUITEM "&Bleu pastel",                IDM_CR_PALETTE_3
+            MENUITEM "&Ocean",                      IDM_CR_PALETTE_4
+            MENUITEM "&Lilas",                      IDM_CR_PALETTE_5
+            MENUITEM "&Sahara",                     IDM_CR_PALETTE_6
+            MENUITEM "&Terre de Sienne",            IDM_CR_PALETTE_7
+            MENUITEM "R&ubis",                      IDM_CR_PALETTE_8
+            MENUITEM "&Gris souris",                IDM_CR_PALETTE_9
+            MENUITEM "&Rose",                       IDM_CR_PALETTE_10
+            MENUITEM "Rose &kaki",                  IDM_CR_PALETTE_11
+            MENUITEM "Gr&is Rose",                  IDM_CR_PALETTE_12
+            MENUITEM "S&able",                      IDM_CR_PALETTE_13
+            MENUITEM "&CafeChocolat",               IDM_CR_PALETTE_14
+            MENUITEM "&Bleu Clair",                 IDM_CR_PALETTE_15
+        END
+        MENUITEM "Afficher le statut du &moteur", IDM_CR_AFFOPTMOTEUR, CHECKED
+        MENUITEM "Afficher la &chromie des insertions", IDM_CR_CHROMIE, CHECKED
+        MENUITEM "Afficher le &statut des insertions", IDM_CR_INSERTSTATUT, CHECKED
+        POPUP "Nb décimales pour les coûts"
+        BEGIN
+            MENUITEM "Aucune décimale",             IDM_CR_NBD_AUCUNEDECIMALE
+            MENUITEM "1 décimale",                  IDM_CR_NBD_1DECIMALE
+            MENUITEM "2 décimales",                 IDM_CR_NBD_2DECIMALE
+        END
+    END
+    POPUP "&?"
+    BEGIN
+        MENUITEM "&À propos de...",             ID_APP_ABOUT
+    END
+END
+
+IDR_CR_MENUOFFRE MENU 
+BEGIN
+    POPUP "Offre"
+    BEGIN
+        MENUITEM "Définir l'offre...",          IDM_CR_OFFRECREER
+        MENUITEM "Importer un plateau...",      IDM_CR_OFFREIMPORT
+        MENUITEM "Nouvelle Boite",              IDM_CR_OFFRE2CREER
+    END
+END
+
+IDR_CR_GRILLE MENU 
+BEGIN
+    POPUP "PopUp Grille"
+    BEGIN
+        MENUITEM "Item0",                       IDM_CR_POPUPGRILLE_ITEM0
+        MENUITEM "Item1",                       IDM_CR_POPUPGRILLE_ITEM1
+        MENUITEM "Item2",                       IDM_CR_POPUPGRILLE_ITEM2
+    END
+END
+
+IDR_CR_ATPQUICKPLAN MENU 
+BEGIN
+    POPUP "&Etude"
+    BEGIN
+        MENUITEM "&Nouvelle...",                IDM_CR_ETUDE_NOUVELLE
+        MENUITEM "&Ouvrir...",                  IDM_CR_ETUDE_OUVRIR
+        MENUITEM "&Fermer",                     IDM_CR_ETUDE_FERMER
+        MENUITEM SEPARATOR
+        MENUITEM "En&registrer",                IDM_CR_ETUDE_ENREGISTRER
+        MENUITEM "Enregistrer &sous...",        IDM_CR_ETUDE_ENREGISTRER_SOUS
+        MENUITEM SEPARATOR
+        POPUP "Exporter vers un &fichier"
+        BEGIN
+            MENUITEM "E&chelle",                    IDM_CR_EXPORT_ECHELLE
+            MENUITEM "&Hypothèses de plan",         IDM_CR_EXPORT_RESULTPLAN
+            MENUITEM SEPARATOR
+            MENUITEM "&Tout",                       IDM_CR_EXPORT_TOUT
+        END
+        POPUP "Exporter vers le &presse papier"
+        BEGIN
+            MENUITEM "E&chelle",                    IDM_CR_CLIPBOARD_ECHELLE
+            MENUITEM "&Hypothèses de plan",         IDM_CR_CLIPBOARD_RESULTPLAN
+            MENUITEM SEPARATOR
+            MENUITEM "&Tout",                       IDM_CR_CLIPBOARD_TOUT
+        END
+        POPUP "Exporter vers E&xcel"
+        BEGIN
+            MENUITEM "E&chelle",                    IDM_CR_EXCEL_ECHELLE
+            MENUITEM "&Hypothèses de plan",         IDM_CR_EXCEL_RESULTPLAN
+            MENUITEM SEPARATOR
+            MENUITEM "&Tout",                       IDM_CR_EXCEL_TOUT
+        END
+        POPUP "Imprimer"
+        BEGIN
+            MENUITEM "E&chelle",                    IDM_CR_PRINT_ECHELLE
+            MENUITEM "&Hypothèses de plan",         IDM_CR_PRINT_RESULTPLAN
+            MENUITEM SEPARATOR
+            MENUITEM "&Tout",                       IDM_CR_PRINT_TOUT
+        END
+        MENUITEM SEPARATOR
+        MENUITEM "&Quitter",                    IDM_CR_EXIT
+    END
+    POPUP "&Offre"
+    BEGIN
+        MENUITEM "&Sources...",                 IDM_CR_OFFRE_SOURCES
+        MENUITEM "S&upports...",                IDM_CR_OFFRE_SUPPORTS
+        MENUITEM "&Cibles...",                  IDM_CR_OFFRE_CIBLES
+        MENUITEM "&Formats...",                 IDM_CR_OFFRE_FORMATS
+    END
+    POPUP "&Hypothèse"
+    BEGIN
+        MENUITEM "Copier",                      IDM_CR_HYPO_COPIER
+        MENUITEM SEPARATOR
+        MENUITEM "Coller",                      IDM_CR_HYPO_COLLER
+        MENUITEM "Ajouter",                     IDM_CR_HYPO_ADD_2
+        MENUITEM SEPARATOR
+        MENUITEM "&Supprimer les insertions",   IDM_CR_SUPPINS_HYPACT
+        MENUITEM "S&upprimer dans toutes les hypothèses", IDM_CR_SUPPINS_TOUTESHYPS
+    END
+    POPUP "Op&tions de calcul"
+    BEGIN
+        POPUP "&Evaluation des plans"
+        BEGIN
+            MENUITEM "&A la volée",                 IDM_CR_COMPUTEREALTIME, CHECKED
+            MENUITEM "&Différée",                   33034
+        END
+        MENUITEM "Privilégier la LDP pour les &quotidiens", IDM_CR_OPT_LDPQUOTIDIEN, CHECKED
+    END
+    POPUP "Aff&ichage"
+    BEGIN
+        POPUP "Choisir la &palette de couleurs"
+        BEGIN
+            MENUITEM "&Vert bouteille",             IDM_CR_PALETTE_1
+            MENUITEM "&Emeraude",                   IDM_CR_PALETTE_2
+            MENUITEM "&Bleu pastel",                IDM_CR_PALETTE_3
+            MENUITEM "&Ocean",                      IDM_CR_PALETTE_4
+            MENUITEM "&Lilas",                      IDM_CR_PALETTE_5
+            MENUITEM "&Sahara",                     IDM_CR_PALETTE_6
+            MENUITEM "&Terre de Sienne",            IDM_CR_PALETTE_7
+            MENUITEM "R&ubis",                      IDM_CR_PALETTE_8
+            MENUITEM "&Gris souris",                IDM_CR_PALETTE_9
+            MENUITEM "&Rose",                       IDM_CR_PALETTE_10
+            MENUITEM "Rose &kaki",                  IDM_CR_PALETTE_11
+            MENUITEM "Gr&is Rose",                  IDM_CR_PALETTE_12
+            MENUITEM "S&able",                      IDM_CR_PALETTE_13
+            MENUITEM "&CafeChocolat",               IDM_CR_PALETTE_14
+            MENUITEM "&Bleu Clair",                 IDM_CR_PALETTE_15
+        END
+        POPUP "Nb décimales pour les coûts"
+        BEGIN
+            MENUITEM "Aucune décimale",             IDM_CR_NBD_AUCUNEDECIMALE
+            MENUITEM "1 décimale",                  IDM_CR_NBD_1DECIMALE
+            MENUITEM "2 décimales",                 IDM_CR_NBD_2DECIMALE
+        END
+    END
+    POPUP "&?"
+    BEGIN
+        MENUITEM "&À propos de...",             ID_APP_ABOUT
+    END
+END
+
+IDR_CR_MENUCONTRIB MENU 
+BEGIN
+    POPUP "toto"
+    BEGIN
+        MENUITEM "en C%",                       IDM_CR_CONTRIBCOUV, CHECKED
+        MENUITEM "en GRP",                      IDM_CR_CONTRIBGRP, CHECKED
+        MENUITEM "en part de GRP",              IDM_CR_CONTRIBPGRP, CHECKED
+        MENUITEM "en budget",                   IDM_CR_CONTRIBBUDG
+        MENUITEM "en part de budget",           IDM_CR_CONTRIBPBUDG
+        MENUITEM "en coût / pt C%",             IDM_CR_CONTRIBCTCOUV
+        MENUITEM SEPARATOR
+        MENUITEM "Contributions par &grandeurs", IDM_CR_CONTRIB_MODE_SUPPORTS, CHECKED
+        MENUITEM "Contributions par supports",  IDM_CR_CONTRIB_MODE_GRANDEURS
+        MENUITEM SEPARATOR
+        MENUITEM "Calculer ...",                ID_TOTO_CALCULER
+    END
+END
+
+IDR_CR_VENTIL MENU 
+BEGIN
+    POPUP "Ventil"
+    BEGIN
+        MENUITEM "Nb Contacts(000)",            ID_VENTIL_NBCONTACTS, CHECKED
+        MENUITEM "Audience(000)",               ID_VENTIL_AUDIENCE000, CHECKED
+        MENUITEM "GRP",                         ID_VENTIL_GRP, CHECKED
+        MENUITEM "Ind. GRP",                    ID_VENTIL_INDGRP, CHECKED
+        MENUITEM "Couv",                        ID_VENTIL_COUV, CHECKED
+        MENUITEM "Ind. Couv",                   ID_VENTIL_INDCOUV, CHECKED
+        MENUITEM "Répetition",                  ID_VENTIL_R, CHECKED
+        MENUITEM SEPARATOR
+        MENUITEM "Items de ventilation...",     ID_VENTIL_ITEMSDEVENTILATION
+    END
+END
+
+IDR_CR_MENUGRAPH MENU 
+BEGIN
+    POPUP "Type de graphique"
+    BEGIN
+        MENUITEM "GRP / jour",                  IDM_CR_GRAPH_GRPJOUR
+        MENUITEM "GRP cumulé",                  IDM_CR_GRAPH_GRPCUM
+        MENUITEM "C% cumulée",                  IDM_CR_GRAPH_COUVCUM
+        MENUITEM "Apport C% / jour",            IDM_CR_GRAPH_APPORTCOUVCUM
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 2,6,2,0
+ PRODUCTVERSION 2,6,2,0
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x2L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040c04b0"
+        BEGIN
+            VALUE "CompanyName", "JFC Informatique & Média"
+            VALUE "FileDescription", "Creuset Atelier Presse"
+            VALUE "FileVersion", "2, 6, 4, 0"
+            VALUE "InternalName", "CreusetExt"
+            VALUE "LegalCopyright", "Copyright (C) JFC Informatique & Média. Tous droits réservés. 2003-2011"
+            VALUE "ProductName", "Creuset Atelier Presse"
+            VALUE "ProductVersion", "2, 6, 4, 0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x40c, 1200
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_CR_ATPETUDE DIALOGEX 0, 0, 193, 76
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Définir une nouvelle étude"
+FONT 8, "MS Shell Dlg", 0, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,135,6,54,14,BS_FLAT
+    PUSHBUTTON      "Annuler",IDCANCEL,135,22,54,14,BS_FLAT
+    CONTROL         "",IDC_CR_BK,"Static",SS_ETCHEDFRAME,2,4,131,68
+    CTEXT           "Cartouche",IDC_CR_TTL,6,6,124,14,SS_CENTERIMAGE
+    PUSHBUTTON      "Période",IDC_CR_PERIODE,5,22,124,14,BS_FLAT
+    PUSHBUTTON      "Offre",IDC_CR_OFFRE,5,38,124,14,BS_FLAT
+    PUSHBUTTON      "Format",IDC_CR_FORMAT,5,55,124,14,BS_FLAT
+    PUSHBUTTON      "Produit",IDC_CR_PRODUIT,142,53,22,14,BS_FLAT | NOT WS_VISIBLE | WS_DISABLED
+END
+
+IDD_CR_ATPPERIODE DIALOGEX 0, 0, 247, 77
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Définir la période de l'étude"
+FONT 8, "MS Shell Dlg", 0, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,190,6,54,14,BS_FLAT
+    PUSHBUTTON      "Annuler",IDCANCEL,190,22,54,14,BS_FLAT
+    CONTROL         "",IDC_CR_BK,"Static",SS_ETCHEDFRAME,2,2,185,74
+    CTEXT           "Période de l'étude",IDC_CR_TTL,6,6,178,14,SS_CENTERIMAGE
+    CONTROL         "DateTimePicker1",IDC_CR_DATED,"SysDateTimePick32",DTS_RIGHTALIGN | WS_TABSTOP,104,23,72,14
+    RTEXT           "",IDC_CR_TEXTS,41,58,30,14,SS_CENTERIMAGE,WS_EX_CLIENTEDGE
+    CONTROL         "Spin1",IDC_CR_SPINS,"msctls_updown32",UDS_SETBUDDYINT | UDS_AUTOBUDDY,72,58,10,14,WS_EX_STATICEDGE
+    CTEXT           "semaines et",IDC_CR_TXT,84,58,40,13,SS_CENTERIMAGE
+    RTEXT           "",IDC_CR_TEXTJ,126,58,18,14,SS_NOPREFIX | SS_CENTERIMAGE | WS_BORDER,WS_EX_CLIENTEDGE
+    CONTROL         "Spin2",IDC_CR_SPINJ,"msctls_updown32",UDS_SETBUDDYINT | UDS_AUTOBUDDY,145,58,10,14,WS_EX_TRANSPARENT | WS_EX_STATICEDGE
+    LTEXT           "jours.",IDC_CR_TXT2,158,58,16,14,SS_CENTERIMAGE
+    CONTROL         "",IDC_CR_DATEF,"SysDateTimePick32",DTS_RIGHTALIGN | WS_TABSTOP,104,41,72,14
+    LTEXT           "Début de la période :",IDC_CR_TXT3,8,24,71,13,SS_CENTERIMAGE
+    LTEXT           "Fin de la période :",IDC_CR_TXT4,8,40,80,13,SS_CENTERIMAGE
+    LTEXT           "Durée :",IDC_CR_TXT5,8,58,27,13,SS_CENTERIMAGE
+END
+
+IDD_CR_ATPLIBELLE DIALOGEX 0, 0, 244, 42
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "+custom+"
+FONT 8, "MS Shell Dlg", 0, 0, 0x1
+BEGIN
+    CONTROL         "",IDC_CR_BK,"Static",SS_ETCHEDFRAME,2,2,183,39
+    CTEXT           "Libellé",IDC_CR_TTL,6,6,175,14,SS_CENTERIMAGE
+    EDITTEXT        IDC_CR_LIBELLE,6,22,175,14,ES_AUTOHSCROLL
+    DEFPUSHBUTTON   "OK",IDOK,188,6,54,14,BS_FLAT
+    PUSHBUTTON      "Annuler",IDCANCEL,188,22,54,14,BS_FLAT
+END
+
+IDD_CR_ATPPERIODEACTION DIALOGEX 0, 0, 326, 85
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "+custom+"
+FONT 8, "MS Shell Dlg", 0, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,270,6,54,14,BS_FLAT
+    PUSHBUTTON      "Annuler",IDCANCEL,270,22,54,14,BS_FLAT
+    CONTROL         "",IDC_CR_BK,"Static",SS_ETCHEDFRAME,2,2,265,82
+    CTEXT           "+custom+",IDC_CR_TTL,6,6,240,14,SS_CENTERIMAGE
+    PUSHBUTTON      "T",IDC_CR_BTNT,248,6,16,14,BS_FLAT
+    CONTROL         "",IDC_CR_A3,"JFControl",WS_TABSTOP,6,56,257,11
+    CONTROL         "",IDC_CR_A1,"JFControl",WS_TABSTOP,6,22,257,34
+    SCROLLBAR       IDC_CR_HS,6,71,257,10
+END
+
+IDD_CR_ATPZOOMPLAN DIALOGEX 0, 0, 142, 222
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_SYSMENU
+EXSTYLE WS_EX_TOOLWINDOW
+FONT 8, "MS Shell Dlg", 0, 0, 0x1
+BEGIN
+    CONTROL         "",IDC_CR_BK,"Static",SS_ETCHEDFRAME,3,3,136,216
+    PUSHBUTTON      "X",IDC_CR_X,124,7,11,14,BS_FLAT
+    CTEXT           "Zoom",IDC_CR_TTL,7,7,115,14,SS_CENTERIMAGE
+    CONTROL         "",IDC_CR_A1,"JFControl",WS_TABSTOP,7,23,128,111
+    CTEXT           "Format(s)",IDC_CR_TTL2,7,188,128,14,SS_CENTERIMAGE
+    CONTROL         "",IDC_CR_A2,"JFControl",WS_TABSTOP,7,204,128,11
+    CTEXT           "Coûts",IDC_CR_TTL3,7,136,128,14,SS_CENTERIMAGE
+    CONTROL         "",IDC_CR_A3,"JFControl",WS_TABSTOP,7,152,128,33
+END
+
+IDD_CR_DLG_VERSIONPLANMAITRE DIALOGEX 0, 0, 271, 119
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Plan-maître"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,216,6,54,14,BS_FLAT
+    PUSHBUTTON      "Annuler",IDCANCEL,216,22,54,14,BS_FLAT
+    LISTBOX         IDC_CR_LISTPLAN,6,23,204,91,LBS_OWNERDRAWVARIABLE | LBS_HASSTRINGS | LBS_NOINTEGRALHEIGHT | NOT WS_BORDER | WS_VSCROLL | WS_TABSTOP,WS_EX_STATICEDGE
+    CONTROL         "",IDC_CR_BK,"Static",SS_GRAYFRAME | SS_SUNKEN,2,2,212,115,WS_EX_TRANSPARENT
+    CTEXT           "Versions",IDC_CR_STATIC_TTL,6,6,204,14,SS_CENTERIMAGE
+END
+
+IDD_CR_DLG_CONTRIBUTION DIALOGEX 0, 0, 185, 92
+STYLE DS_SETFONT | DS_MODALFRAME | DS_SETFOREGROUND | DS_FIXEDSYS | WS_POPUP | WS_SYSMENU
+EXSTYLE WS_EX_TOPMOST | WS_EX_TOOLWINDOW
+FONT 8, "MS Shell Dlg", 0, 0, 0x1
+BEGIN
+    CONTROL         "",IDC_CR_BK,"Static",SS_GRAYFRAME | SS_SUNKEN,3,3,180,86,WS_EX_TRANSPARENT
+    CTEXT           "Contribution du support au plan",IDC_CR_STATIC_TTL,6,6,159,14,SS_CENTERIMAGE
+    CONTROL         "",IDC_CR_A2,"JFControl",WS_TABSTOP,6,24,83,60
+    CONTROL         "",IDC_CR_A3,"JFControl",WS_TABSTOP,88,24,91,60
+    PUSHBUTTON      "X",IDC_CR_X,167,6,11,14,BS_FLAT
+END
+
+IDD_CR_ATPPRODUIT DIALOGEX 0, 0, 206, 102
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Sélection Groupe/Annonceur/Produit"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,149,7,50,14,BS_FLAT
+    PUSHBUTTON      "Annuler",IDCANCEL,149,24,50,14,BS_FLAT
+    COMBOBOX        IDC_CR_COMBO_GROUPE,11,22,125,64,CBS_DROPDOWNLIST | CBS_OWNERDRAWFIXED | CBS_SORT | CBS_HASSTRINGS | WS_VSCROLL | WS_TABSTOP
+    GROUPBOX        "",IDC_CR_FR_ANNONCEUR,6,3,136,93
+    COMBOBOX        IDC_CR_COMBO_ANNONCEUR,11,48,125,63,CBS_DROPDOWNLIST | CBS_OWNERDRAWFIXED | CBS_SORT | CBS_HASSTRINGS | WS_VSCROLL | WS_TABSTOP
+    COMBOBOX        IDC_CR_COMBO_PRODUIT,11,74,125,67,CBS_DROPDOWNLIST | CBS_OWNERDRAWFIXED | CBS_SORT | CBS_HASSTRINGS | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Groupe",IDC_CR_TITLEGROUPE,12,12,86,8
+    LTEXT           "Annonceur",IDC_CR_TITLEANNONCEUR,12,39,86,8
+    LTEXT           "Produit",IDC_CR_TITLEPRODUIT,12,65,86,8
+END
+
+IDD_CR_ATPVERSION DIALOGEX 0, 0, 238, 55
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION
+CAPTION "A propos de..."
+FONT 8, "MS Shell Dlg", 0, 0, 0x1
+BEGIN
+    ICON            IDR_CR_ATPCREUSET,IDC_STATIC,14,16,20,20
+    LTEXT           "Creuset",IDC_STATIC,50,8,120,8,SS_NOPREFIX
+    LTEXT           "JFC Informatique et Média",IDC_STATIC,50,22,85,8
+    LTEXT           "Copyright (C) 2003-2011",IDC_STATIC,50,36,109,8,SS_CENTERIMAGE
+    DEFPUSHBUTTON   "OK",IDOK,177,7,50,14,BS_FLAT | WS_GROUP
+END
+
+IDD_CR_RESULTBAR DIALOGEX 0, 0, 242, 26
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_SYSMENU
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    RADIOBUTTON     "",IDC_CR_B2DISTRIN,36,7,28,14,BS_PUSHLIKE
+    RADIOBUTTON     "",IDC_CR_B1RG,6,7,28,14,BS_PUSHLIKE
+    RADIOBUTTON     "",IDC_CR_B3DISTRIC,67,7,28,14,BS_PUSHLIKE
+    RADIOBUTTON     "",IDC_CR_B5MEMDEMEMO,130,7,28,14,BS_PUSHLIKE
+    RADIOBUTTON     "",IDC_CR_B4VTL,99,7,28,14,BS_PUSHLIKE
+    PUSHBUTTON      "Evaluer",IDC_CR_BTNEVAL,179,7,28,14
+    RADIOBUTTON     "",IDC_CR_B6GRAPH,210,7,28,14,BS_PUSHLIKE
+END
+
+IDD_CR_RESULTPLAN DIALOGEX 0, 0, 230, 83
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    CTEXT           "+custom+",IDC_CR_TTL,1,2,214,14,SS_CENTERIMAGE
+    CONTROL         "Custom1",IDC_CR_RES,"JFControl",WS_TABSTOP,4,31,104,49
+    SCROLLBAR       IDC_CR_VS,110,31,10,49,SBS_VERT
+    CONTROL         "",IDC_CR_MIRE,"Static",SS_BLACKFRAME | NOT WS_VISIBLE,122,16,84,64
+    CTEXT           "+custom+",IDC_CR_TTL2,1,16,117,14,SS_CENTERIMAGE
+    PUSHBUTTON      "",IDC_CR_BTNMOINS,204,16,15,14
+    PUSHBUTTON      "",IDC_CR_BTNPLUS,204,50,15,14
+    PUSHBUTTON      "=",IDC_CR_BTNAUTO,204,33,15,14
+END
+
+IDD_CR_PANELBAS DIALOGEX 0, 0, 186, 165
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_SYSMENU
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    CHECKBOX        "Echelle",IDC_CR_ECHELLE,52,2,81,14,BS_PUSHLIKE
+    CHECKBOX        "Zoom",IDC_CR_BTNZOOM,52,33,81,14,BS_PUSHLIKE
+    PUSHBUTTON      "",IDC_CR_BTNSWITCH,52,94,81,14
+    CHECKBOX        "Contribution",IDC_CR_BTNFSUPP,52,49,81,14,BS_PUSHLIKE | WS_DISABLED
+    CHECKBOX        "Résultats",IDC_CR_RESULTATS,52,18,81,14,BS_PUSHLIKE
+END
+
+IDD_CR_CRBREPONSE DIALOGEX 0, 0, 323, 94
+STYLE DS_SETFONT | DS_MODALFRAME | DS_SETFOREGROUND | DS_CONTROL | WS_POPUP | WS_SYSMENU
+EXSTYLE WS_EX_TOPMOST | WS_EX_TOOLWINDOW
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    CONTROL         "",IDC_CR_BK,"Static",SS_ETCHEDFRAME,2,2,319,90
+    CTEXT           "Courbe de réponse",IDC_CR_TTL,6,6,297,14,SS_CENTERIMAGE
+    COMBOBOX        IDC_CR_COMBOCRB,6,23,264,75,CBS_DROPDOWNLIST | CBS_OWNERDRAWFIXED | CBS_HASSTRINGS | WS_VSCROLL | WS_TABSTOP
+    PUSHBUTTON      "Créer",IDC_CR_BTNCREER,82,74,50,14
+    PUSHBUTTON      "Modifier",IDC_CR_BTNMODIF,134,74,50,14
+    PUSHBUTTON      "Supprimer",IDC_CR_BTNSUPPR,186,74,50,14
+    EDITTEXT        IDC_CR_BETA,294,23,24,12,ES_CENTER | ES_AUTOHSCROLL | ES_WANTRETURN | ES_NUMBER | NOT WS_BORDER,WS_EX_STATICEDGE
+    LTEXT           "Bêta :",IDC_CR_TXT,272,23,20,12,SS_CENTERIMAGE
+    LTEXT           "Grid",IDC_CR_STATICGRID,6,38,312,33,0,WS_EX_STATICEDGE
+    DEFPUSHBUTTON   "",IDC_CR_BTNAUTO,288,30,6,6,NOT WS_VISIBLE
+    PUSHBUTTON      "X",IDC_CR_X,306,7,11,14,BS_FLAT
+END
+
+IDD_CR_NVLCRB DIALOGEX 0, 0, 380, 78
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "+ custom +"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,326,6,50,14,BS_FLAT
+    PUSHBUTTON      "Annuler",IDCANCEL,326,23,50,14,BS_FLAT
+    CONTROL         "",IDC_CR_BK,"Static",SS_ETCHEDFRAME,2,2,320,75
+    CTEXT           "Courbe de réponse",IDC_CR_TTL,6,6,312,14,SS_CENTERIMAGE
+    LTEXT           "Grid",IDC_CR_STATICGRID,6,40,312,33,0,WS_EX_STATICEDGE
+    EDITTEXT        IDC_CR_LBL,37,23,280,14,ES_AUTOHSCROLL | ES_NOHIDESEL
+    LTEXT           "Libellé :",IDC_CR_TXT,7,21,30,13,SS_CENTERIMAGE
+END
+
+IDD_CR_PUPITRE DIALOGEX 0, 0, 218, 206
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_SYSMENU
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    CTEXT           "+custom+",IDC_CR_TTL,0,2,214,14,SS_CENTERIMAGE
+    CTEXT           "Cible",IDC_CR_TTL2,0,34,214,14,SS_CENTERIMAGE
+    CTEXT           "Réf. Affinité",IDC_CR_TTL3,0,66,214,14,SS_CENTERIMAGE
+    CTEXT           "Formats",IDC_CR_TTL4,0,109,214,14,SS_CENTERIMAGE
+    LISTBOX         IDC_CR_LIST_TERRAINS,14,16,189,15,LBS_SORT | LBS_OWNERDRAWVARIABLE | LBS_HASSTRINGS | LBS_NOINTEGRALHEIGHT | LBS_EXTENDEDSEL | WS_VSCROLL | WS_TABSTOP
+    LISTBOX         IDC_CR_LIST_CIBLES,14,48,189,15,LBS_SORT | LBS_OWNERDRAWVARIABLE | LBS_HASSTRINGS | LBS_NOINTEGRALHEIGHT | LBS_EXTENDEDSEL | WS_VSCROLL | WS_TABSTOP
+    LISTBOX         IDC_CR_LIST_REFAFF,14,78,189,15,LBS_SORT | LBS_OWNERDRAWVARIABLE | LBS_HASSTRINGS | LBS_NOINTEGRALHEIGHT | LBS_EXTENDEDSEL | WS_VSCROLL | WS_TABSTOP
+END
+
+IDD_CR_VENTIL DIALOGEX 0, 0, 300, 328
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME
+CAPTION "Choisir les items de ventilation"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    CONTROL         "",IDC_CR_BK,"Static",SS_GRAYFRAME | SS_SUNKEN,119,19,92,49,WS_EX_TRANSPARENT
+    CTEXT           "+ custom +",IDC_CR_TTL,5,6,101,14,SS_CENTERIMAGE
+    CONTROL         "",IDC_CR_TREE,"SysTreeView32",TVS_HASBUTTONS | TVS_HASLINES | TVS_LINESATROOT | TVS_DISABLEDRAGDROP | TVS_SHOWSELALWAYS | WS_TABSTOP,47,113,124,46
+    LISTBOX         IDC_CR_LIST,5,75,131,56,LBS_SORT | LBS_MULTIPLESEL | LBS_OWNERDRAWVARIABLE | LBS_NOINTEGRALHEIGHT | NOT WS_BORDER | WS_VSCROLL | WS_TABSTOP
+    RADIOBUTTON     "Question",IDC_CR_BTN1QUESTION,5,307,35,14,WS_GROUP
+    RADIOBUTTON     "Item",IDC_CR_BTN2ITEM,82,307,36,14
+    RADIOBUTTON     "Palette",IDC_CR_BTN3PALETTE,159,307,27,14
+    DEFPUSHBUTTON   "OK",IDOK,242,6,54,14,BS_FLAT
+    PUSHBUTTON      "Annuler",IDCANCEL,242,22,54,14,BS_FLAT
+    LISTBOX         IDC_CR_LIST_HAUT,5,23,50,13,LBS_MULTIPLESEL | LBS_OWNERDRAWVARIABLE | LBS_NOINTEGRALHEIGHT | NOT WS_BORDER | WS_VSCROLL | WS_TABSTOP
+    CONTROL         "GRP",IDC_CHECK1,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,221,238,54,14
+    CONTROL         "Ind. GRP",IDC_CHECK2,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,221,254,54,14
+    CONTROL         "Couv.",IDC_CHECK3,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,221,268,54,14
+    CONTROL         "Ind. Couv.",IDC_CHECK4,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,221,283,54,14
+    CONTROL         "Répet.",IDC_CHECK5,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,221,298,54,14
+END
+
+IDD_CR_DLG_TARIFMANUEL DIALOGEX 0, 0, 275, 62
+STYLE DS_LOCALEDIT | DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_TOOLWINDOW
+CAPTION "Saisie Tarif Manuel"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    EDITTEXT        IDC_CR_EDIT_TARIF,124,42,86,13,ES_RIGHT | ES_AUTOHSCROLL | ES_WANTRETURN | ES_NUMBER
+    COMBOBOX        IDC_CR_CBX_FORMAT,8,42,98,59,CBS_DROPDOWNLIST | CBS_SORT | CBS_UPPERCASE | WS_VSCROLL | WS_TABSTOP
+    CTEXT           "Format",IDC_CR_LBL_FORMAT,8,27,98,12,SS_CENTERIMAGE
+    CTEXT           "Tarif",IDC_CR_LBL_TARIF,124,27,85,12,SS_CENTERIMAGE
+    DEFPUSHBUTTON   "OK",IDOK,221,3,50,14
+    PUSHBUTTON      "Annuler",IDCANCEL,221,20,50,14
+    PUSHBUTTON      "Tarif de base",IDC_CR_TARIFBASE,221,46,50,14
+    CONTROL         "",IDC_CR_BK_SAISIETARIF,"Static",SS_GRAYFRAME | SS_SUNKEN,2,3,216,57,WS_EX_TRANSPARENT
+    CONTROL         "",IDC_CR_SEPAR,"Static",SS_GRAYFRAME | SS_SUNKEN,3,22,214,1
+    CTEXT           "Static",IDC_CR_TXTSUPPORT,8,7,207,13
+END
+
+IDD_CR_DGL_CIBLEPOND DIALOGEX 0, 0, 425, 190
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Création d'une cible pondérée"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    CONTROL         "Modifier",IDC_CR_MODIF_CIBLEPOND,"Button",BS_AUTORADIOBUTTON | BS_PUSHLIKE | BS_FLAT,66,166,48,11
+    CONTROL         "Créer",IDC_CR_CREER_CIBLEPOND,"Button",BS_AUTORADIOBUTTON | BS_PUSHLIKE | BS_FLAT,14,166,53,11
+    DEFPUSHBUTTON   "OK",IDOK,368,22,50,11,NOT WS_VISIBLE
+    PUSHBUTTON      "Annuler",IDCANCEL,368,6,50,14,NOT WS_VISIBLE
+    CONTROL         "",IDC_CR_BK_CIBLEPOND,"Static",SS_BLACKFRAME,6,7,412,177
+    LISTBOX         IDC_CR_LST_ITEMS,14,28,100,137,LBS_SORT | LBS_NOINTEGRALHEIGHT | NOT WS_BORDER | WS_VSCROLL | WS_TABSTOP,WS_EX_STATICEDGE
+    CTEXT           "Cible de base",IDC_CR_TITRE_LIST1,14,10,100,15,SS_CENTERIMAGE
+    CTEXT           "Sélection composants",IDC_CR_TITRE_COMPOS,122,10,100,15,SS_CENTERIMAGE
+    LISTBOX         IDC_CR_LST_COMPOSANTS,122,29,100,137,LBS_SORT | LBS_MULTIPLESEL | LBS_NOINTEGRALHEIGHT | NOT WS_BORDER | WS_VSCROLL | WS_TABSTOP,WS_EX_STATICEDGE
+    CTEXT           "Nom de la cible pondérée :",IDC_CR_TITRE_CIBLEPOND,230,10,180,15,SS_CENTERIMAGE
+    EDITTEXT        IDC_CR_EDIT_CIBLEPOND,230,29,180,12,ES_AUTOHSCROLL
+    CTEXT           "Structure / Segments",IDC_CR_TITRE_PONDERATION,230,47,180,15,SS_CENTERIMAGE
+    CONTROL         "TablePond",IDC_CR_GRID_PONDER,"GXWND",WS_BORDER | WS_VSCROLL | WS_HSCROLL | WS_TABSTOP,230,66,180,83
+    LISTBOX         IDC_CR_LST_CIBLEPOND,14,28,100,137,LBS_SORT | LBS_NOINTEGRALHEIGHT | NOT WS_VISIBLE | WS_VSCROLL | WS_TABSTOP
+    PUSHBUTTON      "Valider",IDC_CR_VALIDER,306,169,50,11
+    CTEXT           "Complément à 100%",IDC_CR_TITRE_COMPLEMENT,230,153,106,13,SS_CENTERIMAGE,WS_EX_STATICEDGE
+    CTEXT           "100%",IDC_CR_PRCT_COMPL_REEL,338,153,33,13,SS_CENTERIMAGE,WS_EX_STATICEDGE
+    CTEXT           "100%",IDC_CR_PRCT_COMPL_POND,373,153,35,13,SS_CENTERIMAGE,WS_EX_STATICEDGE
+    PUSHBUTTON      "Supprimer",IDC_CR_SUPPRIMER,229,169,50,11
+    PUSHBUTTON      "Fermer",IDC_CR_FERMER,359,169,50,11
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO 
+BEGIN
+    IDD_CR_ATPZOOMPLAN, DIALOG
+    BEGIN
+        BOTTOMMARGIN, 167
+    END
+
+    IDD_CR_DLG_CONTRIBUTION, DIALOG
+    BEGIN
+        RIGHTMARGIN, 54
+        BOTTOMMARGIN, 34
+    END
+
+    IDD_CR_RESULTBAR, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 235
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 19
+    END
+
+    IDD_CR_RESULTPLAN, DIALOG
+    BEGIN
+        RIGHTMARGIN, 229
+        BOTTOMMARGIN, 82
+    END
+
+    IDD_CR_PANELBAS, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 179
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 158
+    END
+
+    IDD_CR_CRBREPONSE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 316
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 87
+    END
+
+    IDD_CR_NVLCRB, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 373
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 71
+    END
+
+    IDD_CR_PUPITRE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 211
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 199
+    END
+
+    IDD_CR_VENTIL, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 293
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 321
+    END
+
+    IDD_CR_DLG_TARIFMANUEL, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 268
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 55
+    END
+
+    IDD_CR_DGL_CIBLEPOND, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 418
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 183
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE 
+BEGIN
+    AFX_IDS_APP_TITLE       "AtelierPresse"
+    AFX_IDS_IDLEMESSAGE     "Prêt"
+END
+
+STRINGTABLE 
+BEGIN
+    AFX_IDS_SCSIZE          "Change la taille de la fenêtre"
+    AFX_IDS_SCMOVE          "Change la position de la fenêtre"
+    AFX_IDS_SCMINIMIZE      "Réduit la fenêtre en icône"
+    AFX_IDS_SCMAXIMIZE      "Agrandit la fenêtre au format de l'écran"
+    AFX_IDS_SCNEXTWINDOW    "Passe à la fenêtre de document suivante"
+    AFX_IDS_SCPREVWINDOW    "Delta coût/GRP"
+    AFX_IDS_SCCLOSE         "Ferme la fenêtre active et propose l'enregistrement des documents"
+END
+
+STRINGTABLE 
+BEGIN
+    AFX_IDS_SCRESTORE       "Restaure la fenêtre à sa taille d'origine"
+    AFX_IDS_SCTASKLIST      "Active la liste des tâches"
+END
+
+STRINGTABLE 
+BEGIN
+    IDR_CR_ATPCREUSET       "Creuset"
+    IDR_CR_ATPFRAME         "Atelier Presse"
+    IDS_CD_STR_VALIDHYPO    "Attention ! \nLes autres hypothèses vont être supprimées. \nValidation ?"
+    IDS_CR_ARCHETUDE        "Archiver une étude"
+    IDS_CR_AUCUN            "Aucun"
+    IDS_CR_AUDIENCE         "Audience (000)"
+    IDS_CR_BUDGET           "Budget"
+    IDS_CR_CONTACTS         "Contacts (000)"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_CR_PATTLTEMOIN      "Vague témoin"
+    IDS_CR_PATTLTRAVAIL     "Calendrier de la grille"
+    IDS_CR_PATTLVAGUE       "Vague"
+    IDS_CR_PAWNDTEMOIN      "Définir la vague témoin"
+    IDS_CR_PAWNDTRAVAIL     "Définir la période de travail"
+    IDS_CR_PAWNDVAGUE       "Définir la période d'action"
+    IDS_CR_PERF             "Résultats globaux de la vague"
+    IDS_CR_PERIOD           "Périodic."
+    IDS_CR_PM               "P. maître"
+    IDS_CR_PRCAFFINITE      "% Affinité"
+    IDS_CR_RECUPETUDE       "Récupérer une étude"
+    IDS_CR_REPET            "Répétition"
+    IDS_CR_REPRISES         "Reprises"
+    IDS_CR_RESULTATS        "Résultats"
+    IDS_CR_RESULTG          "Résultats globaux"
+    IDS_CR_STR_CPL          "Couplages fixes && libres"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_CR_STR_ERR_CIBLE    "Aucune cible sélectionnée!"
+    IDS_CR_STR_ERR_IAFF     "L'item affinité n'a pas été sélectionné!"
+    IDS_CR_STR_ERR_SUPPORT  "Aucun support sélectionné!"
+    IDS_CR_STR_ERR_TERRA    "Pas de terrain d'audience sélectionné!"
+    IDS_CR_STR_ERR_TERRC    "Pas de terrain de ciblage sélectionné!"
+    IDS_CR_STR_LOT          "Familles de titres"
+    IDS_CR_STR_TITRE        "Titres && assimilés"
+    IDS_CR_STR_TRF1         "La date de parution de ce titre est en dehors de la période d'action"
+    IDS_CR_STR_TRF2         "Ce titre n'a pas de tarif sur le format sélectionné"
+    IDS_CR_STR_TRF3         "Pas de tarif"
+    IDS_CR_SUPPORTS         "Supports"
+    IDS_CR_SUPPRETUDE       "Supprimer une étude"
+    IDS_CR_TARIF            "Tarif"
+    IDS_CR_TOUS             "Tous"
+    IDS_CR_TTLCREUSETHYPO   "Définition des hypothèses"
+    IDS_CR_TTLCREUSETHYPOD  "Définition des hypothèses, dans la vague du %1 au %2"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_CR_CONTACTSPLUS_ABR "Cts. [+] (000)"
+    IDS_CR_COUVERTURE       "C% cumulée"
+    IDS_CR_COUVMEM          "C% validée"
+    IDS_CR_CT1000C          "Coût/1000 Cts."
+    IDS_CR_CT1000I          "Coût/1000 Ind."
+    IDS_CR_CTGRP            "Coût/GRP"
+    IDS_CR_DISTRIB1         "Au moins 1 contact"
+    IDS_CR_DISTRIBCUMUL     "Distribution cumulée"
+    IDS_CR_DISTRIBN         "Au moins %1!d! contacts"
+    IDS_CR_DISTRIBNETTE     "Distribution nette"
+    IDS_CR_DISTRIBNETTE1    "1 contact"
+    IDS_CR_DISTRIBNETTEN    "%1!d! contacts"
+    IDS_CR_DISTRIBNETTEP    "%1!d! contacts et +"
+    IDS_CR_DISTRIBNT        "Non Touchés"
+    IDS_CR_DISTRIBP         "Au moins %1!d! contacts et +"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_CR_ECHELLE          "Echelle"
+    IDS_CR_GRP              "GRP"
+    IDS_CR_GRPACTIF         "GRP [+]"
+    IDS_CR_GRPHCOUV         "Graphe de couverture"
+    IDS_CR_GRPHGRP          "Graphe de GRP [+]"
+    IDS_CR_INDAFFINITE      "Ind. d'affinité"
+    IDS_CR_LBLPLANMAITRE    "Saisir le libellé du plan-maître"
+    IDS_CR_DISTRIBNETTEPABR "%1!d! cts. +"
+    IDS_CR_LBLRENHYPO       "Saisir le libellé de l'hypothèse"
+    IDS_CR_LDPLNM           "LDP/LNM"
+    IDS_CR_LOADETUDE        "Chargement d'une étude"
+    IDS_CR_MEMODEMEMO       "Mémo-Démémo"
+    IDS_CR_NBCTSDIS         "Nb de contacts distribuées (000)"
+    IDS_CR_NBINDIVTOUCH     "Nb d'individus touchés (000)"
+    IDS_CR_NBJOURSLECT      "Nb jrs lect."
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_CR_TTLDLGSAVETUDE   "Saisir le libellé de l'étude"
+    IDS_CR_VENTIL           "Ventilation"
+    IDS_CR_TOTINS           "Total insertions"
+    IDS_CR_FILTER           "Etudes Atelier Presse (*.atp)|*.atp|Etudes Quick Plan (*.qp)|*.qp|Tous les fichiers (*.*)|*.*||"
+    IDS_CR_NONAME           "Sans nom"
+    IDS_CR_ERRSRC           "La source sélectionnée dans cette étude n'existe pas."
+    IDS_CR_ERRTER           "Au moins un terrain n'a pas pu être chargé."
+    IDS_CR_ERRITEM          "Les items suivants n'ont pas été trouvés: \n%1"
+    IDS_CR_ERRAFFINITE      "Item Affinité invalide, Ensemble est la nouvelle affinité."
+    IDS_CR_ERRSUPPORT       "Les supports suivants n'ont pas été trouvés: \n%1"
+    IDS_CR_MAJTARIFS        "Les tarifs ont été mis à jour."
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_CR_PLATEAU          "Plateau"
+    IDS_CR_PLAN             "Plan"
+    IDS_CR_EFFACER          "Effacer"
+    IDS_CR_PLUS             "+"
+    IDS_CR_MOINS            "-"
+    IDS_CR_T                "T"
+    IDS_CR_EFFHYPOACT       "Effacer l'hypothèse active"
+    IDS_CR_EFFHYPOTT        "Effacer toutes"
+    IDS_CR_TABLEUR          "Test de plans"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_CR_CALEND           "Grille calendaire"
+    IDS_CR_PLAN_M           "Plan maître"
+    IDS_CR_CONFIRMSAV       "Voulez-vous enregistrer les modifications apportées à l'étude courante?"
+    IDS_CR_MOTABAQUE        "Modélisation macro-probabiliste brute"
+    IDS_CR_MOTABAQUEETAL    "Modélisation macro-probabiliste"
+    IDS_CR_MOTPROBA         "Algorithme full-binomial"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_CR_APPREPET         "Contrib. répét."
+    IDS_CR_APPCOUV          "Contrib. C%"
+    IDS_CR_APPCOUVM         "Contrib. C% valid."
+    IDS_CR_PARTBUDGET       "Part de budget"
+    IDS_CR_APPORTGRP        "Contrib. GRP"
+    IDS_CR_PARTGRP          "Part de GRP"
+    IDS_CR_DELTACOUV        "Delta C %"
+    IDS_CR_DELTAGRP         "Delta GRP"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_CR_DELTACTGRP       "Delta coût/GRP"
+    IDS_CR_CONTRIBBUDGET    "Part de marché - Budget"
+    IDS_CR_CONTRIBGRP       "Part de voix - GRP"
+    IDS_CR_CONTRIBCOUV      "C% support supposé seul"
+    IDS_CR_DELTAREPRISE     "Delta répétition"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_CR_PLMOINSINSER     "± 1 insertion"
+    IDS_CR_DATE             "Daté du"
+    IDS_CR_FORMAT           "Format"
+    IDS_CR_FORMATS          "Formats"
+    IDS_CR_SUPPINSERT       "Voulez vous supprimer les insertions du format actif?"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_CR_NUMERO           "Numéro"
+    IDS_CR_XGRPJOUR         "GRP [+] / jour"
+    IDS_CR_GRPJOUR          "GRP / jour"
+    IDS_CR_GRPCUMUL         "GRP cumulé"
+    IDS_CR_XGRPCUMUL        "GRP [+] cumulé"
+    IDS_CR_DISTRIBPABR      "Au - %1!d! cts et +"
+    IDS_CR_DISTRIBNABR      "Au - %1!d! cts"
+    IDS_CR_DISTRIB1ABR      "Au - 1 contact"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_CR_EXT              "atp"
+    IDS_CR_ETUDENONVALID    "L'étude que vous voulez ouvrir n'est pas valide."
+    IDS_CR_ETUDENONINIT     "L'initialisation de l'étude a échoué."
+    IDS_CR_AUDIENCE_ABR     "Aud. (000)"
+    IDS_CR_CONTACTS_ABR     "Cts. (000)"
+    IDS_CR_CONTACTSPLUS     "Contacts [+] (000)"
+    IDS_CR_CT1000CONTACTS   "Coût/1000 Contacts"
+    IDS_CR_CT1000INDIVIDUS  "Coût/1000 Individus"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_CR_DELTAGRPPLUS     "Delta GRP [+]"
+    IDS_CR_APPORTGRPPLUS    "Contrib. GRP [+]"
+    IDS_CR_PARTGRPPLUS      "Part de GRP [+]"
+    IDS_CR_CONTRIBGRPPLUS   "Part de voix - GRP [+]"
+    IDS_CR_APPORT           "Apport"
+    IDS_CR_DEFICIT          "Déficit"
+    IDS_CR_COURBEBINOMIALE  "Courbe Binomiale"
+    IDS_CR_PASCOURBE        "Pas de courbe"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_CR_CONFSUPPCRB      "Voulez vous supprimer cette courbe de réponse?"
+    IDS_CR_MODIFCRB         "Modifier une courbe de réponse"
+    IDS_CR_NEWCRB           "Créer une courbe de réponse"
+    IDS_CR_NOINSPM          "Le plan maître ne peut pas être modifié directement."
+    IDS_CR_ERR_INITETU      "L'initialisation de l'étude a échoué."
+    IDS_CR_SUPPR_SUPPORTECH "Si vous supprimez ce support du plateau, les insertions de ce support seront effacées.\nSouhaitez vous continuer?"
+    IDS_CR_COEFALPHA        "Coeff. alpha [1]"
+    IDS_CR_PERIODICITE      "Périodicité"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_CR_DISTRIBNETTENABR "%1!d! cts."
+    IDS_CR_REFAFFINITE      "Réf. affinité"
+    IDS_CR_CTCOUV           "Coût/% Couv."
+    IDS_CR_CTCOUVERTURE     "Coût/% Couverture"
+    IDS_CR_HYPOTHESE        "Hypothèse %1!d!"
+    IDS_CR_DISTRIBNTABR     "Non tchs."
+    IDS_CR_REPETPLUS        "Répétition [+]"
+    IDS_CR_DELTAREPRISEPLUS "Delta répétition [+]"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_CR_APPREPETPLUS     "Contrib. répét. [+]"
+    IDS_CR_BUDGETACTIF      "Budget global"
+    IDS_CR_INDEXTHEM        "Index thématique"
+    IDS_CR_ITEMS            "Items construits"
+    IDS_CR_PALETTES         "Palettes"
+    IDS_CR_INDGRP           "Ind. GRP"
+    IDS_CR_INDGRPACTIF      "Ind. GRP [+]"
+    IDS_CR_INDCOUV          "Ind. C%"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_CR_FILTER_QP        "Etudes Quick Plan (*.qp)|*.qp|Etudes Atelier Presse (*.atp)|*.atp|Tous les fichiers (*.*)|*.*||"
+    IDS_CR_REPRISESPLUS     "Reprises [+]"
+    IDS_CR_EXT_QP           "qp"
+    IDS_CR_MAX_INS_EDIT     "Vous avez dépassé les %1!d! insertions autorisées"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_CR_GRAPH            "Type de graphique"
+    IDS_CR_COUVCUM          "Couverture cumulée"
+    IDS_CR_APPCOUVJOUR      "Apport C% / Jour"
+    IDS_CR_CALCUL_APPORT    "Calcul apports"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_CR_CONTRIBN_C       "Contribution en C%"
+    IDS_CR_CONTRIBN_CTCOUV  "Contribution en coût / pt C%"
+    IDS_CR_CONTRIBN_GRP     "Contribution en GRP"
+    IDS_CR_CONTRIBN_PGRP    "Contribution en part de GRP"
+    IDS_CR_CONTRIBN_BUD     "Contribution en budget"
+    IDS_CR_CONTRIBN_PBUD    "Contribution en part de budget"
+    IDS_CR_MAX_TARIF        "Tarif maximum 9 999 999 euros"
+    IDS_CR_CONTRIB          "Contribution"
+    IDS_CR_GRANDEUR         "Grandeur"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_CR_APPORT_COUV      "Apport C%"
+END
+
+#endif    // French (France) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_FRA)
+#ifdef _WIN32
+LANGUAGE 12, 1
+#pragma code_page(1252)
+#endif //_WIN32
+#include "res\CreusetExt.rc2"  // non-Microsoft Visual C++ edited resources
+#include "l.fra\afxres.rc"          // Standard components
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

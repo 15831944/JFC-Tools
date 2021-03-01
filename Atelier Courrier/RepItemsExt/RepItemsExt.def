@@ -1,0 +1,6 @@
+; RepItemsExt.def : Declares the module parameters for the DLL.
+
+LIBRARY      "RepItemsExt"
+
+EXPORTS
+    ; Explicit exports can go here

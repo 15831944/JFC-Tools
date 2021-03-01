@@ -258,16 +258,18 @@ namespace JFCGridControl
         {
             string testString = "";
 
+            bool IsValid = true;
+
             if (this.Text != null)
                 testString = this.Text;
             else
-                return null;
+                IsValid = false;
 
             if (this.Text == "")
-                return null;
+                IsValid = false;
 
             if (this.ActualWidth == 0 || this.ActualHeight == 0)
-                return null;
+                IsValid = false;
 
             // Create an instance of a DrawingVisual.
             DrawingVisual drawingVisual = new DrawingVisual();
@@ -275,53 +277,57 @@ namespace JFCGridControl
             // Retrieve the DrawingContext from the DrawingVisual.
             DrawingContext drawingContext = drawingVisual.RenderOpen();
 
-            System.Windows.Point position = new System.Windows.Point(0, 0);
-
-            FormattedText FText = new FormattedText(testString, CultureInfo.GetCultureInfo("en-us"), FlowDirection.LeftToRight, new Typeface(this.FontFamily, this.FontStyle, this.FontWeight, this.FontStretch), this.FontSize, this.Foreground);
-
-            //if (FText.Width < this.Width)
-            //    size.Width = FText.Width;
-            //else
-            //    size.Width = this.Width;
-
-            //if (FText.Height < this.Height)
-            //    size.Height = FText.Height;
-            //else
-            //    size.Height = this.Height;
-
-            // on récupère la taille du texte
-            CellSize.Width = FText.Width;
-            CellSize.Height = FText.Height;
-
-
-            if (TextAlignment == TextAlignment.Left)
-            { }
-            else if (TextAlignment == TextAlignment.Right)
-                position.X = this.ActualWidth - FText.Width;
-            else if (TextAlignment == TextAlignment.Center)
-                position.X = (this.ActualWidth - FText.Width) / 2;
-            else if (TextAlignment == TextAlignment.Justify)
+            if (IsValid)
             {
-                //double coef = size.Width / this.ActualWidth;
+                System.Windows.Point position = new System.Windows.Point(0, 0);
 
-                //for (int i = 0; i < advanceWidths.Count(); i++)
-                //    advanceWidths[i] = advanceWidths[i] * coef;
+                FormattedText FText = new FormattedText(testString, CultureInfo.GetCultureInfo("en-us"), FlowDirection.LeftToRight, new Typeface(this.FontFamily, this.FontStyle, this.FontWeight, this.FontStretch), this.FontSize, this.Foreground);
+
+                //if (FText.Width < this.Width)
+                //    size.Width = FText.Width;
+                //else
+                //    size.Width = this.Width;
+
+                //if (FText.Height < this.Height)
+                //    size.Height = FText.Height;
+                //else
+                //    size.Height = this.Height;
+
+                // on récupère la taille du texte
+                CellSize.Width = FText.Width;
+                CellSize.Height = FText.Height;
+
+
+                if (TextAlignment == TextAlignment.Left)
+                { }
+                else if (TextAlignment == TextAlignment.Right)
+                    position.X = this.ActualWidth - FText.Width;
+                else if (TextAlignment == TextAlignment.Center)
+                    position.X = (this.ActualWidth - FText.Width) / 2;
+                else if (TextAlignment == TextAlignment.Justify)
+                {
+                    //double coef = size.Width / this.ActualWidth;
+
+                    //for (int i = 0; i < advanceWidths.Count(); i++)
+                    //    advanceWidths[i] = advanceWidths[i] * coef;
+                }
+
+
+                if (HiliteText != "")
+                {
+                    int startIndex = 0;
+                    int count = HiliteText.Length;
+
+                    startIndex = testString.ToLower().IndexOf(HiliteText.ToLower());
+
+                    if (startIndex >= 0)
+                        FText.SetForegroundBrush(HiliteBrush, startIndex, count);
+                }
+
+                // Draw a formatted text string into the DrawingContext.
+                drawingContext.DrawText(FText, position);
+
             }
-
-
-            if (HiliteText != "")
-            {
-                int startIndex = 0;
-                int count = HiliteText.Length;
-
-                startIndex = testString.ToLower().IndexOf(HiliteText.ToLower());
-
-                if (startIndex >= 0)
-                    FText.SetForegroundBrush(HiliteBrush, startIndex, count);
-            }
-
-            // Draw a formatted text string into the DrawingContext.
-            drawingContext.DrawText(FText, position);
 
             // Close the DrawingContext to persist changes to the DrawingVisual.
             drawingContext.Close();

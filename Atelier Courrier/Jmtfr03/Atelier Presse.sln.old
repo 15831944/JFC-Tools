@@ -1,0 +1,33 @@
+Microsoft Visual Studio Solution File, Format Version 8.00
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "JMTFR03", "JMTFR03\JMTFR03.vcproj", "{A81F06E2-1CF0-48D7-A049-969599E40662}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SourceCodeControl) = preSolution
+		SccNumberOfProjects = 2
+		SccLocalPath0 = .
+		CanCheckoutShared = true
+		SolutionUniqueID = {0692EF22-F7ED-4375-AD9C-095E401D9E33}
+		SccProjectUniqueName1 = JMTFR03\\JMTFR03.vcproj
+		SccProjectName1 = \u0022$/JMTFR03/JMTFR03\u0022,\u0020MVRAAAAA
+		SccLocalPath1 = JMTFR03
+		CanCheckoutShared = true
+	EndGlobalSection
+	GlobalSection(SolutionConfiguration) = preSolution
+		Debug = Debug
+		Release = Release
+	EndGlobalSection
+	GlobalSection(ProjectDependencies) = postSolution
+	EndGlobalSection
+	GlobalSection(ProjectConfiguration) = postSolution
+		{A81F06E2-1CF0-48D7-A049-969599E40662}.Debug.ActiveCfg = Debug|Win32
+		{A81F06E2-1CF0-48D7-A049-969599E40662}.Debug.Build.0 = Debug|Win32
+		{A81F06E2-1CF0-48D7-A049-969599E40662}.Release.ActiveCfg = Release|Win32
+		{A81F06E2-1CF0-48D7-A049-969599E40662}.Release.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+	EndGlobalSection
+	GlobalSection(ExtensibilityAddIns) = postSolution
+	EndGlobalSection
+EndGlobal

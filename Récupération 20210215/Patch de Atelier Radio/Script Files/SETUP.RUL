@@ -1,0 +1,1198 @@
+// Included header files ----------------------------------------------------
+#include "ifx.h"
+
+#define	PRODUCT_NAME		"Atelier Radio"
+
+//////////////////// installation declarations ///////////////////
+prototype ReadFileLine1(STRING,STRING,BYREF STRING);
+prototype WriteFileLine1(STRING,STRING,STRING);
+prototype FileLocked();
+prototype InitParametres();
+prototype STRING AddPathToFolder(STRING);
+prototype NUMBER CreatePath(STRING);
+prototype OnDeleteFile(STRING, NUMBER);
+prototype UpdateVague(STRING, STRING, STRING);
+prototype RemoveSpaces(BYREF STRING); 
+prototype OnGetItemSize(STRING, BOOL); 
+prototype UpdateExpfinanPar(STRING); 
+prototype UpdateFileIni(STRING); 
+prototype CheckVagueFile(STRING,STRING);
+
+// ----- global variables ------
+STRING	CheminPigeData, szMaj, szNewMaj, CheminUSER, CheminPathData, szLogFile, szLogPath, CheminDispo;
+BOOL	bPigeKantar, bPigeKantarIDF, bExtract, bExterne, bPigeResaeu, bDispo, bPigeConso;
+STRING	CheminSource, CheminUnivers, CheminData, CheminZone, CheminExterne, szFileNameOnly, TARGETPIGECONSO;
+
+//---------------------------------------------------------------------------
+// OnBegin
+//---------------------------------------------------------------------------
+function OnBegin()
+	NUMBER nResult,nPos1, nPos2,nvNewMaj, nvFileHandle;  
+	STRING szPathName,szDriveName, szLastMaj, svResult, svFileTxt, svVersionNumber, svLogUpdate;
+	LIST listID;
+	STRING szSearchStr, szPathNameOnly, svDATE, svTIME;
+begin
+
+	ParsePath (szFileNameOnly, PACKAGE_LOCATION, FILENAME_ONLY);
+	
+    TARGETDIR = "";
+    bExtract = FALSE;
+    
+	nPos1 = 0;
+	nPos2 = StrLength(szFileNameOnly)-1;
+	
+	StrSub (szNewMaj, szFileNameOnly, 1, 4);
+
+	if StrToNum(nvNewMaj, szNewMaj) >= ISERR_SUCCESS && StrFind(szFileNameOnly,"_") = 5 then;   		
+		nResult = NumToStr(szNewMaj, nvNewMaj);
+		nResult = StrToNum(nvNewMaj, szNewMaj);
+		szMaj = " n° ";
+	else
+		szNewMaj = "";
+		szMaj = "";
+	endif;
+	
+   	SdProductName ( PRODUCT_NAME);
+    SetTitle( PRODUCT_NAME , 0, BACKGROUNDCAPTION );
+	SetDialogTitle (DLG_STATUS, "Mise à jour " + PRODUCT_NAME + szMaj + szNewMaj ); 
+
+
+	// Chemin Application
+	if CMDLINE = "" then
+	   	listID = ListCreate (STRINGLIST);
+		GetValidDrivesList (listID, FIXED_DRIVE, 0);
+		nResult = ListGetFirstString(listID, szDriveName); 
+		while (nResult !=  END_OF_LIST)
+			szPathName = szDriveName + ":\\ARTRADIO";
+	    	if Is (FILE_EXISTS,szPathName ^ "Ataaetud.ini") then
+	    		TARGETDIR = szPathName;
+	    		nResult =  END_OF_LIST;
+	    	else
+	    		nResult = ListGetNextString (listID, szDriveName);
+	    	endif;
+	  	endwhile;
+	  	ListDestroy (listID);
+
+		// Havas Roaming
+		if TARGETDIR = "" && Is(FILE_EXISTS, FOLDER_APPDATA  ^ "ARTRADIO\\Ataaetud.ini") then
+			TARGETDIR = FOLDER_APPDATA  ^ "ARTRADIO";
+		endif;
+
+		if TARGETDIR = ""  then
+			TARGETDIR = WINDISK ^ "ARTRADIO";
+	 		Dlg_Path:
+			Disable (BACKBUTTON);
+			nResult = AskDestPath ("", "Veulliez indiquer où se trouve l'application " + PRODUCT_NAME + ".", TARGETDIR, 0);
+	        Enable (BACKBUTTON);
+	        
+			if TARGETDIR = ""  || !Is(FILE_EXISTS,TARGETDIR ^ "Ataaetud.ini") then
+				MessageBox ( "L'application " + PRODUCT_NAME + " n'a pas été trouvée !!!", WARNING);
+	   			goto Dlg_Path;
+			endif;
+		endif;
+
+		// PB Clémence Ridoux sous Roaming avec ATEACREU.EXE	
+		// if Is(FILE_LOCKED,TARGETDIR ^ "ataaetud.exe") || Is(FILE_LOCKED,TARGETDIR ^ "atbacibl.exe") || Is(FILE_LOCKED,TARGETDIR ^ "ateacreu.exe") || Is(FILE_LOCKED,TARGETDIR ^ "atzafunc.exe") || Is(FILE_LOCKED,TARGETDIR ^ "TOMEVAL.EXE") then
+		if Is(FILE_LOCKED,TARGETDIR ^ "ataaetud.exe") || Is(FILE_LOCKED,TARGETDIR ^ "atbacibl.exe") || Is(FILE_LOCKED,TARGETDIR ^ "atzafunc.exe") || Is(FILE_LOCKED,TARGETDIR ^ "TOMEVAL.EXE") then
+			MessageBox ( "Application " + PRODUCT_NAME + " en cours d'utilisation.", SEVERE);
+			goto Dlg_Path;
+
+		endif;		
+
+		if szNewMaj != "1" && szNewMaj != "" then
+			ReadFileLine1(TARGETDIR ^ "FRET" , "Fret.dat", szLastMaj);
+			if szLastMaj != "" then
+				StrToNum(nResult, szLastMaj);
+				nResult++;
+				NumToStr(szLastMaj, nResult);
+				if szNewMaj != szLastMaj then
+					SetDialogTitle (DLG_ASK_YESNO, PRODUCT_NAME + " installShield");
+					if AskYesNo ("Problème d'ordre croissant au niveau des mises à jour !!! \n\n( Erreur: " + szNewMaj + "-" + szLastMaj + " ), voulez-vous continer ?", NO) = NO then
+			  	 		abort;
+			   		endif;
+			   	endif;
+		   	endif;
+		endif;
+	elseif CMDLINE = "EXTRACT" then
+	   	ParsePath (szPathNameOnly, PACKAGE_LOCATION, PATH); 
+	    TARGETDIR = szPathNameOnly ^ szFileNameOnly;
+		nResult = CreatePath(TARGETDIR); 
+		bExtract = TRUE;	    
+	else
+	   	TARGETDIR = CMDLINE;
+	   	StrRemoveLastSlash (TARGETDIR);
+	   	FileLocked();
+	endif;
+	
+	if !bExtract && Is (FILE_EXISTS, TARGETDIR ^ "ATPIGE.INI") then
+		if GetProfString(TARGETDIR ^ "ATPIGE.INI", "Install", "PathData", CheminPathData) = 0 then 
+			StrRemoveLastSlash (CheminPathData);
+		endif;
+	endif;
+    
+    if CheminPathData = "" then
+		CheminPathData = TARGETDIR;
+	endif;    
+
+	CheminPigeData = CheminPathData ^ "Pigedata";
+
+	bPigeResaeu = (StrFind(CheminPathData,TARGETDIR) != 0);
+ 
+	if GetProfString(TARGETDIR ^ "ATAAETUD.INI", "Localisation", "SOURCE", CheminSource) < 0 then
+    	CheminSource = "SOURCE";
+    endif;
+	if GetProfString(TARGETDIR ^ "ATAAETUD.INI", "Localisation", "UNIVERS", CheminUnivers) < 0 then
+    	CheminUnivers = "UNIVERS";
+    endif;
+	if GetProfString(TARGETDIR ^ "ATAAETUD.INI", "Localisation", "DATA", CheminData) < 0 then
+    	CheminData = "DATA";
+    endif;
+	if GetProfString(TARGETDIR ^ "ATAAETUD.INI", "Localisation", "ZONE", CheminZone) < 0 then
+    	CheminZone = "ZONE";
+    endif;
+	if GetProfString(TARGETDIR ^ "ATAAETUD.INI", "Localisation", "USER_DEFAULT",CheminUSER) != 0 then
+		nResult = GetProfString(TARGETDIR ^ "Ataaetud.ini", "Localisation", "USER",CheminUSER);
+	endif;
+
+	if !bExtract && GetProfString(TARGETDIR ^ "Ufr02.ini", "SAS", "Repertoire SE", CheminExterne ) = 0 then
+		bExterne = Is (DIR_WRITEABLE, CheminExterne); // && (CheminExterne != "")   
+	else
+		bExterne = TRUE;
+		CheminExterne = TARGETDIR ^ "EXTERNE";
+		CreateDir(CheminExterne);
+	endif;
+
+	if !bExtract && GetProfString(TARGETDIR ^ "ATAAETUD.INI", "Localisation", "R_Dispo", CheminDispo ) = 0 then
+		bDispo = (CheminDispo != "")  && Is (DIR_WRITEABLE, CheminDispo);
+	else
+		bDispo = TRUE;
+		CheminDispo = TARGETDIR ^ "DISPO";
+	endif;
+
+	CheminUSER = AddPathToFolder(CheminUSER);
+	CheminZone = AddPathToFolder(CheminZone);
+	CheminUnivers = AddPathToFolder(CheminUnivers);
+	CheminSource = AddPathToFolder(CheminSource);
+	CheminData = AddPathToFolder(CheminData);
+
+	ChangeDirectory (TARGETDIR);
+
+	if CMDLINE ="" && Is (FILE_EXISTS, SUPPORTDIR ^ "Patch.txt") then
+	  	listID = ListCreate (STRINGLIST);
+	  	ListReadFromFile (listID, SUPPORTDIR ^ "Patch.txt");
+		Disable (BACKBUTTON);
+  		SdShowInfoList ( "Patch" + szMaj + szNewMaj, " ", listID );
+  		ListDestroy (listID);
+  	endif;
+  	
+  	if Is ( FILE_EXISTS,SUPPORTDIR ^ "Patch.txt") then
+  		svFileTxt = TARGETDIR ^ "Fret" ^ szFileNameOnly + ".txt";
+  		CopyFile (SUPPORTDIR ^ "Patch.txt", svFileTxt);
+  	endif;
+
+    SdShowMsg("récupération des paramètres de configurations.",TRUE);
+
+	InitParametres();  
+        
+    SdShowMsg("",FALSE);
+
+ 	nResult = FeatureSetTarget(MEDIA, "<CheminZone>", CheminZone);
+ 	nResult = FeatureSetTarget(MEDIA, "<CheminUnivers>", CheminUnivers);
+ 	nResult = FeatureSetTarget(MEDIA, "<CheminSource>", CheminSource);
+ 	nResult = FeatureSetTarget(MEDIA, "<CheminData>", CheminData);
+ 	nResult = FeatureSetTarget(MEDIA, "<CheminUSER>", CheminUSER);
+ 	nResult = FeatureSetTarget(MEDIA, "<CheminPigeData>", CheminPigeData);
+ 	nResult = FeatureSetTarget(MEDIA, "<CheminPathData>", CheminPathData);
+ 	nResult = FeatureSetTarget(MEDIA, "<CheminExterne>", CheminExterne);
+ 	nResult = FeatureSetTarget(MEDIA, "<CheminDispo>", CheminDispo); 
+ 	nResult = FeatureSetTarget(MEDIA, "<CheminCONSO>", TARGETPIGECONSO);
+	 
+end;
+
+//---------------------------------------------------------------------------
+// OnFirstUIAfter
+//---------------------------------------------------------------------------
+function OnFirstUIAfter()
+	NUMBER nResult, nvResult;
+	STRING szPige, svResult, svVersionNumber, svLogUpdate, ShortCheminPigeData;
+
+	STRING	szPatchPige, szCount, szPigeRadioS, szPathCibles;
+	NUMBER	nlen, nvCount;
+
+begin
+    
+	ShortCheminPigeData = CheminPigeData;
+	LongPathToShortPath(ShortCheminPigeData);
+
+    SdShowMsg("Mise à jour des paramètres de configurations.",TRUE);
+
+	OnDeleteFile(TARGETDIR, EXCLUDE_SUBDIR);
+
+	ParsePath (szPatchPige, PACKAGE_LOCATION, FILENAME_ONLY);
+	
+	StrSub (szCount, szPatchPige, 1, 4);
+
+	nlen = StrLengthChars(szPatchPige);
+
+	if StrToNum(nvCount, szCount) >= ISERR_SUCCESS && StrFind(szPatchPige,"_") = 5 then;   		
+		nlen = nlen - 6;	
+		StrSub(szPatchPige, szPatchPige, 6, nlen);
+	endif;
+	
+	if (StrFind(szPatchPige, "PigeK") = 0 || StrFind(szPatchPige, "PigeI") = 0) && nlen = 14 then
+
+		StrSub(szPatchPige, szPatchPige, 11, 3);
+		
+		if StrCompare(szPatchPige, "Aud") = 0 then 
+			szPigeRadioS = "MDADIT";
+		elseif StrCompare(szPatchPige, "All") = 0 then 
+			szPigeRadioS = "F1J2C3";
+		elseif StrCompare(szPatchPige, "Gem") = 0 then 
+			szPigeRadioS = "G1N2M3";
+		elseif StrCompare(szPatchPige, "GpM") = 0 then 
+			szPigeRadioS = "G1R2M3";
+		elseif StrCompare(szPatchPige, "Mpg") = 0 then 
+			szPigeRadioS = "M1P2FR";
+		elseif StrCompare(szPatchPige, "Krm") = 0 then 
+			szPigeRadioS = "KRMDIA";
+		elseif StrCompare(szPatchPige, "Lap") = 0 then 
+			szPigeRadioS = "L1A2P3";
+		elseif StrCompare(szPatchPige, "Min") = 0 then 
+			szPigeRadioS = "N1T2W";
+		elseif StrCompare(szPatchPige, "Rmc") = 0 then 
+			szPigeRadioS = "N1X2R3";
+		elseif StrCompare(szPatchPige, "NRJ") = 0 then 
+			szPigeRadioS = "N1R2J3";
+		elseif StrCompare(szPatchPige, "RFP") = 0 then 
+			szPigeRadioS = "R1F2R3";
+		elseif StrCompare(szPatchPige, "Sky") = 0 then 
+			szPigeRadioS = "S1K2Y3";
+		elseif StrCompare(szPatchPige, "TF1") = 0 then 
+			szPigeRadioS = "T1F213";
+		elseif StrCompare(szPatchPige, "Viv") = 0 then 
+			szPigeRadioS = "V1V2K3";
+		elseif StrCompare(szPatchPige, "MyM") = 0 then 
+			szPigeRadioS = "M1M2D3";
+		elseif StrCompare(szPatchPige, "Ppm") = 0 then 
+			szPigeRadioS = "P1P2R3";
+		endif;
+
+		if szPigeRadioS != NOTHING then
+			WriteProfString(TARGETDIR ^ "ATPIGE.INI", "Client", "PigeRadioS", szPigeRadioS);
+		endif;
+		
+	endif;
+
+
+	if Is(FILE_EXISTS, TARGETDIR ^ "EXPFINAN.PAR.NEW") then
+	
+		UpdateExpfinanPar(TARGETDIR);
+
+		UpdateExpfinanPar(CheminUSER);
+					
+		if !Is(FILE_EXISTS, TARGETDIR ^ "EXPFINAN.PAR") && !Is(FILE_EXISTS, CheminUSER ^ "EXPFINAN.PAR") then
+			RenameFile(TARGETDIR ^ "EXPFINAN.PAR.NEW", TARGETDIR ^ "EXPFINAN.PAR");
+		else
+			DeleteFile(TARGETDIR ^ "EXPFINAN.PAR.NEW");
+		endif;
+			
+	endif;
+
+	UpdateFileIni("ATAAETUD.INI");
+
+	UpdateFileIni("ATPIGE.INI");
+
+	if Is (DIR_WRITEABLE, CheminSource)  && !bExtract then
+		OnDeleteFile(CheminSource, INCLUDE_SUBDIR);	
+
+		UpdateVague (CheminSource ^ "SFR03", "SFR03VAG.CSV", ".ACS");
+		UpdateVague (CheminSource ^ "SFR04", "SFR04VAG.CSV", ".ACS");
+
+		UpdateVague (CheminSource ^ "SFR05", "SFR05VAG.CSV", ".ACS");
+		UpdateVague (CheminSource ^ "SFR14", "SFR14VAG.CSV", ".ACS");
+
+		UpdateVague (CheminSource ^ "SFR23", "SFR23VAG.CSV", ".ACS");
+		UpdateVague (CheminSource ^ "SFR24", "SFR24VAG.CSV", ".ACS");
+		
+		UpdateVague (CheminSource ^ "SFR15", "SFR15VAG.CSV", ".ACS");
+		UpdateVague (CheminSource ^ "SFR16", "SFR16VAG.CSV", ".ACS");
+
+		UpdateVague (CheminSource ^ "SFR25", "SFR25VAG.CSV", ".ACS");
+		UpdateVague (CheminSource ^ "SFR26", "SFR26VAG.CSV", ".ACS");
+
+		// Pologne
+		UpdateVague (CheminSource ^ "SPL01", "SPL01VAG.CSV", ".PDS");
+		UpdateVague (CheminSource ^ "SPL02", "SPL02VAG.CSV", ".PDS");
+
+	endif;
+
+	if Is (FILE_EXISTS, TARGETDIR ^ "AFFCONSO\\ParamEnvironmentRadio.exe") then
+		OnDeleteFile(TARGETDIR ^ "AFFCONSO", INCLUDE_SUBDIR);
+	endif;
+	
+	
+	if Is (DIR_WRITEABLE, CheminPigeData)  && !bExtract  && !bPigeResaeu then
+	
+		OnDeleteFile(CheminPigeData, EXCLUDE_SUBDIR);
+		
+		//Kantar
+		if Is(FILE_EXISTS, CheminPigeData ^ "PigeRad.db") then
+			nResult = FindAllFiles (CheminPigeData, "PR00???.db", svResult, RESET);
+
+			while nResult = 0
+		
+				ParsePath (szPige, svResult, FILENAME);
+				SdShowMsg("Mise à jour de l'Atelier Pige Radio. (" + szPige + ")",TRUE);
+
+				LongPathToShortPath(svResult);
+
+				LaunchAppAndWait (CheminPigeData ^ "pigemaj.exe","/R /S=" + svResult + " /D=" + ShortCheminPigeData ^ "PigeRad.db",	LAAW_OPTION_MINIMIZED | LAAW_OPTION_WAIT);
+				nResult = FindAllFiles (CheminPigeData, "PR00???.db", svResult, CONTINUE);
+				SdShowMsg("Mise à jour de l'Atelier Pige Radio. (" + szPige + ")",FALSE);
+			endwhile;
+		else
+			DeleteFile (CheminPigeData ^ "PR00???.db");
+		endif;	    
+		
+		//Kantar IDF
+		if Is(FILE_EXISTS, CheminPigeData ^ "PigeIdf.db") then
+			nResult = FindAllFiles (CheminPigeData, "PR00???_IDF.db", svResult, RESET);
+
+			while nResult = 0
+
+				ParsePath (szPige, svResult, FILENAME);
+				SdShowMsg("Mise à jour de l'Atelier Pige Radio Idf. (" + szPige + ")",TRUE);
+				
+				LongPathToShortPath(svResult);
+				
+				LaunchAppAndWait (CheminPigeData ^ "pigemaj.exe","/R /S=" + svResult + " /D=" + ShortCheminPigeData ^ "PigeIdf.db",	LAAW_OPTION_MINIMIZED | LAAW_OPTION_WAIT);
+				nResult = FindAllFiles (CheminPigeData, "PR00???_IDF.db", svResult, CONTINUE);
+				SdShowMsg("Mise à jour de l'Atelier Pige Radio Idf. (" + szPige + ")",FALSE);
+			endwhile;
+		else
+			DeleteFile (CheminPigeData ^ "PR00???_IDF.db");
+		endif;	    
+		
+	endif;
+			
+	WriteFileLine1(TARGETDIR ^ "FRET","Fret.dat",szNewMaj);
+	
+    SdShowMsg("",FALSE);
+
+	if CMDLINE = "" then
+		MessageBox ("Mise à jour " + PRODUCT_NAME + szMaj + szNewMaj + " terminée", INFORMATION);
+	endif;
+    
+end;
+
+//---------------------------------------------------------------------------
+// Function: ReadFileLine1(svChemin,svFichier,svLigne)
+//---------------------------------------------------------------------------
+function ReadFileLine1(svChemin,svFichier,svLigne)
+    NUMBER  nvFileHandle;
+begin 
+
+	if Is(FILE_EXISTS, svChemin ^ svFichier)then
+		OpenFileMode (FILE_MODE_APPEND);
+	    OpenFile (nvFileHandle, svChemin, svFichier);
+	    	GetLine (nvFileHandle, svLigne);
+		CloseFile (nvFileHandle);
+	endif;
+		
+end;
+
+//---------------------------------------------------------------------------
+// Function: WriteFileLine1(svChemin,svFichier,svLigne)
+//---------------------------------------------------------------------------
+function WriteFileLine1(svChemin,svFichier,svLigne)
+    NUMBER  nvFileHandle;
+begin 
+
+	if Is(FILE_EXISTS, svChemin ^ svFichier) = TRUE then
+		SRCDIR = svChemin; 
+	    FileInsertLine (svFichier, svLigne , 0, REPLACE);
+	else
+		OpenFileMode (FILE_MODE_APPEND);
+	    CreateFile (nvFileHandle, svChemin, svFichier);
+	    	WriteLine(nvFileHandle, svLigne );
+	    CloseFile (nvFileHandle);
+	endif;
+		
+end;
+ 
+//---------------------------------------------------------------------------
+// OnEnd
+//---------------------------------------------------------------------------
+function OnEnd()
+	NUMBER nResult, nvFileHandle;
+	STRING sResult;
+begin
+
+	if CMDLINE != "" then
+	
+		if Is(FILE_EXISTS, TARGETDIR ^ "AU-Serv.err") then
+
+			nResult = DeleteFile (TARGETDIR ^ "AU-Serv.err");
+
+			if Is(FILE_EXISTS, TARGETDIR ^ "AU-Serv.err") then
+
+				Delay(2);
+				nResult = RenameFile(TARGETDIR ^ "AU-Serv.err", TARGETDIR ^ szFileNameOnly + ".err");
+
+			endif;
+		endif;
+	endif;
+end;
+ 
+
+//---------------------------------------------------------------------------
+// OnGetItemSize                                            
+//---------------------------------------------------------------------------
+function OnGetItemSize(szFeature, bSelect )
+	NUMBER nResult, nvSize;
+	STRING szString;
+begin
+
+	// Get the size of 'szFeature'. 
+	nResult = FeatureGetItemSize (MEDIA,szFeature, nvSize);
+	if nvSize > 0 then
+		nResult = FeatureSelectItem(MEDIA, szFeature, bSelect);
+	else
+		nResult = FeatureSelectItem(MEDIA, szFeature, FALSE);
+	endif;
+
+end;
+
+
+//---------------------------------------------------------------------------
+// OnFirstUIBefore                                            
+//---------------------------------------------------------------------------
+function OnFirstUIBefore()
+	BOOL bPigedata;  
+	NUMBER nResult, nvSize;
+	STRING szString;
+begin
+
+	if Is(FILE_EXISTS, TARGETDIR ^ "ATAAETUD.INI.ADD") then
+		DeleteFile(TARGETDIR ^ "ATAAETUD.INI.ADD");
+	endif;
+
+	OnGetItemSize("Application", TRUE);
+	OnGetItemSize("UpdateCMD", CMDLINE != "");
+	OnGetItemSize("UpdateNoCMD", CMDLINE = "" || CMDLINE = "EXTRACT");
+	OnGetItemSize("PigeKantar", bPigeKantar && !bPigeResaeu);
+	OnGetItemSize("PigeKantarIdf", bPigeKantarIDF && !bPigeResaeu);
+	OnGetItemSize("Source", Is (DIR_WRITEABLE, CheminSource));
+	OnGetItemSize("Data", Is (DIR_WRITEABLE, CheminData));
+	OnGetItemSize("Zone", Is (DIR_WRITEABLE, CheminZone));
+	OnGetItemSize("Externe", bExterne);
+	OnGetItemSize("Dispo", bDispo);
+	OnGetItemSize("User", TRUE); // Is (DIR_WRITEABLE, CheminUSER));
+	OnGetItemSize("Univers", Is (DIR_WRITEABLE, CheminUnivers));
+
+
+	// Update Consolidation
+	OnGetItemSize("Consolidation", Is (FILE_EXISTS, TARGETDIR ^ "ACFRadio.exe")); 
+	OnGetItemSize("AffConso", Is (FILE_EXISTS, TARGETDIR ^ "AFFCONSO\\ParamEnvironmentRadio.exe"));
+	OnGetItemSize("BaseConso", bPigeConso);
+
+	// Modifié le 26/06/2012
+	if bPigeKantar then
+		nResult = FeatureSelectItem(MEDIA,"ExePigeKantar", TRUE);
+	else
+		nResult = FeatureSelectItem(MEDIA,"ExePigeKantar", FALSE);
+	endif;
+	
+	if bPigeKantarIDF then
+		nResult = FeatureSelectItem(MEDIA,"ExePigeKantarIDF", TRUE);
+	else
+		nResult = FeatureSelectItem(MEDIA,"ExePigeKantarIDF", FALSE);
+	endif;
+
+	
+	if (bPigeKantar || bPigeKantarIDF) && !bPigeResaeu then
+		nResult = FeatureSelectItem(MEDIA,"ExeMajPigeKantar", TRUE );
+	else
+		nResult = FeatureSelectItem(MEDIA,"ExeMajPigeKantar", FALSE );
+	endif;
+	
+	bPigedata = Is (DIR_WRITEABLE, CheminPigeData) && (bPigeKantar || bPigeKantarIDF) || bExtract;
+	nResult = FeatureSelectItem(MEDIA,"Pigedata", bPigedata && !bPigeResaeu);
+	
+end;
+ 
+ 
+//---------------------------------------------------------------------------
+// OnFileLocked
+//---------------------------------------------------------------------------
+function OnFileLocked(szFile)
+begin
+
+	// TODO: Enable this code if you want to show a confirmation dialog box.	
+	//return SdExceptions(LOCKED, szFile);
+	
+	// Return ERR_PERFORM_AFTER_REBOOT so that the file will be updated
+	// w/o confirmation.
+	return ERR_PERFORM_AFTER_REBOOT;
+end;
+ 
+
+//---------------------------------------------------------------------------
+// InitParametres()
+//---------------------------------------------------------------------------
+function InitParametres()
+	STRING	svLine, svReturnLine, sKeyPigeS, svResult;
+	NUMBER	nvLine, nvLineNumber1, nvLineNumber2, nResult, nvType, nvSize, nvResult;
+begin
+
+	bPigeConso = FALSE;
+
+	nResult = GetProfString(TARGETDIR ^ "ATPIGE.INI", "Client", "PigeRadioS", sKeyPigeS);
+
+	StrRemoveLastSlash(TARGETPIGECONSO);
+
+	bPigeKantar = ((Is(FILE_EXISTS, TARGETDIR ^ "APFRadio.exe") = 1) && (Is(FILE_EXISTS, CheminPigeData ^ "PigeRad.db") = 1) && (sKeyPigeS != "")) || bExtract;
+	bPigeKantarIDF = ((Is(FILE_EXISTS, TARGETDIR ^ "APFRadioIdf.exe") = 1) && (Is(FILE_EXISTS, CheminPigeData ^ "PigeIdf.db") = 1 ) && (sKeyPigeS != "")) || bExtract;
+
+end;
+
+//---------------------------------------------------------------------------
+// FileLocked()
+//---------------------------------------------------------------------------
+function FileLocked()
+begin
+
+	if Is(FILE_LOCKED,TARGETDIR ^ "ataaetud.exe") then
+		abort;
+	elseif Is(FILE_LOCKED,TARGETDIR ^ "atbacibl.exe") then
+		abort;
+	elseif Is(FILE_LOCKED,TARGETDIR ^ "ateacreu.exe") then
+		abort;
+	elseif Is(FILE_LOCKED,TARGETDIR ^ "atzafunc.exe") then
+		abort;
+	elseif Is(FILE_LOCKED,TARGETDIR ^ "TOMEVAL.EXE") then
+		abort;
+	endif;		
+end; 
+
+
+//---------------------------------------------------------------------------
+// AddPathToFolder()
+//---------------------------------------------------------------------------
+
+function STRING AddPathToFolder(szFolder)
+	NUMBER nResult;
+begin
+
+	if StrFind (szFolder, ":") != 1 && StrFind (szFolder, "\\\\") != 0 then
+		szFolder = TARGETDIR ^ szFolder;
+		nResult = CreatePath(szFolder);
+	elseif !Is(PATH_EXISTS,szFolder) then
+		StrRemoveLastSlash(szFolder);
+		ParsePath(szFolder, szFolder, FILENAME);
+		szFolder = TARGETDIR ^ szFolder;
+		nResult = CreatePath(szFolder);
+	endif; 
+	
+	return szFolder;
+
+end;
+
+//---------------------------------------------------------------------------
+// CreatePath()
+//---------------------------------------------------------------------------
+function NUMBER CreatePath(szPath) 
+	NUMBER nResult;
+begin
+
+   	if !Is(PATH_EXISTS, szPath) then
+   		nResult = CreateDir(szPath);
+   	endif;
+   	return nResult;
+
+end;
+
+//---------------------------------------------------------------------------
+// OnDeleteFile
+//---------------------------------------------------------------------------
+function OnDeleteFile(svDir, nOp)
+	NUMBER nResult, nvResult;
+	STRING svFileSpec, svResult, svFile, svPath;
+begin
+
+	svFileSpec = "*.Delete";
+
+
+
+	if nOp = EXCLUDE_SUBDIR then
+
+		nResult = FindFile(svDir, svFileSpec, svResult); 
+
+		while(nResult = 0) 
+
+			ParsePath(svFile,svResult,FILENAME_ONLY);
+
+			if Is(FILE_EXISTS, svDir ^ svFile) then
+				nvResult = DeleteFile(svDir ^ svFile);
+			elseif Is(PATH_EXISTS, svDir ^ svFile) then
+				nvResult = DeleteDir(svDir ^ svFile, ALLCONTENTS);
+				nvResult = DeleteDir(svDir ^ svFile, ROOT);
+			endif;
+			
+			nvResult = DeleteFile(svDir ^ svResult);
+
+			nResult = FindFile(svDir, svFileSpec, svResult); 
+
+		endwhile; 
+
+	endif;
+
+
+	if nOp = INCLUDE_SUBDIR then
+
+		nResult = FindAllFiles (svDir, svFileSpec, svResult , RESET); 
+
+		while(nResult = 0) 
+
+			// Find the next matching file name. 
+			ParsePath(svFile,svResult,FILENAME_ONLY);
+			ParsePath(svPath,svResult,PATH);
+
+			if Is(FILE_EXISTS, svPath + svFile) then
+				nvResult = DeleteFile(svPath + svFile);
+			elseif Is(PATH_EXISTS, svPath + svFile) then
+				nvResult = DeleteDir(svPath + svFile, ALLCONTENTS);
+				nvResult = DeleteDir(svPath + svFile, ROOT);
+			endif;
+			
+			nvResult = DeleteFile(svResult);
+
+			nResult = FindAllFiles(svDir, svFileSpec, svResult , CONTINUE); 
+
+		endwhile; 
+
+	endif;
+  
+end;
+
+//---------------------------------------------------------------------------
+// UpdateVague                                            
+//---------------------------------------------------------------------------
+function UpdateVague (szPathName, szFileName, svControlExt)
+	NUMBER 	nvFileHandle, nPosEnd ,nPosStart, nvLineNumber, nvResult, nvResult_BAK;
+	STRING 	svResult, szSearchStr, svSubStr, svReturnLine, szPathFileName, szFileVague, svDate, svTime;
+	NUMBER  nResultFileGrep, nResultFindAllFiles, nResultStrSub, nResultOpenFile, nResultFileInfo, nResultFileInsertLine;
+begin	
+    
+    szPathFileName = szPathName ^ szFileName;
+
+	if svControlExt = NOTHING then
+		svControlExt = ".ACS";
+	endif;
+
+	if Is (FILE_EXISTS, szPathFileName + ".BAK") then
+
+		GetFileInfo ( szPathFileName , FILE_SIZE, nvResult, svResult ); 
+		GetFileInfo ( szPathFileName + ".BAK", FILE_SIZE, nvResult_BAK, svResult ); 
+		
+		if nvResult_BAK > nvResult then
+			DeleteFile(szPathFileName);
+			RenameFile(szPathFileName + ".BAK", szPathFileName);
+		else
+			DeleteFile(szPathFileName+ ".BAK");
+		endif;
+		
+	endif;
+
+    if Is (FILE_EXISTS, szPathFileName) then
+
+	    //Backup Date Time File
+		GetFileInfo (szPathFileName , FILE_DATE, nResultFileInfo, svDate);
+		GetFileInfo (szPathFileName , FILE_TIME, nResultFileInfo, svTime);
+	
+	   	//Delete Files Vague
+	   	OpenFileMode (FILE_MODE_NORMAL);
+	   	nResultOpenFile = OpenFile (nvFileHandle, szPathName, szFileName);
+	   	while GetLine (nvFileHandle, szSearchStr) = 0
+	   		RemoveSpaces(szSearchStr);
+	
+	   		nPosStart = StrFind(szSearchStr,",\"") + 2;
+	   		nPosEnd = StrFindEx(szSearchStr,"\",\"", nPosStart + 1) - 1;
+	   		nResultStrSub = StrSub (szFileVague, szSearchStr, nPosStart, nPosEnd - nPosStart + 1);
+	        
+	        szFileVague = szFileVague + svControlExt;
+	        
+	   		nResultStrSub = StrSub (svSubStr, szSearchStr, 0, StrLength (szSearchStr) - 1);
+	   		nResultFindAllFiles = FindAllFiles (szPathName, szFileVague, svResult, RESET);
+			nResultFileGrep = FileGrep (szPathFileName, szSearchStr, svReturnLine, nvLineNumber, RESTART);
+	   		
+			if nResultFindAllFiles < 0 then
+	      		if nResultFileGrep = 0 then
+					nResultFileInsertLine = FileInsertLine (szPathFileName, svSubStr + "0", nvLineNumber, REPLACE);
+				endif;
+	
+			elseif nResultFileGrep = 0 then
+				nResultFileInsertLine = FileInsertLine (szPathFileName, svSubStr + "1", nvLineNumber, REPLACE);
+			endif;
+	   		
+	   	endwhile;
+	    
+	    //Restore Date Time File
+		SetFileInfo (szPathFileName , FILE_DATE, nResultFileInfo, svDate);
+		SetFileInfo (szPathFileName , FILE_TIME, nResultFileInfo, svTime);
+
+	endif;
+	
+end;
+
+//---------------------------------------------------------------------------
+// Function:  RemoveSpaces
+//---------------------------------------------------------------------------
+function RemoveSpaces(svString)
+    STRING svTemp1, svTemp2;
+begin
+
+remove_leading_space:
+    StrSub(svTemp1, svString, 0, 1);
+    if (svTemp1 = " ") then
+        StrSub(svTemp2, svString, 1, StrLength(svString) - 1);
+        svString = svTemp2;
+        goto remove_leading_space;
+    endif;
+
+remove_trailing_space:
+    StrSub(svTemp1, svString, StrLength(svString) - 1, 1);
+    if (svTemp1 = " ") then
+        StrSub(svTemp2, svString, 0, StrLength(svString) - 1);
+        svString = svTemp2;
+        goto remove_trailing_space;
+    endif;
+
+end;
+
+
+//---------------------------------------------------------------------------
+// CheckVagueFile
+//
+// The OnInstallingFile event is called when a file is about to be installed
+// as a result of FeatureTransferData or FeatureMoveData.
+//
+// szFile will contain the full path of file about to be installed.
+//---------------------------------------------------------------------------
+function CheckVagueFile(szFile, szVague)
+	STRING szFileName, svResult;
+	NUMBER nvResult;
+begin	
+		
+	ParsePath(szFileName, szFile, FILENAME);
+	StrToUpper ( szFileName, szFileName ); 	
+
+	if StrCompare(szFileName, szVague) = 0 then
+		if Is(FILE_EXISTS, szFile + ".BAK") then
+			DeleteFile( szFile + ".BAK");
+		endif;
+		if Is(FILE_EXISTS, szFile) then
+			RenameFile(szFile, szFile + ".BAK");
+		endif;
+	endif;
+
+end;
+
+
+//---------------------------------------------------------------------------
+// OnInstallingFile
+//
+// The OnInstallingFile event is called when a file is about to be installed
+// as a result of FeatureTransferData or FeatureMoveData.
+//
+// szFile will contain the full path of file about to be installed.
+//---------------------------------------------------------------------------
+function OnInstallingFile(szFile)
+	STRING szPath, svResult, szAttributes, szFileOnly, szFileTmp, szFileName;
+	NUMBER nvResult, nvFileHandle, nResult;
+begin	
+
+		CheckVagueFile(szFile, "SFR03VAG.CSV");
+		CheckVagueFile(szFile, "SFR04VAG.CSV");
+
+		CheckVagueFile(szFile, "SFR05VAG.CSV");
+		CheckVagueFile(szFile, "SFR14VAG.CSV");
+
+		CheckVagueFile(szFile, "SFR23VAG.CSV");
+		CheckVagueFile(szFile, "SFR24VAG.CSV");
+		
+
+		CheckVagueFile(szFile, "SFR15VAG.CSV");
+		CheckVagueFile(szFile, "SFR16VAG.CSV");
+
+		CheckVagueFile(szFile, "SFR25VAG.CSV");
+		CheckVagueFile(szFile, "SFR26VAG.CSV");
+
+		// Pologne
+		CheckVagueFile (szFile, "SPL01VAG.CSV");
+		CheckVagueFile (szFile, "SPL02VAG.CSV");
+
+
+	if (GetFileInfo (szFile, FILE_ATTRIBUTE, nvResult, svResult) = 0) then 
+
+		// Is it read-only? 
+		if (FILE_ATTR_READONLY & nvResult) then 
+			nResult = SetFileInfo ( szFile, FILE_ATTRIBUTE, nvResult - FILE_ATTR_READONLY, "" ); 
+		endif; 
+	
+
+	endif;
+
+
+end;
+//---------------------------------------------------------------------------
+// OnMoveData
+//
+// The OnMoveData event is called by OnShowUI to initiate the file
+// transfer of the setup.
+//
+// Note: This event will not be called automatically in a
+// program...endprogram style setup.
+//---------------------------------------------------------------------------
+function OnMoveData()
+number	nResult, nMediaFlags, nvDisk, nTemp;
+string  sResult;
+begin
+
+	// Don't install the DISK1COMPONENT if MAINT_OPTION_NONE was specified.
+	if( MAINT_OPTION = MAINT_OPTION_NONE ) then
+		FeatureSelectItem( MEDIA, DISK1COMPONENT, FALSE );
+	endif;
+
+    // Updated in 11.5, disable the cancel button during file transfer unless
+	// this is non-maintenance mode or repair mode.
+    if( MAINTENANCE && ( !REINSTALLMODE || UPDATEMODE ) ) then
+        Disable( CANCELBUTTON );
+    endif;
+
+    // Show Status
+	// Note: Start status window at 1 in case CreateInstallationInfo call
+	// is lengthy.
+	SetStatusWindow( 1, "" );
+	Enable( STATUSEX );
+	StatusUpdate( ON, 100 );
+
+	// Create the uninstall infomation (after displaying the progress dialog)
+	// Don't create uninstall information if MAINT_OPTION_NONE was specified.
+	if( MAINT_OPTION != MAINT_OPTION_NONE ) then
+		CreateInstallationInfo();
+	endif;
+
+	try
+		// Move Data
+		nResult = FeatureTransferData( MEDIA );
+	catch 
+
+	endcatch; 
+
+    // Moved in 11.0, Check for failure before creating uninstall key.
+    // Handle move data error and abort if error occured.
+	if( nResult < ISERR_SUCCESS ) then
+		OnComponentError();
+		abort;
+	endif;	    
+
+	// Create uninstall key, if DISK1COMPONENT was installed.
+	if( IFX_DISK1INSTALLED ) then
+
+		// Store text-subs for maintenance mode later, only do this when
+		// disk 1 is installed. Note that any text-subs that are updated after
+        // this call will not be remembered during maintenance mode.
+		FeatureSaveTarget("");
+
+		// Write uninstall information.
+		MaintenanceStart();
+
+		// Customize Uninstall Information
+		OnCustomizeUninstInfo();
+
+	endif;
+
+    // Disable Status
+	Disable( STATUSEX );
+
+end;
+
+//---------------------------------------------------------------------------
+// UpdateExpfinanPar                                            
+//---------------------------------------------------------------------------
+function UpdateExpfinanPar (szPath)
+	STRING 	svResult, svIndex, szPathFileExpfinanPar, szPathFileExpfinanNew;
+	NUMBER  nvIndex, nvResult, nvIndexNew;
+begin	
+
+	szPathFileExpfinanPar = szPath ^ "EXPFINAN.PAR";
+	szPathFileExpfinanNew = TARGETDIR ^ "EXPFINAN.PAR.NEW";
+	
+	
+	if Is(FILE_EXISTS , szPathFileExpfinanPar) && Is(FILE_EXISTS, szPathFileExpfinanNew) then
+		
+		if !Is(FILE_LOCKED,szPathFileExpfinanPar) then
+		
+			nvResult = GetProfString(szPathFileExpfinanPar, "Analyse", "Nb", svResult);
+			StrToNum(nvIndex, svResult);
+			nvResult = GetProfString(szPathFileExpfinanNew, "Analyse", "Nb", svResult);
+			StrToNum(nvIndexNew, svResult);
+			
+			if nvIndexNew > nvIndex then
+				
+				
+				while (nvIndexNew > nvIndex)
+					nvIndex++;
+					NumToStr (svIndex, nvIndex);
+					StrTrim(svIndex);
+					nvResult = GetProfString(szPathFileExpfinanNew, "Analyse", "N" + svIndex, svResult);
+					if svResult != "" then
+						nvResult = WriteProfString(szPathFileExpfinanPar, "Analyse", "N" + svIndex, svResult);
+					endif;
+				endwhile;
+
+				NumToStr (svResult, nvIndexNew);				
+				nvResult = WriteProfString(szPathFileExpfinanPar, "Analyse", "Nb", svResult);
+			
+			endif;
+	
+		endif;
+	endif;
+	
+end;
+
+
+//---------------------------------------------------------------------------
+// UpdateFileIni                                            
+//---------------------------------------------------------------------------
+function UpdateFileIni (szFileIni)
+	
+	STRING 	szFileIniNew;
+	NUMBER  nvResult, nvFileHandle, nvPosition;
+	STRING  svLine, szSectionName, szKeyName, szValue;
+	
+begin	
+
+	szFileIniNew = szFileIni + ".ADD";
+	
+	if Is(FILE_EXISTS , TARGETDIR ^ szFileIni) && Is(FILE_EXISTS, TARGETDIR ^ szFileIniNew) then
+		
+		if !Is(FILE_LOCKED,TARGETDIR ^ szFileIni) then
+				
+			OpenFileMode (FILE_MODE_NORMAL);	
+			if OpenFile ( nvFileHandle, TARGETDIR, szFileIniNew ) = 0 then
+
+				szSectionName = NOTHING;
+				szKeyName = NOTHING;
+				szValue = NOTHING;
+
+				while GetLine (nvFileHandle, svLine) = 0
+
+					StrTrim(svLine);
+					
+					if svLine != NOTHING then
+			
+						if StrFind(svLine, "[") = 0 then
+
+							nvPosition = StrFindEx(svLine,"]",1);
+							if nvPosition > 0 then
+								StrSub(szSectionName, svLine, 1, nvPosition - 1);
+							endif;
+
+						elseif szSectionName != NOTHING then
+
+							nvPosition = StrFind(svLine,"=");
+
+							if nvPosition > 0 then
+
+								nvResult = StrSub(szKeyName, svLine, 0, nvPosition );
+								nvResult = StrSub(szValue, svLine, nvPosition + 1, StrLength(svLine) - nvPosition - 1);
+								nvResult = WriteProfString ( TARGETDIR ^ szFileIni, szSectionName, szKeyName, szValue );
+								
+							endif;
+							
+						endif;
+						
+					endif;
+					
+				endwhile;
+				
+				CloseFile (nvFileHandle);				
+				
+			endif;
+			
+		endif;
+		
+    endif;
+
+	if Is(FILE_EXISTS, TARGETDIR ^ szFileIniNew) then
+		DeleteFile(TARGETDIR ^ szFileIniNew);
+	endif;
+
+end;
+
+
+/*
+//---------------------------------------------------------------------------
+// AddUfr15()
+//---------------------------------------------------------------------------
+function AddUfr15()
+	NUMBER nResult;
+
+	BOOL	bComptoir, bInterne, bArtradio;
+	STRING	szPathInterne, szNameInterne, szPathExterne;	
+	STRING DefSite;
+	
+begin
+
+	nResult = GetProfString(TARGETDIR ^ "Ataaetud.ini", "Definition_du_site", "Genre_Poste_Travail", DefSite); 
+	
+    bComptoir = (DefSite != "0") && (nResult = 0);
+    bArtradio = (DefSite = "0" || DefSite = "3" || DefSite = "4" || nResult != 0);
+
+   	// EXTERNE
+	nResult = GetProfString(TARGETDIR ^ "UFR02.INI", "SAS", "Repertoire SE", szPathExterne);
+	if szPathExterne = "" then
+		nResult = GetProfString(TARGETDIR ^ "UFR010.INI", "SAS", "Repertoire SE", szPathExterne);
+		if szPathExterne = "" then
+			nResult = GetProfString(TARGETDIR ^ "UFR014.INI", "SAS", "Repertoire SE", szPathExterne);
+			if szPathExterne = "" then
+				nResult = GetProfString(TARGETDIR ^ "ATAAETUD.INI", "Localisation", "EXTERNE", szPathExterne);
+				if szPathExterne = "" then
+					szPathExterne = TARGETDIR ^ "EXTERNE";
+				elseif StrFind (szPathExterne, ":") != 1 && StrFind (szPathExterne, "\\\\") != 0 then
+					szPathExterne = TARGETDIR ^ szPathExterne;
+				endif;
+			endif;
+		endif;
+	endif;
+
+	// INTERNE
+   	if GetProfString(TARGETDIR ^ "Ataaetud.ini", "Localisation", "CORRESPONDANTS", szPathInterne) = 0 then
+	   	ParsePath (szPathInterne, szPathInterne, PATH);
+	    if StrFind (szPathInterne, ":") != 1 && StrFind (szPathInterne, "\\\\") != 0 then
+			szPathInterne = TARGETDIR ^ szPathInterne;
+		endif;
+	   	nResult = GetProfString(TARGETDIR ^ "Ataaetud.ini", "Inter", "NomEmetteur", szNameInterne);
+	endif;
+   	bInterne = (szPathInterne != "") && (szNameInterne != "");
+
+
+    if bArtradio then
+    	nResult = WriteProfString(TARGETDIR ^ "Ufr15.ini", "SAS", "Sas Creuset", "0,0,46,328,100,\"Etudes\"" );
+		nResult = WriteProfString(TARGETDIR ^ "Ufr15.ini", "SAS", "Taille SC", "6" );
+		nResult = WriteProfString(TARGETDIR ^ "Ufr15.ini", "SAS", "Objets SC", " " );
+    else
+        nResult = WriteProfString(TARGETDIR ^ "Ufr15.ini", "SAS", "Sas Creuset", "" );
+		nResult = WriteProfString(TARGETDIR ^ "Ufr15.ini", "SAS", "Taille SC", "" );
+		nResult = WriteProfString(TARGETDIR ^ "Ufr15.ini", "SAS", "Objets SC", "" );
+    endif;
+        
+	if bComptoir then
+		nResult = WriteProfString(TARGETDIR ^ "Ufr15.ini", "SAS", "Sas Campagne", "0,0,146,328,100,\"Campagnes\"" );
+		nResult = WriteProfString(TARGETDIR ^ "Ufr15.ini", "SAS", "Sas Externe", "0,0,246,328,100,\"Externe\"" );
+		nResult = WriteProfString(TARGETDIR ^ "Ufr15.ini", "SAS", "Repertoire SE", szPathExterne );
+		nResult = WriteProfString(TARGETDIR ^ "Ufr15.ini", "SAS", "Timer SE", "60" );
+		nResult = WriteProfString(TARGETDIR ^ "Ufr15.ini", "SAS", "Objets SE", " " );
+		nResult = WriteProfString(TARGETDIR ^ "Ufr15.ini", "SAS", "Nom DLL SE", "atrjfedi.dll" );
+		nResult = WriteProfString(TARGETDIR ^ "Ufr15.ini", "SAS", "Type fichier SE", "*.txt" );
+		nResult = WriteProfString(TARGETDIR ^ "ATAAETUD.INI", "Localisation", "EXTERNE", szPathExterne);
+	else
+		nResult = WriteProfString(TARGETDIR ^ "Ufr15.ini", "SAS", "Sas Campagne", "" );
+		nResult = WriteProfString(TARGETDIR ^ "Ufr15.ini", "SAS", "Sas Externe", "" );
+	  	nResult = WriteProfString(TARGETDIR ^ "Ufr15.ini", "SAS", "Repertoire SE", "" );
+	  	nResult = WriteProfString(TARGETDIR ^ "Ufr15.ini", "SAS", "Timer SE", "" );
+		nResult = WriteProfString(TARGETDIR ^ "Ufr15.ini", "SAS", "Objets SE", "" );
+	  	nResult = WriteProfString(TARGETDIR ^ "Ufr15.ini", "SAS", "Nom DLL SE", "" );
+	  	nResult = WriteProfString(TARGETDIR ^ "Ufr15.ini", "SAS", "Type fichier SE", "" );
+		nResult = WriteProfString(TARGETDIR ^ "ATAAETUD.INI", "Localisation", "EXTERNE", "");
+	endif;
+
+   	if bInterne then    
+		nResult = WriteProfString(TARGETDIR ^ "Ufr15.ini", "SAS", "Sas Interne", "0,0,346,328,100,\"Interne\"" );
+   		nResult = WriteProfString(TARGETDIR ^ "Ufr15.ini", "SAS", "Repertoire SI", szPathInterne ^ szNameInterne);
+		nResult = WriteProfString(TARGETDIR ^ "Ufr15.ini", "SAS", "Timer SI", "60" );
+		nResult = WriteProfString(TARGETDIR ^ "Ufr15.ini", "SAS", "Objets SI", " " );
+		nResult = WriteProfString(TARGETDIR ^ "Ufr15.ini", "SAS", "Nom DLL SI", "attrfin3.dll" );
+		nResult = WriteProfString(TARGETDIR ^ "Ufr15.ini", "SAS", "Type fichier SI", "*.txt" );
+   	else
+		nResult = WriteProfString(TARGETDIR ^ "Ufr15.ini", "SAS", "Sas Interne", "" );
+	   	nResult = WriteProfString(TARGETDIR ^ "Ufr15.ini", "SAS", "Repertoire SI", "" );
+		nResult = WriteProfString(TARGETDIR ^ "Ufr15.ini", "SAS", "Timer SI", "" );
+		nResult = WriteProfString(TARGETDIR ^ "Ufr15.ini", "SAS", "Objets SI", "" );
+		nResult = WriteProfString(TARGETDIR ^ "Ufr15.ini", "SAS", "Nom DLL SI", "" );
+		nResult = WriteProfString(TARGETDIR ^ "Ufr15.ini", "SAS", "Type fichier SI", "" );
+   	endif;
+
+	nResult = WriteProfString(TARGETDIR ^ "Ufr15.ini", "Creuset", "Import1", "\"Fichier txt\",ATTXTDOS.DLL" );
+	nResult = WriteProfString(TARGETDIR ^ "Ufr15.ini", "Creuset", "Param1Import1", "2" );
+	nResult = WriteProfString(TARGETDIR ^ "Ufr15.ini", "Creuset", "Export1", "\"Fichier txt\",ATTXTDOS.DLL" );
+	nResult = WriteProfString(TARGETDIR ^ "Ufr15.ini", "Creuset", "Param1Export1", "2" );
+	nResult = WriteProfString(TARGETDIR ^ "Ufr15.ini", "SAS", "Sas Quick Eval", "" );
+
+ 	Delay( 1 );
+	
+end;
+*/
+
+#ifdef ZENITH
+//---------------------------------------------------------------------------
+// UpdateExport                                            
+//---------------------------------------------------------------------------
+function UpdateExport ()
+	STRING 	svResult, svIndex;
+	NUMBER  nvIndex, nvResult;
+	BOOL	ExportAlreadyInstalled;
+begin	
+   
+	while (nvResult = 0)
+		nvIndex++;
+		NumToStr (svIndex, nvIndex);
+		StrTrim(svIndex);
+		nvResult = GetProfString(TARGETDIR ^ "UFR02.INI", "Creuset", "Export" + svIndex, svResult);
+		if StrFind(svResult, "InterOpExportZenith.DLL") > 0 then
+			ExportAlreadyInstalled = TRUE;
+			nvResult = -1;
+		endif;
+	endwhile;
+
+	if !ExportAlreadyInstalled	then
+		nvResult = WriteProfString(TARGETDIR ^ "UFR02.INI", "Creuset", "Export" + svIndex, "\"Recap. Budgetaire\",InterOpExportZenith.DLL");	
+		nvResult = WriteProfString(TARGETDIR ^ "UFR02.INI", "Creuset", "Param1Export" + svIndex, "1");	
+	endif;
+	
+end;
+#endif
+
+#ifdef GROUPM_161215
+//---------------------------------------------------------------------------
+// DeleteLineUfr(STRING)
+//---------------------------------------------------------------------------
+function DeleteLineUfr(svFind, EXT_BACKUP)
+	NUMBER nResultFindAllFiles, nvResultFileGrep, nvLineNumber, nPos;
+	STRING svResult, svReturnLine, svMatchingFileName; 
+begin
+
+    nResultFindAllFiles = FindAllFiles (TARGETDIR, "UFR*.INI", svMatchingFileName, RESET);
+
+    while(nResultFindAllFiles = 0)
+	
+		if !Is(FILE_EXISTS, svMatchingFileName + EXT_BACKUP) then
+
+			CopyFile(svMatchingFileName, svMatchingFileName + EXT_BACKUP);
+
+			nvResultFileGrep =  FileGrep (svMatchingFileName, svFind, svReturnLine, nvLineNumber, RESTART);
+			while (nvResultFileGrep != END_OF_FILE)
+				FileDeleteLine(svMatchingFileName, nvLineNumber, nvLineNumber);
+				nvResultFileGrep =  FileGrep (svMatchingFileName, svFind, svReturnLine, nvLineNumber, CONTINUE);
+			endwhile;
+			
+		endif;
+
+        nResultFindAllFiles = FindAllFiles(TARGETDIR, "UFR*.INI", svMatchingFileName, CONTINUE);
+
+    endwhile;
+
+end;
+#endif

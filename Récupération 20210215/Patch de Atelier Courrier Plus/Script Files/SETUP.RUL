@@ -1,0 +1,286 @@
+// Included header files ----------------------------------------------------
+#include "ifx.h"
+
+#define	PRODUCT_NAME		"Atelier Courrier Plus"
+
+//////////////////// installation declarations ///////////////////
+prototype ReadFileLine1(STRING,STRING,BYREF STRING);
+prototype WriteFileLine1(STRING,STRING,STRING);
+
+// ----- global variables ------
+STRING	szFileNameOnly, szMaj, szNewMaj, szLogFile, szLogPath;
+BOOL	bExtract;
+	
+//---------------------------------------------------------------------------
+// OnBegin
+//---------------------------------------------------------------------------
+function OnBegin()
+	NUMBER nResult,nPos1, nPos2,nvNewMaj, nvFileHandle;  
+	STRING szPathName,szDriveName, szLastMaj, svResult, svFileTxt, svVersionNumber, svLogUpdate;
+	LIST listID;
+	STRING szSearchStr, szPathNameOnly, svDATE, svTIME;
+	NUMBER nvSize, nvType;
+begin
+
+	ParsePath (szFileNameOnly, PACKAGE_LOCATION, FILENAME_ONLY);
+    
+    TARGETDIR = "";
+    bExtract = FALSE;
+    
+	nPos1 = 0;
+	nPos2 = StrLength(szFileNameOnly)-1;
+	
+	StrSub (szNewMaj, szFileNameOnly, 1, 4);
+
+	if StrToNum(nvNewMaj, szNewMaj) >= ISERR_SUCCESS && StrFind(szFileNameOnly,"_") = 5 then;   		
+		nResult = NumToStr(szNewMaj, nvNewMaj);
+		nResult = StrToNum(nvNewMaj, szNewMaj);
+		szMaj = " n° ";
+	else
+		szNewMaj = "";
+		szMaj = "";
+	endif;
+	
+   	SdProductName ( PRODUCT_NAME);
+    SetTitle( PRODUCT_NAME , 0, BACKGROUNDCAPTION );
+	SetDialogTitle (DLG_STATUS, "Mise à jour " + PRODUCT_NAME + szMaj + szNewMaj ); 
+	
+	
+	// Chemin Application
+	if CMDLINE = "" then
+	   	
+		if TARGETDIR = ""  then
+			TARGETDIR = WINDISK ^ "Atelier Courrier Plus";
+		endif;
+		
+		Dlg_Path:
+		Disable (BACKBUTTON);
+		nResult = AskDestPath ("", "Veulliez indiquer où se trouve l'application " + PRODUCT_NAME + ".", TARGETDIR, 0);
+		Enable (BACKBUTTON);
+		
+		if TARGETDIR = ""  || !Is(FILE_EXISTS,TARGETDIR ^ "BalViewer.exe") then
+			MessageBox ( "L'application " + PRODUCT_NAME + " n'a pas été trouvée !!!", WARNING);
+			goto Dlg_Path;
+		endif;
+
+		if Is(FILE_LOCKED,TARGETDIR ^ "BalViewer.exe")  then
+			MessageBox ( "Application " + PRODUCT_NAME + " en cours d'utilisation.", SEVERE);
+			goto Dlg_Path;
+		endif;		
+
+		if szNewMaj != "1" && szNewMaj != "" then
+			ReadFileLine1(TARGETDIR ^ "FRET" , "Fret.dat", szLastMaj);
+			if szLastMaj != "" then
+				StrToNum(nResult, szLastMaj);
+				nResult++;
+				NumToStr(szLastMaj, nResult);
+				if szNewMaj != szLastMaj then
+					SetDialogTitle (DLG_ASK_YESNO, PRODUCT_NAME + " installShield");
+					if AskYesNo ("Problème d'ordre croissant au niveau des mises à jour !!! \n\n( Erreur: " + szNewMaj + "-" + szLastMaj + " ), voulez-vous continer ?", NO) = NO then
+			  	 		abort;
+			   		endif;
+			   	endif;
+		   	endif;
+		endif;
+		
+	elseif CMDLINE = "EXTRACT" then
+	   	ParsePath (szPathNameOnly, PACKAGE_LOCATION, PATH); 
+	    TARGETDIR = szPathNameOnly ^ szFileNameOnly;
+		nResult = CreateDir(TARGETDIR); 
+		bExtract = TRUE;	    
+	else
+	   	TARGETDIR = CMDLINE;
+	   	StrRemoveLastSlash (TARGETDIR);
+	   	
+	endif;
+	
+	if CMDLINE ="" && Is (FILE_EXISTS, SUPPORTDIR ^ "Patch.txt") then
+	  	listID = ListCreate (STRINGLIST);
+	  	ListReadFromFile (listID, SUPPORTDIR ^ "Patch.txt");
+		Disable (BACKBUTTON);
+  		SdShowInfoList ( "Patch" + szMaj + szNewMaj, " ", listID );
+  		ListDestroy (listID);
+  	endif;
+  	
+  	if Is ( FILE_EXISTS,SUPPORTDIR ^ "Patch.txt") then
+  		svFileTxt = TARGETDIR ^ "Fret" ^ szFileNameOnly + ".txt";
+  		CopyFile (SUPPORTDIR ^ "Patch.txt", svFileTxt);
+  	endif;
+  	
+	
+end;
+
+//---------------------------------------------------------------------------
+// OnFirstUIAfter
+//---------------------------------------------------------------------------
+function OnFirstUIAfter()
+    STRING szTitle, szMsg1, szMsg2, szOpt1, szOpt2, szProgram, szIsData;
+    NUMBER nResult;
+begin
+        
+    SdShowMsg("Mise à jour des paramètres de configurations.",TRUE);
+	
+	WriteFileLine1(TARGETDIR ^ "FRET","Fret.dat",szNewMaj);
+	
+    SdShowMsg("",FALSE);
+
+	if CMDLINE = "" then
+		MessageBox ("Mise à jour " + PRODUCT_NAME + szMaj + szNewMaj + " terminée", INFORMATION);
+	endif;
+    
+end;
+
+//---------------------------------------------------------------------------
+// Function: ReadFileLine1(svChemin,svFichier,svLigne)
+//---------------------------------------------------------------------------
+function ReadFileLine1(svChemin,svFichier,svLigne)
+    NUMBER  nvFileHandle;
+begin 
+
+	if Is(FILE_EXISTS, svChemin ^ svFichier)then
+		OpenFileMode (FILE_MODE_APPEND);
+	    OpenFile (nvFileHandle, svChemin, svFichier);
+	    	GetLine (nvFileHandle, svLigne);
+		CloseFile (nvFileHandle);
+	endif;
+		
+end;
+
+//---------------------------------------------------------------------------
+// Function: WriteFileLine1(svChemin,svFichier,svLigne)
+//---------------------------------------------------------------------------
+function WriteFileLine1(svChemin,svFichier,svLigne)
+    NUMBER  nvFileHandle;
+begin 
+
+	if Is(FILE_EXISTS, svChemin ^ svFichier) = TRUE then
+		SRCDIR = svChemin; 
+	    FileInsertLine (svFichier, svLigne , 0, REPLACE);
+	else
+		OpenFileMode (FILE_MODE_APPEND);
+	    CreateFile (nvFileHandle, svChemin, svFichier);
+	    	WriteLine(nvFileHandle, svLigne );
+	    CloseFile (nvFileHandle);
+	endif;
+		
+end;
+ 
+//---------------------------------------------------------------------------
+// OnEnd
+//---------------------------------------------------------------------------
+function OnEnd()
+	NUMBER nResult;
+begin
+
+	if CMDLINE != "" then
+		if Is(FILE_EXISTS, TARGETDIR ^ "AU-Serv.err") then
+			nResult = DeleteFile (TARGETDIR ^ "AU-Serv.err");
+		endif;
+	endif;
+
+end;
+ 
+ 
+//---------------------------------------------------------------------------
+// OnFirstUIBefore                                            
+//---------------------------------------------------------------------------
+function OnFirstUIBefore()
+	NUMBER nResult;
+
+begin
+
+	nResult = FeatureSelectItem(MEDIA,"Application", TRUE);
+	
+end;
+ 
+
+
+//---------------------------------------------------------------------------
+// OnFileLocked
+//---------------------------------------------------------------------------
+function OnFileLocked(szFile)
+begin
+
+	// TODO: Enable this code if you want to show a confirmation dialog box.	
+	//return SdExceptions(LOCKED, szFile);
+	
+	// Return ERR_PERFORM_AFTER_REBOOT so that the file will be updated
+	// w/o confirmation.
+	return ERR_PERFORM_AFTER_REBOOT;
+end;
+
+
+//---------------------------------------------------------------------------
+// OnMoveData
+//
+// The OnMoveData event is called by OnShowUI to initiate the file
+// transfer of the setup.
+//
+// Note: This event will not be called automatically in a
+// program...endprogram style setup.
+//---------------------------------------------------------------------------
+function OnMoveData()
+number	nResult, nMediaFlags, nvDisk, nTemp;
+string  sResult;
+begin
+
+
+	// Don't install the DISK1COMPONENT if MAINT_OPTION_NONE was specified.
+	if( MAINT_OPTION = MAINT_OPTION_NONE ) then
+		FeatureSelectItem( MEDIA, DISK1COMPONENT, FALSE );
+	endif;
+
+    // Updated in 11.5, disable the cancel button during file transfer unless
+	// this is non-maintenance mode or repair mode.
+    if( MAINTENANCE && ( !REINSTALLMODE || UPDATEMODE ) ) then
+        Disable( CANCELBUTTON );
+    endif;
+
+    // Show Status
+	// Note: Start status window at 1 in case CreateInstallationInfo call
+	// is lengthy.
+	SetStatusWindow( 1, "" );
+	Enable( STATUSEX );
+	StatusUpdate( ON, 100 );
+
+	// Create the uninstall infomation (after displaying the progress dialog)
+	// Don't create uninstall information if MAINT_OPTION_NONE was specified.
+	if( MAINT_OPTION != MAINT_OPTION_NONE ) then
+		CreateInstallationInfo();
+	endif;
+
+	try
+		// Move Data
+		nResult = FeatureTransferData( MEDIA );
+	catch 
+	endcatch; 
+
+    // Moved in 11.0, Check for failure before creating uninstall key.
+    // Handle move data error and abort if error occured.
+	if( nResult < ISERR_SUCCESS ) then
+		OnComponentError();
+		abort;
+	endif;	    
+
+	// Create uninstall key, if DISK1COMPONENT was installed.
+	if( IFX_DISK1INSTALLED ) then
+
+		// Store text-subs for maintenance mode later, only do this when
+		// disk 1 is installed. Note that any text-subs that are updated after
+        // this call will not be remembered during maintenance mode.
+		FeatureSaveTarget("");
+
+		// Write uninstall information.
+		MaintenanceStart();
+
+		// Customize Uninstall Information
+		OnCustomizeUninstInfo();
+
+	endif;
+
+    // Disable Status
+	Disable( STATUSEX );
+
+end;
+
+
