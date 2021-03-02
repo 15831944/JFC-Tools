@@ -950,13 +950,13 @@ namespace ARProbaProcessing
             //  Le nombre de station correspond au nombre de stations(30) -1 pour Total Radio(et Total TV)
             int NBIND = fushab09Indivs.Count;
             int[][][][] NINI = new int[NBSTA + 1][][][]; //    , NBIND + 1, 96 + 1, 3 + 1];
-            for (int i=1; i<= NBSTA + 1; i++)
+            for (int i=1; i<= NBSTA; i++)
             {
                 NINI[i] = new int[NBIND + 1][][];
-                for (int j = 1; j <= NBIND + 1; j++)
+                for (int j = 1; j <= NBIND; j++)
                 {
                     NINI[i][j] = new int[96 + 1][];
-                    for (int k = 1; k <= 96 + 1; k++)
+                    for (int k = 1; k <= 96; k++)
                     {
                         NINI[i][j][k] = new int[3 + 1];
                     }
@@ -1550,13 +1550,13 @@ namespace ARProbaProcessing
             int NBJOUR = 23;
 
             byte[][][][] NIN2 = new byte[NBSTA + 1][][][]; //    , NBIND + 1, 96 + 1, 3 + 1];
-            for (int i = 1; i <= NBSTA + 1; i++)
+            for (int i = 1; i <= NBSTA; i++)
             {
                 NIN2[i] = new byte[NBIND + 1][][];
-                for (int j = 1; j <= NBIND + 1; j++)
+                for (int j = 1; j <= NBIND; j++)
                 {
                     NIN2[i][j] = new byte[96 + 1][];
-                    for (int k = 1; k <= 96 + 1; k++)
+                    for (int k = 1; k <= 96; k++)
                     {
                         NIN2[i][j][k] = new byte[3 + 1];
                     }
