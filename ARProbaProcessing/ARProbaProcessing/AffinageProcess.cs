@@ -313,7 +313,7 @@ namespace ARProbaProcessing
 
             List<Fushab09Indiv> fushab09Indivs = Fushab09(contextPanel, NB_STA_HAB_NOTO, TABRH, pathSIGJFC2_BDE, pathPANSIGN);
 
-            int[][][][] NINI_IND_QH_W = chab1qhp(NB_STA_HAB_NOTO, fushab09Indivs, ISTA, pathHab); // Habitude [STATIONS, INDIV, QH, LV/Sa/Di];
+            int[][][][] NINI_IND_QH_W = chab1qhp(NB_STA_HAB_NOTO, fushab09Indivs, ISTA, pathHab); // Habitude [STATIONS, QH, LV/Sa/Di, INDIV];
 
             int[,] NINI_IND_STA = crenonin(contextPanel, nbJour, NB_STA_HAB_NOTO, fushab09Indivs, JN, stationApres, pathNinities); // [INDIV, STATIONS] 
 
@@ -949,16 +949,16 @@ namespace ARProbaProcessing
 
             //  Le nombre de station correspond au nombre de stations(30) -1 pour Total Radio(et Total TV)
             int NBIND = fushab09Indivs.Count;
-            int[][][][] NINI = new int[NBSTA + 1][][][]; //    , NBIND + 1, 96 + 1, 3 + 1];
-            for (int i=1; i<= NBSTA + 1; i++)
+            int[][][][] NINI = new int[NBSTA + 1][][][]; //   NBSTA + 1 ,  3 + 1 , 96 + 1, NBIND + 1];
+            for (int i=1; i<= NBSTA; i++)
             {
-                NINI[i] = new int[NBIND + 1][][];
-                for (int j = 1; j <= NBIND + 1; j++)
+                NINI[i] = new int[3 + 1][][];
+                for (int j = 1; j <= 3; j++)
                 {
                     NINI[i][j] = new int[96 + 1][];
-                    for (int k = 1; k <= 96 + 1; k++)
+                    for (int k = 1; k <= 96; k++)
                     {
-                        NINI[i][j][k] = new int[3 + 1];
+                        NINI[i][j][k] = new int[NBIND + 1];
                     }
 
                 }
@@ -999,8 +999,8 @@ namespace ARProbaProcessing
                             if (IU == 2) IH = indiv.KHSA[ITH[IQ], IP] - 48;
                             if (IU == 3) IH = indiv.KHDI[ITH[IQ], IP] - 48;
                             if (IH < 1) IH = 5;
-                            NINI[IPO][IG][IQ][IU] = 5 - IH;
-                            if (ISTA[IPO] == 1 && IH != 5) NINI[IPO][IG][IQ][IU] = 1;
+                            NINI[IPO][IU][IQ][IG] = 5 - IH;
+                            if (ISTA[IPO] == 1 && IH != 5) NINI[IPO][IU][IQ][IG] = 1;
                         }
                     }
                 }
@@ -1010,7 +1010,7 @@ namespace ARProbaProcessing
                     {
                         for (IG = 1; IG <= NBIND; IG++)
                         {
-                            writeBinary.Write(Convert.ToByte(NINI[IPO][IG][IQ][IU]));
+                            writeBinary.Write(Convert.ToByte(NINI[IPO][IU][IQ][IG]));
                         }
                     }
                 }
@@ -1549,21 +1549,19 @@ namespace ARProbaProcessing
 
             int NBJOUR = 23;
 
-            byte[][][][] NIN2 = new byte[NBSTA + 1][][][]; //    , NBIND + 1, 96 + 1, 3 + 1];
-            for (int i = 1; i <= NBSTA + 1; i++)
+            byte[][][][] NIN2 = new byte[NBSTA + 1][][][]; //    ,3 + 1 , 96 + 1, NBIND + 1];
+            for (int i = 1; i <= NBSTA; i++)
             {
-                NIN2[i] = new byte[NBIND + 1][][];
-                for (int j = 1; j <= NBIND + 1; j++)
+                NIN2[i] = new byte[3 + 1][][];
+                for (int j = 1; j <= 3; j++)
                 {
                     NIN2[i][j] = new byte[96 + 1][];
-                    for (int k = 1; k <= 96 + 1; k++)
+                    for (int k = 1; k <= 96; k++)
                     {
-                        NIN2[i][j][k] = new byte[3 + 1];
+                        NIN2[i][j][k] = new byte[NBIND + 1];
                     }
                 }
             }
-
-            int[] NINI = new int[NBIND + 1];
 
             // OPEN(15, FILE = '#OUTPUT#audqhind',
             //-FORM = 'UNFORMATTED', RECORDTYPE = 'FIXED')
@@ -1591,7 +1589,7 @@ namespace ARProbaProcessing
 
                             if (L1BITFCT(bits, IQ))
                             {
-                                NIN2[STA][IG][IQ][IU] = Convert.ToByte(NIN2[STA][IG][IQ][IU] + JN[IJ][IG].Poid[IQ]);
+                                NIN2[STA][IU][IQ][IG] = Convert.ToByte(NIN2[STA][IU][IQ][IG] + JN[IJ][IG].Poid[IQ]);
                             }
                         }
                     }
@@ -1604,7 +1602,7 @@ namespace ARProbaProcessing
                     {
                         for (int IG = 1; IG <= NBIND; IG++)
                         {
-                            writeBinary.Write(Convert.ToByte(NIN2[STA][IG][IQ][I]));
+                            writeBinary.Write(Convert.ToByte(NIN2[STA][I][IQ][IG]));
                         }
                     }
                 }
@@ -1964,7 +1962,7 @@ namespace ARProbaProcessing
                                 for (IG = 1; IG <= NBIND; IG++)
                                 {
                                     int IPERS = KHI2[IG, 1];
-                                    bool KHI2_IG_NIV_EQ_NB_NIV = (NIV == 4 && NB[NIV] == 1) || (KHI2[IG, NIV + 1] == NB[NIV]);
+                                    bool KHI2_IG_NIV_EQ_NB_NIV = (NIV == contextPanel.TRegTest && NB[NIV] == 1) || (KHI2[IG, NIV + 1] == NB[NIV]);
                                     IPERS = IPERS * 10;
                                     if (KHI2_IG_NIV_EQ_NB_NIV)
                                     {

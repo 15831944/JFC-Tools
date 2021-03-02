@@ -17,13 +17,13 @@ namespace ARProbaProcessing
             // Le nombre de station correspond au nombre de stations (#NB_STA_HAB_NOTO_TOTAL#) - #NB_STA_TOTAL_ONLY# pour Total Radio (et Total TV)
 
             byte[][][][] PROBAS = new byte[NBSTA + 1][][][]; //  [NBSTA + 1, 3 + 1, 96 + 1, NBIND + 1];
-            for (int i = 1; i <= NBSTA + 1; i++)
+            for (int i = 1; i <= NBSTA ; i++)
             {
                 PROBAS[i] = new byte[3 + 1][][];
-                for (int j = 1; j <= 3 + 1; j++)
+                for (int j = 1; j <= 3 ; j++)
                 {
                     PROBAS[i][j] = new byte[96 + 1][];
-                    for (int k = 1; k <= 96 + 1; k++)
+                    for (int k = 1; k <= 96 ; k++)
                     {
                         PROBAS[i][j][k] = new byte[NBIND + 1];
                     }
@@ -105,22 +105,12 @@ namespace ARProbaProcessing
                             PROBAS[NOP][IU][IQ][I] = 0;
                         }
 
-                        byte[] AUDI_ = new byte[NBIND + 1];
-                        int[] HABI_ = new int[NBIND + 1];
-                        int[] NINI_ = new int[NBIND + 1];
-                        for (int I = 1; I <= NBIND; I++)
-                        {
-                            AUDI_[I] = AUDI[NOP][I][IQ][IU];
-                            HABI_[I] = HABI[NOP][I][IQ][IU];
-                            NINI_[I] = NINI[I, NOP];
-                        }
-
                         // TRI DES SCORES INDIVIDUELS
                         for (int I = 1; I <= NBIND; I++)
                         {
-                            SCORE[I] = AUDI[NOP][I][IQ][IU];   // [STATIONS, INdiv, QH, 1..3]
+                            SCORE[I] = AUDI[NOP][IU][IQ][I];   // [STATIONS, 1..3, QH, INdiv]
                             if (SCORE[I] < 0) SCORE[I] += 256;
-                            SCORE[I] = 10 * SCORE[I] + HABI[NOP][I][IQ][IU];
+                            SCORE[I] = 10 * SCORE[I] + HABI[NOP][IU][IQ][I];
 
                             NOTI = NOTES[I];
                             if (NINI[I, NOP] == 1) NOTI = 0f;
@@ -218,7 +208,7 @@ namespace ARProbaProcessing
                                     float TAU = RESUL[NOP, IQ, 4, N1];
                                     GRPN = UR + P * (1f - ZR - UR);
                                     if (float.IsNaN(P)) P = 0f;
-                                    CALDISTR(ZR, UR, P, TAU, LOGS, out DISTR, out REP);
+                                    CALDISTR(ZR, UR, P, TAU, LOGS, ref DISTR, ref REP);
 
                                     // IMPRESSION DES RESULTATS
                                     int IN = TREG[N1] + 1;
@@ -363,8 +353,8 @@ namespace ARProbaProcessing
                                             PROBAS[NOP][IU][IQ][H] = 0;
                                         }
 
-                                        if (NOP == 1)
-                                            sbSortie.AppendLine(IQ.ToString() + $" OBJECTIF H={H} POIDS(H)={POIDS[H]}   PROBAS[NOP, IU, IQ, H] ={PROBAS[NOP][IU][IQ][H]}");
+                                        //if (NOP == 1)
+                                        //    sbSortie.AppendLine(IQ.ToString() + $" OBJECTIF H={H} POIDS(H)={POIDS[H]}   PROBAS[NOP, IU, IQ, H] ={PROBAS[NOP][IU][IQ][H]}");
 
                                     }
 
@@ -874,17 +864,20 @@ namespace ARProbaProcessing
             if (I < IFIN) SORTF(I, IFIN, RANG, SCORE);
         }
 
+        double[] BUFS = new double[200 + 1];
         // CALCUL DE LA REPARTITION DES PROBAS
-        public void CALDISTR(float ZR, float UR, float PO, float TAUX, double[] LOGS, out double[] DISTR, out double[] REP)
+        public void CALDISTR(float ZR, float UR, float PO, float TAUX, double[] LOGS, ref double[] DISTR, ref double[] REP)
         {
             int NSEG = 100;
             int JMAX = NSEG * 2;
             int JSUP = JMAX + 2;
             double ALPHA, BETA, X, V, Q, Y, BAB, LEBND, Z, U, P, TAU;
 
-            double[] BUFS = new double[JMAX + 1];
-            DISTR = new double[NSEG + 1];
-            REP = new double[NSEG + 1];
+            for (int i = 0; i < NSEG + 1; i++)
+            {
+                DISTR[i] = 0d;
+                REP[i] = 0d;
+            }
 
             Z = ZR;
             U = UR;
