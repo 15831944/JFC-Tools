@@ -390,7 +390,8 @@ namespace ARProbaProcessing
         private BSupport transp08(ContextPanel contextPanel, int NIND, int NBSTA, int NBSTAIDF, int[] ISTA, int[,] POIDSEGS, List<int> FILT, List<int> POIDS, byte[][][][] KHI2,
             string pathSortie, string pathYearNat, string pathYearIdf, string pathYearSup)
         {
-            System.GC.Collect();
+            GC.Collect();
+            GC.WaitForPendingFinalizers();
             // PANEL RADIO 08 MEDIAMETRIE(nouveau format)
             // TRANSFORMATION DES PROBABILITES INDIVIDUELLES
             //   DE 100e EN 1000e ET DE 1 / 4h EN 1 / 2h
@@ -492,7 +493,7 @@ namespace ARProbaProcessing
 
             BSUP.POIDS = POIDS;
             BSUP.KECR = KECR;
-            BSUP.KECRIDF = KECRIDF;
+            //BSUP.KECRIDF = KECRIDF;
 
             if (contextPanel.Enquete != Enquete.PanelIleDeFrance)
             {
@@ -788,7 +789,7 @@ namespace ARProbaProcessing
                         // BOUCLE INDIVIDUS
                         for (int IND = 1; IND <= NIND; IND++)
                         {
-                            if (BSUP.KECR[IS][IU, ITR, IND] > 0)  // [NBSTA + 1, 3 + 1, 48 + 1, NIND + 1]
+                            if (BSUP.KECR[IS][IU][ITR][IND] > 0)  // [NBSTA + 1, 3 + 1, 48 + 1, NIND + 1]
                             {
                                 for (int IN = 1; IN <= N; IN++)
                                 {
@@ -1236,6 +1237,6 @@ namespace ARProbaProcessing
     {
         public List<int> POIDS;
         public int[][][][] KECR;
-        public int[][][][] KECRIDF;
+        //public int[][][][] KECRIDF;
     }
 }
