@@ -340,11 +340,6 @@ namespace JFCGridControl
             }
         }
 
-        public event DataChangedEventHandler OnDataChanged;
-
-        public delegate void DataChangedEventHandler(object sender, JFCExpendItem e);
-
-
         private JFCExpendItem data = null;
         public JFCExpendItem Data
         {
@@ -356,8 +351,6 @@ namespace JFCGridControl
                     Source = data.Obj;
                 else
                     Source = null;
-
-                OnDataChanged(this, value);
             }
         }
 
@@ -370,18 +363,6 @@ namespace JFCGridControl
         // Using a DependencyProperty as the backing store for Source.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty SourceProperty =
             DependencyProperty.Register("Source", typeof(object), typeof(JFCGridItem), new UIPropertyMetadata("test"));
-
-
-        //public Object Source
-        //{
-        //    get
-        //    {
-        //        if (Data != null)
-        //            return Data.Obj;
-        //        else
-        //            return null;
-        //    }
-        //}
 
         // 
         public event RoutedEventHandler IsMouseOverLineChanged;
