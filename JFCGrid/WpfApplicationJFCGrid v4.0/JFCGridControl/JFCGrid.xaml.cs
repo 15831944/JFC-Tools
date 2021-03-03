@@ -181,7 +181,7 @@ namespace JFCGridControl
 
         // Using a DependencyProperty as the backing store for SelectedItems.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty SelectedItemsProperty =
-            DependencyProperty.Register("SelectedItems", typeof(ObservableCollection<Object>), typeof(JFCGrid), new PropertyMetadata(null, new PropertyChangedCallback(UpdateSelectedItems)));
+            DependencyProperty.Register("SelectedItems", typeof(ObservableCollection<Object>), typeof(JFCGrid), new PropertyMetadata(new ObservableCollection<Object>(), new PropertyChangedCallback(UpdateSelectedItems)));
 
         public event RoutedEventHandler SelectedItemsChanged;
         internal void OnSelectedItemsChanged(object sender, RoutedEventArgs e)
