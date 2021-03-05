@@ -390,20 +390,37 @@ namespace ARProbaProcessing
         private BSupport transp08(ContextPanel contextPanel, int NIND, int NBSTA, int NBSTAIDF, int[] ISTA, int[,] POIDSEGS, List<int> FILT, List<int> POIDS, byte[][][][] KHI2,
             string pathSortie, string pathYearNat, string pathYearIdf, string pathYearSup)
         {
-            System.GC.Collect();
+            GC.Collect();
+            GC.WaitForPendingFinalizers();
             // PANEL RADIO 08 MEDIAMETRIE(nouveau format)
             // TRANSFORMATION DES PROBABILITES INDIVIDUELLES
             //   DE 100e EN 1000e ET DE 1 / 4h EN 1 / 2h
-            int[][,,] KECR = new int[NBSTA + 1][,,]; // , 3 + 1, 48 + 1, NIND + 1];
-            for (int s = 1; s <= NBSTA; s++) KECR[s] = new int[3 + 1, 48 + 1, NIND + 1];
-            //int[,,,] KECR = new int[NBSTA + 1, 3// + 1, 48 + 1, NIND + 1];
-            int[][,,] KECRIDF = new int[NBSTAIDF + 1][,,];
-            for (int s = 1; s <= NBSTAIDF; s++) KECRIDF[s] = new int[3 + 1, 48 + 1, NIND + 1];
-            //int[,,,] KECRIDF = new int[NBSTAIDF + 1, 3 + 1, 48 + 1, NIND + 1];
+            int[][][][] KECR = new int[NBSTA + 1][][][]; // NBSTA + 1, 3 + 1, 48 + 1, NIND + 1];
+            int[][][][] KECRIDF = new int[NBSTAIDF + 1][][][];
             BSupport BSUP = new BSupport();
 
-            //      INITIALISATIONS
+            for (int i = 1; i <= NBSTA; i++)
+            {
+                KECR[i] = new int[3 + 1][][];
+                for (int j = 1; j <= 3; j++)
+                {
+                    KECR[i][j] = new int[48 + 1][];
+                    for (int k = 1; k <= 48; k++)
+                        KECR[i][j][k] = new int[NIND + 1];
+                }
+            }
+            for (int i = 1; i <= NBSTAIDF; i++)
+            {
+                KECRIDF[i] = new int[3 + 1][][];
+                for (int j = 1; j <= 3; j++)
+                {
+                    KECRIDF[i][j] = new int[48 + 1][];
+                    for (int k = 1; k <= 48; k++)
+                        KECRIDF[i][j][k] = new int[NIND + 1];
+                }
+            }
 
+            //      INITIALISATIONS
             if (File.Exists(pathYearNat)) File.Delete(pathYearNat);
             if (File.Exists(pathYearIdf)) File.Delete(pathYearIdf);
             if (File.Exists(pathYearSup)) File.Delete(pathYearSup);
@@ -422,8 +439,8 @@ namespace ARProbaProcessing
             {
                 POIDS[IND] *= 10;
             }
-            for (int IND = 0; IND < NIND; IND++) bwNat.Write(Convert.ToInt16(POIDS[IND]));
-            for (int IND = 0; IND < NIND; IND++) bwNat.Write(Convert.ToInt16(0));
+            for (int IND = 0; IND < NIND; IND++) bwNat.Write(Convert.ToUInt16(POIDS[IND]));
+            for (int IND = 0; IND < NIND; IND++) bwNat.Write(Convert.ToUInt16(0));
 
             // BOUCLE STATIONS
             int IDF = 0;
@@ -450,11 +467,11 @@ namespace ARProbaProcessing
                         // BOUCLE INDIVIDUS
                         for (int II = 1; II <= NIND; II++)
                         {
-                            KECR[IS][IU, IQ4, II] = (Convert.ToInt16(KHI2[IS][IU][IH][II]) + Convert.ToInt16(KHI2[IS][IU][IH+1][II]))*5;      //  [STATIONS, LV/Sa/Di, QH, INDIVS]
+                            KECR[IS][IU][IQ4][II] = (Convert.ToInt16(KHI2[IS][IU][IH][II]) + Convert.ToInt16(KHI2[IS][IU][IH+1][II]))*5;      //  [STATIONS, LV/Sa/Di, QH, INDIVS]
 
-                            if (KECR[IS][IU, IQ4, II] < 0) Console.WriteLine($"{IS}, {IU}, {IQ4}");
+                            if (KECR[IS][IU][IQ4][II] < 0) Console.WriteLine($"{IS}, {IU}, {IQ4}");
 
-                            bwNat.Write(Convert.ToInt16(KECR[IS][IU, IQ4, II]));
+                            bwNat.Write(Convert.ToInt16(KECR[IS][IU][IQ4][II]));
                         }
 
                         // ECRITURE FICHIER IDF
@@ -463,11 +480,11 @@ namespace ARProbaProcessing
                             for (int IN = 1; IN <= NIND; IN++)
                             {
                                 if (FILT[IN - 1] == 0)
-                                    KECRIDF[IDF][IU, IQ4, IN] = 0;
+                                    KECRIDF[IDF][IU][IQ4][IN] = 0;
                                 else
-                                    KECRIDF[IDF][IU, IQ4, IN] = KECR[IS][IU, IQ4, IN];
+                                    KECRIDF[IDF][IU][IQ4][IN] = KECR[IS][IU][IQ4][IN];
 
-                                bwIdf.Write(Convert.ToInt16(KECRIDF[IDF][IU, IQ4, IN]));
+                                bwIdf.Write(Convert.ToInt16(KECRIDF[IDF][IU][IQ4][IN]));
                             }
                         }
                     }
@@ -475,14 +492,13 @@ namespace ARProbaProcessing
             }
 
             BSUP.POIDS = POIDS;
-            BSUP.RIEN = null;// A virer
             BSUP.KECR = KECR;
-            BSUP.KECRIDF = KECRIDF;
+            //BSUP.KECRIDF = KECRIDF;
 
             if (contextPanel.Enquete != Enquete.PanelIleDeFrance)
             {
-                for (int IND = 0; IND < NIND; IND++) bwSup.Write(Convert.ToInt16(POIDS[IND]));
-                for (int IND = 0; IND < NIND; IND++) bwSup.Write(Convert.ToInt16(0));
+                for (int IND = 0; IND < NIND; IND++) bwSup.Write(Convert.ToUInt16(POIDS[IND]));
+                for (int IND = 0; IND < NIND; IND++) bwSup.Write(Convert.ToUInt16(0));
 
                 for (int IS = 1; IS <= NBSTA; IS++)
                 {
@@ -493,7 +509,7 @@ namespace ARProbaProcessing
                         {
                             for (int II = 1; II <= NIND; II++)
                             {
-                                bwSup.Write(Convert.ToInt16(KECR[IS][IU, IQ, II]));
+                                bwSup.Write(Convert.ToInt16(KECR[IS][IU][IQ][II]));
                             }
                         }
                     }
@@ -507,7 +523,7 @@ namespace ARProbaProcessing
                         {
                             for (int II = 1; II <= NIND; II++)
                             {
-                                bwSup.Write(Convert.ToInt16(KECRIDF[IS][IU, IQ, II]));
+                                bwSup.Write(Convert.ToInt16(KECRIDF[IS][IU][IQ][II]));
                             }
                         }
                     }
@@ -773,7 +789,7 @@ namespace ARProbaProcessing
                         // BOUCLE INDIVIDUS
                         for (int IND = 1; IND <= NIND; IND++)
                         {
-                            if (BSUP.KECR[IS][IU, ITR, IND] > 0)  // [NBSTA + 1, 3 + 1, 48 + 1, NIND + 1]
+                            if (BSUP.KECR[IS][IU][ITR][IND] > 0)  // [NBSTA + 1, 3 + 1, 48 + 1, NIND + 1]
                             {
                                 for (int IN = 1; IN <= N; IN++)
                                 {
@@ -1220,8 +1236,7 @@ namespace ARProbaProcessing
     public struct BSupport
     {
         public List<int> POIDS;
-        public int[] RIEN;
-        public int[][,,] KECR;
-        public int[][,,] KECRIDF;
+        public int[][][][] KECR;
+        //public int[][][][] KECRIDF;
     }
 }

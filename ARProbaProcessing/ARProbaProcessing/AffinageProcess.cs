@@ -356,6 +356,7 @@ namespace ARProbaProcessing
             JNByWeek = null;
             NINI_IND_QH_W = null;
             NINI_IND_STA = null;
+            GC.Collect();
 
             BSupport BSUP = transp08(contextPanel, NBINDIV, NB_STA_HAB_NOTO, NB_STA_IDF, STA_IDF_LIST_NO_SUDRAD_MASK, POIDSEGM, lstFiltreIDF, lstPoids, PROBAS, pathTransp08, pathYearNat, pathYearIdf, pathYearSup);
 
