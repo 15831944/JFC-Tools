@@ -71,6 +71,8 @@ Friend Class AUService
     Dim HostEntryName As String = ""
     Public LogUpdate As Boolean = False
 
+    Public ErrorDeletePatchs As List(Of String) = New List(Of String)()
+
     Structure FILE_UPDATE
         Dim numMaj0 As String
         Dim fic_source1 As String
@@ -1750,6 +1752,16 @@ DlgProductCode:
             Label_Info_Maj.Text = mLanguageAU.GetString(MSG_NOT_UPDATE)
         End If
 
+        For Each patch As String In ErrorDeletePatchs
+            Try
+                If IO.File.Exists(patch) Then
+                    IO.File.Delete(patch)
+                End If
+            Catch ex As Exception
+
+            End Try
+        Next
+
     End Sub
 
     Public Sub CopyFileExProgress(ByRef nBytes As Short)
@@ -2032,7 +2044,7 @@ DlgProductCode:
             Try
                 DeleteFileAndFolder(pathInstallShieldTmp)
             Catch ex As Exception
-
+                ErrorDeletePatchs.Add(pathInstallShieldTmp)
             End Try
         End If
 
@@ -2062,7 +2074,12 @@ DlgProductCode:
                 System.Windows.Forms.Application.DoEvents()
             End While
 
-            IO.File.Delete(SetupIss$)
+            Try
+                IO.File.Delete(SetupIss$)
+            Catch ex As Exception
+
+            End Try
+
             If IO.File.Exists(SetupLog$) Then IO.File.Delete(SetupLog$)
 
             If lHnd_Patch <> 0 Then CloseHandle(lHnd_Patch)
