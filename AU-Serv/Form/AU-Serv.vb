@@ -1678,13 +1678,25 @@ DlgProductCode:
 
                 WriteInfoToFile(IO.Path.ChangeExtension(IO.Path.Combine(svPatchCopy, fic_source), ".txt"), File(idx_maj_encours).infoMaj4)
 
-                IO.File.Delete(fic_destination)
+                Try
+                    If IO.File.Exists(fic_destination) Then
+                        IO.File.Delete(fic_destination)
+                    End If
+                Catch ex As Exception
+                    ErrorDeletePatchs.Add(fic_destination)
+                End Try
+
                 Refresh_Listbox(idx_maj_encours, 6)
                 System.Windows.Forms.Application.DoEvents()
 
             ElseIf bRemovePatch Then
-                IO.File.Delete(fic_destination)
-
+                Try
+                    If IO.File.Exists(fic_destination) Then
+                        IO.File.Delete(fic_destination)
+                    End If
+                Catch ex As Exception
+                    ErrorDeletePatchs.Add(fic_destination)
+                End Try
             End If
 
             If Not OptionalUpdate Then
