@@ -1,0 +1,135 @@
+﻿<Window x:Class="ARParameter.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ARParameter"
+        mc:Ignorable="d"
+        Title="Configuration Atelier Radio" Height="600" Width="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="10"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="10"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="10"/>
+            <RowDefinition/>
+            <RowDefinition Height="10"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="10"/>
+            <RowDefinition Height="80"/>
+            <RowDefinition Height="10"/>
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="10"/>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="10"/>
+        </Grid.ColumnDefinitions>
+
+        <Grid Grid.Row="1" Grid.Column="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Text="Configuration :" Grid.Column="0"/>
+            <RadioButton x:Name="RadioButtonRDS" Content="RDS" Grid.Column="1" IsChecked="True"/>
+            <RadioButton x:Name="RadioButtonLocal" Content="Local" Grid.Column="2"/>
+        </Grid>
+
+        <Grid Grid.Row="3" Grid.Column="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Text="Email : " Grid.Column="0"/>
+            <TextBox x:Name="TextBoxEmail" Grid.Column="1" KeyUp="TextBoxEmail_KeyUp" />
+        </Grid>
+
+
+        <Grid  Grid.Row="5" Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition Height="10"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="10"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+
+            <ListView x:Name="ListViewFilterParams" Grid.Row="0">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="" Width="30">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Button x:Name="ButtonParamAdd" Click="ButtonParamAdd_Click">
+                                        <Button.Template>
+                                            <ControlTemplate>
+                                                <Image Source="Images/Symbol Green Add.png" Width="16" Height="16"/>
+                                            </ControlTemplate>
+                                        </Button.Template>
+                                    </Button>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <GridViewColumn Header="Société" Width="200" DisplayMemberBinding="{Binding Compagny}" />
+                        <GridViewColumn Header="Nom Utilisateur" Width="150" DisplayMemberBinding="{Binding UserName}" />
+                        <GridViewColumn Header="Email" Width="250" DisplayMemberBinding="{Binding Email}" />
+                    </GridView>
+                </ListView.View>
+            </ListView>
+
+            <TextBlock Text="Accès ajouté(s):" Grid.Row="2"/>
+
+            <ListView x:Name="ListViewParamsSelected" Grid.Row="4">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="" Width="30">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Button x:Name="ButtonParamDelete" Click="ButtonParamDelete_Click">
+                                        <Button.Template>
+                                            <ControlTemplate>
+                                                <Image Source="Images/Symbol Red Delete.png" Width="16" Height="16"/>
+                                            </ControlTemplate>
+                                        </Button.Template>
+                                    </Button>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <GridViewColumn Header="Société" Width="200" DisplayMemberBinding="{Binding Compagny}" />
+                        <GridViewColumn Header="Nom Utilisateur" Width="150" DisplayMemberBinding="{Binding UserName}" />
+                        <GridViewColumn Header="Email" Width="250" DisplayMemberBinding="{Binding Email}" />
+
+                    </GridView>
+                </ListView.View>
+            </ListView>
+        </Grid>
+
+        <CheckBox x:Name="CheckBoxTblOnly" Content="Mise à jour du fichier utilisateur uniquement" Grid.Row="7" Grid.Column="1"/>
+
+        <Grid Grid.Row="9" Grid.Column="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="10"/>
+                <ColumnDefinition Width="100"/>
+            </Grid.ColumnDefinitions>
+
+            <ListBox x:Name="ListBoxLog" Grid.Column="0"/>
+
+            <Grid Grid.Column="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition Height="10"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Button x:Name="ButtonValide" Content="Configurer" Grid.Row="0" VerticalAlignment="Stretch" Click="ButtonValide_Click"/>
+                <Button x:Name="ButtonCancel" Content="Terminé" Grid.Row="2" VerticalAlignment="Stretch" Click="ButtonCancel_Click"/>
+            </Grid>
+
+        </Grid>
+
+    </Grid>
+</Window>
