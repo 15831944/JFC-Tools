@@ -1416,7 +1416,10 @@ namespace ARProbaProcessing
         {
             // C PANEL RADIO 08 MEDIAMETRIE(nouveau format)
             // REGROUPEMENTS DES CELLULES DE BASE
+            // 
             int NBCEL = contextPanel.NbSeg;
+
+            // Seuil de regoupement des cellules (nombre d'indivs)
             int NIVREG = 9;
 
             // Le nombre de station correspond au nombre de stations(30) -1 pour Total Radio(et Total TV)
