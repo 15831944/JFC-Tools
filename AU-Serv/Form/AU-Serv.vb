@@ -3,6 +3,7 @@ Option Explicit On
 
 Imports System.IO
 Imports System.Net
+Imports System.Runtime.InteropServices
 
 Friend Class AUService
 
@@ -72,6 +73,13 @@ Friend Class AUService
     Public LogUpdate As Boolean = False
 
     Public ErrorDeletePatchs As List(Of String) = New List(Of String)()
+
+    Public Const SWP_NOSIZE As Int32 = &H1
+    Public Const SWP_NOMOVE As Int32 = &H2
+
+    <DllImport("user32.dll", CharSet:=CharSet.Auto, CallingConvention:=CallingConvention.StdCall)>
+    Public Shared Function SetWindowPos(ByVal hWnd As IntPtr, ByVal hWndInsertAfter As IntPtr, ByVal X As Int32, ByVal Y As Int32, ByVal cx As Int32, ByVal cy As Int32, ByVal uFlags As Int32) As Boolean
+    End Function
 
     Structure FILE_UPDATE
         Dim numMaj0 As String
@@ -160,10 +168,10 @@ Friend Class AUService
         Dim executeBefore As String = Select_GetIniString("Parametres", "ExecuteBefore", AUServiceIni)
 
         If executeBefore <> "" And IO.File.Exists(executeBefore) Then
-            Dim MyProcBefore As New Process()
-            MyProcBefore.StartInfo.WorkingDirectory = executeBefore.Substring(0, executeBefore.LastIndexOf("\") + 1)
-            MyProcBefore.StartInfo.FileName = executeBefore
-            MyProcBefore.Start()
+            bUseProcessExecute = True
+            LaunchApplication(executeBefore, "", True, executeBefore.Substring(0, executeBefore.LastIndexOf("\") + 1))
+
+            SetWindowPos(Me.Handle, New IntPtr(-1), 0, 0, 0, 0, SWP_NOMOVE Or SWP_NOSIZE)
         End If
 
         Connection = New CConnection
@@ -1882,7 +1890,7 @@ DlgProductCode:
 
     End Function
 
-    Private Sub LaunchApplication(ByVal szPathFile As String, Optional ByVal svCommand As String = "", Optional ByVal bWait As Boolean = False)
+    Private Sub LaunchApplication(ByVal szPathFile As String, Optional ByVal svCommand As String = "", Optional ByVal bWait As Boolean = False, Optional ByVal workingDirectory As String = "")
         Try
 
             Dim lPid_Execute As Integer
@@ -1891,7 +1899,12 @@ DlgProductCode:
             If bUseProcessExecute Then
                 If bUseShellExecute Then MyProc.StartInfo.UseShellExecute = True
 
-                MyProc.StartInfo.WorkingDirectory = IO.Path.GetDirectoryName(szPathFile)
+                If workingDirectory <> "" Then
+                    MyProc.StartInfo.WorkingDirectory = workingDirectory
+                Else
+                    MyProc.StartInfo.WorkingDirectory = IO.Path.GetDirectoryName(szPathFile)
+                End If
+
                 MyProc.StartInfo.FileName = szPathFile
                 MyProc.StartInfo.WindowStyle = ProcessWindowStyle.Normal
                 MyProc.StartInfo.Arguments = svCommand
