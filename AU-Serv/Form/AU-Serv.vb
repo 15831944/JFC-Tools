@@ -152,6 +152,20 @@ Friend Class AUService
             Next
         End If
 
+        ''''''''''''''''
+        '''  Execution du ExcuteBefore
+        '''
+        ''' 
+        AUServiceIni = IO.Path.ChangeExtension(Application.ExecutablePath, ".ini")
+        Dim executeBefore As String = Select_GetIniString("Parametres", "ExecuteBefore", AUServiceIni)
+
+        If executeBefore <> "" Then
+            Dim MyProcBefore As New Process()
+            MyProcBefore.StartInfo.WorkingDirectory = executeBefore.Substring(0, executeBefore.LastIndexOf("\") + 1)
+            MyProcBefore.StartInfo.FileName = executeBefore
+            MyProcBefore.Start()
+        End If
+
         Connection = New CConnection
 
         Init_AUService()
