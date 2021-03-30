@@ -159,7 +159,7 @@ Friend Class AUService
         AUServiceIni = IO.Path.ChangeExtension(Application.ExecutablePath, ".ini")
         Dim executeBefore As String = Select_GetIniString("Parametres", "ExecuteBefore", AUServiceIni)
 
-        If executeBefore <> "" Then
+        If executeBefore <> "" And IO.File.Exists(executeBefore) Then
             Dim MyProcBefore As New Process()
             MyProcBefore.StartInfo.WorkingDirectory = executeBefore.Substring(0, executeBefore.LastIndexOf("\") + 1)
             MyProcBefore.StartInfo.FileName = executeBefore
