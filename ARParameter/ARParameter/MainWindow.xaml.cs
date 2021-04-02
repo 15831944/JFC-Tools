@@ -185,12 +185,21 @@ namespace ARParameter
 
         private void ParamsFileLoading()
         {
-            AddLog("Start loading : " + AllConfigPath);
+            if (System.IO.File.Exists(AllConfigPath))
+            {
+                AddLog("Start loading : " + AllConfigPath);
 
-            ParametersUsersFile = new ParametersUsersFile(AllConfigPath);
-            ParametersUsersFile.ReadFile();
+                ParametersUsersFile = new ParametersUsersFile(AllConfigPath);
+                ParametersUsersFile.ReadFile();
 
-            AddLog("File load : " + AllConfigPath);
+                AddLog("File load : " + AllConfigPath);
+            }
+            else
+            {
+                MessageBox.Show("le fichier " + AllConfigPath + " n'existe pas", "Erreur", MessageBoxButton.OK,
+                        MessageBoxImage.Error);
+                AddLog("This file doesn't exist : " + AllConfigPath);
+            }
         }
 
         private void RefreshListViewFilterParams()
@@ -244,8 +253,14 @@ namespace ARParameter
 
             auServFile.WriteString("Definition_du_site", "CheminReseau", userparam.NetworkMode ? "1" : "0");
 
-            string userTableFile = UserTableFolder + @"\TableUtilisateur_" + userparam.UserName + ".tbl";
-            auServFile.WriteString("Localisation", "USER_TABLE", userTableFile);
+            if (UserParamsSelected.Count > 1 || !string.IsNullOrEmpty(userparam.UserTablePath))
+            {
+                string userTableFile = UserTableFolder + @"\TableUtilisateur_" + userparam.UserName + ".tbl";
+
+                if (!string.IsNullOrEmpty(userparam.UserTablePath)) userTableFile = userparam.UserTablePath;
+
+                auServFile.WriteString("Localisation", "USER_TABLE", userTableFile);
+            }
 
             auServFile.WriteString("DefOption", "Nomenclature", userparam.NomenclaturePath);
 
