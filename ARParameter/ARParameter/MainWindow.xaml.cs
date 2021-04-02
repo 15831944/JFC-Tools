@@ -218,10 +218,13 @@ namespace ARParameter
             // delete "ExcuteBefore" information
             auServFile.WriteString("Parametres", "ExecuteBefore", "");
 
-            if (UserParamsSelected.Count == 1)
-                auServFile.WriteString("Parametres", "Execute", "atsauve.exe");
-            else
+            if (UserParamsSelected.Count > 1 || !string.IsNullOrEmpty(UserParamsSelected.First().UserTablePath) || UserParamsSelected.First().ExecutableToLaunch.ToLower() == "multiuseredi.exe")
                 auServFile.WriteString("Parametres", "Execute", "MultiUserEDI.exe");
+            else if (UserParamsSelected.Count == 1)
+                auServFile.WriteString("Parametres", "Execute", UserParamsSelected.First().ExecutableToLaunch);
+            else if (UserParamsSelected.Count == 1)
+                auServFile.WriteString("Parametres", "Execute", "atsauve.exe");
+
 
             auServFile.WriteString("Parametres", "RemoteDir", UserParamsSelected.First().UpdatePath);
 
@@ -253,7 +256,7 @@ namespace ARParameter
 
             auServFile.WriteString("Definition_du_site", "CheminReseau", userparam.NetworkMode ? "1" : "0");
 
-            if (UserParamsSelected.Count > 1 || !string.IsNullOrEmpty(userparam.UserTablePath))
+            if (UserParamsSelected.Count > 1 || !string.IsNullOrEmpty(userparam.UserTablePath) || userparam.ExecutableToLaunch.ToLower() == "multiuseredi.exe")
             {
                 string userTableFile = UserTableFolder + @"\TableUtilisateur_" + userparam.UserName + ".tbl";
 
@@ -315,36 +318,39 @@ namespace ARParameter
 
         private void UpdateUserFile()
         {
-            string userTableFile = UserTableFolder + @"\TableUtilisateur_" + UserParamsSelected.First().UserName + ".tbl";
-
-            AddLog("Début de l'écriture du fichier " + userTableFile);
-
-            UsFile = new UserFile(userTableFile);
-
-            // parametrage du fichier utilisateur
-            UserFile.Compagny cp;
-            foreach (var item in UserParamsSelected)
+            if (UserParamsSelected.Count > 1 || !string.IsNullOrEmpty(UserParamsSelected.First().UserTablePath) || UserParamsSelected.First().ExecutableToLaunch.ToLower() == "multiuseredi.exe")
             {
-                cp = new UserFile.Compagny();
-                cp.Name = item.Compagny;
-                cp.UserPath = item.UserPath;
-                cp.EDIPath = item.EDIPath;
-                cp.ComptoireCode = item.EDICode;
-                cp.NomenclaturePath = item.NomenclaturePath;
-                cp.UserEmail = item.Email;
+                string userTableFile = UserTableFolder + @"\TableUtilisateur_" + UserParamsSelected.First().UserName + ".tbl";
 
-                if (!string.IsNullOrEmpty(item.ext_raison))
-                    cp.RaisonFile = "RAISON." + item.ext_raison;
-                else
-                    cp.RaisonFile = "RAISON.NEW";
+                AddLog("Début de l'écriture du fichier " + userTableFile);
 
-                UsFile.Compagnies.Add(cp);
+                UsFile = new UserFile(userTableFile);
+
+                // parametrage du fichier utilisateur
+                UserFile.Compagny cp;
+                foreach (var item in UserParamsSelected)
+                {
+                    cp = new UserFile.Compagny();
+                    cp.Name = item.Compagny;
+                    cp.UserPath = item.UserPath;
+                    cp.EDIPath = item.EDIPath;
+                    cp.ComptoireCode = item.EDICode;
+                    cp.NomenclaturePath = item.NomenclaturePath;
+                    cp.UserEmail = item.Email;
+
+                    if (!string.IsNullOrEmpty(item.ext_raison))
+                        cp.RaisonFile = "RAISON." + item.ext_raison;
+                    else
+                        cp.RaisonFile = "RAISON.NEW";
+
+                    UsFile.Compagnies.Add(cp);
+                }
+
+                // Création du fichier utilisateur_XXX.tbl
+                UsFile.SaveFile();
+
+                AddLog("Fin de l'écriture du fichier " + userTableFile);
             }
-
-            // Création du fichier utilisateur_XXX.tbl
-            UsFile.SaveFile();
-
-            AddLog("Fin de l'écriture du fichier " + userTableFile);
         }
 
         private void AddLog(string message)

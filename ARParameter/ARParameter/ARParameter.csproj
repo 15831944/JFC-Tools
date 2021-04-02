@@ -34,6 +34,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Images\parametres-avances.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -100,6 +103,9 @@
   <ItemGroup>
     <Resource Include="Images\Symbol Green Add.png" />
     <Resource Include="Images\Symbol Red Delete.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\parametres-avances.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
