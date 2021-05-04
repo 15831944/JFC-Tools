@@ -63,14 +63,22 @@ namespace ARProbaProcessing
             {
 
                 // PANEL CADRES
-                //FilterNatToCadre(@"D:\Work\AR\Probabilisation\FR\Panel Cadre\Panfra", "13");
-                //return;
+                // FilterNatToCadre(@"D:\Work\AR\Probabilisation\FR\Panel Cadre\Panfra", "13");
+                // return;
+
                 int year = fAffinage.GetYear();
                 Console.WriteLine(year.ToString("0000") + " ==>");
                 string panelName = fAffinage.GetDirName(); // "Panel_Cadre";
                 Enquete enquete = fAffinage.GetEnquete();
 
-                // PANEL NATIONAL
+                // Attention pour les cadres Filtrage
+                if (panelName == "Panel_Cadre")
+                {
+                    string libYear = (year - 2000).ToString("00");
+                    FilterNatToCadre(@"C:\Affinage\" + panelName + @"\Panfra", libYear);
+                }
+
+                // Pour tous les Panels
                 var process = new ARProba(@"C:\Affinage\" + panelName + @"\Panfra", (year % 100).ToString("00"), "", enquete);
 
                 // PANEL IDF
@@ -117,6 +125,7 @@ namespace ARProbaProcessing
 
             string[] bdecadre = File.ReadAllLines(Path.Combine(root, @"Input\Bde\Pan" + yy + "_DI-cadres.bde"));
 
+            Console.WriteLine("Filtre Panel Cadres...");
 
             HashSet<string> cadreMap = new HashSet<string>();
             // Load sample id dic for cadre
@@ -133,6 +142,10 @@ namespace ARProbaProcessing
 
             foreach (var audfile in audfiles)
             {
+  
+                string bdeWrite = Path.Combine(root, @"Input\Bde", Path.GetFileName(audfile));
+                Console.WriteLine(bdeWrite);
+
                 var inls = File.ReadAllLines(audfile);
                 List<string> outls = new List<string>();
 
@@ -145,7 +158,7 @@ namespace ARProbaProcessing
                     }
                 }
 
-                File.WriteAllLines(Path.Combine(root, @"Input\Bde", Path.GetFileName(audfile)), outls);
+                File.WriteAllLines(bdeWrite, outls);
             }
 
 
@@ -416,11 +429,13 @@ namespace ARProbaProcessing
 
             string currentVariable = null;
 
-
+            int Cpt = 0;
             foreach (var sta in libList)
             {
                 if (sta.Equals(string.Empty))
                     continue;
+
+                Cpt++;
 
                 var words = sta.Split(';');
 
