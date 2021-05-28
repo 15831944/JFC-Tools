@@ -84,16 +84,16 @@
     <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>DCFA8ADF055C76FF9EAE384A5A8B28BC1067CAEC</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>72ED6C444306BCA00B7FA62321F5BA350C56827C</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
     <ManifestKeyFile>Certificat\TheKantarGroupLimited.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <SignManifests>false</SignManifests>
+    <SignManifests>true</SignManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <SignAssembly>false</SignAssembly>
+    <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
     <DelaySign>false</DelaySign>

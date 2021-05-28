@@ -168,8 +168,31 @@ Friend Class AUService
         Dim executeBefore As String = Select_GetIniString("Parametres", "ExecuteBefore", AUServiceIni)
 
         If executeBefore <> "" And IO.File.Exists(executeBefore) Then
-            bUseProcessExecute = True
-            LaunchApplication(executeBefore, "", True, executeBefore.Substring(0, executeBefore.LastIndexOf("\") + 1))
+            'bUseProcessExecute = True
+            'LaunchApplication(executeBefore, "", True, executeBefore.Substring(0, executeBefore.LastIndexOf("\") + 1))
+
+            Dim MyProc As New Process()
+            Dim lPid_Execute As Integer
+
+
+
+            MyProc.StartInfo.WorkingDirectory = executeBefore.Substring(0, executeBefore.LastIndexOf("\") + 1)
+            MyProc.StartInfo.FileName = executeBefore
+            'MyProc.StartInfo.Arguments = ""
+            MyProc.Start()
+            lPid_Execute = MyProc.Id
+
+            System.Windows.Forms.Application.DoEvents()
+
+            If lPid_Execute <> 0 Then
+
+                Dim lHnd_Patch As Integer = OpenProcess(SYNCHRONIZE, 0, lPid_Execute)
+                Dim nvTimeMilliseconds As Integer = 20
+
+                While WAIT_TIMEOUT = WaitForSingleObject(lHnd_Patch, nvTimeMilliseconds)
+                    System.Windows.Forms.Application.DoEvents()
+                End While
+            End If
 
             SetWindowPos(Me.Handle, New IntPtr(-1), 0, 0, 0, 0, SWP_NOMOVE Or SWP_NOSIZE)
         End If
