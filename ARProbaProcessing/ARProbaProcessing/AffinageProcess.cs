@@ -824,9 +824,9 @@ namespace ARProbaProcessing
             // int[] TABRH /#HAB_STA_LIST_ID_NOTO_SET_TO_TOTAL_RADIO#/
 
             // INTEGER*1 int KHAB(9,NB_STA_ALL_HAB),KHSA(9,#NB_STA_ALL_HAB#),KHDI(9,#NB_STA_ALL_HAB#),APRES[#SIGN_LINE_LEN_AFTER_HAB#), CHARIOT(2)
-            byte[,] KHAB = new byte[9 + 1, contextPanel.NB_STA_ALL_HAB + 1];
-            byte[,] KHSA = new byte[9 + 1, contextPanel.NB_STA_ALL_HAB + 1];
-            byte[,] KHDI = new byte[9 + 1, contextPanel.NB_STA_ALL_HAB + 1];
+            byte[,] KHAB = new byte[9 + 1, contextPanel.NB_STA_ALL_HAB + 2];
+            byte[,] KHSA = new byte[9 + 1, contextPanel.NB_STA_ALL_HAB + 2];
+            byte[,] KHDI = new byte[9 + 1, contextPanel.NB_STA_ALL_HAB + 2];
 
             // INITIALISATIONS
             int G = 0;

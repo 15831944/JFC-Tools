@@ -58,7 +58,7 @@ namespace ARProbaProcessing
             for (int day = 0; day < aRProba.DayCount; day++)
             {
                 for (int ind = 0; ind < aRProba.IndivCount; ind++)
-                {
+                 {
 
                     if (ind == 337 || ind == 336)
                     {
