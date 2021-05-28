@@ -89,6 +89,8 @@ namespace MultiUserEDI
 
         public const int CODE_UPDATE_AU_SERV = 50;
 
+        public const int CODE_UPDATE_MULTIUSEREDI = 51;
+
         public const int CODE_SYNCHRONIZE_UPDATE = 55;
 
         public const int CODE_PARAMETER_INFO = 69;

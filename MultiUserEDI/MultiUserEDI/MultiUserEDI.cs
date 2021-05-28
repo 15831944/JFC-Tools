@@ -1638,7 +1638,7 @@ namespace MultiUserEDI
             {
                 if ((Operators.CompareString(PATH_FILE_TABLE_USER, null, TextCompare: false) != 0) & File.Exists(PATH_FILE_TABLE_USER))
                 {
-                    string[] array2 = File.ReadAllLines(PATH_FILE_TABLE_USER, Encoding.Default);
+                    string[] array2 = File.ReadAllLines(PATH_FILE_TABLE_USER, Encoding.UTF8);
                     foreach (string text11 in array2)
                     {
                         if (Operators.CompareString(text11.Trim(), null, TextCompare: false) != 0 && Strings.InStr(text11, ";", CompareMethod.Text) != 1)
@@ -1703,7 +1703,7 @@ namespace MultiUserEDI
                         {
                             text13 = Strings.Mid(text13, num + 1, Strings.Len(text13) - num);
                         }
-                        if (new string[11] { "genevieve.charron", "frederic.piot", "isabelle.dumontier", "celine.voisin", "guylaine.levesque", "fleur.toutain", "clemence.ridoux", "arnaud.glachet", "cyril.marican", "ouysieng.quach" , "delphine.santos"}.Contains(text13.ToLower()))
+                        if (new string[11] { "genevieve.charron", "frederic.piot", "isabelle.dumontier", "celine.voisin", "guylaine.levesque", "fleur.toutain", "clemence.ridoux", "arnaud.glachet", "cyril.marican", "ouysieng.quach", "delphine.santos" }.Contains(text13.ToLower()))
                         {
                             if (File.Exists(AppPath + "ACFRadio.exe"))
                             {
@@ -2692,6 +2692,65 @@ namespace MultiUserEDI
             return null;
         }
 
+        //public string HttpSendMessage2(int code, string info = null, string maj = null, string version = null, string logiciel = null)
+        //{
+        //    //if (maj != null && maj.Trim() == "") maj = svPatch;
+            
+        //    if (version == null)
+        //        version = FileVersionInfo.GetVersionInfo(Application.ExecutablePath).FileVersion;
+
+
+        //    if (logiciel == null)
+        //        logiciel = "MultiUserEDI.exe";
+        //    else if (info == null)
+        //        info = "";
+
+        //    //string svInfoTxt = ReadInfoToFile(svLocalDir + "Info.txt");
+        //    //if (svInfoTxt != null)
+        //    //    info = svInfoTxt;
+
+
+        //    string URL_MAJ = Connection.ServerName + "/update.asp?" + "sn=" + svSerial & "&login=" + svWebCompanyName & "&logiciel=" & logiciel & "&etat=" & code.ToString() & "&host=";
+
+        //    string svMAJ = maj != null ? "&maj=" + maj : "";
+        //    string svVERSION = version != null ? "&version=" + version : "";
+        //    string svINFO = info != null ? "&info=" + info : "";
+
+        //    string svHostEntry = " ";
+        //    try
+        //    {
+        //        svHostEntry = Dns.GetHostName();
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        Console.WriteLine(e);
+        //        throw;
+        //    }
+
+        //    //if (StrComp(UserName, info, CompareMethod.Text) == 0)
+        //    //    svHostEntry = HostEntryName;
+
+        //    string SendMessage = URL_MAJ + svHostEntry + svMAJ+ svVERSION + svINFO;
+
+        //    if (SendMessage.Length > 255)
+        //        SendMessage = URL_MAJ + Truncate(svHostEntry, 40) + svMAJ + svVERSION + svINFO;
+
+
+        //    if (SendMessage.Length > 255)
+        //        SendMessage = URL_MAJ + Truncate(svHostEntry, 40) + svMAJ + svINFO;
+
+        //    if (SendMessage.Length > 255)
+        //        SendMessage = URL_MAJ + HostName + svMAJ + svINFO;
+
+        //    if (SendMessage.Length > 255)
+        //        SendMessage = URL_MAJ + HostName + svINFO;
+
+        //    if (SendMessage.Length > 255)
+        //        SendMessage = URL_MAJ + HostName;
+
+        //    return Connection.SendMessage(SendMessage);
+        //}
+
         private string Truncate(string svString, int nvLen)
         {
             if (Strings.Len(svString) > nvLen)
@@ -2807,7 +2866,7 @@ namespace MultiUserEDI
                             Exception ex6 = ex5;
                             ProjectData.ClearProjectError();
                         }
-                        IL_0388:;
+                    IL_0388:;
                     }
                 }
             }

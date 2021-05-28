@@ -30,6 +30,8 @@ namespace MultiUserEDI
 
         public static string ParsePath(string szPath, short nOperation)
         {
+            //return System.IO.Path.GetDirectoryName(szPath);
+
             //checked
             //{
             int num = Strings.InStrRev(szPath, ".") - 1;
