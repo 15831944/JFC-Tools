@@ -264,6 +264,16 @@ namespace ARParameter
 
                 auServFile.WriteString("Localisation", "USER_TABLE", userTableFile);
             }
+            else
+            {
+                auServFile.WriteString("Localisation", "USER", userparam.UserPath);
+
+                auServFile.WriteString("Definition_du_site", "Numéro_Guichet", userparam.UserPath);
+
+                auServFile.WriteString("Localisation", "N_CLIENT", userparam.NomenclaturePath);
+
+                auServFile.WriteString("Definition_du_site", "EInterloc", userparam.Email);
+            }
 
             auServFile.WriteString("DefOption", "Nomenclature", userparam.NomenclaturePath);
 

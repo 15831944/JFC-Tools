@@ -90,14 +90,29 @@ namespace ARParameter.Module.File
 
                             string[] tabLine = line.Split(';');
 
-                            if (tabLine[0] != string.Empty && tabLine.Length <= 2)
+                            int idxEnd = 0;
+
+                            for (idxEnd = tabLine.Count() - 1; idxEnd >= 0; idxEnd--)
+                            {
+                                if (tabLine[idxEnd] != string.Empty)
+                                    break;
+                            }
+
+                            if (idxEnd == -1) continue;
+
+                            string[] tabLinetmp = new string[idxEnd + 1];
+                            Array.Copy(tabLine, tabLinetmp, idxEnd + 1);
+
+                            tabLine = tabLinetmp;
+
+                            if (tabLine[0] != string.Empty && tabLine.Length < 5)
                             {
                                 compagny = tabLine[0];
 
                                 if (tabLine.Length > 1)
                                     ext_raison = tabLine[1];
                             }
-                            else if (compagny != string.Empty && tabLine.Length > 2)
+                            else if (compagny != string.Empty && tabLine.Length >= 18)
                             {
                                 UserParameters up = new UserParameters();
 
